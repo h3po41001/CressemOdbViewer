@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="CressemLogger.View.LogControlView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:local="clr-namespace:CressemLogger.View"
+			 xmlns:vm="clr-namespace:CressemLogger.ViewModel"
+			 d:DesignHeight="450"
+			 d:DesignWidth="800"
+			 mc:Ignorable="d">
+	<Grid>
+		<TabControl ItemsSource="{Binding LogViewList, UpdateSourceTrigger=PropertyChanged}"
+					SelectedItem="{Binding SelectedLogView, UpdateSourceTrigger=PropertyChanged}">
+			<TabControl.Resources>
+				<Style TargetType="{x:Type TabItem}">
+					<Setter Property="HeaderTemplate">
+						<Setter.Value>
+							<DataTemplate>
+								<WrapPanel>
+									<Label Content="{Binding Name}"
+										   HorizontalContentAlignment="Center"
+										   VerticalContentAlignment="Center" />
+								</WrapPanel>
+							</DataTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+				<DataTemplate DataType="{x:Type vm:LogItemViewModel}">
+					<local:LogItemView />
+				</DataTemplate>
+			</TabControl.Resources>
+		</TabControl>
+	</Grid>
+</UserControl>
