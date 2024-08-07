@@ -23,7 +23,12 @@
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CressemOdbViewer.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Xpf.Core.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Ribbon.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -83,6 +88,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CressemFramework\CressemFramework.csproj">
+      <Project>{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}</Project>
+      <Name>CressemFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CressemLogger\CressemLogger.csproj">
+      <Project>{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}</Project>
+      <Name>CressemLogger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

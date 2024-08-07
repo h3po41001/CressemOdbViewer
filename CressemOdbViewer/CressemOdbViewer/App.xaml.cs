@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CressemLogger;
+using CressemLogger.ViewModel;
+using CressemOdbViewer.ViewModel;
+using System.IO;
 using System.Windows;
 
 namespace CressemOdbViewer
@@ -13,5 +11,38 @@ namespace CressemOdbViewer
 	/// </summary>
 	public partial class App : Application
 	{
+		private static MainViewModel _mainViewModel;
+		private static LogControlViewModel _logView;
+
+		public static MainViewModel MainViewModel
+		{
+			get
+			{
+				if (_mainViewModel == null)
+				{
+					_mainViewModel = new MainViewModel(_logView);
+				}
+
+				return _mainViewModel;
+			}
+		}
+
+		private void Application_Startup(object sender, StartupEventArgs e)
+		{
+			_logView = new LogControlViewModel(Current.Dispatcher);
+
+			var folderPath = Directory.GetCurrentDirectory();
+			CLogger.Instance.Initialize(folderPath + "\\Log");
+
+			_logView.AddLogClass("App");
+			CLogger.Instance.AddInfoLog("App", "Start Application", true);
+
+			MainWindow = new MainWindow
+			{
+				DataContext = MainViewModel,
+			};
+
+			MainWindow.ShowDialog();
+		}
 	}
 }

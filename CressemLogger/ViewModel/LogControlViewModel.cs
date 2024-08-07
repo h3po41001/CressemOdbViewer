@@ -57,7 +57,7 @@ namespace CressemLogger.ViewModel
 
 		public void Referesh()
 		{
-			if (_logViewList != null)
+			if (_logViewList != null && SelectedLogView != null)
 			{
 				SelectedLogView = _logViewList["Main"];
 			}
