@@ -1,5 +1,6 @@
 ﻿using CressemLogger;
 using CressemLogger.ViewModel;
+using CressemOdbViewer.ViewModel.Control;
 
 namespace CressemOdbViewer.ViewModel
 {
@@ -10,10 +11,18 @@ namespace CressemOdbViewer.ViewModel
 		public MainViewModel(LogControlViewModel logView)
 		{
 			LogView = logView;
+
+			AlarmView = new AlarmViewModel();
+			LogoView = new LogoViewModel();
+
 			InitLogView();
 		}
 
 		public LogControlViewModel LogView { get; private set; }
+
+		public AlarmViewModel AlarmView { get; private set; }
+
+		public LogoViewModel LogoView { get; private set; }
 
 		private void InitLogView()
 		{
