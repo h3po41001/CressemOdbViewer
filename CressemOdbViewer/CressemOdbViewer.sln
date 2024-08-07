@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemOdbViewer", "CressemOdbViewer\CressemOdbViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemFramework", "..\CressemFramework\CressemFramework.csproj", "{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Debug|x64.Build.0 = Debug|x64
 		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.ActiveCfg = Release|x64
 		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.Build.0 = Release|x64
+		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Debug|x64.ActiveCfg = Debug|x64
+		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Debug|x64.Build.0 = Debug|x64
+		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Release|x64.ActiveCfg = Release|x64
+		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
