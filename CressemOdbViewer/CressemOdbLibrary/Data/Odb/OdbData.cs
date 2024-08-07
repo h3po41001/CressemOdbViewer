@@ -4,8 +4,8 @@
 	{
 		private OdbData() : base() { }
 
-		public OdbData(string path) : base(path) 
-		{ 
+		public OdbData(string loadPath, string savePath) : base(loadPath, savePath)
+		{
 		}
 	}
 }

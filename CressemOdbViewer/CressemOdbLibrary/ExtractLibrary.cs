@@ -1,15 +1,16 @@
-﻿using CressemExtractLibrary.Extractor;
-using CressemExtractLibrary.Extractor.Gerber;
-using CressemExtractLibrary.Extractor.Odb;
-using CressemExtractLibrary.Data;
+﻿using CressemExtractLibrary.Data;
+using CressemExtractLibrary.Data.Gerber;
+using CressemExtractLibrary.Data.Odb;
+using CressemExtractLibrary.Extract;
+using CressemExtractLibrary.Extract.Gerber;
+using CressemExtractLibrary.Extract.Odb;
 
 namespace CressemExtractLibrary
 {
 	public class ExtractLibrary
 	{
 		private static ExtractLibrary _instance;
-		private DataFormat _dataFormat;
-		private IDataExtractor _dataExtractor;
+		private Extractor _extractor;
 
 		private ExtractLibrary() { }
 
@@ -26,28 +27,37 @@ namespace CressemExtractLibrary
 			}
 		}
 
-		public bool SetDataFormat(DataFormat dataFormatType)
+		public bool SetData(DataFormat dataFormat,
+			string loadPath, string savePath)
 		{
-			_dataFormat = dataFormatType;
-
-			switch (_dataFormat)
+			switch (dataFormat)
 			{
 				case DataFormat.Gerber:
-					_dataExtractor = new GerberExtractor();
-					break;
+					{
+						_extractor = new GerberExtractor(loadPath, savePath);
+						break;
+					}
 				case DataFormat.Odb:
-					_dataExtractor = new OdbExtractor();
-					break;
+					{
+						_extractor = new OdbExtractor(loadPath, savePath);
+						break;
+					}
 				default:
-					return false;
+					{
+						_extractor = null;
+						return false;
+					}
 			}
 
 			return true;
 		}
 
-		public bool ExtractData(ExtractData data)
+		public bool Extract()
 		{
-			return _dataExtractor.ExtractData(data);
+			if (_extractor is null)
+				return false;
+
+			return _extractor.Extract();
 		}
 	}
 }

@@ -4,7 +4,7 @@
 	{
 		private GerberData() : base() { }
 
-		public GerberData(string path) : base(path)
+		public GerberData(string loadPath, string savePath) : base(loadPath, savePath)
 		{
 		}
 	}

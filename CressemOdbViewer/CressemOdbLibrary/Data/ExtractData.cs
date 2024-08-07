@@ -1,6 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data
 {
-	public class ExtractData
+	internal class ExtractData
 	{
 		private string _loadPath = string.Empty;
 		private string _savePath = string.Empty;

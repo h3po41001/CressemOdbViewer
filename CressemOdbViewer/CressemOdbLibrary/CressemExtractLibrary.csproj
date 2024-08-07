@@ -36,9 +36,9 @@
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />
     <Compile Include="Data\Odb\OdbData.cs" />
-    <Compile Include="Extractor\Gerber\GerberExtractor.cs" />
-    <Compile Include="Extractor\IDataExtractor.cs" />
-    <Compile Include="Extractor\Odb\OdbExtractor.cs" />
+    <Compile Include="Extract\Extractor.cs" />
+    <Compile Include="Extract\Gerber\GerberExtractor.cs" />
+    <Compile Include="Extract\Odb\OdbExtractor.cs" />
     <Compile Include="ExtractLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
