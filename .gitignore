@@ -13,3 +13,8 @@
 /CressemLogger/.vs
 /CressemLogger/bin/x64
 /CressemLogger/obj/x64
+/CressemOdbViewer/CressemOdbLibrary/obj/Debug
+/CressemOdbViewer/CressemOdbLibrary/bin/Debug
+/CressemOdbViewer/CressemOdbLibrary/obj/x64
+/CressemOdbViewer/CressemOdbViewer/bin/x64/Release
+/CressemOdbViewer/CressemOdbLibrary/bin/x64

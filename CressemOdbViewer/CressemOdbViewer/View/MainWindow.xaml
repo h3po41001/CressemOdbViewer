@@ -78,18 +78,18 @@
 								  ShowTabHeaders="False">
 					<dxdo:TabbedGroup>
 						<dxdo:LayoutPanel AllowClose="False"
+										  Caption="Property"
+										  ShowBorder="True"
+										  ShowCaption="True">
+							<DockPanel />
+						</dxdo:LayoutPanel>
+						<dxdo:LayoutPanel AllowClose="False"
 										  AllowDock="True"
 										  Caption="Log"
 										  ItemHeight="0.2*">
 							<ScrollViewer>
 								<log:LogControlView DataContext="{Binding LogView}" />
 							</ScrollViewer>
-						</dxdo:LayoutPanel>
-						<dxdo:LayoutPanel AllowClose="False"
-										  Caption="Property"
-										  ShowBorder="True"
-										  ShowCaption="True">
-							<DockPanel />
 						</dxdo:LayoutPanel>
 					</dxdo:TabbedGroup>
 				</dxdo:LayoutGroup>

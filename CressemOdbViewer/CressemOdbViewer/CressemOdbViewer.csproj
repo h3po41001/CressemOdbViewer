@@ -70,6 +70,7 @@
     <Compile Include="Model\Enum.cs" />
     <Compile Include="ViewModel\Control\AlarmViewModel.cs" />
     <Compile Include="ViewModel\Control\LogoViewModel.cs" />
+    <Compile Include="ViewModel\Control\PropertyViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\Control\AlarmView.xaml.cs">
       <DependentUpon>AlarmView.xaml</DependentUpon>
