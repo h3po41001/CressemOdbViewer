@@ -14,6 +14,11 @@ namespace CressemExtractLibrary.Extract.Gerber
 			return false;
 		}
 
+		public override bool Load()
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public override bool Extract()
 		{
 			if (ExtractData is GerberData)

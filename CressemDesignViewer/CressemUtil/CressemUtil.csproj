@@ -40,6 +40,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Zip\Enum.cs" />
     <Compile Include="Zip\Extension\TarArchiveExtension.cs" />
+    <Compile Include="Zip\Extension\ZFileArchiveExtension.cs" />
     <Compile Include="Zip\Extension\ZipArchiveExtension.cs" />
     <Compile Include="Zip\IZipArchive.cs" />
     <Compile Include="Zip\ZipUtil.cs" />

@@ -19,6 +19,8 @@ namespace CressemExtractLibrary.Extract
 
 		public abstract bool OpenAndSave();
 
+		public abstract bool Load();
+
 		public abstract bool DoWork();
 	}
 }

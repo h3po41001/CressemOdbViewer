@@ -7,14 +7,14 @@ namespace CressemUtil.Zip
 	{
 		private static IZipArchive _archive;
 
-		public static ErrorType OpenAndSave(string filePath, string loadPath)
+		public static ErrorType OpenAndSave(string filePath, string savePath)
 		{
 			if (File.Exists(filePath) is false)
 			{
 				return ErrorType.NotExistsFile;
 			}
 
-			var dir = Directory.CreateDirectory(loadPath);
+			var dir = Directory.CreateDirectory(savePath);
 			if (dir.Exists is false)
 			{
 				return ErrorType.NotExistsDirectory;
@@ -28,12 +28,16 @@ namespace CressemUtil.Zip
 			{
 				_archive = new TarArchiveExtension();
 			}
+			else if (Path.GetExtension(filePath).ToUpper() == ".Z")
+			{
+				_archive = new ZFileArchiveExtension();
+			}
 			else
 			{
 				return ErrorType.NotSupportExtension;
 			}
 
-			return _archive.OpenAndSave(filePath, loadPath);
+			return _archive.OpenAndSave(filePath, savePath);
 		}
 	}
 }

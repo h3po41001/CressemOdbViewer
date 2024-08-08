@@ -18,11 +18,14 @@ namespace CressemExtractLibrary.Extract.Odb
 			{
 				if (OpenAndSave() is true)
 				{
-					if (DoWork() is true)
+					if (Load() is true)
 					{
-						return true;
-					}
-				}		
+						if (DoWork() is true)
+						{
+							return true;
+						}
+					}					
+				}
 			}
 
 			return false;
@@ -41,11 +44,40 @@ namespace CressemExtractLibrary.Extract.Odb
 
 				if (error is ErrorType.None)
 				{
+					// features.Z 압축 해제
+					var zPaths = Directory.GetFiles(ExtractData.SavePath,
+						"*features.Z", SearchOption.AllDirectories);
+
+					if (zPaths is null)
+					{
+						return true;
+					}
+
+					foreach (string zPath in zPaths)
+					{
+						var zPathLocal = Path.Combine(Path.GetDirectoryName(zPath),
+							Path.GetFileNameWithoutExtension(zPath));
+
+						if (Directory.Exists(zPathLocal))
+						{
+							Directory.Delete(zPathLocal, true);
+						}
+
+						error = ZipUtil.OpenAndSave(zPath, zPathLocal);
+						if (error != ErrorType.None)
+						{
+							MessageBox.Show($"[{error}] - {zPathLocal}", 
+								"압축해제 에러", MessageBoxButton.OK,	MessageBoxImage.Error);
+							return false;
+						}
+					}
+
 					return true;
 				}
 				else
 				{
-					MessageBox.Show(error.ToString(), "압축해제 에러", MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBox.Show($"[{error}] - {ExtractData.LoadPath}", 
+						"압축해제 에러", MessageBoxButton.OK, MessageBoxImage.Error);
 					return false;
 				}
 			}
@@ -53,6 +85,17 @@ namespace CressemExtractLibrary.Extract.Odb
 			{
 				return false;
 			}
+		}
+
+		public override bool Load()
+		{
+			if (Directory.Exists(ExtractData.SavePath) is false)
+				return false;
+
+			var name = (new DirectoryInfo(ExtractData.SavePath)).Name;
+			var dirPath = Path.Combine(ExtractData.SavePath, name);
+
+			return true;
 		}
 
 		public override bool DoWork()
