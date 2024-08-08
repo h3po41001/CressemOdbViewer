@@ -3,17 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemDesignViewer", "CressemOdbViewer\CressemDesignViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemDesignViewer", "CressemDesignViewer\CressemDesignViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
 	ProjectSection(ProjectDependencies) = postProject
-		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1} = {2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}
-		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD} = {FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}
+		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C} = {082EC76A-FAC5-480C-BB6F-27F636EEAF7C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemFramework", "..\CressemFramework\CressemFramework.csproj", "{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemFramework", "CressemFramework\CressemFramework.csproj", "{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemLogger", "..\CressemLogger\CressemLogger.csproj", "{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemExtractLibrary", "CressemExtractLibrary\CressemExtractLibrary.csproj", "{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemExtractLibrary", "..\CressemExtractLibrary\CressemExtractLibrary.csproj", "{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemLogger", "CressemLogger\CressemLogger.csproj", "{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,19 +28,19 @@ Global
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Debug|x64.Build.0 = Debug|x64
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Release|x64.ActiveCfg = Release|x64
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Release|x64.Build.0 = Release|x64
-		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Debug|x64.ActiveCfg = Debug|x64
-		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Debug|x64.Build.0 = Debug|x64
-		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Release|x64.ActiveCfg = Release|x64
-		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Release|x64.Build.0 = Release|x64
 		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}.Debug|x64.ActiveCfg = Debug|x64
 		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}.Debug|x64.Build.0 = Debug|x64
 		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}.Release|x64.ActiveCfg = Release|x64
 		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}.Release|x64.Build.0 = Release|x64
+		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Debug|x64.ActiveCfg = Debug|x64
+		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Debug|x64.Build.0 = Debug|x64
+		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Release|x64.ActiveCfg = Release|x64
+		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DD194C2E-B5A9-4A65-816B-62D6848A7CDD}
+		SolutionGuid = {76FE80B8-D8A4-49BC-B285-555DE02A2C6D}
 	EndGlobalSection
 EndGlobal

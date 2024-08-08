@@ -8,7 +8,6 @@ namespace CressemLogger.ViewModel
 	{
 		private string _name = string.Empty;
 		private readonly int _maxLogCount = 1000;
-		private readonly int _displayLogStep = 10;
 
 		private readonly ObservableCollection<LogDisplay> _outputLogMessages =
 			new ObservableCollection<LogDisplay>();

@@ -21,3 +21,16 @@
 /CressemExtractLibrary/bin/Debug
 /CressemExtractLibrary/bin/x64
 /CressemExtractLibrary/obj
+/CressemDesignViewer/.vs
+/CressemDesignViewer/CressemDesignViewer/.vs
+/CressemDesignViewer/CressemDesignViewer/bin/x64
+/CressemDesignViewer/CressemDesignViewer/obj
+/CressemDesignViewer/CressemExtractLibrary/bin
+/CressemDesignViewer/CressemExtractLibrary/obj
+/CressemDesignViewer/CressemFramework/.vs
+/CressemDesignViewer/CressemFramework/bin/x64
+/CressemDesignViewer/CressemFramework/Lib
+/CressemDesignViewer/CressemFramework/obj/x64
+/CressemDesignViewer/CressemLogger/.vs
+/CressemDesignViewer/CressemLogger/bin/x64
+/CressemDesignViewer/CressemLogger/obj/x64
