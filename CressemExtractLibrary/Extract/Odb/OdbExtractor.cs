@@ -10,15 +10,14 @@ namespace CressemExtractLibrary.Extract.Odb
 			ExtractData = new OdbData(loadPath, savePath);
 		}
 
-		public override bool Extract(ExtractData data)
+		public override bool Extract()
 		{
-			ExtractData = data as OdbData;
-			if (ExtractData == null)
+			if (ExtractData is OdbData)
 			{
-				return false;
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 	}
 }

@@ -1,8 +1,8 @@
 ﻿using CressemLogger;
 using CressemLogger.ViewModel;
-using CressemOdbViewer.ViewModel.Control;
+using CressemDesignViewer.ViewModel.Control;
 
-namespace CressemOdbViewer.ViewModel
+namespace CressemDesignViewer.ViewModel
 {
 	public class MainViewModel
 	{

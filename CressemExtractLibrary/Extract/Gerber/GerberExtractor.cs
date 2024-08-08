@@ -14,10 +14,10 @@ namespace CressemExtractLibrary.Extract.Gerber
 		{
 			if (ExtractData is GerberData)
 			{
-				return false;
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 	}
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemOdbViewer", "CressemOdbViewer\CressemOdbViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemDesignViewer", "CressemOdbViewer\CressemDesignViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1} = {2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}
 		{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD} = {FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}
@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemFramework", "..\Cres
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemLogger", "..\CressemLogger\CressemLogger.csproj", "{FCC20B03-6BB0-45C2-BC8B-F21A6F2A90AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemExtractLibrary", "CressemOdbLibrary\CressemExtractLibrary.csproj", "{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemExtractLibrary", "..\CressemExtractLibrary\CressemExtractLibrary.csproj", "{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
