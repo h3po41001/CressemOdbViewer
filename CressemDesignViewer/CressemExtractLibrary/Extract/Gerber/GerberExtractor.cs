@@ -1,5 +1,4 @@
-﻿using CressemExtractLibrary.Data;
-using CressemExtractLibrary.Data.Gerber;
+﻿using CressemExtractLibrary.Data.Gerber;
 
 namespace CressemExtractLibrary.Extract.Gerber
 {
@@ -10,6 +9,11 @@ namespace CressemExtractLibrary.Extract.Gerber
 			ExtractData = new GerberData(loadPath, savePath);
 		}
 
+		public override bool OpenAndSave()
+		{
+			return false;
+		}
+
 		public override bool Extract()
 		{
 			if (ExtractData is GerberData)
@@ -17,6 +21,11 @@ namespace CressemExtractLibrary.Extract.Gerber
 				return true;
 			}
 
+			return false;
+		}
+
+		public override bool DoWork()
+		{
 			return false;
 		}
 	}

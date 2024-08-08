@@ -1,4 +1,5 @@
 ﻿using CressemExtractLibrary.Data;
+using CressemUtil.Zip;
 
 namespace CressemExtractLibrary.Extract
 {
@@ -15,5 +16,9 @@ namespace CressemExtractLibrary.Extract
 		}
 
 		public abstract bool Extract();
+
+		public abstract bool OpenAndSave();
+
+		public abstract bool DoWork();
 	}
 }

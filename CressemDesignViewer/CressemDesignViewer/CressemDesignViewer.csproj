@@ -68,6 +68,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Enum.cs" />
+    <Compile Include="Model\Processor.cs" />
     <Compile Include="ViewModel\Control\AlarmViewModel.cs" />
     <Compile Include="ViewModel\Control\LogoViewModel.cs" />
     <Compile Include="ViewModel\Control\PropertyViewModel.cs" />

@@ -1,6 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data
 {
-	public enum DataFormat
+	public enum DesignFormat
 	{
 		Unknown,
 		Odb,

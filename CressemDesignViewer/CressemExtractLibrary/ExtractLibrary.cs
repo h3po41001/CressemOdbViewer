@@ -1,6 +1,4 @@
 ﻿using CressemExtractLibrary.Data;
-using CressemExtractLibrary.Data.Gerber;
-using CressemExtractLibrary.Data.Odb;
 using CressemExtractLibrary.Extract;
 using CressemExtractLibrary.Extract.Gerber;
 using CressemExtractLibrary.Extract.Odb;
@@ -27,17 +25,17 @@ namespace CressemExtractLibrary
 			}
 		}
 
-		public bool SetData(DataFormat dataFormat,
+		public bool SetData(DesignFormat dataFormat,
 			string loadPath, string savePath)
 		{
 			switch (dataFormat)
 			{
-				case DataFormat.Gerber:
+				case DesignFormat.Gerber:
 					{
 						_extractor = new GerberExtractor(loadPath, savePath);
 						break;
 					}
-				case DataFormat.Odb:
+				case DesignFormat.Odb:
 					{
 						_extractor = new OdbExtractor(loadPath, savePath);
 						break;
