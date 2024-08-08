@@ -41,6 +41,7 @@
     <Compile Include="Data\ExtractData.cs" />
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />
+    <Compile Include="Data\Odb\MatrixInfo.cs" />
     <Compile Include="Data\Odb\OdbData.cs" />
     <Compile Include="Extract\Extractor.cs" />
     <Compile Include="Extract\Gerber\GerberExtractor.cs" />
