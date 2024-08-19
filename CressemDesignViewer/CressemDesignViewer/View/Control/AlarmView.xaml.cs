@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CressemDesignViewer.View.Control
+namespace CressemCADViewer.View.Control
 {
 	/// <summary>
 	/// AlarmView.xaml에 대한 상호 작용 논리

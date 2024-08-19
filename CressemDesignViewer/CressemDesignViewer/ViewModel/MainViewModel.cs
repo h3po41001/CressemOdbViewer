@@ -1,14 +1,12 @@
-﻿using CressemLogger;
-using CressemLogger.ViewModel;
-using CressemDesignViewer.ViewModel.Control;
-using CressemDesignViewer.Model;
-using System.ComponentModel;
-using System;
-using CressemExtractLibrary;
+﻿using System;
 using System.Drawing;
+using CressemCADViewer.Model;
+using CressemCADViewer.ViewModel.Control;
 using CressemExtractLibrary.Data;
+using CressemLogger;
+using CressemLogger.ViewModel;
 
-namespace CressemDesignViewer.ViewModel
+namespace CressemCADViewer.ViewModel
 {
 	public class MainViewModel
 	{

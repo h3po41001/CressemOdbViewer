@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CressemExtractLibrary.Data.Odb
+namespace CressemExtractLibrary.Data.Odb.Step
 {
-	internal class MatrixInfo
+	internal class OdbStepProfile
 	{
-
+		// Polygon Shape
 	}
 }

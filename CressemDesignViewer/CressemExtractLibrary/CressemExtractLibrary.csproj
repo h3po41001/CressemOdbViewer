@@ -28,6 +28,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
@@ -38,11 +39,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Convert\Converter.cs" />
     <Compile Include="Data\ExtractData.cs" />
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />
-    <Compile Include="Data\Odb\MatrixInfo.cs" />
+    <Compile Include="Data\Odb\Attribute\OdbAttribute.cs" />
+    <Compile Include="Data\Odb\Feature\OdbFeatures.cs" />
+    <Compile Include="Data\Odb\Layer\OdbLayer.cs" />
+    <Compile Include="Data\Odb\Matrix\OdbMatrixLayer.cs" />
+    <Compile Include="Data\Odb\Matrix\OdbMatrixInfo.cs" />
     <Compile Include="Data\Odb\OdbData.cs" />
+    <Compile Include="Data\Odb\OdbEnum.cs" />
+    <Compile Include="Data\Odb\Matrix\OdbMatrixStep.cs" />
+    <Compile Include="Data\Odb\Attribute\OdbAttruteList.cs" />
+    <Compile Include="Data\Odb\Step\OdbStep.cs" />
+    <Compile Include="Data\Odb\Step\OdbStepHeader.cs" />
+    <Compile Include="Data\Odb\Step\OdbStepProfile.cs" />
+    <Compile Include="Data\Odb\Step\OdbStepRepeat.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolBase.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolChamferedRectangle.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolOval.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolRectangle.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolRound.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolRoundedRectangle.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolSquare.cs" />
     <Compile Include="Extract\Extractor.cs" />
     <Compile Include="Extract\Gerber\GerberExtractor.cs" />
     <Compile Include="Extract\Odb\OdbExtractor.cs" />

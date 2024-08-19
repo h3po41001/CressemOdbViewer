@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemDesignViewer", "CressemDesignViewer\CressemDesignViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemCADViewer", "CressemDesignViewer\CressemCADViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
 	ProjectSection(ProjectDependencies) = postProject
 		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C} = {082EC76A-FAC5-480C-BB6F-27F636EEAF7C}
 	EndProjectSection

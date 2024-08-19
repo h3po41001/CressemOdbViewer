@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Input;
 
-namespace CressemDesignViewer.ViewModel.Control
+namespace CressemCADViewer.ViewModel.Control
 {
 	public class LogoViewModel
 	{

@@ -1,10 +1,10 @@
 ﻿using CressemLogger;
 using CressemLogger.ViewModel;
-using CressemDesignViewer.ViewModel;
+using CressemCADViewer.ViewModel;
 using System.IO;
 using System.Windows;
 
-namespace CressemDesignViewer
+namespace CressemCADViewer
 {
 	/// <summary>
 	/// App.xaml에 대한 상호 작용 논리

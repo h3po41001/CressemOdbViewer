@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B26C5DBB-718B-4047-B562-37E296EC8C52}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CressemDesignViewer</RootNamespace>
-    <AssemblyName>CressemDesignViewer</AssemblyName>
+    <RootNamespace>CressemCADViewer</RootNamespace>
+    <AssemblyName>CressemCADViewer</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,7 +24,7 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CressemDesignViewer.App</StartupObject>
+    <StartupObject>CressemCADViewer.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Xpf.Core.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />

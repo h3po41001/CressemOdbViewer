@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
 
-namespace CressemDesignViewer.Model
+namespace CressemCADViewer.Model
 {
 	public class Processor
 	{

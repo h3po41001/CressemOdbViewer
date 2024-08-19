@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CressemDesignViewer.View.Control
+namespace CressemCADViewer.View.Control
 {
 	/// <summary>
 	/// LogView.xaml에 대한 상호 작용 논리

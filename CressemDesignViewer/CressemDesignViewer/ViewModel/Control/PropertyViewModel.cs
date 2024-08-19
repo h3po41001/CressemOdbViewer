@@ -1,4 +1,4 @@
-﻿namespace CressemDesignViewer.ViewModel.Control
+﻿namespace CressemCADViewer.ViewModel.Control
 {
 	internal class PropertyViewModel
 	{

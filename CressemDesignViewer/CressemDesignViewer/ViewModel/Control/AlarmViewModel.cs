@@ -1,8 +1,8 @@
 ﻿using CressemFramework.Observer;
-using CressemDesignViewer.Model;
+using CressemCADViewer.Model;
 using System.Drawing;
 
-namespace CressemDesignViewer.ViewModel.Control
+namespace CressemCADViewer.ViewModel.Control
 {
 	public class AlarmViewModel : ObservableObject
 	{

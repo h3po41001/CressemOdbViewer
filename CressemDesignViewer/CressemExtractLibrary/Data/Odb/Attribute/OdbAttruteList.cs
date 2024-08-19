@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CressemCADViewer.Model
+namespace CressemExtractLibrary.Data.Odb.Attribute
 {
-	public enum ProcessState
+	internal class OdbAttruteList
 	{
-		Idle,
-		Running,
-		Stop,
-		Error,
 	}
 }
