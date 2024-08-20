@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemCADViewer", "CressemDesignViewer\CressemCADViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
-	ProjectSection(ProjectDependencies) = postProject
-		{082EC76A-FAC5-480C-BB6F-27F636EEAF7C} = {082EC76A-FAC5-480C-BB6F-27F636EEAF7C}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemFramework", "CressemFramework\CressemFramework.csproj", "{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemExtractLibrary", "CressemExtractLibrary\CressemExtractLibrary.csproj", "{082EC76A-FAC5-480C-BB6F-27F636EEAF7C}"
@@ -19,16 +14,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemLogger", "CressemLog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemUtil", "CressemUtil\CressemUtil.csproj", "{A3E018A8-4232-46E7-80ED-EB6F6AC65AC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemCADViewer", "CressemCADViewer\CressemCADViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A3E018A8-4232-46E7-80ED-EB6F6AC65AC7} = {A3E018A8-4232-46E7-80ED-EB6F6AC65AC7}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Debug|x64.ActiveCfg = Debug|x64
-		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Debug|x64.Build.0 = Debug|x64
-		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.ActiveCfg = Release|x64
-		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.Build.0 = Release|x64
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Debug|x64.ActiveCfg = Debug|x64
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Debug|x64.Build.0 = Debug|x64
 		{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}.Release|x64.ActiveCfg = Release|x64
@@ -44,6 +40,10 @@ Global
 		{A3E018A8-4232-46E7-80ED-EB6F6AC65AC7}.Debug|x64.ActiveCfg = Debug|x64
 		{A3E018A8-4232-46E7-80ED-EB6F6AC65AC7}.Debug|x64.Build.0 = Debug|x64
 		{A3E018A8-4232-46E7-80ED-EB6F6AC65AC7}.Release|x64.ActiveCfg = Release|x64
+		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Debug|x64.ActiveCfg = Debug|x64
+		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Debug|x64.Build.0 = Debug|x64
+		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.ActiveCfg = Release|x64
+		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
