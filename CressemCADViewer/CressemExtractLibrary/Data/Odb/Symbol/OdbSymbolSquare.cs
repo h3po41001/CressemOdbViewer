@@ -1,16 +1,17 @@
 ﻿using System.Drawing;
+using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolSquare : OdbSymbolBase
+	internal class OdbSymbolSquare : OdbSymbolBase, IOdbSymbolSqure
 	{
-		private OdbSymbolSquare() { }
+		protected OdbSymbolSquare() { }
 
-		public OdbSymbolSquare(PointF pos, double side) : base(pos)
+		public OdbSymbolSquare(PointF pos, double outerDiameter) : base(pos)
 		{
-			Side = side;
+			OuterDiameter = outerDiameter;
 		}
 
-		public double Side { get; private set; }
+		public double OuterDiameter { get; private set; }
 	}
 }

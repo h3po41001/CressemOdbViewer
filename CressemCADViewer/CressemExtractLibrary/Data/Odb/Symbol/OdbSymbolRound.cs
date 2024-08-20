@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
+using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRound : OdbSymbolBase
+	internal class OdbSymbolRound : OdbSymbolBase, IOdbSymbolRound
 	{
-		private OdbSymbolRound()
+		protected OdbSymbolRound()
 		{
 		}
 

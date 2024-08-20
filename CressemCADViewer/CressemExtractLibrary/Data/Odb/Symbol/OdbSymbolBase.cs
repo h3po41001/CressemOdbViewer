@@ -1,16 +1,17 @@
 ﻿using System.Drawing;
+using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolBase
+	internal class OdbSymbolBase : IOdbSymbolBase
 	{
 		protected OdbSymbolBase() { }
 
-		public OdbSymbolBase(PointF pos) 
+		protected OdbSymbolBase(PointF pos)
 		{
-			Pos = pos;
+			Position = pos;
 		}
 
-		public PointF Pos { get; private set; }
+		public PointF Position { get; set; } = new PointF();
 	}
 }

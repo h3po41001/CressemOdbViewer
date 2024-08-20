@@ -3,11 +3,11 @@ using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolOval : OdbSymbolRectangle, IOdbSymbolOval
+	internal class OdbSymbolDiamond : OdbSymbolRectangle, IOdbSymbolDiamond
 	{
-		protected OdbSymbolOval() { }
+		protected OdbSymbolDiamond() { }
 
-		public OdbSymbolOval(PointF pos,
+		public OdbSymbolDiamond(PointF pos, 
 			double width, double height) : base(pos, width, height)
 		{
 		}

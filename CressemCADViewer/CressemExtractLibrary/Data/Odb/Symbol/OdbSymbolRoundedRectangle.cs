@@ -1,32 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRoundedRectangle : OdbSymbolRectangle
+	internal class OdbSymbolRoundedRectangle : OdbSymbolEditedCorner, IOdbSymbolRoundedRectangle
 	{
 		private OdbSymbolRoundedRectangle() { }
 
-		public OdbSymbolRoundedRectangle(PointF pos, SizeF size, 
-			double rad, string corners) : base(pos, size)
+		public OdbSymbolRoundedRectangle(PointF pos,
+			double width, double height,
+			double corenrRadius, string corners) : base(pos, corenrRadius, corners, 4)
 		{
-			Radius = rad;
-			
-			var flags = corners.ToCharArray()?.Select(x => x.ToString());
-
-			foreach (var corner in flags)
-			{
-				int index = int.Parse(corner);
-				IsRounded[index] = true;
-			}
+			Width = width;
+			Height = height;
 		}
 
-		public double Radius { get; private set; }
+		public double Width { get; private set; }
 
-		public bool[] IsRounded { get; private set; } = new bool[4];
+		public double Height { get; private set; }
+
+		public bool[] IsRounded { get => IsEditedCorner; }
 	}
 }
