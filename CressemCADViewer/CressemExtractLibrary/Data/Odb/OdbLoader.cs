@@ -10,12 +10,33 @@ namespace CressemExtractLibrary.Data.Odb
 	internal abstract class OdbLoader
 	{
 		private readonly string ODB_SUM_FILE_EXTENSION = ".sum";
+		private readonly string SYMBOLS_FOLDER_NAME = "symbols";
+		private readonly string STEP_LAYERS_FEATURES_NAME = "features";
+		private readonly string STEP_FILE_NAME = "steps";
+		private readonly string STEP_HEADER_FILE_NAME = "stephdr";
+		private readonly string STEP_PROFILE_FILE_NAME = "profile";
+		private readonly string STEP_LAYERS_FOLDER_NAME = "layers";
+		private readonly string MATRIX_FILE_NAME = "matrix";
 
 		protected OdbLoader()
 		{
 		}
 
 		protected string SumFileExt { get => ODB_SUM_FILE_EXTENSION; }
+
+		protected string SymbolsFolderName { get => SYMBOLS_FOLDER_NAME; }
+
+		protected string StepLayersFeaturesName { get => STEP_LAYERS_FEATURES_NAME; }
+
+		protected string StepFileName { get => STEP_FILE_NAME; }
+
+		protected string StepHeaderFileName { get => STEP_HEADER_FILE_NAME; }
+
+		protected string StepProfileFileName { get => STEP_PROFILE_FILE_NAME; }
+
+		protected string StepLayersFolderName { get => STEP_LAYERS_FOLDER_NAME; }
+
+		protected string MatrixFileName { get => MATRIX_FILE_NAME; }
 
 		protected bool LoadSummary(string path, out OdbSummary summary)
 		{

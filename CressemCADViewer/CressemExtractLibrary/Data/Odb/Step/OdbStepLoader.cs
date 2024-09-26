@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Documents;
 using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Matrix;
@@ -13,10 +11,6 @@ namespace CressemExtractLibrary.Data.Odb.Step
 	internal class OdbStepLoader : OdbLoader
 	{
 		private static OdbStepLoader _instance;
-
-		private readonly string STEP_FILE_NAME = "steps";
-		private readonly string STEP_HEADER_FILE_NAME = "stephdr";
-		private readonly string STEP_PROFILE_FILE_NAME = "profile";
 
 		private OdbStepLoader() { }
 
@@ -34,9 +28,9 @@ namespace CressemExtractLibrary.Data.Odb.Step
 
 		public OdbStep Load(string dirPath, OdbMatrixStep step)
 		{
-			string stepFolder = Path.Combine(dirPath, STEP_FILE_NAME, step.Name);
-			string stepHeaderPath = Path.Combine(stepFolder, STEP_HEADER_FILE_NAME);
-			string stepProfilePath = Path.Combine(stepFolder, STEP_PROFILE_FILE_NAME);
+			string stepFolder = Path.Combine(dirPath, StepFileName, step.Name);
+			string stepHeaderPath = Path.Combine(stepFolder, StepHeaderFileName);
+			string stepProfilePath = Path.Combine(stepFolder, StepProfileFileName);
 
 			if (LoadOdbStepHeader(stepHeaderPath,
 				out OdbStepHeader stepHeader) is false)
@@ -44,7 +38,8 @@ namespace CressemExtractLibrary.Data.Odb.Step
 				return null;
 			}
 
-			if (LoadOdbStepProfile(stepProfilePath, out OdbStepProfile stepProfile) is false)
+			if (LoadOdbStepProfile(stepProfilePath, 
+				out OdbStepProfile stepProfile) is false)
 			{
 				return null;
 			}

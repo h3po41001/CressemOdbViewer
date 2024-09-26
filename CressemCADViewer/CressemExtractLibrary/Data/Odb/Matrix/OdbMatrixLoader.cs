@@ -9,9 +9,6 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 	{
 		private static OdbMatrixLoader _instance;
 
-		private readonly string MATRIX_FILE_NAME = "matrix";
-		private readonly string MATRIX_SUM_FILE_NAME = ".matrix.sum";
-
 		private OdbMatrixLoader() { }
 
 		public static OdbMatrixLoader Instance
@@ -29,14 +26,17 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 
 		public OdbMatrixInfo Load(string dirPath)
 		{
-			string matrixsumFilePath = Path.Combine(dirPath, MATRIX_FILE_NAME, MATRIX_SUM_FILE_NAME);
+			string matrixsumFilePath = Path.Combine(dirPath, MatrixFileName, 
+				"." + MatrixFileName + SumFileExt);
+
 			if (LoadSummary(matrixsumFilePath,
 				out OdbSummary summary) is false)
 			{
 				return null;
 			}
 
-			string matrixFilePath = Path.Combine(dirPath, MATRIX_FILE_NAME, MATRIX_FILE_NAME);
+			string matrixFilePath = Path.Combine(dirPath, MatrixFileName, MatrixFileName);
+
 			if (LoadMatrixStepLayer(matrixFilePath,
 				out List<OdbMatrixStep> steps,
 				out List<OdbMatrixLayer> layers) is false)

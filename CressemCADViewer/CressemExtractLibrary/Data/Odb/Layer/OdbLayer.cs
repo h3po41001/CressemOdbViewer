@@ -5,7 +5,7 @@ using CressemExtractLibrary.Data.Odb.Matrix;
 namespace CressemExtractLibrary.Data.Odb.Layer
 {
 	internal class OdbLayer
-	{
+	{		
 		public OdbLayer(OdbMatrixLayer layer, OdbAttruteList attrList)
 		{
 			MatrixLayer = layer;

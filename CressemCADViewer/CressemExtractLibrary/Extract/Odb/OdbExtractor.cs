@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using CressemExtractLibrary.Data.Odb;
+using CressemExtractLibrary.Data.Odb.Layer;
 using CressemExtractLibrary.Data.Odb.Matrix;
 using CressemExtractLibrary.Data.Odb.Step;
 using CressemUtil.Zip;
@@ -118,6 +120,14 @@ namespace CressemExtractLibrary.Extract.Odb
 					}
 
 					odbData.OdbSteps.Add(step);
+				}
+
+				foreach (var step in odbData.OdbSteps)
+				{
+					OdbMatrixLayer matrixLayer = odbData.OdbMatrixInfo.Layers
+						.FirstOrDefault(x => x.Name == step.MatrixStep.Name);
+
+					OdbLayer layer = OdbLayerLoader.Instance.Load(dirPath, matrixLayer);
 				}
 
 				return true;

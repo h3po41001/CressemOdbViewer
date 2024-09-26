@@ -60,6 +60,7 @@
     <Compile Include="Data\Odb\Feature\OdbFeaturePolygon.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatures.cs" />
     <Compile Include="Data\Odb\Layer\OdbLayer.cs" />
+    <Compile Include="Data\Odb\Layer\OdbLayerLoader.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixLayer.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixInfo.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixLoader.cs" />

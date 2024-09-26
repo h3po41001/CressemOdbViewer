@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Layer;
 using CressemExtractLibrary.Data.Odb.Matrix;
 
