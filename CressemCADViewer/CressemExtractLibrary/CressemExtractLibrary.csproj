@@ -22,15 +22,28 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Lib\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,16 +57,21 @@
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttribute.cs" />
+    <Compile Include="Data\Odb\Feature\OdbFeaturePolygon.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatures.cs" />
     <Compile Include="Data\Odb\Layer\OdbLayer.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixLayer.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixInfo.cs" />
+    <Compile Include="Data\Odb\Matrix\OdbMatrixLoader.cs" />
     <Compile Include="Data\Odb\OdbData.cs" />
     <Compile Include="Data\Odb\OdbEnum.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixStep.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttruteList.cs" />
+    <Compile Include="Data\Odb\OdbLoader.cs" />
+    <Compile Include="Data\Odb\OdbSummary.cs" />
     <Compile Include="Data\Odb\Step\OdbStep.cs" />
     <Compile Include="Data\Odb\Step\OdbStepHeader.cs" />
+    <Compile Include="Data\Odb\Step\OdbStepLoader.cs" />
     <Compile Include="Data\Odb\Step\OdbStepProfile.cs" />
     <Compile Include="Data\Odb\Step\OdbStepRepeat.cs" />
     <Compile Include="Data\Odb\Symbol\Interface\IOdbSymbolBase.cs" />
@@ -78,10 +96,13 @@
     <Compile Include="Data\Odb\Symbol\OdbSymbolDiamond.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolOctagon.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolOval.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolOvalDonut.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolRectangle.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolRectangleDonut.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolRound.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolRoundDonut.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolRoundedRectangle.cs" />
+    <Compile Include="Data\Odb\Symbol\OdbSymbolRoundedRectangleDonut.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolRoundedSqureDonut.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolSquare.cs" />
     <Compile Include="Data\Odb\Symbol\OdbSymbolSquareRoundDonut.cs" />
@@ -97,6 +118,10 @@
       <Project>{a3e018a8-4232-46e7-80ed-eb6f6ac65ac7}</Project>
       <Name>CressemUtil</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

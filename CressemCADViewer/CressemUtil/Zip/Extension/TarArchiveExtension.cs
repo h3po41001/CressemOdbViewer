@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 
@@ -16,13 +18,14 @@ namespace CressemUtil.Zip.Extension
 			{
 				using (Stream gzipStream = new GZipInputStream(inStream))
 				{
-					_archive = TarArchive.CreateInputTarArchive(gzipStream);
+					_archive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.ASCII);
 					if (_archive is null)
 					{
 						return ErrorType.NotSupportArchive;
 					}
 
-					_archive.ExtractContents(savePath);
+					_archive.SetKeepOldFiles(false);
+					_archive.ExtractContents(savePath, true);
 				}
 			}
 

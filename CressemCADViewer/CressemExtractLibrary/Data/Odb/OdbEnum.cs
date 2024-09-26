@@ -6,19 +6,6 @@ using System.Threading.Tasks;
 
 namespace CressemExtractLibrary.Data.Odb
 {
-	public enum LayerType
-	{
-		None,
-		Component,
-		SilkScreen,
-	}
-
-	public enum YesOrNo
-	{
-		Yes,
-		No
-	}
-
 	//public enum OnLineMode
 	//{
 	//	NONE,

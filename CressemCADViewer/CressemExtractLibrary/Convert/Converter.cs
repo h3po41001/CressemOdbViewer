@@ -29,9 +29,18 @@ namespace CressemExtractLibrary.Convert
 			}
 		}
 
-		public YesOrNo ConvertToYesOrNo(string value)
+		// 1 mil = 1/1000 inch
+		// 1 inch = 2.54cm = 25.4mm
+		// 1 mil = 1/1000 * 25.4 mm
+
+		public double ConvertInchToMM(double inch)
 		{
-			return value.ToLower() == "yes" ? YesOrNo.Yes : YesOrNo.No;
+			return inch * 25.4;
+		}
+
+		public double ConvertMMToInch(double mm)
+		{
+			return mm / 25.4;
 		}
 	}
 }

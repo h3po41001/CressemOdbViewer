@@ -5,7 +5,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 {
 	internal class OdbSymbolRoundedRectangle : OdbSymbolEditedCorner, IOdbSymbolRoundedRectangle
 	{
-		private OdbSymbolRoundedRectangle() { }
+		protected OdbSymbolRoundedRectangle() { }
 
 		public OdbSymbolRoundedRectangle(PointF pos,
 			double width, double height,

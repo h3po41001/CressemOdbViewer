@@ -4,10 +4,21 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 {
 	internal class OdbMatrixInfo
 	{
-		public OdbMatrixInfo() { }
+		private OdbMatrixInfo() 
+		{
+		}
 
-		public List<OdbMatrixStep> Steps { get; set; } = new List<OdbMatrixStep>();
+		public OdbMatrixInfo(OdbSummary summary, List<OdbMatrixStep> steps, List<OdbMatrixLayer> layers)
+		{
+			Summary = summary;
+			Steps = steps;
+			Layers = layers;
+		}
 
-		public List<OdbMatrixLayer> Layers { get; set; } = new List<OdbMatrixLayer>();
+		public OdbSummary Summary { get; private set; }
+
+		public List<OdbMatrixStep> Steps { get; private set; }
+
+		public List<OdbMatrixLayer> Layers { get; private set; }
 	}
 }

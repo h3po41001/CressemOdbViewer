@@ -2,6 +2,8 @@
 {
 	internal class OdbMatrixStep
 	{
+		private OdbMatrixStep() { }
+
 		public OdbMatrixStep(int col, string name)
 		{
 			Column = col;

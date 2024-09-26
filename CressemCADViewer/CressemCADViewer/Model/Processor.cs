@@ -18,8 +18,8 @@ namespace CressemCADViewer.Model
 
 		public void Run(DesignFormat format, string loadPath, string savePath)
 		{
-			if (_task != null && _task.Status is TaskStatus.Running)
-				return;
+			//if (_task != null && _task.Status is TaskStatus.Running)
+			//	return;
 
 			_task = Task.Run(() =>
 			{

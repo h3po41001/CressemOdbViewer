@@ -6,10 +6,10 @@ namespace CressemExtractLibrary.Data.Odb.Step
 	internal class OdbStepRepeat
 	{
 		public OdbStepRepeat(string name,
-			PointF x, PointF y,
-			PointF dx, PointF dy,
-			Point nx, Point ny, double angle,
-			string flip, string mirror)
+			double x, double y,
+			double dx, double dy,
+			int nx, int ny, double angle,
+			bool isFlip, bool isMirrored)
 		{
 			Name = name;
 			X = x;
@@ -19,30 +19,28 @@ namespace CressemExtractLibrary.Data.Odb.Step
 			NX = nx;
 			NY = ny;
 			Angle = angle;
-			Flip = Converter.Instance.ConvertToYesOrNo(flip);
-			Mirror = Converter.Instance.ConvertToYesOrNo(mirror);
+			IsFliped = isFlip;
+			IsMirrored = isMirrored;
 		}
 
 		public string Name { get; private set; }
 
-		public PointF X { get; private set; }
+		public double X { get; private set; }
 
-		public PointF Y { get; private set; }
+		public double Y { get; private set; }
 
-		public PointF DX { get; private set; }
+		public double DX { get; private set; }
 
-		public PointF DY { get; private set; }
+		public double DY { get; private set; }
 
-		public Point NX { get; private set; }
+		public int NX { get; private set; }
 
-		public Point NY { get; private set; }
+		public int NY { get; private set; }
 
 		public double Angle { get; private set; }
 
-		public YesOrNo Flip { get; private set; }
+		public bool IsFliped { get; private set; }
 
-		public YesOrNo Mirror { get; private set; }
-
-
+		public bool IsMirrored { get; private set; }
 	}
 }

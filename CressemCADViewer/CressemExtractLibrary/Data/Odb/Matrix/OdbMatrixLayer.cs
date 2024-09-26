@@ -4,10 +4,11 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 {
 	internal class OdbMatrixLayer
 	{
-		public OdbMatrixLayer(int row, string context, LayerType type,
+		private OdbMatrixLayer() { }
+
+		public OdbMatrixLayer(int row, string context, string type,
 			string name, string oldName, bool polarity,
-			string startName, string endName,
-			string addName, Color color)
+			string startName, string endName, string addName)
 		{
 			Row = row;
 			Context = context;
@@ -18,14 +19,13 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 			StartName = startName;
 			EndName = endName;
 			AddName = addName;
-			Color = color;
 		}
 
 		public int Row { get; private set; } = 0;
 
 		public string Context { get; private set; }
 
-		public LayerType Type { get; private set; }
+		public string Type { get; private set; }
 
 		public string Name { get; private set; }
 
@@ -38,7 +38,5 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 		public string EndName { get; private set; }
 
 		public string AddName { get; private set; }
-
-		public Color Color { get; private set; }
 	}
 }
