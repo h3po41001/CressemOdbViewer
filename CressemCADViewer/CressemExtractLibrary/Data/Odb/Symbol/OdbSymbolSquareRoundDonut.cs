@@ -7,12 +7,17 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolSquareRoundDonut() { }
 
-		public OdbSymbolSquareRoundDonut(PointF pos, 
-			double outerDiameter, double innerDiameter) : base(pos, outerDiameter)
+		public OdbSymbolSquareRoundDonut(double outerDiameter, 
+			double innerDiameter) : base(outerDiameter)
 		{
 			InnerDiameter = innerDiameter;
 		}
 
 		public double InnerDiameter { get; private set; }
+
+		public static new OdbSymbolSquareRoundDonut Create(string param)
+		{
+			return null;
+		}
 	}
 }

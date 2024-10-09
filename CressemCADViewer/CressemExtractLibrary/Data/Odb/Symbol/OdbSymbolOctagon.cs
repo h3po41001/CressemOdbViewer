@@ -7,12 +7,17 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolOctagon() { }
 
-		public OdbSymbolOctagon(PointF pos, 
-			double width, double height, double corner) : base(pos, width, height) 
+		public OdbSymbolOctagon(double width, double height, 
+			double corner) : base(width, height) 
 		{
 			CornerSize = corner;
 		}
 
 		public double CornerSize { get; private set; }
+
+		public static new OdbSymbolOctagon Create(string param)
+		{
+			return null;
+		}
 	}
 }

@@ -7,8 +7,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolEditedCorner() { }
 
-		public OdbSymbolEditedCorner(PointF pos, double cornerRadius, 
-			string corners, int cornerNum) : base(pos)
+		public OdbSymbolEditedCorner(double cornerRadius, 
+			string corners, int cornerNum) : base()
 		{
 			CornerRadius = cornerRadius;
 			IsEditedCorner = ConvertCornerFlag(corners, cornerNum);
@@ -25,11 +25,20 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 			var flags = corners.ToCharArray()?.Select(x => x.ToString());
 			foreach (var corner in flags)
 			{
-				int index = int.Parse(corner);
+				if (int.TryParse(corner, out int index) is false)
+				{
+					continue;
+				}
+
 				isEdited[index] = true;
 			}
 
 			return isEdited;
+		}
+
+		public static OdbSymbolEditedCorner Create(string param)
+		{
+			return null;
 		}
 	}
 }

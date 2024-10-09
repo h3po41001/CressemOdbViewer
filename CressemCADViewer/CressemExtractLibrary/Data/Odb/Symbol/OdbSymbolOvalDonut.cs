@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
@@ -12,12 +7,17 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolOvalDonut() { }
 
-		public OdbSymbolOvalDonut(PointF pos,
-			double width, double height, double lineWidth) : base(pos, width, height)
+		public OdbSymbolOvalDonut(double width, double height, 
+			double lineWidth) : base(width, height)
 		{
 			LineWidth = lineWidth;
 		}
 
 		public double LineWidth { get; private set; }
+
+		public static new OdbSymbolOvalDonut Create(string param)
+		{
+			return null;
+		}
 	}
 }

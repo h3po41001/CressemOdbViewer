@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using CressemExtractLibrary.Data.Odb;
+using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Layer;
+using CressemExtractLibrary.Data.Odb.Loader;
 using CressemExtractLibrary.Data.Odb.Matrix;
 using CressemExtractLibrary.Data.Odb.Step;
+using CressemExtractLibrary.Data.Odb.Symbol;
 using CressemUtil.Zip;
 
 namespace CressemExtractLibrary.Extract.Odb
@@ -31,7 +32,7 @@ namespace CressemExtractLibrary.Extract.Odb
 						{
 							return true;
 						}
-					}					
+					}
 				}
 			}
 
@@ -80,7 +81,7 @@ namespace CressemExtractLibrary.Extract.Odb
 				}
 				else
 				{
-					MessageBox.Show($"[{error}] - {ExtractData.LoadPath}", 
+					MessageBox.Show($"[{error}] - {ExtractData.LoadPath}",
 						"압축해제 에러", MessageBoxButton.OK, MessageBoxImage.Error);
 					return false;
 				}
@@ -89,7 +90,7 @@ namespace CressemExtractLibrary.Extract.Odb
 			{
 				MessageBox.Show($"[{error}] - {ExtractData.LoadPath}",
 					"압축해제 에러", MessageBoxButton.OK, MessageBoxImage.Error);
-				return false; 
+				return false;
 			}
 		}
 
@@ -102,34 +103,44 @@ namespace CressemExtractLibrary.Extract.Odb
 
 			if (ExtractData is OdbData odbData)
 			{
-				var name = (new DirectoryInfo(ExtractData.SavePath)).Name;
-				var dirPath = Path.Combine(ExtractData.SavePath, name);
+				var name = (new DirectoryInfo(odbData.SavePath)).Name;
+				var dirPath = Path.Combine(odbData.SavePath, name);
 
-				odbData.OdbMatrixInfo = OdbMatrixLoader.Instance.Load(dirPath);
-				if (odbData.OdbMatrixInfo is null)
+				//1. Matrix
+				if (OdbMatrixLoader.Instance.Load(dirPath, 
+					out OdbMatrixInfo matrixInfo) is false)
 				{
 					return false;
 				}
 
-				foreach (var stepInfo in odbData.OdbMatrixInfo.Steps)
-				{
-					OdbStep step = OdbStepLoader.Instance.Load(dirPath, stepInfo);
-					if (step is null)
-					{
-						return false;
-					}
+				odbData.OdbMatrixInfo = matrixInfo;
 
-					odbData.OdbSteps.Add(step);
+				//2. Font
+				if (OdbFontLoader.Instance.Load(dirPath,
+					out List<OdbFont> fonts) is false)
+				{
+					return false;
 				}
 
-				foreach (var step in odbData.OdbSteps)
-				{
-					OdbMatrixLayer matrixLayer = odbData.OdbMatrixInfo.Layers
-						.FirstOrDefault(x => x.Name == step.MatrixStep.Name);
+				odbData.OdbFonts = new List<OdbFont>(fonts);
 
-					OdbLayer layer = OdbLayerLoader.Instance.Load(dirPath, matrixLayer);
+				//3. User Symbols				
+				if (OdbSymbolLoader.Instance.LoadUserSymbols(dirPath, 
+					out List<OdbSymbolUser> userSymbols) is false)
+				{
+					return false;
 				}
 
+				odbData.OdbUserSymbols = new List<OdbSymbolUser>(userSymbols);
+
+				//4. Steps
+				if (OdbStepLoader.Instance.Load(dirPath, odbData,
+					out List<OdbStep> odbSteps) is false)
+				{
+					return false;
+				}
+
+				odbData.OdbSteps = new List<OdbStep>(odbSteps);
 				return true;
 			}
 			else

@@ -9,12 +9,17 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		{
 		}
 
-		public OdbSymbolRectangleDonut(PointF pos, double width, double height, double lineWidth) : 
-			base(pos, width, height)
+		public OdbSymbolRectangleDonut(double width, double height, 
+			double lineWidth) : base(width, height)
 		{
 			LineWidth = lineWidth;
 		}
 
 		public double LineWidth { get; private set; }
+
+		public static new OdbSymbolRectangleDonut Create(string param)
+		{
+			return null;
+		}
 	}
 }

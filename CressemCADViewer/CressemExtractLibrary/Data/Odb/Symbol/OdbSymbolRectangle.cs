@@ -7,7 +7,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolRectangle() { }
 
-		public OdbSymbolRectangle(PointF pos, double width, double height) : base(pos)
+		public OdbSymbolRectangle(double width, double height) : base()
 		{
 			Width = width;
 			Height = height;
@@ -16,5 +16,10 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		public double Width { get; private set; }
 
 		public double Height { get; private set; }
+
+		public static OdbSymbolRectangle Create(string param)
+		{
+			return null;
+		}
 	}
 }

@@ -7,9 +7,14 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolDiamond() { }
 
-		public OdbSymbolDiamond(PointF pos, 
-			double width, double height) : base(pos, width, height)
+		public OdbSymbolDiamond(double width, double height) : 
+			base(width, height)
 		{
+		}
+
+		public static new OdbSymbolDiamond Create(string param)
+		{
+			return null;
 		}
 	}
 }

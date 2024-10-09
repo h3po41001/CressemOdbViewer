@@ -7,9 +7,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolChamferedRectangle() { }
 
-		public OdbSymbolChamferedRectangle(PointF pos,
-			double width, double height,
-			double cornerRadius, string corners) : base(pos, cornerRadius, corners, 4)
+		public OdbSymbolChamferedRectangle(double width, double height,
+			double cornerRadius, string corners) : base(cornerRadius, corners, 4)
 		{
 			Width = width;
 			Height = height;
@@ -21,5 +20,10 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		// RT = 0, LT = 1, LB = 2, RB = 3
 		public bool[] IsChamfered { get => IsEditedCorner; }
+
+		public static new OdbSymbolChamferedRectangle Create(string param)
+		{
+			return null;
+		}
 	}
 }

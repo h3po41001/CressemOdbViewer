@@ -2,5 +2,15 @@
 {
 	internal class OdbFeatures
 	{
+		protected OdbFeatures()
+		{
+		}
+
+		public OdbFeatures(bool isMM)
+		{
+			IsMM = isMM;
+		}
+
+		public bool IsMM { get; private set; }
 	}
 }

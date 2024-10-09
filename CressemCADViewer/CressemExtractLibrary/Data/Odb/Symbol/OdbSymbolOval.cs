@@ -7,9 +7,14 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolOval() { }
 
-		public OdbSymbolOval(PointF pos,
-			double width, double height) : base(pos, width, height)
+		public OdbSymbolOval(double width, double height) : 
+			base(width, height)
 		{
+		}
+
+		public static new OdbSymbolOval Create(string param)
+		{
+			return null;
 		}
 	}
 }

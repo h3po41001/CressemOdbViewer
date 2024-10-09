@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
+using CressemExtractLibrary.Data.Odb.Matrix;
 
-namespace CressemExtractLibrary.Data.Odb.Matrix
+namespace CressemExtractLibrary.Data.Odb.Loader
 {
 	internal class OdbMatrixLoader : OdbLoader
 	{
@@ -24,15 +24,17 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 			}
 		}
 
-		public OdbMatrixInfo Load(string dirPath)
+		public bool Load(string dirPath, out OdbMatrixInfo matrixInfo)
 		{
+			matrixInfo = null;
+
 			string matrixsumFilePath = Path.Combine(dirPath, MatrixFileName, 
 				"." + MatrixFileName + SumFileExt);
 
 			if (LoadSummary(matrixsumFilePath,
 				out OdbSummary summary) is false)
 			{
-				return null;
+				return false;
 			}
 
 			string matrixFilePath = Path.Combine(dirPath, MatrixFileName, MatrixFileName);
@@ -41,10 +43,11 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 				out List<OdbMatrixStep> steps,
 				out List<OdbMatrixLayer> layers) is false)
 			{
-				return null;
+				return false;
 			}
 
-			return new OdbMatrixInfo(summary, steps, layers);
+			matrixInfo = new OdbMatrixInfo(summary, steps, layers);
+			return true;
 		}
 
 		private bool LoadMatrixStepLayer(string path,
@@ -62,12 +65,12 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 			using (StreamReader reader = new StreamReader(path))
 			{
 				string line;
-				string[] arrSplited;
+				string[] splited;
 
 				steps = new List<OdbMatrixStep>();
 				layers = new List<OdbMatrixLayer>();
 
-				while (!reader.EndOfStream)
+				while (reader.EndOfStream is false)
 				{
 					line = reader.ReadLine().Trim();
 
@@ -80,17 +83,22 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 						{
 							line = reader.ReadLine().Trim();
 							if (line.Contains("}"))
+							{
 								break;
-
-							arrSplited = line.Split('=');
-
-							if (arrSplited[0].Equals("COL") is true)
-							{
-								col = System.Convert.ToInt32(arrSplited[1]);
 							}
-							else if (arrSplited[0].Equals("NAME") is true)
+
+							splited = line.Split('=');
+
+							if (splited[0].Equals("COL") is true)
 							{
-								name = arrSplited[1];
+								if (int.TryParse(splited[1], out col) is false)
+								{
+									continue;
+								}
+							}
+							else if (splited[0].Equals("NAME") is true)
+							{
+								name = splited[1];
 							}
 						}
 
@@ -112,46 +120,51 @@ namespace CressemExtractLibrary.Data.Odb.Matrix
 						{
 							line = reader.ReadLine().Trim();
 							if (line.Contains("}"))
+							{
 								break;
+							}
 
-							arrSplited = line.Split('=').Select(
+							splited = line.Split('=').Select(
 								data => data.ToUpper()).ToArray();
 
-							if (arrSplited[0].Equals("ROW"))
+							if (splited[0].Equals("ROW"))
 							{
-								row = System.Convert.ToInt32(arrSplited[1]);
+								if (int.TryParse(splited[1], out row) is false)
+								{
+									continue;
+								}
 							}
-							else if (arrSplited[0].Equals("CONTEXT"))
+							else if (splited[0].Equals("CONTEXT"))
 							{
-								context = arrSplited[1];
+								context = splited[1];
 							}
-							else if (arrSplited[0].Equals("TYPE"))
+							else if (splited[0].Equals("TYPE"))
 							{
-								type = arrSplited[1];
+								type = splited[1];
 							}
-							else if (arrSplited[0].Equals("NAME"))
+							else if (splited[0].Equals("NAME"))
 							{
-								name = arrSplited[1];
+								name = splited[1];
 							}
-							else if (arrSplited[0].Equals("OLD_NAME"))
+							else if (splited[0].Equals("OLD_NAME"))
 							{
-								oldName = arrSplited[1];
+								oldName = splited[1];
 							}
-							else if (arrSplited[0].Equals("POLARITY"))
+							else if (splited[0].Equals("POLARITY"))
 							{
-								polarity = arrSplited[1].ToUpper().Equals("POSITIVE");
+								polarity = splited[1].ToUpper().Equals("POSITIVE");
 							}
-							else if (arrSplited[0].Equals("START_NAME"))
+							else if (splited[0].Equals("START_NAME"))
 							{
-								startName = arrSplited[1];
+								startName = splited[1];
 							}
-							else if (arrSplited[0].Equals("END_NAME"))
+							else if (splited[0].Equals("END_NAME"))
 							{
-								endName = arrSplited[1];
+								endName = splited[1];
 							}
-							else if (arrSplited[0].Equals("ADD_NAME"))
+							else if (splited[0].Equals("ADD_NAME"))
 							{
-								addName = arrSplited[1];
+								addName = splited[1];
 							}
 						}
 

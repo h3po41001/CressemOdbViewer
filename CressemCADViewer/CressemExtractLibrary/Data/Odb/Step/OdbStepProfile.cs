@@ -12,12 +12,12 @@ namespace CressemExtractLibrary.Data.Odb.Step
 	{
 		private OdbStepProfile() { }
 
-		public OdbStepProfile(OdbFeaturePolygon polygon)
+		public OdbStepProfile(List<OdbFeatures> features)
 		{
-			Polygon = polygon;
+			Features = new List<OdbFeatures>(features);
 		}
 
-		public OdbFeaturePolygon Polygon { get; private set; }
+		public List<OdbFeatures> Features { get; private set; }
 
 		public OdbLayer Layer { get; private set; }
 	}

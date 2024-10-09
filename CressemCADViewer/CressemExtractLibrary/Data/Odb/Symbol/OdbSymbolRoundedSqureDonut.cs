@@ -7,11 +7,10 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolRoundedSqureDonut() { }
 
-		public OdbSymbolRoundedSqureDonut(PointF pos, 
-			double outerDiameter, double innerDiameter, 
-			double cornerRad, string corners) : base(pos, cornerRad, corners, 4)
+		public OdbSymbolRoundedSqureDonut(double outerDiameter, 
+			double innerDiameter, double cornerRad, 
+			string corners) : base(cornerRad, corners, 4)
 		{
-			Position = pos;
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
 		}
@@ -23,5 +22,10 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		public double Radius { get; private set; }
 
 		public bool[] IsRounded { get => IsEditedCorner; }
+
+		public static new OdbSymbolRoundedSqureDonut Create(string param)
+		{
+			return null;
+		}
 	}
 }
