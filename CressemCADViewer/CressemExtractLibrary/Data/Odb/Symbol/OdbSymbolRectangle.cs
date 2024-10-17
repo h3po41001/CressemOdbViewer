@@ -19,7 +19,23 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public static OdbSymbolRectangle Create(string param)
 		{
-			return null;
+			string[] split = param.Split('X');
+			if (split.Length != 2)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[0], out double width) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[1], out double height) is false)
+			{
+				return null;
+			}
+
+			return new OdbSymbolRectangle(width, height);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Symbol;
 
@@ -27,9 +28,9 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 		}
 
 		public bool Load(string path, List<OdbSymbolUser> userSymbols,
-			out List<OdbFeatures> features)
+			out OdbFeatures features)
 		{
-			features = new List<OdbFeatures>();
+			features = new OdbFeatures();
 			string line = string.Empty;
 
 			using (StreamReader reader = new StreamReader(path))
@@ -44,31 +45,39 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					if (line.Contains("U MM") is true)
 					{
 						isMM = true;
+						continue;
 					}
-					else if (line.Contains("@") is true)  // attribute인 경우
+
+					char firstChar = line.FirstOrDefault();
+					if (firstChar.Equals('@') is true)  // attribute인 경우
 					{
 						continue;
 					}
-					else if (line.Contains("&") is true)  // attribute text인 경우
+					else if (firstChar.Equals('&') is true)  // attribute text인 경우
 					{
 						continue;
 					}
-					else if (line.Contains("#") is true)  // 주석인 경우
+					else if (firstChar.Equals('#') is true)  // 주석인 경우
 					{
 						continue;
 					}
-					else if (line.Contains("$") is true)  // Symbol인 경우
+					else if (firstChar.Equals('$') is true)  // Symbol인 경우
 					{
 						splited = line.Split(' ').Select(
 							data => data.ToUpper()).ToArray();
 
-						if (OdbSymbolLoader.Instance.LoadStandardSymbols(splited[1], userSymbols, isMM,
-							out OdbFeatures odbFeatureSymbol) is false)
+						if (OdbSymbolLoader.Instance.LoadStandardSymbols(splited[1],
+							out OdbSymbolBase odbFeatureSymbol) is false)
 						{
 							continue;
 						}
 
-						features.Add(odbFeatureSymbol);
+						if (odbFeatureSymbol is null)
+						{
+							continue;
+						}
+
+						features.AddSymbol(odbFeatureSymbol);
 					}
 					else
 					{
@@ -76,8 +85,39 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						splited = line.Split(' ').Select(
 							data => data.ToUpper()).ToArray();
 
+						// Line
+						if (splited[0].Equals("L") is true)
+						{
+							var odbFeatureLine = OdbFeatureLine.Create(isMM, splited);
+							if (odbFeatureLine is null)
+							{
+								continue;
+							}
+
+							features.AddFeature(odbFeatureLine);
+						}
+						else if (splited[0].Equals("P") is true)
+						{
+							var odbFeaturePad = OdbFeaturePad.Create(isMM, splited);
+							if (odbFeaturePad is null)
+							{
+								continue;
+							}
+
+							features.AddFeature(odbFeaturePad);
+						}
+						else if (splited[0].Equals("A") is true)
+						{
+							var odbFeatureArc = OdbFeatureArc.Create(isMM, splited);
+							if (odbFeatureArc is null)
+							{
+								continue;
+							}
+
+							features.AddFeature(odbFeatureArc);
+						}
 						// Surface
-						if (splited[0].Equals("S"))
+						else if (splited[0].Equals("S") is true)
 						{
 							if (LoadSurface(splited, reader, isMM,
 								out OdbFeatureSurface surface) is false)
@@ -85,28 +125,24 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 								continue;
 							}
 
-							features.Add(surface);
+							features.AddFeature(surface);
 						}
 					}
 				}
 			}
 
-			return features.Any();
+			return features.FeatureList.Any();
 		}
 
 		public bool LoadSurface(string[] firstLine, StreamReader reader, bool isMM,
 			out OdbFeatureSurface surface)
 		{
 			surface = null;
-			if (firstLine[0].Equals("S") is false)
-			{
-				return false;
-			}
 
 			string polarity = firstLine[1];
 			string decode = firstLine[2];
 
-			surface = new OdbFeatureSurface(polarity, decode);
+			surface = new OdbFeatureSurface(isMM, polarity, decode);
 
 			string[] splited = null;
 			string line = string.Empty;
@@ -150,7 +186,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Equals("OE") is true)
 						{
-							surface.Polygons.Add(new OdbFeaturePolygon(isMM, polygonAttrList));
+							surface.Polygons.Add(new OdbAttributePolygon(isMM, polygonAttrList));
 							break;
 						}
 

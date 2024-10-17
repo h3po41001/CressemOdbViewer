@@ -17,7 +17,23 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public static new OdbSymbolSquareRoundDonut Create(string param)
 		{
-			return null;
+			string[] split = param.Split('X');
+			if (split.Length != 2)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[0], out double outerDiameter) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[1], out double innerDiameter) is false)
+			{
+				return null;
+			}
+
+			return new OdbSymbolSquareRoundDonut(outerDiameter, innerDiameter);
 		}
 	}
 }

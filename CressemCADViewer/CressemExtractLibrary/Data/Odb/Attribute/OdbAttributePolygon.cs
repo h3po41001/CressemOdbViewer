@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace CressemExtractLibrary.Data.Odb.Feature
+namespace CressemExtractLibrary.Data.Odb.Attribute
 {
-	internal class OdbFeaturePolygon : OdbFeatures
+	internal class OdbAttributePolygon
 	{
-		private OdbFeaturePolygon()
+		private OdbAttributePolygon()
 		{
 		}
 
-		public OdbFeaturePolygon(bool isMM, List<OdbPolygonAttr> attributes) : base(isMM)
+		public OdbAttributePolygon(bool isMM, List<OdbPolygonAttr> attributes)
 		{
+			IsMM = isMM;
 			Attributes = new List<OdbPolygonAttr>(attributes);
 		}
+
+		public bool IsMM { get; private set; }
 
 		public List<OdbPolygonAttr> Attributes { get; private set; }
 	}

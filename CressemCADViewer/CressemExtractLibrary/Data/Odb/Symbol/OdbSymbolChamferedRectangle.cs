@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
@@ -23,7 +24,30 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public static new OdbSymbolChamferedRectangle Create(string param)
 		{
-			return null;
+			string[] split = param.Split('X');
+			if (split.Length != 4)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[0], out double width) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[1], out double height) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(string.Concat(split[2].Skip(1)), 
+				out double cornerRadius) is false)
+			{
+				return null;
+			}
+
+			return new OdbSymbolChamferedRectangle(
+				width, height, cornerRadius, split[3]);
 		}
 	}
 }

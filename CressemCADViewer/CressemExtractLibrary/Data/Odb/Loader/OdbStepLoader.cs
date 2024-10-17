@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CressemExtractLibrary.Convert;
+using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Layer;
 using CressemExtractLibrary.Data.Odb.Matrix;
@@ -288,7 +289,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 
 			if (OdbFeaturesLoader.Instance.Load(path, odbData.OdbUserSymbols,
-				out List<OdbFeatures> features) is false)
+				out OdbFeatures features) is false)
 			{
 				return false;
 			}
@@ -317,8 +318,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				}
 
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
-					odbData.OdbUserSymbols,
-					out List<OdbFeatures> features) is false)
+					odbData.OdbUserSymbols,	out OdbFeatures features) is false)
 				{
 					continue;
 				}

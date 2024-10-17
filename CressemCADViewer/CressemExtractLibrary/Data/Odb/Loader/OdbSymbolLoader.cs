@@ -28,8 +28,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 		}
 
-		public bool LoadStandardSymbols(string symbolData, List<OdbSymbolUser> userSymbols, 
-			bool isMM, out OdbFeatures odbFeatureSymbol)
+		public bool LoadStandardSymbols(string symbolData, out OdbSymbolBase odbFeatureSymbol)
 		{
 			odbFeatureSymbol = null;
 			if (symbolData.Length == 0)
@@ -52,10 +51,9 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				return false;
 			}
 
-			var odbSymbol = MakeSymbol(name, param);
-			odbFeatureSymbol = new OdbFeatureSymbol(name, param, odbSymbol, isMM);
+			odbFeatureSymbol = MakeSymbol(name, param);
 
-			return true;
+			return (odbFeatureSymbol is null) is false;
 		}
 
 		public bool LoadUserSymbols(string dirPath, 
@@ -83,7 +81,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 				if (OdbFeaturesLoader.Instance.Load(symbolFeaturesPath,
 					null,
-					out List<OdbFeatures> features) is false)
+					out OdbFeatures features) is false)
 				{
 					return;
 				}
@@ -148,8 +146,16 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 			else if (name.ToUpper().Equals("DONUT_S") is true)
 			{
-				// Square Donut
-				return OdbSymbolSquareDonut.Create(param);
+				if (param.Count(x => x.Equals('x')) > 1)
+				{
+					// Square Donut
+					return OdbSymbolSquareDonut.Create(param);
+				}
+				else
+				{
+					// Rounded Square Donut
+					return OdbSymbolRoundedSqureDonut.Create(param);
+				}
 			}
 			else if (name.ToUpper().Equals("DONUT_SR") is true)
 			{
@@ -158,7 +164,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 			else if (name.ToUpper().Equals("DONUT_RC") is true)
 			{
-				if (param.Count(x => x.Equals(x)) > 2)
+				if (param.Count(x => x.Equals('x')) > 2)
 				{
 					// Rounded Rectangle Donut
 					return OdbSymbolRoundedRectangleDonut.Create(param);
@@ -207,12 +213,12 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			else if (name.ToUpper().Equals("THR") is true)
 			{
 				// Round Thermal (Rounded)
-				return OdbSymbolRoundedThermal.Create(param);
+				return OdbSymbolRoundThermalRounded.Create(param);
 			}
 			else if (name.ToUpper().Equals("THS") is true)
 			{
 				// Round Thermal (Squared)
-				return OdbSymbolRoundedSquareThermal.Create(param);
+				return OdbSymbolRoundThermalSquared.Create(param);
 			}
 			else if (name.ToUpper().Equals("S_THS") is true)
 			{
@@ -222,7 +228,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			else if (name.ToUpper().Equals("S_THO") is true)
 			{
 				// Square Thermal (Open Corners)
-				return OdbSymbolSquareThermal.Create(param);
+				return OdbSymbolSquareThermalOpenCorners.Create(param);
 			}
 			else if (name.ToUpper().Equals("SR_THS") is true)
 			{
@@ -237,7 +243,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			else if (name.ToUpper().Equals("RC_THO") is true)
 			{
 				// Rectangular Thermal (Open Corners)
-				return OdbSymbolRectangularThermal.Create(param);
+				return OdbSymbolRectangularThermalOpenCorners.Create(param);
 			}
 			else if (name.ToUpper().Equals("S_THS") is true)
 			{
@@ -247,11 +253,11 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			else if (name.ToUpper().Equals("S_THS") is true)
 			{
 				// Rounded Square Thermal (Open Corners)
-				return OdbSymbolRoundedSquareThermal.Create(param);
+				return OdbSymbolRoundedSquareThermalOpenCorners.Create(param);
 			}
 			else if (name.ToUpper().Equals("RC_THS") is true)
 			{
-				string[] value = param.Split('x');
+				string[] value = param.Split('X');
 				if (value[2].Equals("0") is true)
 				{
 					// Rounded Rectangle Thermal
@@ -260,12 +266,12 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				else if (value[2].Equals("45") is true)
 				{
 					// Rounded Rectangle Thermal(Open Corners)
-					return OdbSymbolRoundedRectangleThermal.Create(param);
+					return OdbSymbolRoundedRectangleThermalOpenCorners.Create(param);
 				}
 			}
 			else if (name.ToUpper().Equals("O_THS") is true)
 			{
-				string[] value = param.Split('x');
+				string[] value = param.Split('X');
 				if (value[2].Equals("0") is true)
 				{
 					// Oval Thermal 
@@ -274,7 +280,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				else if (value[2].Equals("45") is true)
 				{
 					// Oval Thermal (Open Corners)
-					return OdbSymbolOvalThermal.Create(param);
+					return OdbSymbolOvalThermalOpenCorners.Create(param);
 				}
 			}
 			else if (name.ToUpper().Equals("EL") is true)

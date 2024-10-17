@@ -13,8 +13,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		{
 		}
 
-		public OdbFeatureSymbol(string name, string param, OdbSymbolBase odbSymbol,
-			bool isMM) : base(isMM)
+		public OdbFeatureSymbol(string name, string param, OdbSymbolBase odbSymbol) : base()
 		{
 			Name = name;
 			Param = param;

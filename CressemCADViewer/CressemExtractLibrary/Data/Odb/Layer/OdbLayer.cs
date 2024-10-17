@@ -7,19 +7,19 @@ namespace CressemExtractLibrary.Data.Odb.Layer
 {
 	internal class OdbLayer
 	{		
-		public OdbLayer(OdbMatrixLayer layer, /*OdbAttruteList attrList,*/
-			List<OdbFeatures> features)
+		public OdbLayer(OdbMatrixLayer matrix, /*OdbAttributeList attrList, */
+			OdbFeatures features)
 		{
-			MatrixLayer = layer;
-			//AttruteList = attrList;
-			FeaturesList = new List<OdbFeatures>(features);
+			MatrixLayer = matrix;
+			//Attrutes = attrList;
+			Features = features;
 		}
 
 		public OdbMatrixLayer MatrixLayer { get; private set; }
 
-		//public OdbAttruteList AttruteList { get; private set; }
+		//public OdbAttributeList Attrutes { get; private set; }
 
-		public List<OdbFeatures> FeaturesList { get; private set; }
+		public OdbFeatures Features { get; private set; }
 
 		// Components 는 일단 생략. 필요시 구현
 	}

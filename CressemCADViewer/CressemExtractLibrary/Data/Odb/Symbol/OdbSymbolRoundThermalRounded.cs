@@ -1,18 +1,17 @@
 ﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRectangularThermal : OdbSymbolBase
+	internal class OdbSymbolRoundThermalRounded : OdbSymbolBase
 	{
-		private OdbSymbolRectangularThermal() { }
+		private OdbSymbolRoundThermalRounded() { }
 
-		public OdbSymbolRectangularThermal(double outerDiameter, double innerDiameter,
-			double angle, int numberOfSpoke, double gap, double airGap) : base()
+		public OdbSymbolRoundThermalRounded(double outerDiameter, double innerDiameter,
+			double angle, int numberOfSpoke, double gap) : base()
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
 			Angle = angle;
 			NumberOfSpoke = numberOfSpoke;
 			Gap = gap;
-			AirGap = airGap;
 		}
 
 		public double OuterDiameter { get; private set; }
@@ -25,12 +24,10 @@
 
 		public double Gap { get; private set; }
 
-		public double AirGap { get; private set; }
-
-		public static OdbSymbolRectangularThermal Create(string param)
+		public static OdbSymbolRoundThermalRounded Create(string param)
 		{
 			string[] split = param.Split('X');
-			if (split.Length != 6)
+			if (split.Length != 5)
 			{
 				return null;
 			}
@@ -60,13 +57,8 @@
 				return null;
 			}
 
-			if (double.TryParse(split[5], out double airGap) is false)
-			{
-				return null;
-			}
-
-			return new OdbSymbolRectangularThermal(outerDiameter, innerDiameter, 
-				angle, numberOfSpoke, gap, airGap);
+			return new OdbSymbolRoundThermalRounded(
+				outerDiameter, innerDiameter, angle, numberOfSpoke, gap);
 		}
 	}
 }

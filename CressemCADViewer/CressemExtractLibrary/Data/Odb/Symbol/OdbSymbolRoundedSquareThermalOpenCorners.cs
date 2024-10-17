@@ -1,18 +1,24 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Symbol
-{
-	internal class OdbSymbolRectangularThermal : OdbSymbolBase
-	{
-		private OdbSymbolRectangularThermal() { }
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-		public OdbSymbolRectangularThermal(double outerDiameter, double innerDiameter,
-			double angle, int numberOfSpoke, double gap, double airGap) : base()
+namespace CressemExtractLibrary.Data.Odb.Symbol
+{
+	internal class OdbSymbolRoundedSquareThermalOpenCorners : OdbSymbolEditedCorner
+	{
+		private OdbSymbolRoundedSquareThermalOpenCorners() { }
+
+		public OdbSymbolRoundedSquareThermalOpenCorners(double outerDiameter, double innerDiameter,
+			double angle, int numberOfSpoke, double gap,
+			double cornerRadius, string corners) : base(cornerRadius, corners, numberOfSpoke)
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
 			Angle = angle;
 			NumberOfSpoke = numberOfSpoke;
 			Gap = gap;
-			AirGap = airGap;
 		}
 
 		public double OuterDiameter { get; private set; }
@@ -25,12 +31,10 @@
 
 		public double Gap { get; private set; }
 
-		public double AirGap { get; private set; }
-
-		public static OdbSymbolRectangularThermal Create(string param)
+		public static OdbSymbolRoundedSquareThermalOpenCorners Create(string param)
 		{
 			string[] split = param.Split('X');
-			if (split.Length != 6)
+			if (split.Length != 7)
 			{
 				return null;
 			}
@@ -60,13 +64,13 @@
 				return null;
 			}
 
-			if (double.TryParse(split[5], out double airGap) is false)
+			if (double.TryParse(split[5], out double cornerRadius) is false)
 			{
 				return null;
 			}
 
-			return new OdbSymbolRectangularThermal(outerDiameter, innerDiameter, 
-				angle, numberOfSpoke, gap, airGap);
+			return new OdbSymbolRoundedSquareThermalOpenCorners(outerDiameter, innerDiameter, 
+				angle, numberOfSpoke, gap, cornerRadius, split[6]);
 		}
 	}
 }

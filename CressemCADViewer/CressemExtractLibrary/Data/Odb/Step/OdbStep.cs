@@ -7,7 +7,8 @@ namespace CressemExtractLibrary.Data.Odb.Step
 	internal class OdbStep
 	{
 		public OdbStep(OdbMatrixStep step, 
-			OdbStepHeader header, OdbStepProfile profile,/*OdbAttruteList attrList, */
+			OdbStepHeader header, OdbStepProfile profile,
+			/*OdbAttributeList attrList, */
 			List<OdbLayer> layers)
 		{
 			MatrixStep = step;
@@ -23,7 +24,7 @@ namespace CressemExtractLibrary.Data.Odb.Step
 
 		public OdbStepProfile Profile { get; private set; }
 
-		//public OdbAttruteList AttrList { get; private set; }
+		//public OdbAttributeList AttrList { get; private set; }
 		public List<OdbLayer> Layers { get; private set; }
 	}
 }

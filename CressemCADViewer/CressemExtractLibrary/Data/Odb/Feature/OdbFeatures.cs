@@ -1,16 +1,31 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Feature
+﻿using System.Collections.Generic;
+using CressemExtractLibrary.Data.Odb.Attribute;
+using CressemExtractLibrary.Data.Odb.Symbol;
+
+namespace CressemExtractLibrary.Data.Odb.Feature
 {
 	internal class OdbFeatures
 	{
-		protected OdbFeatures()
+		public OdbFeatures()
 		{
+			Symbols = new List<OdbSymbolBase>();
+			FeatureList = new List<OdbFeatureBase>();
 		}
 
-		public OdbFeatures(bool isMM)
+		public OdbAttributeList AttributeList { get; private set; }
+
+		public List<OdbSymbolBase> Symbols { get; private set; }
+
+		public List<OdbFeatureBase> FeatureList { get; private set; }
+
+		public void AddSymbol(OdbSymbolBase symbol)
 		{
-			IsMM = isMM;
+			Symbols.Add(symbol);
 		}
 
-		public bool IsMM { get; private set; }
+		public void AddFeature(OdbFeatureBase feature)
+		{
+			FeatureList.Add(feature);
+		}
 	}
 }

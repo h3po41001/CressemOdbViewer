@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using CressemExtractLibrary.Data.Odb.Symbol.Interface;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
@@ -25,7 +26,29 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public static new OdbSymbolRoundedSqureDonut Create(string param)
 		{
-			return null;
+			string[] split = param.Split('X');
+			if (split.Length != 4)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[0], out double outerDiameter) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[1], out double innerDiameter) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[2], out double cornerRad) is false)
+			{
+				return null;
+			}
+
+			return new OdbSymbolRoundedSqureDonut(
+				outerDiameter, innerDiameter, cornerRad, split[3]);
 		}
 	}
 }

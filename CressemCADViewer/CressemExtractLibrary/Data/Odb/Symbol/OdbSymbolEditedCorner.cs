@@ -35,10 +35,5 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 			return isEdited;
 		}
-
-		public static OdbSymbolEditedCorner Create(string param)
-		{
-			return null;
-		}
 	}
 }

@@ -1,10 +1,10 @@
 ﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolOvalThermal : OdbSymbolBase
+	internal class OdbSymbolOvalThermalOpenCorners : OdbSymbolBase
 	{
-		private OdbSymbolOvalThermal() { }
+		private OdbSymbolOvalThermalOpenCorners() { }
 
-		public OdbSymbolOvalThermal(double outerWidth, double outerHeight,
+		public OdbSymbolOvalThermalOpenCorners(double outerWidth, double outerHeight,
 			double angle, int numberOfSpoke, double gap, double lineWidth) : base()
 		{
 			OuterWidth = outerWidth;
@@ -27,7 +27,7 @@
 
 		public double LineWidth { get; private set; }
 
-		public static OdbSymbolOvalThermal Create(string param)
+		public static OdbSymbolOvalThermalOpenCorners Create(string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 6)
@@ -65,7 +65,7 @@
 				return null;
 			}
 
-			return new OdbSymbolOvalThermal(outerWidth, outerHeight, 
+			return new OdbSymbolOvalThermalOpenCorners(outerWidth, outerHeight,
 				angle, numberOfSpoke, gap, lineWidth);
 		}
 	}

@@ -16,7 +16,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public double Diameter { get; private set; }
 
-		public static OdbSymbolBase Create(string param)
+		public static OdbSymbolRound Create(string param)
 		{
 			if (double.TryParse(param, out double diameter) is false)
 			{

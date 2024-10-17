@@ -8,8 +8,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		private OdbSymbolRoundedRectangleDonut() { }
 
 		public OdbSymbolRoundedRectangleDonut(double width, double height,
-			double corenrRadius, string corners, double lineWidth) : 
-			base(width, height, corenrRadius, corners) 
+			double lineWidth, double cornerRadius, string corners) : 
+			base(width, height, cornerRadius, corners) 
 		{
 			LineWidth = lineWidth;
 		}
@@ -18,7 +18,34 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public static new OdbSymbolRoundedRectangleDonut Create(string param)
 		{
-			return null;
+			string[] split = param.Split('X');
+			if (split.Length != 5)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[0], out double width) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[1], out double height) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[2], out double lineWidth) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[3], out double cornerRadius) is false)
+			{
+				return null;
+			}
+
+			return new OdbSymbolRoundedRectangleDonut(
+				width, height, lineWidth, cornerRadius, split[4]);
 		}
 	}
 }

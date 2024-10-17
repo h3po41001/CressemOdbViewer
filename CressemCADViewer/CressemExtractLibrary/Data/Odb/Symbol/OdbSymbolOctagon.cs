@@ -7,8 +7,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolOctagon() { }
 
-		public OdbSymbolOctagon(double width, double height, 
-			double corner) : base(width, height) 
+		public OdbSymbolOctagon(double width, double height,
+			double corner) : base(width, height)
 		{
 			CornerSize = corner;
 		}
@@ -17,7 +17,28 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public static new OdbSymbolOctagon Create(string param)
 		{
-			return null;
+			string[] split = param.Split('X');
+			if (split.Length != 3)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[0], out double width) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[1], out double height) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(split[2], out double corner) is false)
+			{
+				return null;
+			}
+
+			return new OdbSymbolOctagon(width, height, corner);
 		}
 	}
 }

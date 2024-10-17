@@ -1,31 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using CressemExtractLibrary.Data.Odb.Attribute;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	internal class OdbFeatureSurface : OdbFeatures
+	internal class OdbFeatureSurface : OdbFeatureBase
 	{
 		private OdbFeatureSurface()
 		{
 		}
 
-		public OdbFeatureSurface(string polarity, string decode)
+		public OdbFeatureSurface(bool isMM, string polarity, string decode) : 
+			base(isMM, polarity, decode)
 		{
-			Polarity = polarity;
-			Decode = decode;
 		}
 
-		public string Polarity { get; private set; }
+		public List<OdbAttributePolygon> Polygons { get; private set; } = new List<OdbAttributePolygon>();
 
-		// gerber decode
-		public string Decode { get; private set; }
-
-		public List<OdbFeaturePolygon> Polygons { get; private set; } = new List<OdbFeaturePolygon>();
-
-		public void AddPolygon(OdbFeaturePolygon polygon)
+		public void AddPolygon(OdbAttributePolygon polygon)
 		{
 			Polygons.Add(polygon);
 		}
