@@ -4,9 +4,10 @@
 	{
 		private OdbSymbolRoundedRectangleThermalOpenCorners() { }
 
-		public OdbSymbolRoundedRectangleThermalOpenCorners(double outerDiameter, double innerDiameter,
+		public OdbSymbolRoundedRectangleThermalOpenCorners(int index,
+			double outerDiameter, double innerDiameter,
 			double angle, int numberOfSpoke, double gap,
-			double cornerRadius, string corners) : base(cornerRadius, corners, numberOfSpoke)
+			double cornerRadius, string corners) : base(index, cornerRadius, corners, numberOfSpoke)
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
@@ -25,7 +26,7 @@
 
 		public double Gap { get; private set; }
 
-		public static OdbSymbolRoundedRectangleThermalOpenCorners Create(string param)
+		public static OdbSymbolRoundedRectangleThermalOpenCorners Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 7)
@@ -63,7 +64,8 @@
 				return null;
 			}
 
-			return new OdbSymbolRoundedRectangleThermalOpenCorners(outerDiameter, innerDiameter,
+			return new OdbSymbolRoundedRectangleThermalOpenCorners(index, 
+				outerDiameter, innerDiameter,
 				angle, numberOfSpoke, gap, cornerRadius, split[6]);
 		}
 	}

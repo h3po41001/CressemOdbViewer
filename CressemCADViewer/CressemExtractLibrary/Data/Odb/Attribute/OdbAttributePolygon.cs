@@ -4,9 +4,7 @@ namespace CressemExtractLibrary.Data.Odb.Attribute
 {
 	internal class OdbAttributePolygon
 	{
-		private OdbAttributePolygon()
-		{
-		}
+		private OdbAttributePolygon() { }
 
 		public OdbAttributePolygon(bool isMM, List<OdbPolygonAttr> attributes)
 		{

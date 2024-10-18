@@ -4,8 +4,8 @@
 	{
 		private OdbSymbolOvalThermal() { }
 
-		public OdbSymbolOvalThermal(double outerWidth, double outerHeight,
-			double angle, int numberOfSpoke, double gap, double lineWidth) : base()
+		public OdbSymbolOvalThermal(int index, double outerWidth, double outerHeight,
+			double angle, int numberOfSpoke, double gap, double lineWidth) : base(index)
 		{
 			OuterWidth = outerWidth;
 			OuterHeight = outerHeight;
@@ -27,7 +27,7 @@
 
 		public double LineWidth { get; private set; }
 
-		public static OdbSymbolOvalThermal Create(string param)
+		public static OdbSymbolOvalThermal Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 6)
@@ -65,7 +65,7 @@
 				return null;
 			}
 
-			return new OdbSymbolOvalThermal(outerWidth, outerHeight, 
+			return new OdbSymbolOvalThermal(index, outerWidth, outerHeight,
 				angle, numberOfSpoke, gap, lineWidth);
 		}
 	}

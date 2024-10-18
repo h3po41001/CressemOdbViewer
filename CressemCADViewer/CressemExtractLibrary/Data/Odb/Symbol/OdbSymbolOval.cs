@@ -7,12 +7,12 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolOval() { }
 
-		public OdbSymbolOval(double width, double height) : 
-			base(width, height)
+		public OdbSymbolOval(int index, double width, double height) : 
+			base(index, width, height)
 		{
 		}
 
-		public static new OdbSymbolOval Create(string param)
+		public static new OdbSymbolOval Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)
@@ -30,7 +30,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolOval(width, height);
+			return new OdbSymbolOval(index, width, height);
 		}
 	}
 }

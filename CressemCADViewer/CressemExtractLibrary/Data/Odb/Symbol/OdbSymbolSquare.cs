@@ -7,21 +7,21 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolSquare() { }
 
-		public OdbSymbolSquare(double outerDiameter) : base()
+		public OdbSymbolSquare(int index, double outerDiameter) : base(index)
 		{
 			OuterDiameter = outerDiameter;
 		}
 
 		public double OuterDiameter { get; private set; }
 
-		public static OdbSymbolSquare Create(string param)
+		public static OdbSymbolSquare Create(int index, string param)
 		{
 			if (double.TryParse(param, out double side) is false)
 			{
 				return null;
 			}
 
-			return new OdbSymbolSquare(side);
+			return new OdbSymbolSquare(index, side);
 		}
 	}
 }

@@ -7,16 +7,17 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolRoundedRectangleDonut() { }
 
-		public OdbSymbolRoundedRectangleDonut(double width, double height,
+		public OdbSymbolRoundedRectangleDonut(int index, 
+			double width, double height,
 			double lineWidth, double cornerRadius, string corners) : 
-			base(width, height, cornerRadius, corners) 
+			base(index, width, height, cornerRadius, corners) 
 		{
 			LineWidth = lineWidth;
 		}
 
 		public double LineWidth { get; private set; }
 
-		public static new OdbSymbolRoundedRectangleDonut Create(string param)
+		public static new OdbSymbolRoundedRectangleDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 5)
@@ -44,8 +45,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolRoundedRectangleDonut(
-				width, height, lineWidth, cornerRadius, split[4]);
+			return new OdbSymbolRoundedRectangleDonut(index, width, height, 
+				lineWidth, cornerRadius, split[4]);
 		}
 	}
 }

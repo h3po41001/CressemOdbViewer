@@ -7,7 +7,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolRectangle() { }
 
-		public OdbSymbolRectangle(double width, double height) : base()
+		public OdbSymbolRectangle(int index, double width, double height) : base(index)
 		{
 			Width = width;
 			Height = height;
@@ -17,7 +17,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public double Height { get; private set; }
 
-		public static OdbSymbolRectangle Create(string param)
+		public static OdbSymbolRectangle Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)
@@ -35,7 +35,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolRectangle(width, height);
+			return new OdbSymbolRectangle(index, width, height);
 		}
 	}
 }

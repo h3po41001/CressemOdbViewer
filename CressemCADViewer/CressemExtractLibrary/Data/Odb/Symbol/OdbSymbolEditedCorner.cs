@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
@@ -7,8 +6,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolEditedCorner() { }
 
-		public OdbSymbolEditedCorner(double cornerRadius, 
-			string corners, int cornerNum) : base()
+		public OdbSymbolEditedCorner(int index, double cornerRadius,
+			string corners, int cornerNum) : base(index)
 		{
 			CornerRadius = cornerRadius;
 			IsEditedCorner = ConvertCornerFlag(corners, cornerNum);

@@ -4,12 +4,16 @@
 	{
 		protected OdbFeatureBase() { }
 
-		public OdbFeatureBase(bool isMM, string polarity, string decode)
+		public OdbFeatureBase(int index, bool isMM, 
+			string polarity, string decode)
 		{
+			Index = index;
 			IsMM = isMM;
 			Polarity = polarity;
 			Decode = decode;
 		}
+
+		public int Index { get; private set; }
 
 		public bool IsMM { get; private set; }
 

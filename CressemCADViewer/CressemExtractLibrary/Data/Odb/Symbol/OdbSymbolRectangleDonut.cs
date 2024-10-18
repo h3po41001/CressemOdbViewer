@@ -9,15 +9,15 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		{
 		}
 
-		public OdbSymbolRectangleDonut(double width, double height, 
-			double lineWidth) : base(width, height)
+		public OdbSymbolRectangleDonut(int index, double width, double height, 
+			double lineWidth) : base(index, width, height)
 		{
 			LineWidth = lineWidth;
 		}
 
 		public double LineWidth { get; private set; }
 
-		public static new OdbSymbolRectangleDonut Create(string param)
+		public static new OdbSymbolRectangleDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 3)
@@ -40,7 +40,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolRectangleDonut(width, height, lineWidth);
+			return new OdbSymbolRectangleDonut(index, width, height, lineWidth);
 		}
 	}
 }

@@ -9,8 +9,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		{
 		}
 
-		public OdbFeatureSurface(bool isMM, string polarity, string decode) : 
-			base(isMM, polarity, decode)
+		public OdbFeatureSurface(int index, bool isMM, string polarity, string decode) : 
+			base(index, isMM, polarity, decode)
 		{
 		}
 

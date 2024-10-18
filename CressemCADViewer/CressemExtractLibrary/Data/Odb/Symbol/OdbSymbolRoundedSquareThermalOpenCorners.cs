@@ -10,9 +10,10 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolRoundedSquareThermalOpenCorners() { }
 
-		public OdbSymbolRoundedSquareThermalOpenCorners(double outerDiameter, double innerDiameter,
+		public OdbSymbolRoundedSquareThermalOpenCorners(int index,
+			double outerDiameter, double innerDiameter,
 			double angle, int numberOfSpoke, double gap,
-			double cornerRadius, string corners) : base(cornerRadius, corners, numberOfSpoke)
+			double cornerRadius, string corners) : base(index, cornerRadius, corners, numberOfSpoke)
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
@@ -31,7 +32,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public double Gap { get; private set; }
 
-		public static OdbSymbolRoundedSquareThermalOpenCorners Create(string param)
+		public static OdbSymbolRoundedSquareThermalOpenCorners Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 7)
@@ -69,7 +70,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolRoundedSquareThermalOpenCorners(outerDiameter, innerDiameter, 
+			return new OdbSymbolRoundedSquareThermalOpenCorners(index, outerDiameter, innerDiameter, 
 				angle, numberOfSpoke, gap, cornerRadius, split[6]);
 		}
 	}

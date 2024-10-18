@@ -4,8 +4,9 @@
 	{
 		private OdbSymbolSquareThermalOpenCorners() { }
 
-		public OdbSymbolSquareThermalOpenCorners(double outerDiameter, double innerDiameter,
-			double angle, int numberOfSpoke, double gap) : base()
+		public OdbSymbolSquareThermalOpenCorners(int index,
+			double outerDiameter, double innerDiameter,
+			double angle, int numberOfSpoke, double gap) : base(index)
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
@@ -24,7 +25,7 @@
 
 		public double Gap { get; private set; }
 
-		public static OdbSymbolSquareThermalOpenCorners Create(string param)
+		public static OdbSymbolSquareThermalOpenCorners Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 5)
@@ -57,7 +58,7 @@
 				return null;
 			}
 
-			return new OdbSymbolSquareThermalOpenCorners(
+			return new OdbSymbolSquareThermalOpenCorners(index,
 				outerDiameter, innerDiameter, angle, numberOfSpoke, gap);
 		}
 	}

@@ -7,15 +7,15 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolSquareRoundDonut() { }
 
-		public OdbSymbolSquareRoundDonut(double outerDiameter, 
-			double innerDiameter) : base(outerDiameter)
+		public OdbSymbolSquareRoundDonut(int index, double outerDiameter, 
+			double innerDiameter) : base(index, outerDiameter)
 		{
 			InnerDiameter = innerDiameter;
 		}
 
 		public double InnerDiameter { get; private set; }
 
-		public static new OdbSymbolSquareRoundDonut Create(string param)
+		public static new OdbSymbolSquareRoundDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)
@@ -33,7 +33,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolSquareRoundDonut(outerDiameter, innerDiameter);
+			return new OdbSymbolSquareRoundDonut(index, outerDiameter, innerDiameter);
 		}
 	}
 }

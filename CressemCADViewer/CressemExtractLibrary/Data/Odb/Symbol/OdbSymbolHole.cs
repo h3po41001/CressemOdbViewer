@@ -4,7 +4,9 @@
 	{
 		private OdbSymbolHole() { }
 
-		public OdbSymbolHole(double diameter, string platingStatus, double plusTolerance, double minusTolerance) : base()
+		public OdbSymbolHole(int index, 
+			double diameter, string platingStatus, 
+			double plusTolerance, double minusTolerance) : base(index)
 		{
 			Diameter = diameter;
 			PlatingStatus = platingStatus;
@@ -20,7 +22,7 @@
 
 		public double MinusTolerance { get; private set; }
 
-		public static OdbSymbolHole Create(string param)
+		public static OdbSymbolHole Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 4)
@@ -43,7 +45,8 @@
 				return null;
 			}
 
-			return new OdbSymbolHole(diameter, split[1], plusTolerance, minusTolerance);
+			return new OdbSymbolHole(index, diameter, 
+				split[1], plusTolerance, minusTolerance);
 		}
 	}
 }

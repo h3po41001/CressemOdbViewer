@@ -28,7 +28,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 		}
 
-		public bool LoadStandardSymbols(string symbolData, out OdbSymbolBase odbFeatureSymbol)
+		public bool LoadStandardSymbols(int index, string symbolData, 
+			out OdbSymbolBase odbFeatureSymbol)
 		{
 			odbFeatureSymbol = null;
 			if (symbolData.Length == 0)
@@ -51,7 +52,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				return false;
 			}
 
-			odbFeatureSymbol = MakeSymbol(name, param);
+			odbFeatureSymbol = MakeSymbol(index, name, param);
 
 			return (odbFeatureSymbol is null) is false;
 		}
@@ -87,173 +88,173 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				}
 
 				string symbolName = Path.GetFileName(symbolDirPath);
-				symbolQueue.Enqueue(new OdbSymbolUser(symbolName, symbolDirPath, features));
+				symbolQueue.Enqueue(new OdbSymbolUser(0, symbolName, symbolDirPath, features));
 			});
 
 			userSymbols = new List<OdbSymbolUser>(symbolQueue);
 			return true;
 		}
 
-		private OdbSymbolBase MakeSymbol(string name, string param)
+		private OdbSymbolBase MakeSymbol(int index, string name, string param)
 		{
 			if (name.ToUpper().Equals("R") is true)
 			{
 				// Round
-				return OdbSymbolRound.Create(param);
+				return OdbSymbolRound.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("S") is true)
 			{
 				// Square
-				return OdbSymbolSquare.Create(param);
+				return OdbSymbolSquare.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("RECT") is true)
 			{
 				if (param.ToUpper().Contains("XR") is true)
 				{
 					// Rounded Rectangle
-					return OdbSymbolRoundedRectangle.Create(param);
+					return OdbSymbolRoundedRectangle.Create(index, param);
 				}
 				else if (param.ToUpper().Contains("XC") is true)
 				{
 					// Chamfered Rectangle
-					return OdbSymbolChamferedRectangle.Create(param);
+					return OdbSymbolChamferedRectangle.Create(index, param);
 				}
 				else
 				{
 					// Rectangle
-					return OdbSymbolRectangle.Create(param);
+					return OdbSymbolRectangle.Create(index, param);
 				}
 			}
 			else if (name.ToUpper().Equals("OVAL") is true)
 			{
 				// Oval
-				return OdbSymbolOval.Create(param);
+				return OdbSymbolOval.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("DI") is true)
 			{
 				// Diaomond
-				return OdbSymbolDiamond.Create(param);
+				return OdbSymbolDiamond.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("OCT") is true)
 			{
 				// Octagon
-				return OdbSymbolOctagon.Create(param);
+				return OdbSymbolOctagon.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("DOUNT_R") is true)
 			{
 				// Round Donut
-				return OdbSymbolRoundDonut.Create(param);
+				return OdbSymbolRoundDonut.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("DONUT_S") is true)
 			{
 				if (param.Count(x => x.Equals('x')) > 1)
 				{
 					// Square Donut
-					return OdbSymbolSquareDonut.Create(param);
+					return OdbSymbolSquareDonut.Create(index, param);
 				}
 				else
 				{
 					// Rounded Square Donut
-					return OdbSymbolRoundedSqureDonut.Create(param);
+					return OdbSymbolRoundedSqureDonut.Create(index, param);
 				}
 			}
 			else if (name.ToUpper().Equals("DONUT_SR") is true)
 			{
 				// Square Round Donut
-				return OdbSymbolSquareRoundDonut.Create(param);
+				return OdbSymbolSquareRoundDonut.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("DONUT_RC") is true)
 			{
 				if (param.Count(x => x.Equals('x')) > 2)
 				{
 					// Rounded Rectangle Donut
-					return OdbSymbolRoundedRectangleDonut.Create(param);
+					return OdbSymbolRoundedRectangleDonut.Create(index, param);
 				}
 				else
 				{
 					// Rectangle Donut
-					return OdbSymbolRectangleDonut.Create(param);
+					return OdbSymbolRectangleDonut.Create(index, param);
 				}
 			}
 			else if (name.ToUpper().Equals("DONUT_O") is true)
 			{
 				// Oval Donut
-				return OdbSymbolOvalDonut.Create(param);
+				return OdbSymbolOvalDonut.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("HEX_L") is true)
 			{
 				// Horizontal Hexagon
-				return OdbSymbolHorizontalHexagon.Create(param);
+				return OdbSymbolHorizontalHexagon.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("HEX_S") is true)
 			{
 				// Vertical Hexagon
-				return OdbSymbolVerticalHexagon.Create(param);
+				return OdbSymbolVerticalHexagon.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("BFR") is true)
 			{
 				// Butterfly
-				return OdbSymbolButterfly.Create(param);
+				return OdbSymbolButterfly.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("BFS") is true)
 			{
 				// Square Butterfly
-				return OdbSymbolSquareButterfly.Create(param);
+				return OdbSymbolSquareButterfly.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("TRI") is true)
 			{
 				// Triangle
-				return OdbSymbolTriangle.Create(param);
+				return OdbSymbolTriangle.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("OVAL_H") is true)
 			{
 				// Half Oval
-				return OdbSymbolHalfOval.Create(param);
+				return OdbSymbolHalfOval.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("THR") is true)
 			{
 				// Round Thermal (Rounded)
-				return OdbSymbolRoundThermalRounded.Create(param);
+				return OdbSymbolRoundThermalRounded.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("THS") is true)
 			{
 				// Round Thermal (Squared)
-				return OdbSymbolRoundThermalSquared.Create(param);
+				return OdbSymbolRoundThermalSquared.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("S_THS") is true)
 			{
 				// Square Thermal
-				return OdbSymbolSquareThermal.Create(param);
+				return OdbSymbolSquareThermal.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("S_THO") is true)
 			{
 				// Square Thermal (Open Corners)
-				return OdbSymbolSquareThermalOpenCorners.Create(param);
+				return OdbSymbolSquareThermalOpenCorners.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("SR_THS") is true)
 			{
 				// Square-Round Thermal
-				return OdbSymbolSquareRoundThermal.Create(param);
+				return OdbSymbolSquareRoundThermal.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("RC_THS") is true)
 			{
 				// Rectangular Thermal
-				return OdbSymbolRectangularThermal.Create(param);
+				return OdbSymbolRectangularThermal.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("RC_THO") is true)
 			{
 				// Rectangular Thermal (Open Corners)
-				return OdbSymbolRectangularThermalOpenCorners.Create(param);
+				return OdbSymbolRectangularThermalOpenCorners.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("S_THS") is true)
 			{
 				// Rounded Square Thermal
-				return OdbSymbolRoundedSquareThermal.Create(param);
+				return OdbSymbolRoundedSquareThermal.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("S_THS") is true)
 			{
 				// Rounded Square Thermal (Open Corners)
-				return OdbSymbolRoundedSquareThermalOpenCorners.Create(param);
+				return OdbSymbolRoundedSquareThermalOpenCorners.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("RC_THS") is true)
 			{
@@ -261,12 +262,12 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				if (value[2].Equals("0") is true)
 				{
 					// Rounded Rectangle Thermal
-					return OdbSymbolRoundedRectangleThermal.Create(param);
+					return OdbSymbolRoundedRectangleThermal.Create(index, param);
 				}
 				else if (value[2].Equals("45") is true)
 				{
 					// Rounded Rectangle Thermal(Open Corners)
-					return OdbSymbolRoundedRectangleThermalOpenCorners.Create(param);
+					return OdbSymbolRoundedRectangleThermalOpenCorners.Create(index, param);
 				}
 			}
 			else if (name.ToUpper().Equals("O_THS") is true)
@@ -275,28 +276,28 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				if (value[2].Equals("0") is true)
 				{
 					// Oval Thermal 
-					return OdbSymbolOvalThermal.Create(param);
+					return OdbSymbolOvalThermal.Create(index, param);
 				}
 				else if (value[2].Equals("45") is true)
 				{
 					// Oval Thermal (Open Corners)
-					return OdbSymbolOvalThermalOpenCorners.Create(param);
+					return OdbSymbolOvalThermalOpenCorners.Create(index, param);
 				}
 			}
 			else if (name.ToUpper().Equals("EL") is true)
 			{
 				// Ellipse
-				return OdbSymbolEllipse.Create(param);
+				return OdbSymbolEllipse.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("MOIRE") is true)
 			{
 				// Moire
-				return OdbSymbolMoire.Create(param);
+				return OdbSymbolMoire.Create(index, param);
 			}
 			else if (name.ToUpper().Equals("HOLE") is true)
 			{
 				// Hole
-				return OdbSymbolHole.Create(param);
+				return OdbSymbolHole.Create(index, param);
 			}
 
 			return null;

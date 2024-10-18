@@ -10,8 +10,9 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 	{
 		private OdbFeaturePad() { }
 
-		public OdbFeaturePad(bool isMM, double x, double y, int symbolNum,
-			string polarity, string decode, int orientDef) : base(isMM, polarity, decode)
+		public OdbFeaturePad(int index, bool isMM,
+			double x, double y, int symbolNum,
+			string polarity, string decode, int orientDef) : base(index, isMM, polarity, decode)
 		{
 			X = x;
 			Y = y;
@@ -29,7 +30,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		// 8 :  any angle rotation, no mirror, 9 : any angle rotation, X-axis mirror
 		public int OrientDef { get; private set; }
 
-		public static OdbFeaturePad Create(bool isMM, string[] param)
+		public static OdbFeaturePad Create(int index, bool isMM, string[] param)
 		{
 			if (param.Length != 7)
 			{
@@ -56,12 +57,15 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			if (int.TryParse(param[6], out int orientDef) is false)
+			string[] split = param[6].Split(';');
+
+			if (int.TryParse(split[0], out int orientDef) is false)
 			{
 				return null;
 			}
 
-			return new OdbFeaturePad(isMM, x, y, symbolNum, param[4], param[5], orientDef);
+			return new OdbFeaturePad(index, isMM, x, y, 
+				symbolNum, param[4], param[5], orientDef);
 		}
 	}
 }

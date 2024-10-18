@@ -4,21 +4,21 @@
 	{
 		private OdbSymbolSquareButterfly() { }
 
-		public OdbSymbolSquareButterfly(double diameter) : base()
+		public OdbSymbolSquareButterfly(int index, double diameter) : base(index)
 		{
 			Diameter = diameter;
 		}
 
 		public double Diameter { get; private set; }
 
-		public static OdbSymbolSquareButterfly Create(string param)
+		public static OdbSymbolSquareButterfly Create(int index, string param)
 		{
 			if (double.TryParse(param, out double diameter) is false)
 			{
 				return null;
 			}
 
-			return new OdbSymbolSquareButterfly(diameter);
+			return new OdbSymbolSquareButterfly(index, diameter);
 		}
 	}
 }

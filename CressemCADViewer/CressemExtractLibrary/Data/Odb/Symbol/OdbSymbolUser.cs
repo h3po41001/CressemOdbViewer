@@ -9,8 +9,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		{
 		}
 
-		public OdbSymbolUser(string name, string path, 
-			OdbFeatures features)
+		public OdbSymbolUser(int index, string name, string path, 
+			OdbFeatures features) : base(index)
 		{
 			Name = name;
 			FeatureFilePath = path;

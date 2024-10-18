@@ -9,21 +9,21 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		{
 		}
 
-		public OdbSymbolRound(double diameter) : base()
+		public OdbSymbolRound(int index, double diameter) : base(index)
 		{
 			Diameter = diameter;
 		}
 
 		public double Diameter { get; private set; }
 
-		public static OdbSymbolRound Create(string param)
+		public static OdbSymbolRound Create(int index, string param)
 		{
 			if (double.TryParse(param, out double diameter) is false)
 			{
 				return null;
 			}
 
-			return new OdbSymbolRound(diameter);
+			return new OdbSymbolRound(index, diameter);
 		}
 	}
 }

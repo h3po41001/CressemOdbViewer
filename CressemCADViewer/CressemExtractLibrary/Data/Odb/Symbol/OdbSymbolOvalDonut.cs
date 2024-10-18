@@ -7,15 +7,15 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolOvalDonut() { }
 
-		public OdbSymbolOvalDonut(double width, double height, 
-			double lineWidth) : base(width, height)
+		public OdbSymbolOvalDonut(int index, double width, double height, 
+			double lineWidth) : base(index, width, height)
 		{
 			LineWidth = lineWidth;
 		}
 
 		public double LineWidth { get; private set; }
 
-		public static new OdbSymbolOvalDonut Create(string param)
+		public static new OdbSymbolOvalDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 3)
@@ -38,7 +38,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolOvalDonut(width, height, lineWidth);
+			return new OdbSymbolOvalDonut(index, width, height, lineWidth);
 		}
 	}
 }

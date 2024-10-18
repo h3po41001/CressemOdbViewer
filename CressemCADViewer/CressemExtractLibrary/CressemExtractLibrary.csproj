@@ -60,12 +60,14 @@
     <Compile Include="Data\Odb\Attribute\OdbAttributePolygon.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeTextString.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureArc.cs" />
+    <Compile Include="Data\Odb\Feature\OdbFeatureBarcode.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureBase.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureLine.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeaturePad.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatures.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureSurface.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureSymbol.cs" />
+    <Compile Include="Data\Odb\Feature\OdbFeatureText.cs" />
     <Compile Include="Data\Odb\Font\OdbFont.cs" />
     <Compile Include="Data\Odb\Layer\OdbLayer.cs" />
     <Compile Include="Data\Odb\Loader\OdbFeaturesLoader.cs" />

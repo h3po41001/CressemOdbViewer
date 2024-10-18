@@ -61,12 +61,15 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					{
 						continue;
 					}
-					else if (firstChar.Equals('$') is true)  // Symbol인 경우
+
+					index++;
+
+					if (firstChar.Equals('$') is true)  // Symbol인 경우
 					{
 						splited = line.Split(' ').Select(
 							data => data.ToUpper()).ToArray();
 
-						if (OdbSymbolLoader.Instance.LoadStandardSymbols(splited[1],
+						if (OdbSymbolLoader.Instance.LoadStandardSymbols(index, splited[1],
 							out OdbSymbolBase odbFeatureSymbol) is false)
 						{
 							continue;
@@ -88,7 +91,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						// Line
 						if (splited[0].Equals("L") is true)
 						{
-							var odbFeatureLine = OdbFeatureLine.Create(isMM, splited);
+							var odbFeatureLine = OdbFeatureLine.Create(index, isMM, splited);
 							if (odbFeatureLine is null)
 							{
 								continue;
@@ -98,7 +101,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						}
 						else if (splited[0].Equals("P") is true)
 						{
-							var odbFeaturePad = OdbFeaturePad.Create(isMM, splited);
+							var odbFeaturePad = OdbFeaturePad.Create(index, isMM, splited);
 							if (odbFeaturePad is null)
 							{
 								continue;
@@ -108,7 +111,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						}
 						else if (splited[0].Equals("A") is true)
 						{
-							var odbFeatureArc = OdbFeatureArc.Create(isMM, splited);
+							var odbFeatureArc = OdbFeatureArc.Create(index, isMM, splited);
 							if (odbFeatureArc is null)
 							{
 								continue;
@@ -116,10 +119,31 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 							features.AddFeature(odbFeatureArc);
 						}
+						// Text
+						else if (splited[0].Equals("T") is true)
+						{
+							var odbFeatureText = OdbFeatureText.Create(index, isMM, splited);
+							if (odbFeatureText is null)
+							{
+								continue;
+							}
+
+							features.AddFeature(odbFeatureText);
+						}
+						else if (splited[0].Equals("B") is true)
+						{
+							var odbFeatureBarcode = OdbFeatureBarcode.Create(index, isMM, splited);
+							if (odbFeatureBarcode is null)
+							{
+								continue;
+							}
+
+							features.AddFeature(odbFeatureBarcode);
+						}
 						// Surface
 						else if (splited[0].Equals("S") is true)
 						{
-							if (LoadSurface(splited, reader, isMM,
+							if (LoadSurface(index, splited, reader, isMM,
 								out OdbFeatureSurface surface) is false)
 							{
 								continue;
@@ -134,7 +158,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			return features.FeatureList.Any();
 		}
 
-		public bool LoadSurface(string[] firstLine, StreamReader reader, bool isMM,
+		public bool LoadSurface(int index, string[] firstLine, StreamReader reader, bool isMM,
 			out OdbFeatureSurface surface)
 		{
 			surface = null;
@@ -142,7 +166,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			string polarity = firstLine[1];
 			string decode = firstLine[2];
 
-			surface = new OdbFeatureSurface(isMM, polarity, decode);
+			surface = new OdbFeatureSurface(index, isMM, polarity, decode);
 
 			string[] splited = null;
 			string line = string.Empty;
@@ -186,7 +210,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Equals("OE") is true)
 						{
-							surface.Polygons.Add(new OdbAttributePolygon(isMM, polygonAttrList));
+							surface.AddPolygon(new OdbAttributePolygon(isMM, polygonAttrList));
 							break;
 						}
 

@@ -4,7 +4,8 @@
 	{
 		private OdbSymbolHalfOval() { }
 
-		public OdbSymbolHalfOval(double width, double height) : base()
+		public OdbSymbolHalfOval(int index, 
+			double width, double height) : base(index)
 		{
 			Width = width;
 			Height = height;
@@ -14,7 +15,7 @@
 
 		public double Height { get; private set; }
 
-		public static OdbSymbolHalfOval Create(string param)
+		public static OdbSymbolHalfOval Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)
@@ -32,7 +33,7 @@
 				return null;
 			}
 
-			return new OdbSymbolHalfOval(width, height);
+			return new OdbSymbolHalfOval(index, width, height);
 		}
 	}
 }

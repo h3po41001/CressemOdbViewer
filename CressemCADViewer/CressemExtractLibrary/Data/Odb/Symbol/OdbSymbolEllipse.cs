@@ -4,7 +4,7 @@
 	{
 		private OdbSymbolEllipse() { }
 
-		public OdbSymbolEllipse(double width, double height) : base()
+		public OdbSymbolEllipse(int index, double width, double height) : base(index)
 		{
 			Width = width;
 			Height = height;
@@ -14,7 +14,7 @@
 
 		public double Height { get; private set; }
 
-		public static OdbSymbolEllipse Create(string param)
+		public static OdbSymbolEllipse Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)
@@ -32,7 +32,7 @@
 				return null;
 			}
 
-			return new OdbSymbolEllipse(width, height);
+			return new OdbSymbolEllipse(index, width, height);
 		}
 	}
 }

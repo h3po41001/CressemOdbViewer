@@ -8,9 +8,9 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolRoundedSqureDonut() { }
 
-		public OdbSymbolRoundedSqureDonut(double outerDiameter, 
-			double innerDiameter, double cornerRad, 
-			string corners) : base(cornerRad, corners, 4)
+		public OdbSymbolRoundedSqureDonut(int index,
+			double outerDiameter, double innerDiameter, 
+			double cornerRad, string corners) : base(index, cornerRad, corners, 4)
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
@@ -24,7 +24,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public bool[] IsRounded { get => IsEditedCorner; }
 
-		public static new OdbSymbolRoundedSqureDonut Create(string param)
+		public static new OdbSymbolRoundedSqureDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 4)
@@ -47,7 +47,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolRoundedSqureDonut(
+			return new OdbSymbolRoundedSqureDonut(index,
 				outerDiameter, innerDiameter, cornerRad, split[3]);
 		}
 	}

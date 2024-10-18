@@ -7,15 +7,15 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolOctagon() { }
 
-		public OdbSymbolOctagon(double width, double height,
-			double corner) : base(width, height)
+		public OdbSymbolOctagon(int index, double width, double height,
+			double corner) : base(index, width, height)
 		{
 			CornerSize = corner;
 		}
 
 		public double CornerSize { get; private set; }
 
-		public static new OdbSymbolOctagon Create(string param)
+		public static new OdbSymbolOctagon Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 3)
@@ -38,7 +38,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolOctagon(width, height, corner);
+			return new OdbSymbolOctagon(index, width, height, corner);
 		}
 	}
 }

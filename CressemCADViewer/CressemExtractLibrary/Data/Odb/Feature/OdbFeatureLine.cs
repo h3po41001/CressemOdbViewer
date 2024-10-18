@@ -4,8 +4,9 @@
 	{
 		private OdbFeatureLine() { }
 
-		public OdbFeatureLine(bool isMM, double sx, double sy, double ex, double ey, int symbolNum, 
-			string polarity, string decode) : base(isMM, polarity, decode)
+		public OdbFeatureLine(int index, bool isMM,
+			double sx, double sy, double ex, double ey,
+			int symbolNum, string polarity, string decode) : base(index, isMM, polarity, decode)
 		{
 			Sx = sx;
 			Sy = sy;
@@ -24,7 +25,7 @@
 
 		public int SymbolNum { get; private set; }
 
-		static public OdbFeatureLine Create(bool isMM, string[] param)
+		static public OdbFeatureLine Create(int index, bool isMM, string[] param)
 		{
 			if (param.Length != 8)
 			{
@@ -61,7 +62,9 @@
 				return null;
 			}
 
-			return new OdbFeatureLine(isMM, sx, sy, ex, ey, symbolNum, param[6], param[7]);
+			string[] split = param[7].Split(';');
+
+			return new OdbFeatureLine(index, isMM, sx, sy, ex, ey, symbolNum, param[6], split[0]);
 		}
 	}
 }

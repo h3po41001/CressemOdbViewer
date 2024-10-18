@@ -8,8 +8,9 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbSymbolRoundedRectangle() { }
 
-		public OdbSymbolRoundedRectangle(double width, double height,
-			double cornerRadius, string corners) : base(cornerRadius, corners, 4)
+		public OdbSymbolRoundedRectangle(int index, 
+			double width, double height,
+			double cornerRadius, string corners) : base(index, cornerRadius, corners, 4)
 		{
 			Width = width;
 			Height = height;
@@ -21,7 +22,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public bool[] IsRounded { get => IsEditedCorner; }
 
-		public static new OdbSymbolRoundedRectangle Create(string param)
+		public static new OdbSymbolRoundedRectangle Create(int index, string param)
 		{
 			string[] value = param.Split('X').ToArray();
 			if (value.Length != 4)
@@ -45,8 +46,8 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 				return null;
 			}
 
-			return new OdbSymbolRoundedRectangle(
-				width, height, cornerRadius, value[3]);
+			return new OdbSymbolRoundedRectangle(index,	width, height, 
+				cornerRadius, value[3]);
 		}
 	}
 }

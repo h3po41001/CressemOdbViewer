@@ -4,8 +4,9 @@
 	{
 		private OdbSymbolMoire() { }
 
-		public OdbSymbolMoire(double ringWidth, double ringHeight, int numberOfRing, 
-			double lineWidth, double lineLength, double lineAngle) : base()
+		public OdbSymbolMoire(int index,
+			double ringWidth, double ringHeight, int numberOfRing,
+			double lineWidth, double lineLength, double lineAngle) : base(index)
 		{
 			RingWidth = ringWidth;
 			RingHeight = ringHeight;
@@ -28,7 +29,7 @@
 		public double LineAngle { get; private set; }
 
 
-		public static OdbSymbolMoire Create(string param)
+		public static OdbSymbolMoire Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 6)
@@ -66,7 +67,7 @@
 				return null;
 			}
 
-			return new OdbSymbolMoire(ringWidth, ringHeight, 
+			return new OdbSymbolMoire(index, ringWidth, ringHeight,
 				numberOfRing, lineWidth, lineLength, lineAngle);
 		}
 	}

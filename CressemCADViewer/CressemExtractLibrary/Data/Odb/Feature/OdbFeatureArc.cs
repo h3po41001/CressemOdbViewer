@@ -10,9 +10,10 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 	{
 		private OdbFeatureArc() { }
 
-		public OdbFeatureArc(bool isMM, double sx, double sy,
-			double ex, double ey, double cx, double cy,
-			int symbolNum, string polarity, string decode, string cw) : base(isMM, polarity, decode)
+		public OdbFeatureArc(int index, bool isMM, double sx, double sy,
+			double ex, double ey,
+			double cx, double cy, int symbolNum, 
+			string polarity, string decode, string cw) : base(index, isMM, polarity, decode)
 		{
 			Sx = sx;
 			Sy = sy;
@@ -41,7 +42,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		// Y : CW, N : CCW
 		public string Cw { get; private set; }
 
-		public static OdbFeatureArc Create(bool isMM, string[] param)
+		public static OdbFeatureArc Create(int index, bool isMM, string[] param)
 		{
 			if (param.Length != 11)
 			{
@@ -88,8 +89,10 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			return new OdbFeatureArc(isMM, sx, sy, ex, ey, cx, cy, 
-				symbolNum, param[8], param[9], param[10]);
+			string[] splited = param[10].Split(';');
+
+			return new OdbFeatureArc(index, isMM, sx, sy, ex, ey, cx, cy, 
+				symbolNum, param[8], param[9], splited[0]);
 		}
 	}
 }

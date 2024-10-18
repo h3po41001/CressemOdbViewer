@@ -4,8 +4,8 @@
 	{
 		private OdbSymbolHorizontalHexagon() { }
 
-		public OdbSymbolHorizontalHexagon(double width, double height, 
-			double cornerSize) : base()
+		public OdbSymbolHorizontalHexagon(int index, double width, double height, 
+			double cornerSize) : base(index)
 		{
 			Width = width;
 			Height = height;
@@ -18,7 +18,7 @@
 
 		public double CornerSize { get; private set; }
 
-		public static OdbSymbolHorizontalHexagon Create(string param)
+		public static OdbSymbolHorizontalHexagon Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 3)
@@ -41,7 +41,7 @@
 				return null;
 			}
 
-			return new OdbSymbolHorizontalHexagon(width, height, cornerSize);
+			return new OdbSymbolHorizontalHexagon(index, width, height, cornerSize);
 		}
 	}
 }

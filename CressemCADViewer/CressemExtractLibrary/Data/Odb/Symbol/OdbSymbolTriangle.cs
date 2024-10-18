@@ -6,7 +6,8 @@
 		{
 		}
 
-		public OdbSymbolTriangle(double triangleBase, double height) : base()
+		public OdbSymbolTriangle(int index, 
+			double triangleBase, double height) : base(index)
 		{
 			TriangleBase = triangleBase;
 			Height = height;
@@ -16,7 +17,7 @@
 
 		public double Height { get; private set; }
 
-		public static OdbSymbolTriangle Create(string param)
+		public static OdbSymbolTriangle Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)
@@ -34,7 +35,7 @@
 				return null;
 			}
 
-			return new OdbSymbolTriangle(triangleBase, height);
+			return new OdbSymbolTriangle(index, triangleBase, height);
 		}
 	}
 }

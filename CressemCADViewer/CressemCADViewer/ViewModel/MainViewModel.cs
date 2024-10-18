@@ -34,7 +34,7 @@ namespace CressemCADViewer.ViewModel
 
 		private void LogoView_LogoDoubleClickedEvent(object sender, EventArgs e)
 		{
-			Processor.Run(DesignFormat.Odb, "D:\\Odb\\21fcb006-02.tgz", "D:\\Odb\\21fcb006-02\\");
+			Processor.Run(DesignFormat.Odb, "D:\\Odb\\demo_design.tgz", "D:\\Odb\\demo_design\\");
 		}
 
 		private void Processor_ProcessStarted(object sender, bool e)

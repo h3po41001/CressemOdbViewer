@@ -4,8 +4,9 @@
 	{
 		private OdbSymbolRectangularThermal() { }
 
-		public OdbSymbolRectangularThermal(double outerDiameter, double innerDiameter,
-			double angle, int numberOfSpoke, double gap, double airGap) : base()
+		public OdbSymbolRectangularThermal(int index, 
+			double outerDiameter, double innerDiameter,
+			double angle, int numberOfSpoke, double gap, double airGap) : base(index)
 		{
 			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
@@ -27,7 +28,7 @@
 
 		public double AirGap { get; private set; }
 
-		public static OdbSymbolRectangularThermal Create(string param)
+		public static OdbSymbolRectangularThermal Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 6)
@@ -65,7 +66,7 @@
 				return null;
 			}
 
-			return new OdbSymbolRectangularThermal(outerDiameter, innerDiameter, 
+			return new OdbSymbolRectangularThermal(index, outerDiameter, innerDiameter, 
 				angle, numberOfSpoke, gap, airGap);
 		}
 	}

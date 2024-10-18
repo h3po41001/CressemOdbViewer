@@ -4,7 +4,8 @@
 	{
 		private OdbSymbolRoundThermalSquared() { }
 		
-		public OdbSymbolRoundThermalSquared(double outerDiameter, double innerDiameter,
+		public OdbSymbolRoundThermalSquared(int index,
+			double outerDiameter, double innerDiameter,
 			double angle, int numberOfSpoke, double gap) : base()
 		{
 			OuterDiameter = outerDiameter;
@@ -24,7 +25,7 @@
 
 		public double Gap { get; private set; }
 
-		public static OdbSymbolRoundThermalSquared Create(string param)
+		public static OdbSymbolRoundThermalSquared Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 5)
@@ -57,7 +58,8 @@
 				return null;
 			}
 
-			return new OdbSymbolRoundThermalSquared(outerDiameter, innerDiameter, 
+			return new OdbSymbolRoundThermalSquared(index, 
+				outerDiameter, innerDiameter, 
 				angle, numberOfSpoke, gap);
 		}
 	}
