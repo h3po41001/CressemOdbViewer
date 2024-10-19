@@ -3,7 +3,7 @@ using System.IO.Compression;
 
 namespace CressemExtractLibrary.Data
 {
-	internal class ExtractData
+	internal abstract class ExtractData
 	{
 		protected ExtractData() { }
 
@@ -16,5 +16,9 @@ namespace CressemExtractLibrary.Data
 		public string SavePath { get; private set; }
 
 		public string LoadPath { get; private set; }
+
+		public abstract string[] GetStepNames();
+
+		public abstract string[] GetLayerNames(string stepName);
 	}
 }

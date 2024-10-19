@@ -151,7 +151,7 @@ namespace CressemExtractLibrary.Extract.Odb
 
 		public override bool DoWork()
 		{
-			return false;
+			return true;
 		}
 	}
 }

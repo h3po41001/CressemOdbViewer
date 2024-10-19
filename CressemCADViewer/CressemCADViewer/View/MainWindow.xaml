@@ -6,6 +6,7 @@
 					xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 					xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
 					xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+					xmlns:img="clr-namespace:ImageControl.View;assembly=ImageControl"
 					xmlns:log="clr-namespace:CressemLogger.View;assembly=CressemLogger"
 					xmlns:uc="clr-namespace:CressemCADViewer.View.Control"
 					Title="CressemOdbViewer"
@@ -59,12 +60,11 @@
 									  Orientation="Vertical">
 						<dxdo:LayoutPanel AllowClose="False"
 										  AllowDock="True"
-										  Caption="Image"
 										  ItemHeight="0.8*"
 										  ShowCaption="True"
 										  ShowPinButton="False">
-							<DockPanel>
-								<!--<local:ImageViewerView DataContext="{Binding ImageViewerView}" />-->
+							<DockPanel IsHitTestVisible="False">
+								<img:GraphicsView DataContext="{Binding GraphicsView}" />
 							</DockPanel>
 						</dxdo:LayoutPanel>
 					</dxdo:LayoutGroup>
@@ -81,7 +81,9 @@
 										  Caption="Property"
 										  ShowBorder="True"
 										  ShowCaption="True">
-							<DockPanel />
+							<ScrollViewer>
+								<uc:PropertyView DataContext="{Binding PropertyView}" />
+							</ScrollViewer>
 						</dxdo:LayoutPanel>
 						<dxdo:LayoutPanel AllowClose="False"
 										  AllowDock="True"

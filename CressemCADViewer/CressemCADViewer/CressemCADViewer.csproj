@@ -29,6 +29,7 @@
   <ItemGroup>
     <Reference Include="DevExpress.Xpf.Core.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Docking.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.PropertyGrid.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Ribbon.v19.2, Version=19.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -59,6 +60,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Control\PropertyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +83,9 @@
     </Compile>
     <Compile Include="View\Control\LogoView.xaml.cs">
       <DependentUpon>LogoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\PropertyView.xaml.cs">
+      <DependentUpon>PropertyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -131,6 +139,10 @@
     <ProjectReference Include="..\CressemLogger\CressemLogger.csproj">
       <Project>{fcc20b03-6bb0-45c2-bc8b-f21a6f2a90ad}</Project>
       <Name>CressemLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageControl\ImageControl.csproj">
+      <Project>{1a85f6f8-1748-44eb-8107-932361ffa434}</Project>
+      <Name>ImageControl</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

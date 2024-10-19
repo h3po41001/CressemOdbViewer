@@ -210,7 +210,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Equals("OE") is true)
 						{
-							surface.AddPolygon(new OdbAttributePolygon(isMM, polygonAttrList));
+							surface.AddPolygon(new OdbSymbolPolygon(isMM, polygonAttrList));
 							break;
 						}
 

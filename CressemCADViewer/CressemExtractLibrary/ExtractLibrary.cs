@@ -57,5 +57,21 @@ namespace CressemExtractLibrary
 
 			return _extractor.Extract();
 		}
+
+		public string[] GetStepNames()
+		{
+			if (_extractor is null)
+				return null;
+
+			return _extractor.ExtractData.GetStepNames();
+		}
+
+		public string[] GetLayerNames(string stepName)
+		{
+			if (_extractor is null)
+				return null;
+
+			return _extractor.ExtractData.GetLayerNames(stepName);
+		}
 	}
 }

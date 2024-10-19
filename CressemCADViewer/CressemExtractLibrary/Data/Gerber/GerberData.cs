@@ -7,5 +7,15 @@
 		public GerberData(string loadPath, string savePath) : base(loadPath, savePath)
 		{
 		}
+
+		public override string[] GetStepNames()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override string[] GetLayerNames(string stepName)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

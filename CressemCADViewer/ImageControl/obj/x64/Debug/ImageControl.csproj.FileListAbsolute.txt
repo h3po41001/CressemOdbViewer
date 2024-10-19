@@ -1,0 +1,28 @@
+D:\AI Project\CLCompare\ImageControl\bin\x64\Debug\ImageControl.dll
+D:\AI Project\CLCompare\ImageControl\bin\x64\Debug\ImageControl.pdb
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.csproj.AssemblyReference.cache
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\View\Gdi\GdiGraphicsView.baml
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\View\GraphicsView.baml
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\View\Gdi\GdiGraphicsView.g.cs
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\View\GraphicsView.g.cs
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl_MarkupCompile.cache
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.g.resources
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.Properties.Resources.resources
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.csproj.GenerateResource.cache
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.csproj.CoreCompileInputs.cache
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.dll
+D:\AI Project\CLCompare\ImageControl\obj\x64\Debug\ImageControl.pdb
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\bin\x64\Debug\ImageControl.dll
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\bin\x64\Debug\ImageControl.pdb
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.csproj.AssemblyReference.cache
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\View\Gdi\GdiGraphicsView.baml
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\View\GraphicsView.baml
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\View\Gdi\GdiGraphicsView.g.cs
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\View\GraphicsView.g.cs
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl_MarkupCompile.cache
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.g.resources
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.Properties.Resources.resources
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.csproj.GenerateResource.cache
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.csproj.CoreCompileInputs.cache
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.dll
+D:\Project\CressemCADViewer\CressemCADViewer\ImageControl\obj\x64\Debug\ImageControl.pdb

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace CressemExtractLibrary.Data.Odb.Attribute
+namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbAttributePolygon
+	internal class OdbSymbolPolygon
 	{
-		private OdbAttributePolygon() { }
+		private OdbSymbolPolygon() { }
 
-		public OdbAttributePolygon(bool isMM, List<OdbPolygonAttr> attributes)
+		public OdbSymbolPolygon(bool isMM, List<OdbPolygonAttr> attributes)
 		{
 			IsMM = isMM;
 			Attributes = new List<OdbPolygonAttr>(attributes);

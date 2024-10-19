@@ -16,8 +16,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemUtil", "CressemUtil\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CressemCADViewer", "CressemCADViewer\CressemCADViewer.csproj", "{B26C5DBB-718B-4047-B562-37E296EC8C52}"
 	ProjectSection(ProjectDependencies) = postProject
+		{1A85F6F8-1748-44EB-8107-932361FFA434} = {1A85F6F8-1748-44EB-8107-932361FFA434}
 		{A3E018A8-4232-46E7-80ED-EB6F6AC65AC7} = {A3E018A8-4232-46E7-80ED-EB6F6AC65AC7}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageControl", "ImageControl\ImageControl.csproj", "{1A85F6F8-1748-44EB-8107-932361FFA434}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +47,10 @@ Global
 		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Debug|x64.Build.0 = Debug|x64
 		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.ActiveCfg = Release|x64
 		{B26C5DBB-718B-4047-B562-37E296EC8C52}.Release|x64.Build.0 = Release|x64
+		{1A85F6F8-1748-44EB-8107-932361FFA434}.Debug|x64.ActiveCfg = Debug|x64
+		{1A85F6F8-1748-44EB-8107-932361FFA434}.Debug|x64.Build.0 = Debug|x64
+		{1A85F6F8-1748-44EB-8107-932361FFA434}.Release|x64.ActiveCfg = Release|x64
+		{1A85F6F8-1748-44EB-8107-932361FFA434}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

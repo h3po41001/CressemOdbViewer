@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CressemExtractLibrary.Data.Odb.Attribute;
+using CressemExtractLibrary.Data.Odb.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
@@ -14,9 +14,9 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		{
 		}
 
-		public List<OdbAttributePolygon> Polygons { get; private set; } = new List<OdbAttributePolygon>();
+		public List<OdbSymbolPolygon> Polygons { get; private set; } = new List<OdbSymbolPolygon>();
 
-		public void AddPolygon(OdbAttributePolygon polygon)
+		public void AddPolygon(OdbSymbolPolygon polygon)
 		{
 			Polygons.Add(polygon);
 		}
