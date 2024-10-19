@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\Event\Event.cs" />
+    <Compile Include="Model\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
+    <Compile Include="Model\Gdi\GdiShape.cs" />
     <Compile Include="Model\SmartGraphics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

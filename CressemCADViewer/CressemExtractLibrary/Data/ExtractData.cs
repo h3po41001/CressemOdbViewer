@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.IO.Compression;
+﻿using System.Drawing;
 
 namespace CressemExtractLibrary.Data
 {
@@ -20,5 +19,7 @@ namespace CressemExtractLibrary.Data
 		public abstract string[] GetStepNames();
 
 		public abstract string[] GetLayerNames(string stepName);
+
+		public abstract RectangleF GetStepRoi(string stepName);
 	}
 }

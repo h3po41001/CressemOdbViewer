@@ -1,4 +1,5 @@
-﻿using CressemExtractLibrary.Data;
+﻿using System.Drawing;
+using CressemExtractLibrary.Data;
 using CressemExtractLibrary.Extract;
 using CressemExtractLibrary.Extract.Gerber;
 using CressemExtractLibrary.Extract.Odb;
@@ -72,6 +73,14 @@ namespace CressemExtractLibrary
 				return null;
 
 			return _extractor.ExtractData.GetLayerNames(stepName);
+		}
+
+		public RectangleF GetStepRoi(string stepName)
+		{
+			if (_extractor is null)
+				return new RectangleF();
+
+			return _extractor.ExtractData.GetStepRoi(stepName);
 		}
 	}
 }

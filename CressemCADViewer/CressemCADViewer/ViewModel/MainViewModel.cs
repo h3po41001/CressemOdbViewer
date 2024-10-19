@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows;
+using CressemCADViewer.Factory;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
 using CressemExtractLibrary;
@@ -8,6 +9,7 @@ using CressemExtractLibrary.Data;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.ViewModel;
+using CressemExtractLibrary.Convert;
 
 namespace CressemCADViewer.ViewModel
 {
@@ -66,6 +68,25 @@ namespace CressemCADViewer.ViewModel
 
 			PropertyView.LayerNames = ExtractLibrary.Instance.GetLayerNames(
 				PropertyView.SelectedStepName);
+
+			RectangleF steRoi = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
+
+			DrawingFactory.Instance.InitGraphics(steRoi.Width, steRoi.Height);
+			if (GraphicsView.LoadImage(new Bitmap((int)(steRoi.Width + 0.5), (int)(steRoi.Height + 0.5))) is false)
+			{
+				MessageBox.Show("Load Image Error");
+			}
+
+			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.388374015748 + 1) * 10,
+					(float)Converter.Instance.ConvertInchToMM(0.365562992126f + 1) * 10), 
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.391736220472f + 1) * 10,
+					(float)Converter.Instance.ConvertInchToMM(0.366952755906f + 1) * 10), 
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.389766535433f + 1) * 10,
+					(float)Converter.Instance.ConvertInchToMM(0.366956102362f + 1) * 10)));
 		}
 
 		private void PropertyView_SelectedLayerChangedEvent(object sender, RoutedEventArgs e)

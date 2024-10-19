@@ -27,5 +27,10 @@ namespace ImageControl.ViewModel
 		{
 			return _graphics.LoadImage(image);
 		}
+
+		public void AddShape(GdiShape gdiShape)
+		{
+			_graphics.AddShape(gdiShape);
+		}
 	}
 }

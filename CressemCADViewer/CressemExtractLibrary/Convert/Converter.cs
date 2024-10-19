@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CressemExtractLibrary.Data.Odb;
+﻿using System.Drawing;
 
 namespace CressemExtractLibrary.Convert
 {
-	internal class Converter
+	public class Converter
 	{
 		private static Converter _convert;
 
@@ -41,6 +36,24 @@ namespace CressemExtractLibrary.Convert
 		public double ConvertMMToInch(double mm)
 		{
 			return mm / 25.4;
+		}
+
+		public RectangleF ConvertInchToMM(RectangleF inch)
+		{
+			return new RectangleF(
+				(float)ConvertInchToMM(inch.X), 
+				(float)ConvertInchToMM(inch.Y), 
+				(float)ConvertInchToMM(inch.Width), 
+				(float)ConvertInchToMM(inch.Height));
+		}
+
+		public RectangleF ConvertMMToInch(RectangleF mil)
+		{
+			return new RectangleF(
+				(float)ConvertMMToInch(mil.X),
+				(float)ConvertMMToInch(mil.Y),
+				(float)ConvertMMToInch(mil.Width),
+				(float)ConvertMMToInch(mil.Height));
 		}
 	}
 }

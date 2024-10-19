@@ -1,4 +1,6 @@
-﻿namespace CressemExtractLibrary.Data.Gerber
+﻿using System.Drawing;
+
+namespace CressemExtractLibrary.Data.Gerber
 {
 	internal class GerberData : ExtractData
 	{
@@ -14,6 +16,11 @@
 		}
 
 		public override string[] GetLayerNames(string stepName)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override RectangleF GetStepRoi(string stepName)
 		{
 			throw new System.NotImplementedException();
 		}

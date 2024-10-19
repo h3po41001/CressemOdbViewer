@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Drawing;
+using ImageControl.Model.Gdi;
 
 namespace ImageControl.Model
 {
 	internal abstract class SmartGraphics
 	{
-		public virtual event EventHandler<Point> CropImageEvent = delegate { };
-
 		protected SmartGraphics()
 		{
 		}
@@ -28,6 +27,8 @@ namespace ImageControl.Model
 		public abstract void Initialize();
 
 		public abstract bool LoadImage(Bitmap image);
+
+		public abstract void AddShape(GdiShape gdiShape);
 
 		public abstract void OnDraw();
 	}

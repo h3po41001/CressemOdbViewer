@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Media.Animation;
 using ImageControl.Extension;
 using ImageControl.Gdi.View;
 
@@ -10,14 +12,13 @@ namespace ImageControl.Model.Gdi
 {
 	internal class GdiGraphics : SmartGraphics
 	{
-		public override event EventHandler<Point> CropImageEvent = delegate { };
-
 		private WindowsFormsHost _gdiControl;
 		private GdiWinformView _gdiView = new GdiWinformView();
 		private Graphics _gdiGraphics;
 
 		private Bitmap _image = null;
 		private PointF _imageLT = new PointF(0, 0);
+		private List<GdiShape> _gdiShapes = new List<GdiShape>();
 
 		public GdiGraphics() : base()
 		{
@@ -48,6 +49,11 @@ namespace ImageControl.Model.Gdi
 			return true;
 		}
 
+		public override void AddShape(GdiShape gdiShape)
+		{
+			_gdiShapes.Add(gdiShape);
+		}
+
 		public override void OnDraw()
 		{
 			if (_image is null)
@@ -59,7 +65,7 @@ namespace ImageControl.Model.Gdi
 			_gdiGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 
 			var center = new PointF(
-				_gdiGraphics.ClipBounds.Size.Width / 2, 
+				_gdiGraphics.ClipBounds.Size.Width / 2,
 				_gdiGraphics.ClipBounds.Size.Height / 2);
 			var startXY = new PointF(
 				(center.X - _image.Width / 2) / ScreenZoom,
@@ -67,10 +73,11 @@ namespace ImageControl.Model.Gdi
 
 			_gdiGraphics.ScaleTransform(ScreenZoom, ScreenZoom);
 			_gdiGraphics.TranslateTransform(
-				OffsetSize.Width + startXY.X, 
+				OffsetSize.Width + startXY.X,
 				OffsetSize.Height + startXY.Y);
 
 			_gdiGraphics.DrawImage(_image, 0, 0);
+			DrawShapes();
 			_gdiGraphics.ResetTransform();
 		}
 
@@ -80,6 +87,17 @@ namespace ImageControl.Model.Gdi
 
 			OnDraw();
 			_gdiView.Invalidate();
+		}
+
+		private void DrawShapes()
+		{
+			foreach (var shape in _gdiShapes)
+			{
+				if (shape is GdiArc arc)
+				{
+					_gdiGraphics.DrawArc(new Pen(Color.Red, 0.1f), arc.Boundary, arc.StartAngle, arc.SweepAngle);
+				}
+			}
 		}
 
 		private void GdiMouseWheel(object sender, MouseEventArgs e)
@@ -123,7 +141,7 @@ namespace ImageControl.Model.Gdi
 			if (e.Button is MouseButtons.Left)
 			{
 				MousePos = new PointF(e.X - _gdiView.Location.X, e.Y - _gdiView.Location.Y);
-				
+
 				var displayCenter = _gdiView.Bounds.GetCenterF();
 				float newimagex = ((displayCenter.X - MousePos.X) / ScreenZoom);
 				float newimagey = ((displayCenter.Y - MousePos.Y) / ScreenZoom);
@@ -185,18 +203,6 @@ namespace ImageControl.Model.Gdi
 		{
 			if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
 			{
-				var displayCenter = _gdiView.Bounds.GetCenter();
-				var realOffset = new Size()
-				{
-					Width = (int)(-OffsetSize.Width),
-					Height = (int)(-OffsetSize.Height),
-				};
-
-				CropImageEvent(this, new Point()
-				{
-					X = realOffset.Width + (int)(displayCenter.X / ScreenZoom),
-					Y = realOffset.Height + (int)(displayCenter.Y / ScreenZoom),
-				});
 			}
 		}
 	}

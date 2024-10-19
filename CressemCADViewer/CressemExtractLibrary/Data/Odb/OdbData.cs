@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Matrix;
@@ -49,6 +51,49 @@ namespace CressemExtractLibrary.Data.Odb
 			}
 
 			return null;
+		}
+
+		public override RectangleF GetStepRoi(string stepName)
+		{
+			RectangleF stepRoi = new RectangleF();
+
+			foreach (OdbStep step in OdbSteps)
+			{
+				if (step.MatrixStep.Name.Equals(stepName) is true)
+				{
+					double left = double.MaxValue;
+					double right = double.MinValue;
+					double top = double.MinValue;
+					double bottom = double.MaxValue;
+					
+					bool isMM = false;
+					foreach (var feature in step.Profile.Features.FeatureList)
+					{
+						if (feature is OdbFeatureSurface surface)
+						{
+							foreach (var polygon in surface.Polygons)
+							{
+								right = polygon.Attributes.Max(x => x.X) > right ? polygon.Attributes.Max(x => x.X) : right;
+								left = polygon.Attributes.Min(x => x.X) < left ? polygon.Attributes.Min(x => x.X) : left;
+								top = polygon.Attributes.Max(x => x.Y) > top ? polygon.Attributes.Max(x => x.Y) : top;
+								bottom = polygon.Attributes.Min(x => x.Y) < bottom ? polygon.Attributes.Min(x => x.Y) : bottom;
+							}
+
+							isMM = feature.IsMM;
+							break;
+						}
+					}
+
+					stepRoi = new RectangleF((float)left, (float)top, (float)(right - left), (float)(top - bottom));
+					if (isMM is false)
+					{
+						stepRoi = Converter.Instance.ConvertInchToMM(stepRoi);
+					}
+					break;
+				}
+			}
+
+			return stepRoi;
 		}
 	}
 }

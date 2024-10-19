@@ -6,13 +6,10 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbSymbolPolygon() { }
 
-		public OdbSymbolPolygon(bool isMM, List<OdbPolygonAttr> attributes)
+		public OdbSymbolPolygon(List<OdbPolygonAttr> attributes)
 		{
-			IsMM = isMM;
 			Attributes = new List<OdbPolygonAttr>(attributes);
 		}
-
-		public bool IsMM { get; private set; }
 
 		public List<OdbPolygonAttr> Attributes { get; private set; }
 	}
@@ -21,12 +18,15 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		protected OdbPolygonAttr() { }
 
-		public OdbPolygonAttr(bool isMM)
+		public OdbPolygonAttr(double x, double y)
 		{
-			IsMM = isMM;
+			X = x;
+			Y = y;
 		}
 
-		public bool IsMM { get; private set; }
+		public double X { get; private set; }
+
+		public double Y { get; private set; }
 	}
 
 	/// <summary>
@@ -36,17 +36,11 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbPolygonOB() : base() { }
 
-		public OdbPolygonOB(double xbs, double ybs, string polygonType,
-			bool isMM) : base(isMM)
+		public OdbPolygonOB(double sbx, double sby, 
+			string polygonType) : base(sbx, sby)
 		{
-			XBS = xbs;
-			YBS = ybs;
 			PolygonType = polygonType;
 		}
-
-		public double XBS { get; private set; }
-
-		public double YBS { get; private set; }
 
 		// I : Island, H : Hole
 		public string PolygonType { get; private set; }
@@ -59,15 +53,9 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 	{
 		private OdbPolygonOS() : base() { }
 
-		public OdbPolygonOS(double x, double y, bool isMM) : base(isMM)
+		public OdbPolygonOS(double x, double y) : base(x, y)
 		{
-			X = x;
-			Y = y;
 		}
-
-		public double X { get; private set; }
-
-		public double Y { get; private set; }
 	}
 
 	/// <summary>
@@ -78,18 +66,12 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		private OdbPolygonOC() : base() { }
 
 		public OdbPolygonOC(double ex, double ey,
-			double cx, double cy, bool isClockWise, bool isMM) : base(isMM)
+			double cx, double cy, bool isClockWise) : base(ex, ey)
 		{
-			EndX = ex;
-			EndY = ey;
 			CurveX = cx;
 			CurveY = cy;
 			IsClockWise = isClockWise;
 		}
-
-		public double EndX { get; private set; }
-
-		public double EndY { get; private set; }
 
 		public double CurveX { get; private set; }
 
