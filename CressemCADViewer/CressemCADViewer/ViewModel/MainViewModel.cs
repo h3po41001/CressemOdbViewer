@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Documents;
 using CressemCADViewer.Factory;
 using CressemCADViewer.Model;
+using CressemCADViewer.Model.Shape;
 using CressemCADViewer.ViewModel.Control;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Convert;
@@ -12,7 +13,7 @@ using CressemExtractLibrary.Data;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemLogger;
 using CressemLogger.ViewModel;
-using ImageControl.Model.Gdi.Shape;
+using ImageControl.Shape.Interface;
 using ImageControl.ViewModel;
 
 namespace CressemCADViewer.ViewModel
@@ -81,52 +82,70 @@ namespace CressemCADViewer.ViewModel
 		private void PropertyView_LoadCamImageEvent(object sender, RoutedEventArgs e)
 		{
 			RectangleF stepRoi = ExtractLibrary.Instance.GetStepRoi("UNIT");
-			GraphicsView.LoadRoi(DrawingFactory.Instance.GetGdiRoi(stepRoi), 10.0f);
+			GraphicsView.LoadRoi(stepRoi, 10.0f);
 
 			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01");
 			GraphicsView.ClearShape();
 
-			//foreach (var feature in features)
+			foreach (var feature in features)
 			{
-				bool isFill = features[0].Polarity.Equals("P") is true;
+				bool isFill = feature.Polarity.Equals("P") is true;
 
-				if (features[0] is OdbFeatureSurface surface)
+				if (feature is OdbFeatureSurface surface)
 				{
-					foreach (var polygon in surface.Polygons)
-					{
-						bool isIsland = polygon.PolygonType.Equals("I");
+					//ShapeSurface shapeSurface = new ShapeSurface()
+					//{
+					//	PixelResolution = 10.0f,
+					//	IsFill = isFill,
+					//};
 
-						GdiGraphicsPath path = new GdiGraphicsPath(isFill ? isIsland : !isIsland, 10.0f);
+					//foreach (var polygon in surface.Polygons)
+					//{
+					//	bool isIsland = polygon.PolygonType.Equals("I");
 
-						foreach (var polyFeature in polygon.Features)
-						{							
-							if (polyFeature is OdbFeatureLine lineFeature)
-							{
-								path.AddShape(DrawingFactory.Instance.GetGdiLine(
-									new PointF(
-										(float)Converter.Instance.ConvertInchToMM(lineFeature.X),
-										(float)Converter.Instance.ConvertInchToMM(lineFeature.Y)),
-									new PointF(
-										(float)Converter.Instance.ConvertInchToMM(lineFeature.Ex),
-										(float)Converter.Instance.ConvertInchToMM(lineFeature.Ey))));
-							}
-							else if (polyFeature is OdbFeatureArc arcFeature)
-							{
-								path.AddShape(DrawingFactory.Instance.GetGdiArc(
-									new PointF(
-										(float)Converter.Instance.ConvertInchToMM(arcFeature.X),
-										(float)Converter.Instance.ConvertInchToMM(arcFeature.Y)),
-									new PointF(
-										(float)Converter.Instance.ConvertInchToMM(arcFeature.Ex),
-										(float)Converter.Instance.ConvertInchToMM(arcFeature.Ey)),
-									new PointF(
-										(float)Converter.Instance.ConvertInchToMM(arcFeature.Cx),
-										(float)Converter.Instance.ConvertInchToMM(arcFeature.Cy))));
-							}
-						}		
-						
-						GraphicsView.AddShape(path);
-					}
+					//	ShapePolygon shapePolygon = new ShapePolygon()
+					//	{
+					//		PixelResolution = 10.0f,
+					//		IsFill = isFill ? isIsland : !isIsland,
+					//	};
+
+					//	List<IShapeBase> shapes = new List<IShapeBase>();
+
+					//	foreach (var polyFeature in polygon.Features)
+					//	{
+					//		if (polyFeature is OdbFeatureLine lineFeature)
+					//		{
+					//			shapes.Add(DrawingFactory.Instance.GetShapeLine(
+					//				shapePolygon.IsFill,
+					//				new PointF(
+					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.X),
+					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.Y)),
+					//				new PointF(
+					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.Ex),
+					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.Ey))));
+					//		}
+					//		else if (polyFeature is OdbFeatureArc arcFeature)
+					//		{
+					//			shapes.Add(DrawingFactory.Instance.GetShapeArc(
+					//				shapePolygon.IsFill,
+					//				new PointF(
+					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.X),
+					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Y)),
+					//				new PointF(
+					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Ex),
+					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Ey)),
+					//				new PointF(
+					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Cx),
+					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Cy)),
+					//				arcFeature.Cw.Equals("Y")));
+					//		}
+					//	}
+
+					//	shapePolygon.Shapes = shapes;
+					//}
+
+
+					//GraphicsView.AddShape(shapePolygon);
 				}
 			}
 

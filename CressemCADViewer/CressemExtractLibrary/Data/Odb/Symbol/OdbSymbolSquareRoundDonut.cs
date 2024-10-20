@@ -1,9 +1,6 @@
-﻿using System.Drawing;
-using CressemExtractLibrary.Data.Odb.Symbol.Interface;
-
-namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolSquareRoundDonut : OdbSymbolSquare, IOdbSymbolSqureRoundDonut
+	internal class OdbSymbolSquareRoundDonut : OdbSymbolSquare
 	{
 		private OdbSymbolSquareRoundDonut() { }
 

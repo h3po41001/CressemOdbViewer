@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.Gdi;
-using ImageControl.Model.Gdi.Shape;
+using ImageControl.Shape.Interface;
 using ImageControl.View.Gdi;
 
 namespace ImageControl.ViewModel
@@ -42,9 +42,9 @@ namespace ImageControl.ViewModel
 			return _graphics.LoadRoi(roi, pixelResolution);
 		}
 
-		public void AddShape(GdiShape gdiShape)
+		public void AddShape(IShapeBase shape)
 		{
-			_graphics.AddShape(gdiShape);
+			_graphics.AddShape(shape);
 		}
 
 		public void ClearShape()

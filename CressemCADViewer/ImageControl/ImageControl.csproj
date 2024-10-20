@@ -46,14 +46,13 @@
   <ItemGroup>
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\Event\Event.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiArc.cs" />
+    <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiEllipse.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiLine.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiPie.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiGraphicsPath.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiRectangle.cs" />
-    <Compile Include="Model\Gdi\Shape\GdiShape.cs" />
+    <Compile Include="Shape\Gdi\GdiEllipse.cs" />
+    <Compile Include="Shape\Gdi\GdiLine.cs" />
+    <Compile Include="Shape\Gdi\GdiGraphicsPath.cs" />
+    <Compile Include="Shape\Gdi\GdiRectangle.cs" />
+    <Compile Include="Shape\Gdi\GdiShape.cs" />
     <Compile Include="Model\SmartGraphics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -68,6 +67,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Shape\Interface\IShapeArc.cs" />
+    <Compile Include="Shape\Interface\IShapeBase.cs" />
+    <Compile Include="Shape\Interface\IShapeEllipse.cs" />
+    <Compile Include="Shape\Interface\IShapeLine.cs" />
+    <Compile Include="Shape\Interface\IShapePolygon.cs" />
+    <Compile Include="Shape\Interface\IShapeRectangle.cs" />
+    <Compile Include="Shape\Interface\IShapeSurface.cs" />
+    <Compile Include="Shape\ShapeFactory.cs" />
     <Compile Include="ViewModel\GraphicsViewModel.cs" />
     <Compile Include="View\Gdi\GdiGraphicsView.xaml.cs">
       <DependentUpon>GdiGraphicsView.xaml</DependentUpon>

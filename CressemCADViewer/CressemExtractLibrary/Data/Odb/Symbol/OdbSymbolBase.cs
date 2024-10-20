@@ -1,9 +1,6 @@
-﻿using System.Drawing;
-using CressemExtractLibrary.Data.Odb.Symbol.Interface;
-
-namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal abstract class OdbSymbolBase : IOdbSymbolBase
+	internal abstract class OdbSymbolBase
 	{
 		protected OdbSymbolBase() { }
 

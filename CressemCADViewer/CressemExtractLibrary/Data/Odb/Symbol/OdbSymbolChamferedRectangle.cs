@@ -1,10 +1,8 @@
-﻿using System.Drawing;
-using System.Linq;
-using CressemExtractLibrary.Data.Odb.Symbol.Interface;
+﻿using System.Linq;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolChamferedRectangle : OdbSymbolEditedCorner, IOdbSymbolChamferedRectangle
+	internal class OdbSymbolChamferedRectangle : OdbSymbolEditedCorner
 	{
 		private OdbSymbolChamferedRectangle() { }
 

@@ -75,6 +75,13 @@
     <Compile Include="Factory\DrawingFactory.cs" />
     <Compile Include="Model\Enum.cs" />
     <Compile Include="Model\Processor.cs" />
+    <Compile Include="Model\Shape\ShapeArc.cs" />
+    <Compile Include="Model\Shape\ShapeBase.cs" />
+    <Compile Include="Model\Shape\ShapeEllipse.cs" />
+    <Compile Include="Model\Shape\ShapeLIne.cs" />
+    <Compile Include="Model\Shape\ShapePolygon.cs" />
+    <Compile Include="Model\Shape\ShapeRectangle.cs" />
+    <Compile Include="Model\Shape\ShapeSurface.cs" />
     <Compile Include="ViewModel\Control\AlarmViewModel.cs" />
     <Compile Include="ViewModel\Control\LogoViewModel.cs" />
     <Compile Include="ViewModel\Control\PropertyViewModel.cs" />

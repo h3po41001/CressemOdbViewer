@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using ImageControl.Model.Gdi.Shape;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model
 {
@@ -32,7 +32,7 @@ namespace ImageControl.Model
 
 		public abstract bool LoadRoi(RectangleF roi, float pixelResolution);
 
-		public abstract void AddShape(GdiShape gdiShape);
+		public abstract void AddShape(IShapeBase shape);
 
 		public abstract void ClearShape();
 

@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using ImageControl.Shape.Interface;
 
-namespace ImageControl.Model.Gdi.Shape
+namespace ImageControl.Model.Shape.Gdi
 {
-	public abstract class GdiShape
+	internal abstract class GdiShape
 	{
 		protected GdiShape() { }
 
@@ -13,12 +14,10 @@ namespace ImageControl.Model.Gdi.Shape
 			DefaultPen = new Pen(Color.White, 1f);
 		}
 
-		protected float PixelResolution { get; private set; }
+		public float PixelResolution { protected get; set; } = 1.0f;
 
 		protected Pen DefaultPen { get; private set; }
 
 		public abstract void Draw(Graphics graphics);
-
-		public abstract void AddPath(GraphicsPath path);
 	}
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
 	internal class OdbSymbolRoundedSquareThermal : OdbSymbolEditedCorner
 	{

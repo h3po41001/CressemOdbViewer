@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CressemExtractLibrary.Data.Odb.Feature;
+﻿using CressemExtractLibrary.Data.Odb.Feature;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {

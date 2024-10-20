@@ -6,7 +6,9 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using ImageControl.Extension;
 using ImageControl.Gdi.View;
-using ImageControl.Model.Gdi.Shape;
+using ImageControl.Model.Shape.Gdi;
+using ImageControl.Shape;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Gdi
 {
@@ -50,19 +52,19 @@ namespace ImageControl.Model.Gdi
 
 			PixelResolution = pixelResolution;
 			_roi = new RectangleF(
-				roi.X * pixelResolution, roi.Y * pixelResolution,
+				roi.X * pixelResolution, -roi.Y * pixelResolution,
 				roi.Width * pixelResolution, roi.Height * pixelResolution);
 
 			_image = new Bitmap(
-				(int)(roi.Width * pixelResolution), 
+				(int)(roi.Width * pixelResolution),
 				(int)(roi.Height * pixelResolution));
 
 			return true;
 		}
 
-		public override void AddShape(GdiShape gdiShape)
+		public override void AddShape(IShapeBase shape)
 		{
-			_gdiShapes.Add(gdiShape);
+			_gdiShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
 		}
 
 		public override void ClearShape()
@@ -202,8 +204,8 @@ namespace ImageControl.Model.Gdi
 					(int)(e.Y / ScreenZoom - OffsetSize.Height));
 
 				if (_image is null || _image.Size.IsEmpty is true)
-				{ 
-					return; 
+				{
+					return;
 				}
 
 				if (point.X > 0 && point.X < _image.Width &&

@@ -1,10 +1,6 @@
-﻿using System.Drawing;
-using System.Linq;
-using CressemExtractLibrary.Data.Odb.Symbol.Interface;
-
-namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRoundedSqureDonut : OdbSymbolEditedCorner, IOdbSymbolRoundedSqureDonut
+	internal class OdbSymbolRoundedSqureDonut : OdbSymbolEditedCorner
 	{
 		private OdbSymbolRoundedSqureDonut() { }
 

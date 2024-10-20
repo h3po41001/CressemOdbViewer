@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using ImageControl.Model.Gdi.Shape;
+using CressemCADViewer.Model.Shape;
 
 namespace CressemCADViewer.Factory
 {
@@ -23,30 +23,14 @@ namespace CressemCADViewer.Factory
 			}
 		}
 
-		public RectangleF GetGdiRoi(RectangleF roi)
+		public ShapeArc GetShapeArc()
 		{
-			return new RectangleF(roi.X, -roi.Y, roi.Width, roi.Height);
+			return null;
 		}
 
-		public GdiLine GetGdiLine(PointF start, PointF end)
+		public ShapeLine GetShapeLine()
 		{
-			return new GdiLine(
-				start.X, -start.Y, 
-				end.X, -end.Y, 10.0f);
-		}
-
-		public GdiArc GetGdiArc(PointF start, PointF end, PointF center)
-		{
-			double radius = Math.Sqrt(Math.Pow(start.X - center.X, 2) + Math.Pow(-(start.Y - center.Y), 2));
-			double startAngle = Math.Atan2(-(start.Y - center.Y), start.X - center.X) * (180 / Math.PI);
-			double endAngle = Math.Atan2(-(end.Y - center.Y), end.X - center.X) * (180 / Math.PI);
-			double sweepAngle = (endAngle - startAngle) <= 0 ? (endAngle - startAngle) + 360 : (endAngle - startAngle);
-
-			return new GdiArc(
-				(float)(center.X - radius),
-				(float)(-center.Y - radius),
-				(float)(radius * 2), (float)(radius * 2),
-				(float)startAngle, (float)sweepAngle, 10.0f);
+			return null;
 		}
 	}
 }

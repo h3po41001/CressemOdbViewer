@@ -1,9 +1,6 @@
-﻿using System.Drawing;
-using CressemExtractLibrary.Data.Odb.Symbol.Interface;
-
-namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRectangleDonut : OdbSymbolRectangle, IOdbSymbolRectangleDonut
+	internal class OdbSymbolRectangleDonut : OdbSymbolRectangle
 	{
 		protected OdbSymbolRectangleDonut()
 		{
