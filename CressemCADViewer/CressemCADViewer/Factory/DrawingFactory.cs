@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using ImageControl.Model.Gdi;
+using ImageControl.Model.Gdi.Shape;
 
 namespace CressemCADViewer.Factory
 {
@@ -23,34 +23,30 @@ namespace CressemCADViewer.Factory
 			}
 		}
 
-		public float Width { get; private set; }
-
-		public float Height { get; private set; }
-
-		public void InitGraphics(float width, float height)
+		public RectangleF GetGdiRoi(RectangleF roi)
 		{
-			Width = width;
-			Height = height;
+			return new RectangleF(roi.X, -roi.Y, roi.Width, roi.Height);
 		}
 
-		public void ClearGraphics()
+		public GdiLine GetGdiLine(PointF start, PointF end)
 		{
-			Width = 0;
-			Height = 0;
+			return new GdiLine(
+				start.X, -start.Y, 
+				end.X, -end.Y, 10.0f);
 		}
 
 		public GdiArc GetGdiArc(PointF start, PointF end, PointF center)
 		{
-			double radius = Math.Sqrt(Math.Pow(start.X - center.X, 2) + Math.Pow(start.Y - center.Y, 2));
-			double startAngle = Math.Atan2(start.Y - center.Y, start.X - center.X) * (180 / Math.PI);
-			double endAngle = Math.Atan2(end.Y - center.Y, end.X - center.X) * (180 / Math.PI);
-			double sweepAngle = (endAngle - startAngle) < 0 ? (endAngle - startAngle) + 360 : (endAngle - startAngle);
+			double radius = Math.Sqrt(Math.Pow(start.X - center.X, 2) + Math.Pow(-(start.Y - center.Y), 2));
+			double startAngle = Math.Atan2(-(start.Y - center.Y), start.X - center.X) * (180 / Math.PI);
+			double endAngle = Math.Atan2(-(end.Y - center.Y), end.X - center.X) * (180 / Math.PI);
+			double sweepAngle = (endAngle - startAngle) <= 0 ? (endAngle - startAngle) + 360 : (endAngle - startAngle);
 
-			return new GdiArc(new RectangleF(
+			return new GdiArc(
 				(float)(center.X - radius),
-				(float)(center.Y - radius),
-				(float)(radius * 2)+13, (float)(radius * 2)+13),
-				(float)startAngle, (float)sweepAngle);
+				(float)(-center.Y - radius),
+				(float)(radius * 2), (float)(radius * 2),
+				(float)startAngle, (float)sweepAngle, 10.0f);
 		}
 	}
 }

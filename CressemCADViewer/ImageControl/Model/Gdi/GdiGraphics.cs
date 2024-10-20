@@ -4,21 +4,22 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using System.Windows.Media.Animation;
 using ImageControl.Extension;
 using ImageControl.Gdi.View;
+using ImageControl.Model.Gdi.Shape;
 
 namespace ImageControl.Model.Gdi
 {
 	internal class GdiGraphics : SmartGraphics
 	{
-		private WindowsFormsHost _gdiControl;
-		private GdiWinformView _gdiView = new GdiWinformView();
-		private Graphics _gdiGraphics;
+		public override event EventHandler MouseMoveEvent = delegate { };
 
+		private readonly GdiWinformView _gdiView = new GdiWinformView();
+		private readonly List<GdiShape> _gdiShapes = new List<GdiShape>();
+		private WindowsFormsHost _gdiControl;
+		private Graphics _gdiGraphics;
 		private Bitmap _image = null;
-		private PointF _imageLT = new PointF(0, 0);
-		private List<GdiShape> _gdiShapes = new List<GdiShape>();
+		private RectangleF _roi = new RectangleF();
 
 		public GdiGraphics() : base()
 		{
@@ -40,12 +41,22 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadImage(Bitmap image)
+		public override bool LoadRoi(RectangleF roi, float pixelResolution)
 		{
-			if (image is null)
+			if (roi.IsEmpty is true)
+			{
 				return false;
+			}
 
-			_image = image.Clone() as Bitmap;
+			PixelResolution = pixelResolution;
+			_roi = new RectangleF(
+				roi.X * pixelResolution, roi.Y * pixelResolution,
+				roi.Width * pixelResolution, roi.Height * pixelResolution);
+
+			_image = new Bitmap(
+				(int)(roi.Width * pixelResolution), 
+				(int)(roi.Height * pixelResolution));
+
 			return true;
 		}
 
@@ -54,29 +65,30 @@ namespace ImageControl.Model.Gdi
 			_gdiShapes.Add(gdiShape);
 		}
 
+		public override void ClearShape()
+		{
+			_gdiShapes.Clear();
+		}
+
 		public override void OnDraw()
 		{
 			if (_image is null)
+			{
 				return;
+			}
 
 			_gdiGraphics.ResetTransform();
 
 			_gdiGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			_gdiGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 
-			var center = new PointF(
-				_gdiGraphics.ClipBounds.Size.Width / 2,
-				_gdiGraphics.ClipBounds.Size.Height / 2);
-			var startXY = new PointF(
-				(center.X - _image.Width / 2) / ScreenZoom,
-				(center.Y - _image.Height / 2) / ScreenZoom);
-
 			_gdiGraphics.ScaleTransform(ScreenZoom, ScreenZoom);
 			_gdiGraphics.TranslateTransform(
-				OffsetSize.Width + startXY.X,
-				OffsetSize.Height + startXY.Y);
+				OffsetSize.Width + _roi.X / ScreenZoom,
+				OffsetSize.Height + _roi.Y / ScreenZoom);
 
-			_gdiGraphics.DrawImage(_image, 0, 0);
+			_gdiGraphics.DrawImage(_image, _roi);
+			_gdiGraphics.DrawRectangle(new Pen(Color.Red, 0.1f), _roi.X, _roi.Y, _roi.Width, _roi.Height);
 			DrawShapes();
 			_gdiGraphics.ResetTransform();
 		}
@@ -93,10 +105,9 @@ namespace ImageControl.Model.Gdi
 		{
 			foreach (var shape in _gdiShapes)
 			{
-				if (shape is GdiArc arc)
-				{
-					_gdiGraphics.DrawArc(new Pen(Color.Red, 0.1f), arc.Boundary, arc.StartAngle, arc.SweepAngle);
-				}
+				//shape.Draw(_gdiGraphics, new Pen(Color.Red, 0.1f));
+				var path = new GdiGraphicsPath(new GdiShape[] { shape });
+				path.Draw(_gdiGraphics, new Pen(Color.Red, 0.1f));
 			}
 		}
 
@@ -165,6 +176,10 @@ namespace ImageControl.Model.Gdi
 
 		private void GdiMouseMove(object sender, MouseEventArgs e)
 		{
+			MousePos = new PointF(
+				e.X / ScreenZoom - OffsetSize.Width,
+				e.Y / ScreenZoom - OffsetSize.Height);
+
 			if (MousePressed && e.Button is MouseButtons.Left)
 			{
 				float deltaX = e.Location.X - MouseDown.X;
@@ -175,6 +190,8 @@ namespace ImageControl.Model.Gdi
 
 				_gdiView.Invalidate();
 			}
+
+			MouseMoveEvent(this, null);
 		}
 
 		private void GdiMouseUp(object sender, MouseEventArgs e)
@@ -186,23 +203,30 @@ namespace ImageControl.Model.Gdi
 					(int)(e.Y / ScreenZoom - OffsetSize.Height));
 
 				if (_image is null || _image.Size.IsEmpty is true)
-					return;
+				{ 
+					return; 
+				}
 
-				if (point.X <= 0 || point.X >= _image.Width ||
-					point.Y <= 0 || point.Y >= _image.Height)
+				if (point.X > 0 && point.X < _image.Width &&
+					point.Y > 0 && point.Y < _image.Height)
 				{
+					_gdiView.Invalidate();
 					return;
 				}
 			}
 
 			MousePressed = false;
-			_gdiView.Invalidate();
 		}
 
 		private void GdiPrevkeyDown(object sender, PreviewKeyDownEventArgs e)
 		{
 			if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
 			{
+			}
+			else if (e.KeyCode is Keys.Home)
+			{
+				ScreenZoom = 1.0f;
+				OffsetSize = new SizeF();
 			}
 		}
 	}

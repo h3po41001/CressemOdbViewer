@@ -46,9 +46,14 @@
   <ItemGroup>
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\Event\Event.cs" />
-    <Compile Include="Model\Gdi\GdiArc.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
-    <Compile Include="Model\Gdi\GdiShape.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiEllipse.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiLine.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiPie.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiGraphicsPath.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiRectangle.cs" />
+    <Compile Include="Model\Gdi\Shape\GdiShape.cs" />
     <Compile Include="Model\SmartGraphics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -94,6 +99,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CressemFramework\CressemFramework.csproj">
+      <Project>{2FCAAB5F-6F87-45E2-9DF4-92514D1671F1}</Project>
+      <Name>CressemFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

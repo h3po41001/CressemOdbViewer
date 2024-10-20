@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Drawing;
-using ImageControl.Model.Gdi;
+using ImageControl.Model.Gdi.Shape;
 
 namespace ImageControl.Model
 {
 	internal abstract class SmartGraphics
 	{
+		public abstract event EventHandler MouseMoveEvent;
+
 		protected SmartGraphics()
 		{
 		}
 
 		public object GraphicsControl { protected get; set; }
 
-		protected PointF MousePos { get; set; } = new PointF();
+		public PointF MousePos { get; set; } = new PointF();
 
-		protected SizeF OffsetSize { get; set; } = new SizeF();
+		public SizeF OffsetSize { get; set; } = new SizeF();
 
-		protected float ScreenZoom { get; set; }
+		public float ScreenZoom { get; set; }
+
+		protected float PixelResolution { get; set; }
 
 		protected PointF StartPos { get; set; }
 
@@ -26,9 +30,11 @@ namespace ImageControl.Model
 
 		public abstract void Initialize();
 
-		public abstract bool LoadImage(Bitmap image);
+		public abstract bool LoadRoi(RectangleF roi, float pixelResolution);
 
 		public abstract void AddShape(GdiShape gdiShape);
+
+		public abstract void ClearShape();
 
 		public abstract void OnDraw();
 	}

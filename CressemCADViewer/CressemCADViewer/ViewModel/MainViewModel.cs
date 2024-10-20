@@ -5,11 +5,11 @@ using CressemCADViewer.Factory;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
 using CressemExtractLibrary;
+using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.ViewModel;
-using CressemExtractLibrary.Convert;
 
 namespace CressemCADViewer.ViewModel
 {
@@ -68,30 +68,10 @@ namespace CressemCADViewer.ViewModel
 
 			PropertyView.LayerNames = ExtractLibrary.Instance.GetLayerNames(
 				PropertyView.SelectedStepName);
-
-			RectangleF steRoi = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
-
-			DrawingFactory.Instance.InitGraphics(steRoi.Width, steRoi.Height);
-			if (GraphicsView.LoadImage(new Bitmap((int)(steRoi.Width + 0.5), (int)(steRoi.Height + 0.5))) is false)
-			{
-				MessageBox.Show("Load Image Error");
-			}
-
-			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.388374015748 + 1) * 10,
-					(float)Converter.Instance.ConvertInchToMM(0.365562992126f + 1) * 10), 
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.391736220472f + 1) * 10,
-					(float)Converter.Instance.ConvertInchToMM(0.366952755906f + 1) * 10), 
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.389766535433f + 1) * 10,
-					(float)Converter.Instance.ConvertInchToMM(0.366956102362f + 1) * 10)));
 		}
 
 		private void PropertyView_SelectedLayerChangedEvent(object sender, RoutedEventArgs e)
 		{
-
 		}
 
 		private void PropertyView_LoadCamImageEvent(object sender, RoutedEventArgs e)
@@ -101,15 +81,71 @@ namespace CressemCADViewer.ViewModel
 				return;
 			}
 
-			if (PropertyView.SelectedLayerName is null)
-			{
-				return;
-			}
+			//if (PropertyView.SelectedLayerName is null)
+			//{
+			//	return;
+			//}
+
+			RectangleF stepRoi = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
+			GraphicsView.LoadRoi(DrawingFactory.Instance.GetGdiRoi(stepRoi), 10.0f);
+
+			GraphicsView.ClearShape();
+			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiLine(
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.10964587),
+					(float)Converter.Instance.ConvertInchToMM(0.21291939)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.11013169),
+					(float)Converter.Instance.ConvertInchToMM(0.21192992))));
+
+			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(0.209586614173),
+					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(0.209586614173),
+					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(0.216535433071),
+					(float)Converter.Instance.ConvertInchToMM(-0.216535433071))));
+
+			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.255905511811),
+					(float)Converter.Instance.ConvertInchToMM(-0.216535433071))));
+
+			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+					(float)Converter.Instance.ConvertInchToMM(-0.196850393701)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+					(float)Converter.Instance.ConvertInchToMM(-0.196850393701)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.255905511811),
+					(float)Converter.Instance.ConvertInchToMM(-0.196850393701))));
+
+			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.261415354331),
+					(float)Converter.Instance.ConvertInchToMM(-0.255692519685)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.261415354331),
+					(float)Converter.Instance.ConvertInchToMM(-0.255692519685)),
+				new PointF(
+					(float)Converter.Instance.ConvertInchToMM(-0.260332677165),
+					(float)Converter.Instance.ConvertInchToMM(-0.255692519685))));
 		}
 
 		private void LogoView_LogoDoubleClickedEvent(object sender, EventArgs e)
 		{
-			Processor.Run(DesignFormat.Odb, "D:\\Odb\\demo_design.tgz", "D:\\Odb\\demo_design\\");
+			Processor.Run(DesignFormat.Odb, "D:\\Odb\\21fcb008-01.tgz", "D:\\Odb\\21fcb008-01");
 		}
 
 		private void Processor_ProcessStarted(object sender, bool e)

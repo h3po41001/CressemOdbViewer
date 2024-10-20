@@ -5,9 +5,18 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 mc:Ignorable="d">
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="0.98*" />
+			<RowDefinition Height="0.02*" />
+		</Grid.RowDefinitions>
 		<ContentControl Content="{Binding GraphicsView}"
 						IsHitTestVisible="False"
+						Grid.Row="0"
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch" />
+		<TextBlock Text="{Binding Coordinate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+				   Grid.Row="1"
+				   HorizontalAlignment="Center"
+				   VerticalAlignment="Center" />
 	</Grid>
 </UserControl>

@@ -1,16 +1,18 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Controls;
+using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.Gdi;
+using ImageControl.Model.Gdi.Shape;
 using ImageControl.View.Gdi;
 
 namespace ImageControl.ViewModel
 {
-	public class GraphicsViewModel
+	public class GraphicsViewModel : ObservableObject
 	{
-		private SmartGraphics _graphics = null;
-		private Control _graphicsView = null;
+		private readonly SmartGraphics _graphics = null;
+		private readonly Control _graphicsView = null;
+		private string _coordinate = string.Empty;
 
 		public GraphicsViewModel() 
 		{
@@ -18,19 +20,41 @@ namespace ImageControl.ViewModel
 			_graphics = new GdiGraphics();
 			
 			_graphicsView.DataContext = _graphics;
+			
 			_graphics.Initialize();
+			_graphics.MouseMoveEvent += Graphics_MouseMoveEvent;
 		}
 
 		public Control GraphicsView { get => _graphicsView; }
 
-		public bool LoadImage(Bitmap image)
+		public string Coordinate
 		{
-			return _graphics.LoadImage(image);
+			get => _coordinate;
+			set
+			{
+				_coordinate = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public bool LoadRoi(RectangleF roi, float pixelResolution)
+		{
+			return _graphics.LoadRoi(roi, pixelResolution);
 		}
 
 		public void AddShape(GdiShape gdiShape)
 		{
 			_graphics.AddShape(gdiShape);
+		}
+
+		public void ClearShape()
+		{
+			_graphics.ClearShape();
+		}
+
+		private void Graphics_MouseMoveEvent(object sender, object e)
+		{
+			Coordinate = $"X: {_graphics.MousePos.X}, Y: {_graphics.MousePos.Y}, Zoom: {_graphics.ScreenZoom}";
 		}
 	}
 }
