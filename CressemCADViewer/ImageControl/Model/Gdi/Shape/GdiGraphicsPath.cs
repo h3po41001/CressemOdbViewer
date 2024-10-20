@@ -29,15 +29,15 @@ namespace ImageControl.Model.Gdi.Shape
 				graphics.FillPath(new SolidBrush(Color.Black), GraphicsPath);
 		}
 
-		public override void AddPath(GraphicsPath path, Pen pen)
+		public override void AddPath(GraphicsPath path)
 		{
 			path.AddPath(GraphicsPath, false);
 		}
 
 		public void AddShape(GdiShape shape)
 		{
+			shape.AddPath(GraphicsPath);
 			Shapes.Add(shape);
-			shape.AddPath(GraphicsPath, new Pen(Color.Black, 0.01f));
 		}
 	}
 }

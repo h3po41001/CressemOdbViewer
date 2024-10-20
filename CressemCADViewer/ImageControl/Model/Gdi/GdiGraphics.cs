@@ -88,7 +88,8 @@ namespace ImageControl.Model.Gdi
 				OffsetSize.Height + _roi.Y / ScreenZoom);
 
 			_gdiGraphics.DrawImage(_image, _roi);
-			_gdiGraphics.DrawRectangle(new Pen(Color.Red, 0.1f), _roi.X, _roi.Y, _roi.Width, _roi.Height);
+			_gdiGraphics.FillRectangle(new SolidBrush(Color.Black), _roi.X, _roi.Y, _roi.Width, _roi.Height);
+
 			DrawShapes();
 			_gdiGraphics.ResetTransform();
 		}
@@ -105,7 +106,7 @@ namespace ImageControl.Model.Gdi
 		{
 			foreach (var shape in _gdiShapes)
 			{
-				shape.Draw(_gdiGraphics, new Pen(Color.Red, 0.1f));
+				shape.Draw(_gdiGraphics);
 			}
 		}
 
