@@ -43,18 +43,18 @@ namespace ImageControl.Model.Gdi.Shape
 
 		public float SweepAngle { get; private set; }
 
-		public override void Draw(Graphics graphics, Pen pen)
+		public override void Draw(Graphics graphics)
 		{
-			graphics.DrawArc(pen,
+			graphics.DrawArc(DefaultPen,
 				X * PixelResolution, Y * PixelResolution,
 				Width * PixelResolution, Height * PixelResolution,
 				StartAngle, SweepAngle);
 		}
 
-		public override void AddPath(GraphicsPath path, Pen pen)
+		public override void AddPath(GraphicsPath path)
 		{
 			path.AddArc(
-				X * PixelResolution, Y * PixelResolution,
+				X * PixelResolution, Y * PixelResolution,	
 				Width * PixelResolution, Height * PixelResolution,
 				StartAngle, SweepAngle);
 		}

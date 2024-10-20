@@ -57,7 +57,7 @@
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeName.cs" />
-    <Compile Include="Data\Odb\Symbol\OdbSymbolPolygon.cs" />
+    <Compile Include="Data\Odb\Feature\OdbFeaturePolygon.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeTextString.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureArc.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureBarcode.cs" />

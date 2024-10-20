@@ -1,32 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 
 namespace ImageControl.Model.Gdi.Shape
 {
-	internal class GdiGraphicsPath
+	public class GdiGraphicsPath : GdiShape
 	{
 		private GdiGraphicsPath() { }
 
-		public GdiGraphicsPath(IEnumerable<GdiShape> shapes)
+		public GdiGraphicsPath(bool isFill, float pixelResolution) : base(pixelResolution)
 		{
-			Shapes = shapes;
+			IsFill = isFill;
+			Shapes = new List<GdiShape>();
 			GraphicsPath = new GraphicsPath();
 		}
 
-		public IEnumerable<GdiShape> Shapes { get; private set; }
+		public bool IsFill { get; private set; }
+
+		public List<GdiShape> Shapes { get; private set; }
 
 		public GraphicsPath GraphicsPath { get; private set; }
 
-		public void Draw(Graphics graphics, Pen pen)
+		public override void Draw(Graphics graphics)
 		{
-			foreach (var shape in Shapes)
-			{
-				shape.AddPath(GraphicsPath, pen);
-			}
+			if (IsFill)
+				graphics.FillPath(new SolidBrush(Color.White), GraphicsPath);
+			else
+				graphics.FillPath(new SolidBrush(Color.Black), GraphicsPath);
+		}
 
-			graphics.FillPath(new SolidBrush(pen.Color), GraphicsPath);
+		public override void AddPath(GraphicsPath path, Pen pen)
+		{
+			path.AddPath(GraphicsPath, false);
+		}
+
+		public void AddShape(GdiShape shape)
+		{
+			Shapes.Add(shape);
+			shape.AddPath(GraphicsPath, new Pen(Color.Black, 0.01f));
 		}
 	}
 }

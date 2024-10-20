@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using CressemExtractLibrary.Data;
+using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Extract;
 using CressemExtractLibrary.Extract.Gerber;
 using CressemExtractLibrary.Extract.Odb;
@@ -81,6 +82,21 @@ namespace CressemExtractLibrary
 				return new RectangleF();
 
 			return _extractor.ExtractData.GetStepRoi(stepName);
+		}
+
+		public OdbFeatureBase[] GetFeatures(string stepName, string layerName)
+		{
+			if (_extractor is null)
+			{
+				return null;
+			}
+
+			if (string.IsNullOrEmpty(stepName) || string.IsNullOrEmpty(layerName))
+			{
+				return null;
+			}
+
+			return _extractor.ExtractData.GetFeatures(stepName, layerName);
 		}
 	}
 }

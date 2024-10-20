@@ -105,9 +105,7 @@ namespace ImageControl.Model.Gdi
 		{
 			foreach (var shape in _gdiShapes)
 			{
-				//shape.Draw(_gdiGraphics, new Pen(Color.Red, 0.1f));
-				var path = new GdiGraphicsPath(new GdiShape[] { shape });
-				path.Draw(_gdiGraphics, new Pen(Color.Red, 0.1f));
+				shape.Draw(_gdiGraphics, new Pen(Color.Red, 0.1f));
 			}
 		}
 

@@ -33,16 +33,16 @@ namespace ImageControl.Model.Gdi.Shape
 
 		public float Height { get; private set; }
 
-		public override void Draw(Graphics graphics, Pen pen)
+		public override void Draw(Graphics graphics)
 		{
-			graphics.DrawEllipse(pen,
+			graphics.DrawEllipse(DefaultPen,
 				X * PixelResolution,
 				Y * PixelResolution,
 				Width * PixelResolution,
 				Height * PixelResolution);
 		}
 
-		public override void AddPath(GraphicsPath path, Pen pen)
+		public override void AddPath(GraphicsPath path)
 		{
 			throw new System.NotImplementedException();
 		}

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageControl.Model.Gdi.Shape
 {
@@ -15,12 +10,15 @@ namespace ImageControl.Model.Gdi.Shape
 		protected GdiShape(float pixelResolution)
 		{
 			PixelResolution = pixelResolution;
+			DefaultPen = new Pen(Color.White, 1f);
 		}
 
 		protected float PixelResolution { get; private set; }
 
-		public abstract void Draw(Graphics graphics, Pen pen);
+		protected Pen DefaultPen { get; private set; }
 
-		public abstract void AddPath(GraphicsPath path, Pen pen);
+		public abstract void Draw(Graphics graphics);
+
+		public abstract void AddPath(GraphicsPath path);
 	}
 }

@@ -35,14 +35,14 @@ namespace ImageControl.Model.Gdi.Shape
 
 		public float Y2 { get; private set; }
 
-		public override void Draw(Graphics graphics, Pen pen)
+		public override void Draw(Graphics graphics)
 		{
-			graphics.DrawLine(pen, 
+			graphics.DrawLine(DefaultPen, 
 				X1 * PixelResolution, Y1 * PixelResolution,
 				X2 * PixelResolution, Y2 * PixelResolution);
 		}
 
-		public override void AddPath(GraphicsPath path, Pen pen)
+		public override void AddPath(GraphicsPath path)
 		{
 			path.AddLine(
 				X1 * PixelResolution, Y1 * PixelResolution,

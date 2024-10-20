@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using CressemExtractLibrary.Data.Odb.Feature;
 
 namespace CressemExtractLibrary.Data
 {
@@ -21,5 +22,7 @@ namespace CressemExtractLibrary.Data
 		public abstract string[] GetLayerNames(string stepName);
 
 		public abstract RectangleF GetStepRoi(string stepName);
+
+		public abstract OdbFeatureBase[] GetFeatures(string stepName, string layerName);
 	}
 }

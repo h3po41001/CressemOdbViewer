@@ -3,20 +3,20 @@ using CressemExtractLibrary.Data.Odb.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	internal class OdbFeatureSurface : OdbFeatureBase
+	public class OdbFeatureSurface : OdbFeatureBase
 	{
 		private OdbFeatureSurface()
 		{
 		}
 
 		public OdbFeatureSurface(int index, bool isMM, string polarity, string decode) : 
-			base(index, isMM, polarity, decode)
+			base(index, isMM, 0, 0, polarity, decode)
 		{
 		}
 
-		public List<OdbSymbolPolygon> Polygons { get; private set; } = new List<OdbSymbolPolygon>();
+		public List<OdbFeaturePolygon> Polygons { get; private set; } = new List<OdbFeaturePolygon>();
 
-		public void AddPolygon(OdbSymbolPolygon polygon)
+		public void AddPolygon(OdbFeaturePolygon polygon)
 		{
 			Polygons.Add(polygon);
 		}

@@ -1,23 +1,18 @@
 ﻿namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	internal class OdbFeatureLine : OdbFeatureBase
+	public class OdbFeatureLine : OdbFeatureBase
 	{
 		private OdbFeatureLine() { }
 
 		public OdbFeatureLine(int index, bool isMM,
 			double sx, double sy, double ex, double ey,
-			int symbolNum, string polarity, string decode) : base(index, isMM, polarity, decode)
+			int symbolNum, string polarity, 
+			string decode) : base(index, isMM, sx, sy, polarity, decode)
 		{
-			Sx = sx;
-			Sy = sy;
 			Ex = ex;
 			Ey = ey;
 			SymbolNum = symbolNum;
 		}
-
-		public double Sx { get; private set; }
-
-		public double Sy { get; private set; }
 
 		public double Ex { get; private set; }
 

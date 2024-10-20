@@ -4,6 +4,7 @@ using System.Linq;
 using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Font;
+using CressemExtractLibrary.Data.Odb.Layer;
 using CressemExtractLibrary.Data.Odb.Matrix;
 using CressemExtractLibrary.Data.Odb.Step;
 using CressemExtractLibrary.Data.Odb.Symbol;
@@ -73,10 +74,13 @@ namespace CressemExtractLibrary.Data.Odb
 						{
 							foreach (var polygon in surface.Polygons)
 							{
-								right = polygon.Attributes.Max(x => x.X) > right ? polygon.Attributes.Max(x => x.X) : right;
-								left = polygon.Attributes.Min(x => x.X) < left ? polygon.Attributes.Min(x => x.X) : left;
-								top = polygon.Attributes.Max(x => x.Y) > top ? polygon.Attributes.Max(x => x.Y) : top;
-								bottom = polygon.Attributes.Min(x => x.Y) < bottom ? polygon.Attributes.Min(x => x.Y) : bottom;
+								foreach (var polyFeature in polygon.Features)
+								{
+										left = polyFeature.X < left ? polyFeature.X : left;
+										right = polyFeature.X > right ? polyFeature.X : right;
+										top = polyFeature.Y > top ? polyFeature.Y : top;
+										bottom = polyFeature.Y < bottom ? polyFeature.Y : bottom;
+								}
 							}
 
 							isMM = feature.IsMM;
@@ -94,6 +98,25 @@ namespace CressemExtractLibrary.Data.Odb
 			}
 
 			return stepRoi;
+		}
+
+		public override OdbFeatureBase[] GetFeatures(string stepName, string layerName)
+		{
+			foreach (OdbStep step in OdbSteps)
+			{
+				if (step.MatrixStep.Name.Equals(stepName) is true)
+				{					
+					foreach (OdbLayer layer in step.Layers)
+					{
+						if (layer.MatrixLayer.Name.Equals(layerName) is true)
+						{
+							return layer.Features.FeatureList.ToArray();
+						}
+					}
+				}
+			}
+
+			return null;
 		}
 	}
 }

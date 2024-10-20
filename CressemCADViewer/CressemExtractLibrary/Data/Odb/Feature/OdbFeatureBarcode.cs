@@ -15,10 +15,9 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			string name, string font, string polarity,
 			double e, double elementWidth, double barcodeHeight, 
 			string fasc, string checkSum, string invertBg, 
-			string astr, string astrPos, string text) : base(index, isMM, polarity, "")
+			string astr, string astrPos, 
+			string text) : base(index, isMM, x, y, polarity, "")
 		{
-			X = x;
-			Y = y;
 			Name = name;
 			Font = font;
 			E = e;
@@ -31,10 +30,6 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			AstrPos = astrPos;
 			Text = text;
 		}
-
-		public double X { get; private set; }
-
-		public double Y { get; private set; }
 
 		public string Name { get; private set; }
 

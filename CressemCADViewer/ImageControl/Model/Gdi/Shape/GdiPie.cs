@@ -42,12 +42,12 @@ namespace ImageControl.Model.Gdi.Shape
 
 		public float SweepAngle { get; private set; }
 
-		public override void Draw(Graphics graphics, Pen pen)
+		public override void Draw(Graphics graphics)
 		{
-			graphics.DrawPie(pen, X, Y, Width, Height, StartAngle, SweepAngle);
+			graphics.DrawPie(DefaultPen, X, Y, Width, Height, StartAngle, SweepAngle);
 		}
 
-		public override void AddPath(GraphicsPath path, Pen pen)
+		public override void AddPath(GraphicsPath path)
 		{
 			throw new System.NotImplementedException();
 		}

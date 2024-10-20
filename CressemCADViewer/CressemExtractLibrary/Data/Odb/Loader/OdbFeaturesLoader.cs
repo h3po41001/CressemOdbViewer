@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Xml.Schema;
 using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Symbol;
@@ -184,23 +185,25 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 				if (splited[0].Equals("OB") is true)
 				{
-					if (double.TryParse(splited[1], out double sbx) is false)
+					if (double.TryParse(splited[1], out double sx) is false)
 					{
 						continue;
 					}
 
-					if (double.TryParse(splited[2], out double sby) is false)
+					if (double.TryParse(splited[2], out double sy) is false)
 					{
 						continue;
 					}
 
 					// I : Island, H : Hole
-					string polyType = splited[3];                       
+					string polyType = splited[3];
 
-					List<OdbPolygonAttr> polygonAttrList = new List<OdbPolygonAttr>
-					{
-						new OdbPolygonOB(sbx, sby, polyType)
-					};
+					//List<OdbPolygonAttr> polygonAttrList = new List<OdbPolygonAttr>
+					//{
+					//	new OdbPolygonOB(sbx, sby, polyType)
+					//};
+
+					OdbFeaturePolygon polygon = new OdbFeaturePolygon(polyType);
 
 					// Define of one polygon
 					while (reader.EndOfStream is false)
@@ -211,36 +214,30 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Equals("OE") is true)
 						{
-							surface.AddPolygon(new OdbSymbolPolygon(polygonAttrList));
+							surface.AddPolygon(polygon);
 							break;
+						}
+
+						if (double.TryParse(splited[1], out double x) is false)
+						{
+							continue;
+						}
+
+						if (double.TryParse(splited[2], out double y) is false)
+						{
+							continue;
 						}
 
 						if (splited[0].Equals("OS") is true)
 						{
-							if (double.TryParse(splited[1], out double x) is false)
-							{
-								continue;
-							}
+							polygon.Features.Add(new OdbFeatureLine(index, isMM, 
+								sx, sy, x, y, -1, "", ""));
 
-							if (double.TryParse(splited[2], out double y) is false)
-							{
-								continue;
-							}
-
-							polygonAttrList.Add(new OdbPolygonOS(x, y));
+							sx = x;
+							sy = y;
 						}
 						else if (splited[0].Equals("OC") is true)
 						{
-							if (double.TryParse(splited[1], out double ex) is false)
-							{
-								continue;
-							}
-
-							if (double.TryParse(splited[2], out double ey) is false)
-							{
-								continue;
-							}
-
 							if (double.TryParse(splited[3], out double cx) is false)
 							{
 								continue;
@@ -251,8 +248,11 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 								continue;
 							}
 
-							bool isClockWise = splited[5].Equals("Y");
-							polygonAttrList.Add(new OdbPolygonOC(ex, ey, cx, cy, isClockWise));
+							polygon.Features.Add(new OdbFeatureArc(index, isMM,
+									sx, sy, x, y, cx, cy, -1, "", "", splited[5]));
+
+							sx = x;
+							sy = y;
 						}
 					}
 				}

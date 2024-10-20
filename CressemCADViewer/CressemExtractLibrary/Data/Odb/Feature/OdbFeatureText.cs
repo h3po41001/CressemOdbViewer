@@ -13,10 +13,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public OdbFeatureText(int index, bool isMM, double x, double y,
 			string font, string polarity, int orientDef,
 			double sizeX, double sizeY, double widthFactor,
-			string text, int version) : base(index, isMM, polarity, "")
+			string text, int version) : base(index, isMM, x, y, polarity, "")
 		{
-			X = x;
-			Y = y;
 			Font = font;
 			OrientDef = orientDef;
 			SizeX = sizeX;
@@ -25,10 +23,6 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			Text = text;
 			Version = version;
 		}
-
-		public double X { get; private set; }
-
-		public double Y { get; private set; }
 
 		public string Font { get; private set; }
 

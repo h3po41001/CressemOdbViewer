@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using CressemExtractLibrary.Data.Odb.Feature;
 
 namespace CressemExtractLibrary.Data.Gerber
 {
@@ -21,6 +22,11 @@ namespace CressemExtractLibrary.Data.Gerber
 		}
 
 		public override RectangleF GetStepRoi(string stepName)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override OdbFeatureBase[] GetFeatures(string stepName, string layerName)
 		{
 			throw new System.NotImplementedException();
 		}

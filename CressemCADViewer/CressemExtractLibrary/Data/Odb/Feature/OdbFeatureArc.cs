@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	internal class OdbFeatureArc : OdbFeatureBase
+	public class OdbFeatureArc : OdbFeatureBase
 	{
 		private OdbFeatureArc() { }
 
 		public OdbFeatureArc(int index, bool isMM, double sx, double sy,
 			double ex, double ey,
 			double cx, double cy, int symbolNum, 
-			string polarity, string decode, string cw) : base(index, isMM, polarity, decode)
+			string polarity, string decode, 
+			string cw) : base(index, isMM, sx, sy, polarity, decode)
 		{
-			Sx = sx;
-			Sy = sy;
 			Ex = ex;
 			Ey = ey;
 			Cx = cx;
@@ -24,10 +23,6 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			SymbolNum = symbolNum;
 			Cw = cw;
 		}
-
-		public double Sx { get; private set; }
-
-		public double Sy { get; private set; }
 
 		public double Ex { get; private set; }
 

@@ -12,17 +12,12 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public OdbFeaturePad(int index, bool isMM,
 			double x, double y, int symbolNum,
-			string polarity, string decode, int orientDef) : base(index, isMM, polarity, decode)
+			string polarity, string decode,
+			int orientDef) : base(index, isMM, x, y, polarity, decode)
 		{
-			X = x;
-			Y = y;
 			SymbolNum = symbolNum;
 			OrientDef = orientDef;
 		}
-
-		public double X { get; private set; }
-
-		public double Y { get; private set; }
 
 		public int SymbolNum { get; private set; }
 
@@ -64,7 +59,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			return new OdbFeaturePad(index, isMM, x, y, 
+			return new OdbFeaturePad(index, isMM, x, y,
 				symbolNum, param[4], param[5], orientDef);
 		}
 	}

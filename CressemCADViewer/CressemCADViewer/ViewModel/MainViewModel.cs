@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Documents;
 using CressemCADViewer.Factory;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data;
+using CressemExtractLibrary.Data.Odb.Feature;
 using CressemLogger;
 using CressemLogger.ViewModel;
+using ImageControl.Model.Gdi.Shape;
 using ImageControl.ViewModel;
 
 namespace CressemCADViewer.ViewModel
@@ -76,71 +80,124 @@ namespace CressemCADViewer.ViewModel
 
 		private void PropertyView_LoadCamImageEvent(object sender, RoutedEventArgs e)
 		{
-			if (PropertyView.SelectedStepName is null)
+			RectangleF stepRoi = ExtractLibrary.Instance.GetStepRoi("UNIT");
+			GraphicsView.LoadRoi(DrawingFactory.Instance.GetGdiRoi(stepRoi), 10.0f);
+
+			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01");
+			GraphicsView.ClearShape();
+
+			//foreach (var feature in features)
 			{
-				return;
+				bool isFill = features[0].Polarity.Equals("P") is true;
+
+				if (features[0] is OdbFeatureSurface surface)
+				{
+					foreach (var polygon in surface.Polygons)
+					{
+						bool isIsland = polygon.PolygonType.Equals("I");
+
+						GdiGraphicsPath path = new GdiGraphicsPath(isFill ? isIsland : !isIsland, 10.0f);
+
+						foreach (var polyFeature in polygon.Features)
+						{							
+							if (polyFeature is OdbFeatureLine lineFeature)
+							{
+								path.AddShape(DrawingFactory.Instance.GetGdiLine(
+									new PointF(
+										(float)Converter.Instance.ConvertInchToMM(lineFeature.X),
+										(float)Converter.Instance.ConvertInchToMM(lineFeature.Y)),
+									new PointF(
+										(float)Converter.Instance.ConvertInchToMM(lineFeature.Ex),
+										(float)Converter.Instance.ConvertInchToMM(lineFeature.Ey))));
+							}
+							else if (polyFeature is OdbFeatureArc arcFeature)
+							{
+								path.AddShape(DrawingFactory.Instance.GetGdiArc(
+									new PointF(
+										(float)Converter.Instance.ConvertInchToMM(arcFeature.X),
+										(float)Converter.Instance.ConvertInchToMM(arcFeature.Y)),
+									new PointF(
+										(float)Converter.Instance.ConvertInchToMM(arcFeature.Ex),
+										(float)Converter.Instance.ConvertInchToMM(arcFeature.Ey)),
+									new PointF(
+										(float)Converter.Instance.ConvertInchToMM(arcFeature.Cx),
+										(float)Converter.Instance.ConvertInchToMM(arcFeature.Cy))));
+							}
+						}		
+						
+						GraphicsView.AddShape(path);
+					}
+				}
 			}
+
+			//if (PropertyView.SelectedStepName is null)
+			//{
+			//	return;
+			//}
 
 			//if (PropertyView.SelectedLayerName is null)
 			//{
 			//	return;
 			//}
 
-			RectangleF stepRoi = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
-			GraphicsView.LoadRoi(DrawingFactory.Instance.GetGdiRoi(stepRoi), 10.0f);
+			//RectangleF stepRoi = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
+			//GraphicsView.LoadRoi(DrawingFactory.Instance.GetGdiRoi(stepRoi), 10.0f);
 
-			GraphicsView.ClearShape();
-			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiLine(
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.10964587),
-					(float)Converter.Instance.ConvertInchToMM(0.21291939)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.11013169),
-					(float)Converter.Instance.ConvertInchToMM(0.21192992))));
+			//var features = ExtractLibrary.Instance.GetFeatures(
+			//	PropertyView.SelectedStepName,
+			//	PropertyView.SelectedLayerName);
 
-			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(0.209586614173),
-					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(0.209586614173),
-					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(0.216535433071),
-					(float)Converter.Instance.ConvertInchToMM(-0.216535433071))));
+			//GraphicsView.AddShape(DrawingFactory.Instance.GetGdiLine(
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.10964587),
+			//		(float)Converter.Instance.ConvertInchToMM(0.21291939)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.11013169),
+			//		(float)Converter.Instance.ConvertInchToMM(0.21192992))));
 
-			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
-					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
-					(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.255905511811),
-					(float)Converter.Instance.ConvertInchToMM(-0.216535433071))));
+			//GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(0.209586614173),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(0.209586614173),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(0.216535433071),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.216535433071))));
 
-			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
-					(float)Converter.Instance.ConvertInchToMM(-0.196850393701)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
-					(float)Converter.Instance.ConvertInchToMM(-0.196850393701)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.255905511811),
-					(float)Converter.Instance.ConvertInchToMM(-0.196850393701))));
+			//GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.216535433071)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.255905511811),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.216535433071))));
 
-			GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.261415354331),
-					(float)Converter.Instance.ConvertInchToMM(-0.255692519685)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.261415354331),
-					(float)Converter.Instance.ConvertInchToMM(-0.255692519685)),
-				new PointF(
-					(float)Converter.Instance.ConvertInchToMM(-0.260332677165),
-					(float)Converter.Instance.ConvertInchToMM(-0.255692519685))));
+			//GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.196850393701)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.262854330709),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.196850393701)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.255905511811),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.196850393701))));
+
+			//GraphicsView.AddShape(DrawingFactory.Instance.GetGdiArc(
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.261415354331),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.255692519685)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.261415354331),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.255692519685)),
+			//	new PointF(
+			//		(float)Converter.Instance.ConvertInchToMM(-0.260332677165),
+			//		(float)Converter.Instance.ConvertInchToMM(-0.255692519685))));
 		}
 
 		private void LogoView_LogoDoubleClickedEvent(object sender, EventArgs e)
