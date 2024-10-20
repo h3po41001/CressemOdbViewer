@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
-using System.Windows.Documents;
-using CressemCADViewer.Factory;
 using CressemCADViewer.Model;
 using CressemCADViewer.Model.Shape;
 using CressemCADViewer.ViewModel.Control;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data;
+using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemLogger;
 using CressemLogger.ViewModel;
@@ -91,61 +90,30 @@ namespace CressemCADViewer.ViewModel
 			{
 				bool isFill = feature.Polarity.Equals("P") is true;
 
-				if (feature is OdbFeatureSurface surface)
+				if (feature is IFeatureSurface surface)
 				{
-					//ShapeSurface shapeSurface = new ShapeSurface()
-					//{
-					//	PixelResolution = 10.0f,
-					//	IsFill = isFill,
-					//};
+					foreach (var polygon in surface.Polygons)
+					{
+						bool isIsland = polygon.PolygonType.Equals("I");
+						List<IShapeBase> shapes = new List<IShapeBase>();
 
-					//foreach (var polygon in surface.Polygons)
-					//{
-					//	bool isIsland = polygon.PolygonType.Equals("I");
+						foreach (var polyFeature in polygon.Features)
+						{
+							if (polyFeature is IFeatureLine lineFeature)
+							{
+								shapes.Add(ShapeLine.Create(10.0f, lineFeature));									
+							}
+							else if (polyFeature is IFeatureArc arcFeature)
+							{
+								shapes.Add(ShapeArc.Create(10.0f, arcFeature));
+							}
+						}
 
-					//	ShapePolygon shapePolygon = new ShapePolygon()
-					//	{
-					//		PixelResolution = 10.0f,
-					//		IsFill = isFill ? isIsland : !isIsland,
-					//	};
-
-					//	List<IShapeBase> shapes = new List<IShapeBase>();
-
-					//	foreach (var polyFeature in polygon.Features)
-					//	{
-					//		if (polyFeature is OdbFeatureLine lineFeature)
-					//		{
-					//			shapes.Add(DrawingFactory.Instance.GetShapeLine(
-					//				shapePolygon.IsFill,
-					//				new PointF(
-					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.X),
-					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.Y)),
-					//				new PointF(
-					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.Ex),
-					//					(float)Converter.Instance.ConvertInchToMM(lineFeature.Ey))));
-					//		}
-					//		else if (polyFeature is OdbFeatureArc arcFeature)
-					//		{
-					//			shapes.Add(DrawingFactory.Instance.GetShapeArc(
-					//				shapePolygon.IsFill,
-					//				new PointF(
-					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.X),
-					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Y)),
-					//				new PointF(
-					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Ex),
-					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Ey)),
-					//				new PointF(
-					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Cx),
-					//					(float)Converter.Instance.ConvertInchToMM(arcFeature.Cy)),
-					//				arcFeature.Cw.Equals("Y")));
-					//		}
-					//	}
-
-					//	shapePolygon.Shapes = shapes;
-					//}
+						// shapePolygon.Shapes = shapes;
+					}
 
 
-					//GraphicsView.AddShape(shapePolygon);
+					// GraphicsView.AddShape(shapePolygon);
 				}
 			}
 

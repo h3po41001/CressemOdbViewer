@@ -56,6 +56,14 @@
     <Compile Include="Data\ExtractData.cs" />
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />
+    <Compile Include="Data\Interface\Features\IFeatureArc.cs" />
+    <Compile Include="Data\Interface\Features\IFeatureBarcode.cs" />
+    <Compile Include="Data\Interface\Features\IFeatureBase.cs" />
+    <Compile Include="Data\Interface\Features\IFeatureLine.cs" />
+    <Compile Include="Data\Interface\Features\IFeaturePad.cs" />
+    <Compile Include="Data\Interface\Features\IFeaturePolygon.cs" />
+    <Compile Include="Data\Interface\Features\IFeatureSurface.cs" />
+    <Compile Include="Data\Interface\Features\IFeatureText.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeName.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeaturePolygon.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeTextString.cs" />

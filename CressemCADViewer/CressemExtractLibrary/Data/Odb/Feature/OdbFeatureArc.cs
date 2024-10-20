@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CressemExtractLibrary.Data.Interface.Features;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	public class OdbFeatureArc : OdbFeatureBase
+	internal class OdbFeatureArc : OdbFeatureBase, IFeatureArc
 	{
 		private OdbFeatureArc() { }
 
@@ -21,7 +17,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			Cx = cx;
 			Cy = cy;
 			SymbolNum = symbolNum;
-			Cw = cw;
+			// Y : CW, N : CCW
+			IsClockWise = cw.Equals("Y") is true;
 		}
 
 		public double Ex { get; private set; }
@@ -34,8 +31,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public int SymbolNum { get; private set; }
 
-		// Y : CW, N : CCW
-		public string Cw { get; private set; }
+		public bool IsClockWise { get; private set; }
 
 		public static OdbFeatureArc Create(int index, bool isMM, string[] param)
 		{

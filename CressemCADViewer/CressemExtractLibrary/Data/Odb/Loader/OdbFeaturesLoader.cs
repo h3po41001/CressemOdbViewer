@@ -230,7 +230,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Equals("OS") is true)
 						{
-							polygon.Features.Add(new OdbFeatureLine(index, isMM, 
+							polygon.AddFeature(new OdbFeatureLine(index, isMM, 
 								sx, sy, x, y, -1, "", ""));
 
 							sx = x;
@@ -248,7 +248,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 								continue;
 							}
 
-							polygon.Features.Add(new OdbFeatureArc(index, isMM,
+							polygon.AddFeature(new OdbFeatureArc(index, isMM,
 									sx, sy, x, y, cx, cy, -1, "", "", splited[5]));
 
 							sx = x;

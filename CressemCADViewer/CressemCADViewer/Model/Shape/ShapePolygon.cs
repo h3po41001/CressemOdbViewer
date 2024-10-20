@@ -10,6 +10,8 @@ namespace CressemCADViewer.Model.Shape
 		{
 		}
 
-		public IEnumerable<IShapeBase> Shapes { get; set; }
+		public bool IsFill { get; private set; }
+
+		public IEnumerable<IShapeBase> Shapes { get; private set; }
 	}
 }

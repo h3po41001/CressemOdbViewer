@@ -72,7 +72,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Factory\DrawingFactory.cs" />
     <Compile Include="Model\Enum.cs" />
     <Compile Include="Model\Processor.cs" />
     <Compile Include="Model\Shape\ShapeArc.cs" />
@@ -152,6 +151,9 @@
       <Project>{1a85f6f8-1748-44eb-8107-932361ffa434}</Project>
       <Name>ImageControl</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Factory\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

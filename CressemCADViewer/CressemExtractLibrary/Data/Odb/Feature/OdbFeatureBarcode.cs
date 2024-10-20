@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
+using CressemExtractLibrary.Data.Interface.Features;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	internal class OdbFeatureBarcode : OdbFeatureBase
+	internal class OdbFeatureBarcode : OdbFeatureBase, IFeatureBarcode
 	{
 		private OdbFeatureBarcode() { }
 

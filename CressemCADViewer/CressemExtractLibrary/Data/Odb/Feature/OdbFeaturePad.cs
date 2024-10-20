@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CressemExtractLibrary.Data.Interface.Features;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	internal class OdbFeaturePad : OdbFeatureBase
+	internal class OdbFeaturePad : OdbFeatureBase, IFeaturePad
 	{
 		private OdbFeaturePad() { }
 

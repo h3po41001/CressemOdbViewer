@@ -1,6 +1,8 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Feature
+﻿using CressemExtractLibrary.Data.Interface.Features;
+
+namespace CressemExtractLibrary.Data.Odb.Feature
 {
-	public class OdbFeatureBase
+	public class OdbFeatureBase : IFeatureBase
 	{
 		protected OdbFeatureBase() { }
 

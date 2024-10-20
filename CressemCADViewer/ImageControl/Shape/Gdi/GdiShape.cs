@@ -14,7 +14,7 @@ namespace ImageControl.Model.Shape.Gdi
 			DefaultPen = new Pen(Color.White, 1f);
 		}
 
-		public float PixelResolution { protected get; set; } = 1.0f;
+		public float PixelResolution { get; private set; } = 1.0f;
 
 		protected Pen DefaultPen { get; private set; }
 

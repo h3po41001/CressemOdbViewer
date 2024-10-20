@@ -2,29 +2,16 @@
 {
 	public interface IShapeArc : IShapeBase
 	{
-		float Sx { get; set; }
+		float X { get; }
 
-		float Sy { get; set; }
+		float Y { get; }
 
-		float Ex { get; set; }
+		float Width { get; }
 
-		float Ey { get; set; }
+		float Height { get; }
 
-		float Cx { get; set; }
+		float StartAngle { get; }
 
-		float Cy { get; set; }
-
-		bool IsClockWise { get; set; }
-		//float X { set; }
-
-		//float Y { set; }
-
-		//float Width { set; }
-
-		//float Height { set; }
-
-		//float StartAngle { set; }
-
-		//float SweepAngle { set; }
+		float SweepAngle { get; }
 	}
 }

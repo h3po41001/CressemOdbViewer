@@ -2,12 +2,12 @@
 {
 	public interface IShapeLine : IShapeBase
 	{
-		float Sx { get; set; }
+		float Sx { get; }
 
-		float Sy { get; set; }
+		float Sy { get; }
 
-		float Ex { get; set; }
+		float Ex { get; }
 
-		float Ey { get; set; }
+		float Ey { get; }
 	}
 }

@@ -4,12 +4,13 @@ namespace CressemCADViewer.Model.Shape
 {
 	internal class ShapeBase : IShapeBase
 	{
-		protected ShapeBase()
+		protected ShapeBase() { }
+
+		protected ShapeBase(float pixelResolution)
 		{
+			PixelResolution = pixelResolution;
 		}
 
-		public float PixelResolution { get; set; }
-
-		public bool IsFill { get; set; }
+		public float PixelResolution { get; private set; }
 	}
 }
