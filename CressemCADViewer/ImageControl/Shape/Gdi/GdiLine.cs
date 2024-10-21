@@ -6,17 +6,18 @@ namespace ImageControl.Model.Shape.Gdi
 {
 	internal class GdiLine : GdiShape
 	{
-		private GdiLine()
+		private GdiLine() : base()
 		{
 		}
 
-		public GdiLine(IShapeLine shapeLine) : 
-			base(shapeLine.PixelResolution)
+		public GdiLine(float pixelResolution,
+			float sx, float sy,
+			float ex, float ey) : base(pixelResolution)
 		{
-			Sx = shapeLine.Sx;
-			Sy = -shapeLine.Sy;
-			Ex = shapeLine.Ex;
-			Ey = -shapeLine.Ey;
+			Sx = sx;
+			Sy = sy;
+			Ex = ex;
+			Ey = ey;
 		}
 
 		public float Sx { get; private set; }

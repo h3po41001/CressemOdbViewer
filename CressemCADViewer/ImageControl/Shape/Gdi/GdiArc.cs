@@ -5,19 +5,21 @@ using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiArc : GdiShape, IShapeArc
+	internal class GdiArc : GdiShape
 	{
 		private GdiArc() { }
 
-		public GdiArc(IShapeArc shape) : base(shape.PixelResolution)
+		public GdiArc(float pixelResolution,
+			float x, float y,
+			float width, float height,
+			float startAngle, float sweepAngle) : base(pixelResolution)
 		{
-			X = shape.X;
-			Y = shape.Y;
-			Width = shape.Width;
-			Height = shape.Height;
-			StartAngle = shape.StartAngle;
-			SweepAngle = shape.SweepAngle;
-
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
+			StartAngle = startAngle;
+			SweepAngle = sweepAngle;
 		}
 
 		public float X { get; private set; }

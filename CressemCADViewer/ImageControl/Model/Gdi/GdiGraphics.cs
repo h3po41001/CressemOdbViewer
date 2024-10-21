@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using ImageControl.Extension;
 using ImageControl.Gdi.View;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape;
+using ImageControl.Shape.Gdi;
 using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Gdi
@@ -43,23 +45,27 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadRoi(RectangleF roi, float pixelResolution)
+		public override bool LoadRoi(IShapeBase roiShape)
 		{
-			if (roi.IsEmpty is true)
+			if (roiShape is null)
 			{
 				return false;
 			}
 
-			PixelResolution = pixelResolution;
-			_roi = new RectangleF(
-				roi.X * pixelResolution, -roi.Y * pixelResolution,
-				roi.Width * pixelResolution, roi.Height * pixelResolution);
+			PixelResolution = roiShape.PixelResolution;
 
-			_image = new Bitmap(
-				(int)(roi.Width * pixelResolution),
-				(int)(roi.Height * pixelResolution));
-
-			return true;
+			var shape = ShapeFactory.Instance.CreateGdiShape(roiShape);
+			if (shape is GdiSurface surface)
+			{
+				var bounds = surface.Polygons.Select(x => x.GraphicsPath.GetBounds());
+				_roi = bounds.GetBounds();
+				_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public override void AddShape(IShapeBase shape)
@@ -108,6 +114,11 @@ namespace ImageControl.Model.Gdi
 		{
 			foreach (var shape in _gdiShapes)
 			{
+				if (shape is null)
+				{
+					continue;
+				}
+
 				shape.Draw(_gdiGraphics);
 			}
 		}

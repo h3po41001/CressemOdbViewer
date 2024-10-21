@@ -8,12 +8,14 @@ namespace ImageControl.Model.Shape.Gdi
 	{
 		private GdiEllipse() { }
 
-		public GdiEllipse(IShapeEllipse shapeEllipse) : base(shapeEllipse.PixelResolution)
+		public GdiEllipse(float pixelResolution,
+			float x, float y,
+			float width, float height) : base(pixelResolution)
 		{
-			X = shapeEllipse.X;
-			Y = -shapeEllipse.Y;
-			Width = shapeEllipse.Width;
-			Height = shapeEllipse.Height;
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
 		}
 
 		public float X { get; private set; }

@@ -37,9 +37,9 @@ namespace ImageControl.ViewModel
 			}
 		}
 
-		public bool LoadRoi(RectangleF roi, float pixelResolution)
+		public bool LoadRoi(IShapeBase roiShape)
 		{
-			return _graphics.LoadRoi(roi, pixelResolution);
+			return _graphics.LoadRoi(roiShape);
 		}
 
 		public void AddShape(IShapeBase shape)

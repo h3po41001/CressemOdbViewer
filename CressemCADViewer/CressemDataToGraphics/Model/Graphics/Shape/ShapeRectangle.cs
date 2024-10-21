@@ -1,6 +1,6 @@
 ﻿using ImageControl.Shape.Interface;
 
-namespace CressemCADViewer.Model.Shape
+namespace CressemDataToGraphics.Model.Graphics.Shape
 {
 	internal class ShapeRectangle : ShapeBase, IShapeRectangle
 	{
@@ -15,5 +15,15 @@ namespace CressemCADViewer.Model.Shape
 		public float Width { get; set; }
 
 		public float Height { get; set; }
+
+		public static IShapeRectangle CreateGdiPlus(float pixelResolution)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public static IShapeRectangle CreateOpenGl()
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

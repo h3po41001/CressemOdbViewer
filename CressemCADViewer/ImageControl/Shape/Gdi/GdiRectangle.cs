@@ -8,13 +8,14 @@ namespace ImageControl.Model.Shape.Gdi
 	{
 		private GdiRectangle() { }
 
-		public GdiRectangle(IShapeRectangle shapeRectangle) : 
-			base(shapeRectangle.PixelResolution)
+		public GdiRectangle(float pixelResolution, 
+			float x, float y, 
+			float width, float height) : base(pixelResolution)
 		{
-			X = shapeRectangle.X;
-			Y = -shapeRectangle.Y;
-			Width = shapeRectangle.Width;
-			Height = shapeRectangle.Height;
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
 		}
 
 		public float X { get; private set; }

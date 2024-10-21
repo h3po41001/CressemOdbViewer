@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CressemExtractLibrary.Convert;
-using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Layer;
-using CressemExtractLibrary.Data.Odb.Matrix;
 using CressemExtractLibrary.Data.Odb.Step;
 
 namespace CressemExtractLibrary.Data.Odb.Loader
@@ -128,30 +124,30 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							}
 							else if (splited[0].Equals("X"))
 							{
-								if (double.TryParse(splited[1], out x) is true)
+								if (double.TryParse(splited[1], out x) is false)
 								{
-									x = Converter.Instance.ConvertInchToMM(x);
+									continue;
 								}
 							}
 							else if (splited[0].Equals("Y"))
 							{
-								if (double.TryParse(splited[1], out y) is true)
+								if (double.TryParse(splited[1], out y) is false)
 								{
-									y = Converter.Instance.ConvertInchToMM(y);
+									continue;
 								}
 							}
 							else if (splited[0].Equals("DX"))
 							{
-								if (double.TryParse(splited[1], out dx) is true)
+								if (double.TryParse(splited[1], out dx) is false)
 								{
-									dx = Converter.Instance.ConvertInchToMM(dx);
+									continue;
 								}
 							}
 							else if (splited[0].Equals("DY"))
 							{
-								if (double.TryParse(splited[1], out dy) is true)
+								if (double.TryParse(splited[1], out dy) is false)
 								{
-									dy = Converter.Instance.ConvertInchToMM(dy);
+									continue;
 								}
 							}
 							else if (splited[0].Equals("NX"))
@@ -197,58 +193,58 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Trim().Equals("X_DATUM"))
 						{
-							if (double.TryParse(splited[1], out xDatum) is true)
+							if (double.TryParse(splited[1], out xDatum) is false)
 							{
-								xDatum = Converter.Instance.ConvertInchToMM(xDatum);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("Y_DATUM"))
 						{
-							if (double.TryParse(splited[1], out yDatum) is true)
+							if (double.TryParse(splited[1], out yDatum) is false)
 							{
-								yDatum = Converter.Instance.ConvertInchToMM(yDatum);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("X_ORIGIN"))
 						{
-							if (double.TryParse(splited[1], out xOrigin) is true)
+							if (double.TryParse(splited[1], out xOrigin) is false)
 							{
-								xOrigin = Converter.Instance.ConvertInchToMM(xOrigin);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("Y_ORIGIN"))
 						{
-							if (double.TryParse(splited[1], out yOrigin) is true)
+							if (double.TryParse(splited[1], out yOrigin) is false)
 							{
-								yOrigin = Converter.Instance.ConvertInchToMM(yOrigin);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("TOP_ACTIVE"))
 						{
-							if (double.TryParse(splited[1], out topActive) is true)
+							if (double.TryParse(splited[1], out topActive) is false)
 							{
-								topActive = Converter.Instance.ConvertInchToMM(topActive);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("BOTTOM_ACTIVE"))
 						{
-							if (double.TryParse(splited[1], out bottomActive) is true)
+							if (double.TryParse(splited[1], out bottomActive) is false)
 							{
-								bottomActive = Converter.Instance.ConvertInchToMM(bottomActive);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("RIGHT_ACTIVE"))
 						{
-							if (double.TryParse(splited[1], out rightActive) is true)
+							if (double.TryParse(splited[1], out rightActive) is false)
 							{
-								rightActive = Converter.Instance.ConvertInchToMM(rightActive);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("LEFT_ACTIVE"))
 						{
-							if (double.TryParse(splited[1], out leftActive) is true)
+							if (double.TryParse(splited[1], out leftActive) is false)
 							{
-								leftActive = Converter.Instance.ConvertInchToMM(leftActive);
+								continue;
 							}
 						}
 						else if (splited[0].Trim().Equals("AFFECTING_BOM"))

@@ -1,6 +1,6 @@
 ﻿using ImageControl.Shape.Interface;
 
-namespace CressemCADViewer.Model.Shape
+namespace CressemDataToGraphics.Model.Graphics.Shape
 {
 	internal class ShapeBase : IShapeBase
 	{

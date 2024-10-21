@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Convert\Converter.cs" />
     <Compile Include="Data\ExtractData.cs" />
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\Gerber\GerberData.cs" />

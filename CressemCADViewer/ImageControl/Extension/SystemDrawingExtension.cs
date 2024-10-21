@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageControl.Extension
 {
-	public static class SystemDrawingExtension
+	internal static class SystemDrawingExtension
 	{
 		public static Point GetCenter(this Rectangle rect)
 		{
@@ -27,6 +24,16 @@ namespace ImageControl.Extension
 		public static PointF GetCenterF(this RectangleF rect)
 		{
 			return new PointF((rect.Right - rect.Left) * 0.5f, (rect.Bottom - rect.Top) * 0.5f);
+		}
+
+		public static RectangleF GetBounds(this IEnumerable<RectangleF> rectangles)
+		{
+			float left = rectangles.Min(x => x.Left);
+			float top = rectangles.Min(x => x.Top);
+			float right = rectangles.Max(x => x.Right);
+			float bottom = rectangles.Max(x => x.Bottom);
+
+			return new RectangleF(left, top, right - left, bottom - top);
 		}
 	}
 }

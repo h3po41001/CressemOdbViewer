@@ -30,7 +30,7 @@ namespace ImageControl.Model
 
 		public abstract void Initialize();
 
-		public abstract bool LoadRoi(RectangleF roi, float pixelResolution);
+		public abstract bool LoadRoi(IShapeBase roiShape);
 
 		public abstract void AddShape(IShapeBase shape);
 

@@ -4,6 +4,8 @@ namespace ImageControl.Shape.Interface
 {
 	public interface IShapeSurface : IShapeBase
 	{
-		IEnumerable<IShapePolygon> Polygons { get; set; }
+		bool IsPositive { get; }
+
+		IEnumerable<IShapePolygon> Polygons { get; }
 	}
 }

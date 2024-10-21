@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using CressemExtractLibrary.Convert;
-
-namespace CressemExtractLibrary.Data.Odb.Step
+﻿namespace CressemExtractLibrary.Data.Odb.Step
 {
 	internal class OdbStepRepeat
 	{

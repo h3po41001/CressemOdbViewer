@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using CressemCADViewer.Model;
-using CressemCADViewer.Model.Shape;
 using CressemCADViewer.ViewModel.Control;
+using CressemDataToGraphics;
+using CressemDataToGraphics.Converter;
+using CressemDataToGraphics.Model;
 using CressemExtractLibrary;
-using CressemExtractLibrary.Convert;
 using CressemExtractLibrary.Data;
-using CressemExtractLibrary.Data.Interface.Features;
-using CressemExtractLibrary.Data.Odb.Feature;
 using CressemLogger;
 using CressemLogger.ViewModel;
-using ImageControl.Shape.Interface;
 using ImageControl.ViewModel;
 
 namespace CressemCADViewer.ViewModel
@@ -80,41 +77,50 @@ namespace CressemCADViewer.ViewModel
 
 		private void PropertyView_LoadCamImageEvent(object sender, RoutedEventArgs e)
 		{
-			RectangleF stepRoi = ExtractLibrary.Instance.GetStepRoi("UNIT");
-			GraphicsView.LoadRoi(stepRoi, 10.0f);
+			// 임시
+			// inch 표시와 mm표시 구분해야함
+			// 아래는 전체에 어떻게 표시할지
+			// 데이터 상에는 자기 자신의 값 형태 있음
+			bool useMM = true;
 
+			var profile = ExtractLibrary.Instance.GetStepRoi("UNIT");		
 			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01");
+			DataToGraphics dataToGraphics = new DataToGraphics(10.0f, GraphicsType.GdiPlus);
+
 			GraphicsView.ClearShape();
+			GraphicsView.LoadRoi(dataToGraphics.GetShape(useMM, profile));
 
 			foreach (var feature in features)
 			{
-				bool isFill = feature.Polarity.Equals("P") is true;
+				GraphicsView.AddShape(dataToGraphics.GetShape(useMM, feature));
 
-				if (feature is IFeatureSurface surface)
-				{
-					foreach (var polygon in surface.Polygons)
-					{
-						bool isIsland = polygon.PolygonType.Equals("I");
-						List<IShapeBase> shapes = new List<IShapeBase>();
+				//bool isFill = feature.Polarity.Equals("P") is true;
 
-						foreach (var polyFeature in polygon.Features)
-						{
-							if (polyFeature is IFeatureLine lineFeature)
-							{
-								shapes.Add(ShapeLine.Create(10.0f, lineFeature));									
-							}
-							else if (polyFeature is IFeatureArc arcFeature)
-							{
-								shapes.Add(ShapeArc.Create(10.0f, arcFeature));
-							}
-						}
+				//if (feature is IFeatureSurface surface)
+				//{
+				//	foreach (var polygon in surface.Polygons)
+				//	{
+				//		bool isIsland = polygon.PolygonType.Equals("I");
+				//		List<IShapeBase> shapes = new List<IShapeBase>();
 
-						// shapePolygon.Shapes = shapes;
-					}
+				//		foreach (var polyFeature in polygon.Features)
+				//		{
+				//			if (polyFeature is IFeatureLine lineFeature)
+				//			{
+				//				shapes.Add(ShapeLine.Create(10.0f, lineFeature));									
+				//			}
+				//			else if (polyFeature is IFeatureArc arcFeature)
+				//			{
+				//				shapes.Add(ShapeArc.Create(10.0f, arcFeature));
+				//			}
+				//		}
+
+				//		// shapePolygon.Shapes = shapes;
+				//	}
 
 
-					// GraphicsView.AddShape(shapePolygon);
-				}
+				//	// GraphicsView.AddShape(shapePolygon);
+				//}
 			}
 
 			//if (PropertyView.SelectedStepName is null)

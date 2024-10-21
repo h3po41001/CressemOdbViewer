@@ -44,13 +44,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extension\GdiObjectExtension.cs" />
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\Event\Event.cs" />
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
     <Compile Include="Shape\Gdi\GdiEllipse.cs" />
     <Compile Include="Shape\Gdi\GdiLine.cs" />
-    <Compile Include="Shape\Gdi\GdiGraphicsPath.cs" />
+    <Compile Include="Shape\Gdi\GdiPolygon.cs" />
     <Compile Include="Shape\Gdi\GdiRectangle.cs" />
     <Compile Include="Shape\Gdi\GdiShape.cs" />
     <Compile Include="Model\SmartGraphics.cs" />
@@ -67,6 +68,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Shape\Gdi\GdiSurface.cs" />
     <Compile Include="Shape\Interface\IShapeArc.cs" />
     <Compile Include="Shape\Interface\IShapeBase.cs" />
     <Compile Include="Shape\Interface\IShapeEllipse.cs" />

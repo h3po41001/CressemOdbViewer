@@ -74,13 +74,6 @@
     </Compile>
     <Compile Include="Model\Enum.cs" />
     <Compile Include="Model\Processor.cs" />
-    <Compile Include="Model\Shape\ShapeArc.cs" />
-    <Compile Include="Model\Shape\ShapeBase.cs" />
-    <Compile Include="Model\Shape\ShapeEllipse.cs" />
-    <Compile Include="Model\Shape\ShapeLIne.cs" />
-    <Compile Include="Model\Shape\ShapePolygon.cs" />
-    <Compile Include="Model\Shape\ShapeRectangle.cs" />
-    <Compile Include="Model\Shape\ShapeSurface.cs" />
     <Compile Include="ViewModel\Control\AlarmViewModel.cs" />
     <Compile Include="ViewModel\Control\LogoViewModel.cs" />
     <Compile Include="ViewModel\Control\PropertyViewModel.cs" />
@@ -135,6 +128,10 @@
     <Resource Include="Resources\Stop_Ing.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CressemDataToGraphics\CressemDataToGraphics.csproj">
+      <Project>{7a851f8a-71ff-471c-9935-51523876fa1e}</Project>
+      <Name>CressemDataToGraphics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CressemExtractLibrary\CressemExtractLibrary.csproj">
       <Project>{082ec76a-fac5-480c-bb6f-27f636eeaf7c}</Project>
       <Name>CressemExtractLibrary</Name>
@@ -152,8 +149,6 @@
       <Name>ImageControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Factory\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
