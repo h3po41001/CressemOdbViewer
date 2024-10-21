@@ -13,7 +13,9 @@
 						IsHitTestVisible="False"
 						Grid.Row="0"
 						HorizontalAlignment="Stretch"
-						VerticalAlignment="Stretch" />
+						VerticalAlignment="Stretch"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center" />
 		<TextBlock Text="{Binding Coordinate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
 				   Grid.Row="1"
 				   HorizontalAlignment="Center"

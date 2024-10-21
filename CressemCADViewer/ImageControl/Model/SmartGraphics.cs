@@ -24,7 +24,9 @@ namespace ImageControl.Model
 
 		protected PointF StartPos { get; set; }
 
-		protected PointF MouseDown { get; set; }
+		protected PointF WindowPos { get; set; }
+
+		protected PointF ProductPos { get; set; }
 
 		protected bool MousePressed { get; set; }
 

@@ -83,8 +83,8 @@ namespace CressemCADViewer.ViewModel
 			// 데이터 상에는 자기 자신의 값 형태 있음
 			bool useMM = true;
 
-			var profile = ExtractLibrary.Instance.GetStepRoi("UNIT");		
-			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01");
+			var profile = ExtractLibrary.Instance.GetStepRoi("STRIP");		
+			var features = ExtractLibrary.Instance.GetFeatures("STRIP", "L01");
 			DataToGraphics dataToGraphics = new DataToGraphics(10.0f, GraphicsType.GdiPlus);
 
 			GraphicsView.ClearShape();
@@ -195,7 +195,7 @@ namespace CressemCADViewer.ViewModel
 
 		private void LogoView_LogoDoubleClickedEvent(object sender, EventArgs e)
 		{
-			Processor.Run(DesignFormat.Odb, "D:\\Odb\\21fcb008-01.tgz", "D:\\Odb\\21fcb008-01");
+			Processor.Run(DesignFormat.Odb, "D:\\Odb_Test\\21fcb008-01.tgz", "D:\\Odb_Test\\21fcb008-01");
 		}
 
 		private void Processor_ProcessStarted(object sender, bool e)

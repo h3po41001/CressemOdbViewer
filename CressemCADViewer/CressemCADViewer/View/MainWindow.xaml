@@ -63,7 +63,9 @@
 										  ItemHeight="0.8*"
 										  ShowCaption="True"
 										  ShowPinButton="False">
-							<DockPanel IsHitTestVisible="False">
+							<DockPanel IsHitTestVisible="False"
+									   HorizontalAlignment="Stretch"
+									   VerticalAlignment="Stretch">
 								<img:GraphicsView DataContext="{Binding GraphicsView}" />
 							</DockPanel>
 						</dxdo:LayoutPanel>

@@ -57,9 +57,27 @@ namespace ImageControl.Model.Gdi
 			var shape = ShapeFactory.Instance.CreateGdiShape(roiShape);
 			if (shape is GdiSurface surface)
 			{
-				var bounds = surface.Polygons.Select(x => x.GraphicsPath.GetBounds());
+				var bounds = surface.Polygons.Select(poly => poly.GraphicsPath.GetBounds());
 				_roi = bounds.GetBounds();
 				_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
+
+				// 화면에 맞추기 위함
+				ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
+				if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
+				{
+					ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
+				}
+
+				WindowPos = new PointF(
+					(float)_gdiControl.RenderSize.Width / 2,
+					(float)_gdiControl.RenderSize.Height / 2);
+
+				ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
+
+				OffsetSize = new SizeF(
+					WindowPos.X - ProductPos.X * ScreenZoom,
+					WindowPos.Y - ProductPos.Y * ScreenZoom);
+
 				return true;
 			}
 			else
@@ -89,11 +107,10 @@ namespace ImageControl.Model.Gdi
 
 			_gdiGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			_gdiGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-
-			_gdiGraphics.ScaleTransform(ScreenZoom, ScreenZoom);
 			_gdiGraphics.TranslateTransform(
-				OffsetSize.Width + _roi.X / ScreenZoom,
-				OffsetSize.Height + _roi.Y / ScreenZoom);
+				OffsetSize.Width - _roi.X * ScreenZoom,
+				OffsetSize.Height - _roi.Y * ScreenZoom);
+			_gdiGraphics.ScaleTransform(ScreenZoom, ScreenZoom);
 
 			_gdiGraphics.DrawImage(_image, _roi);
 			_gdiGraphics.FillRectangle(new SolidBrush(Color.Black), _roi.X, _roi.Y, _roi.Width, _roi.Height);
@@ -125,31 +142,40 @@ namespace ImageControl.Model.Gdi
 
 		private void GdiMouseWheel(object sender, MouseEventArgs e)
 		{
-			float oldZoom = ScreenZoom;
+			if (MousePressed is true)
+			{
+				return;
+			}
+
 			if (e.Delta > 0)
 			{
-				ScreenZoom *= 1.3F;
+				ScreenZoom *= 1.1F;
 			}
 			else
 			{
-				ScreenZoom *= 0.7F;
+				ScreenZoom *= 0.9F;
 			}
 
 			if (ScreenZoom <= 0.05f)
+			{
 				ScreenZoom = 0.05f;
+			}
 			else if (ScreenZoom >= 100.0f)
+			{
 				ScreenZoom = 100.0f;
+			}
 
-			MousePos = new PointF(e.X - _gdiView.Location.X, e.Y - _gdiView.Location.Y);
+			float offsetX = WindowPos.X - ProductPos.X * ScreenZoom;
+			float offsetY = WindowPos.Y - ProductPos.Y * ScreenZoom;
+			OffsetSize = new SizeF(offsetX, offsetY);
+			
+			WindowPos = new PointF(e.X, e.Y);
+			
+			float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
+			float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
+			ProductPos = new PointF(productX, productY);
 
-			float oldimagex = (MousePos.X / oldZoom);
-			float oldimagey = (MousePos.Y / oldZoom);
-
-			float newimagex = (MousePos.X / ScreenZoom);
-			float newimagey = (MousePos.Y / ScreenZoom);
-
-			OffsetSize = new SizeF(OffsetSize.Width + (newimagex - oldimagex),
-				OffsetSize.Height + (newimagey - oldimagey));
+			MouseMoveEvent(this, null);
 
 			_gdiView.Invalidate();
 		}
@@ -163,14 +189,16 @@ namespace ImageControl.Model.Gdi
 		{
 			if (e.Button is MouseButtons.Left)
 			{
-				MousePos = new PointF(e.X - _gdiView.Location.X, e.Y - _gdiView.Location.Y);
+				//MousePos = new PointF(
+				//	((e.X - _startPos.X) - OffsetSize.Width) / ScreenZoom,
+				//	((e.Y - _startPos.Y) - OffsetSize.Height) / ScreenZoom);
 
-				var displayCenter = _gdiView.Bounds.GetCenterF();
-				float newimagex = ((displayCenter.X - MousePos.X) / ScreenZoom);
-				float newimagey = ((displayCenter.Y - MousePos.Y) / ScreenZoom);
+				//var displayCenter = _gdiView.Bounds.GetCenterF();
+				//float newimagex = ((displayCenter.X - MousePos.X) / ScreenZoom);
+				//float newimagey = ((displayCenter.Y - MousePos.Y) / ScreenZoom);
 
-				OffsetSize = new SizeF(OffsetSize.Width + newimagex,
-					OffsetSize.Height + newimagey);
+				//OffsetSize = new SizeF(OffsetSize.Width + newimagex,
+				//	OffsetSize.Height + newimagey);
 
 				_gdiView.Invalidate();
 			}
@@ -181,24 +209,22 @@ namespace ImageControl.Model.Gdi
 			MousePressed = true;
 
 			StartPos = new PointF(OffsetSize.Width, OffsetSize.Height);
-			MouseDown = new PointF(e.X, e.Y);
+			WindowPos = new PointF(e.X, e.Y);
 
 			_gdiView.Invalidate();
 		}
 
 		private void GdiMouseMove(object sender, MouseEventArgs e)
 		{
-			MousePos = new PointF(
-				e.X / ScreenZoom - OffsetSize.Width,
-				e.Y / ScreenZoom - OffsetSize.Height);
+			MousePos = new PointF(e.X - OffsetSize.Width, e.Y - OffsetSize.Height);
 
 			if (MousePressed && e.Button is MouseButtons.Left)
 			{
-				float deltaX = e.Location.X - MouseDown.X;
-				float deltaY = e.Location.Y - MouseDown.Y;
+				float deltaX = e.X - WindowPos.X;
+				float deltaY = e.Y - WindowPos.Y;
 
-				OffsetSize = new SizeF(StartPos.X + (deltaX / ScreenZoom),
-					StartPos.Y + (deltaY / ScreenZoom));
+				OffsetSize = new SizeF(StartPos.X + deltaX,
+					StartPos.Y + deltaY);
 
 				_gdiView.Invalidate();
 			}
@@ -210,21 +236,13 @@ namespace ImageControl.Model.Gdi
 		{
 			if (MousePressed && e.Button is MouseButtons.Left)
 			{
-				Point point = new Point(
-					(int)(e.X / ScreenZoom - OffsetSize.Width),
-					(int)(e.Y / ScreenZoom - OffsetSize.Height));
+				WindowPos = new PointF(e.X, e.Y);
+				
+				float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
+				float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
+				ProductPos = new PointF(productX, productY);
 
-				if (_image is null || _image.Size.IsEmpty is true)
-				{
-					return;
-				}
-
-				if (point.X > 0 && point.X < _image.Width &&
-					point.Y > 0 && point.Y < _image.Height)
-				{
-					_gdiView.Invalidate();
-					return;
-				}
+				_gdiView.Invalidate();
 			}
 
 			MousePressed = false;
@@ -238,7 +256,16 @@ namespace ImageControl.Model.Gdi
 			else if (e.KeyCode is Keys.Home)
 			{
 				ScreenZoom = 1.0f;
-				OffsetSize = new SizeF();
+
+				WindowPos = new PointF(
+					(float)_gdiControl.RenderSize.Width / 2,
+					(float)_gdiControl.RenderSize.Height / 2);
+
+				ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
+
+				OffsetSize = new SizeF(
+					WindowPos.X - ProductPos.X * ScreenZoom,
+					WindowPos.Y - ProductPos.Y * ScreenZoom);
 			}
 		}
 	}
