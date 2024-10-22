@@ -258,7 +258,12 @@ namespace ImageControl.Model.Gdi
 			}
 			else if (e.KeyCode is Keys.Home)
 			{
-				ScreenZoom = 1.0f;
+				// 화면에 맞추기 위함
+				ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
+				if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
+				{
+					ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
+				}
 
 				WindowPos = new PointF(
 					(float)_gdiControl.RenderSize.Width / 2,
