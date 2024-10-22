@@ -8,7 +8,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 	{
 		private ShapeLine() { }
 
-		private ShapeLine(float pixelResolution,
+		public ShapeLine(float pixelResolution,
 			float sx, float sy,
 			float ex, float ey) : base(pixelResolution)
 		{

@@ -5,7 +5,5 @@
 		double Width { get; }
 
 		double Height { get; }
-
-		bool[] IsRounded { get; }
 	}
 }

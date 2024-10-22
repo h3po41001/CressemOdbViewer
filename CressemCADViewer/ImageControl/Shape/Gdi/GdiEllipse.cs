@@ -28,7 +28,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.DrawEllipse(DefaultPen,
+			graphics.FillEllipse(new SolidBrush(DefaultPen.Color),
 				X * PixelResolution,
 				Y * PixelResolution,
 				Width * PixelResolution,

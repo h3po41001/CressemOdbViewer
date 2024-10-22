@@ -2,7 +2,7 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolDiamond : OdbSymbolRectangle, ISymbolRectangle
+	internal class OdbSymbolDiamond : OdbSymbolRectangle, ISymbolDiamond
 	{
 		protected OdbSymbolDiamond() { }
 

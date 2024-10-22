@@ -4,8 +4,18 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 {
 	internal class ShapeRectangle : ShapeBase, IShapeRectangle
 	{
-		public ShapeRectangle() : base()
+		private ShapeRectangle() : base()
 		{
+		}
+
+		public ShapeRectangle(float pixelResolution,
+			float x, float y,
+			float width, float height) : base(pixelResolution)
+		{
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
 		}
 
 		public float X { get; set; }
@@ -15,15 +25,5 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public float Width { get; set; }
 
 		public float Height { get; set; }
-
-		public static IShapeRectangle CreateGdiPlus(float pixelResolution)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public static IShapeRectangle CreateOpenGl()
-		{
-			throw new System.NotImplementedException();
-		}
 	}
 }

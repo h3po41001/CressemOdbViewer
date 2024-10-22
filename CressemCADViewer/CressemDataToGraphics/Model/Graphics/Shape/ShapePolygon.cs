@@ -10,7 +10,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 		}
 
-		private ShapePolygon(float pixelResolution,
+		public ShapePolygon(float pixelResolution,
 			bool isFill, IEnumerable<ShapeBase> shapes) : base(pixelResolution)
 		{
 			IsFill = isFill;

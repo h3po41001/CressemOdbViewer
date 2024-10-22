@@ -87,8 +87,12 @@ namespace CressemExtractLibrary
 			return _extractor.ExtractData.GetStepRoi(stepName);
 		}
 
-		public IFeatureBase[] GetFeatures(string stepName, string layerName)
+		public IFeatureBase[] GetFeatures(string stepName, string layerName,
+			out double xDatum, out double yDatum)
 		{
+			xDatum = 0;
+			yDatum = 0;
+
 			if (_extractor is null)
 			{
 				return null;
@@ -99,7 +103,8 @@ namespace CressemExtractLibrary
 				return null;
 			}
 
-			return _extractor.ExtractData.GetFeatures(stepName, layerName);
+			return _extractor.ExtractData.GetFeatures(stepName, layerName, 
+				out xDatum, out yDatum);
 		}
 	}
 }

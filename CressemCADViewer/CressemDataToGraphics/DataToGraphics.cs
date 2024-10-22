@@ -1,4 +1,5 @@
-﻿using CressemDataToGraphics.Factory;
+﻿using System.Collections.Generic;
+using CressemDataToGraphics.Factory;
 using CressemDataToGraphics.Model;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Interface;
@@ -20,7 +21,8 @@ namespace CressemDataToGraphics
 
 		public GraphicsType GraphicsType { get; private set; }
 
-		public IShapeBase GetShape(bool useMM, IFeatureBase feature)
+		public IEnumerable<IShapeBase> GetShapes(bool useMM,
+			double xDatum, double yDatum, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
@@ -30,12 +32,12 @@ namespace CressemDataToGraphics
 			if (GraphicsType is GraphicsType.GdiPlus)
 			{
 				return DataToGraphicsFactory.Instance.DataToGdiPlus(useMM,
-					PixelResolution, feature);
+					PixelResolution, xDatum, yDatum, feature);
 			}
 			else if (GraphicsType is GraphicsType.OpenGl)
 			{
 				return DataToGraphicsFactory.Instance.DataToGdiPlus(useMM,
-					PixelResolution, feature);
+					PixelResolution, xDatum, yDatum, feature);
 			}
 			else
 			{

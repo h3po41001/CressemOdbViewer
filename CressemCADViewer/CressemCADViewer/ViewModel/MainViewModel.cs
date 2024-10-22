@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
@@ -83,15 +84,18 @@ namespace CressemCADViewer.ViewModel
 			bool useMM = true;
 
 			var profile = ExtractLibrary.Instance.GetStepRoi("UNIT");		
-			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01");
+			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01", 
+				out double xDatum, out double yDatum);
 			DataToGraphics dataToGraphics = new DataToGraphics(10.0f, GraphicsType.GdiPlus);
 
 			GraphicsView.ClearShape();
-			GraphicsView.LoadRoi(dataToGraphics.GetShape(useMM, profile));
+
+			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, profile);
+			GraphicsView.LoadRoi(proflieShapes.ElementAt(0));
 
 			foreach (var feature in features)
 			{
-				GraphicsView.AddShape(dataToGraphics.GetShape(useMM, feature));
+				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, feature));
 			}
 		}
 

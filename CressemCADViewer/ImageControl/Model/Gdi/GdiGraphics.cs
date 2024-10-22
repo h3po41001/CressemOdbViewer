@@ -86,9 +86,12 @@ namespace ImageControl.Model.Gdi
 			}
 		}
 
-		public override void AddShape(IShapeBase shape)
+		public override void AddShapes(IEnumerable<IShapeBase> shapes)
 		{
-			_gdiShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
+			foreach (var shape in shapes)
+			{
+				_gdiShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
+			}
 		}
 
 		public override void ClearShape()

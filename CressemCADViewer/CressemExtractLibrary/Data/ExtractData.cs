@@ -22,6 +22,7 @@ namespace CressemExtractLibrary.Data
 
 		public abstract IFeatureBase GetStepRoi(string stepName);
 
-		public abstract IFeatureBase[] GetFeatures(string stepName, string layerName);
+		public abstract IFeatureBase[] GetFeatures(string stepName, string layerName,
+			out double xDatum, out double yDatum);
 	}
 }

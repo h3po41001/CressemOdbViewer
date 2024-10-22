@@ -27,7 +27,8 @@ namespace CressemExtractLibrary.Data.Gerber
 			throw new System.NotImplementedException();
 		}
 
-		public override IFeatureBase[] GetFeatures(string stepName, string layerName)
+		public override IFeatureBase[] GetFeatures(string stepName, string layerName,
+			out double xDatum, out double y)
 		{
 			throw new System.NotImplementedException();
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using ImageControl.Shape.Interface;
 
@@ -34,7 +35,7 @@ namespace ImageControl.Model
 
 		public abstract bool LoadRoi(IShapeBase roiShape);
 
-		public abstract void AddShape(IShapeBase shape);
+		public abstract void AddShapes(IEnumerable<IShapeBase> shape);
 
 		public abstract void ClearShape();
 

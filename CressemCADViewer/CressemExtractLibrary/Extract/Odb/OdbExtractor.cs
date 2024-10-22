@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using CressemExtractLibrary.Data.Odb;
 using CressemExtractLibrary.Data.Odb.Font;
-using CressemExtractLibrary.Data.Odb.Layer;
 using CressemExtractLibrary.Data.Odb.Loader;
 using CressemExtractLibrary.Data.Odb.Matrix;
 using CressemExtractLibrary.Data.Odb.Step;

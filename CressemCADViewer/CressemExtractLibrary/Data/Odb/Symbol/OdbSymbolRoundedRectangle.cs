@@ -21,7 +21,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public bool[] IsRounded { get => IsEditedCorner; }
 
-		public static new OdbSymbolRoundedRectangle Create(int index, string param)
+		public static OdbSymbolRoundedRectangle Create(int index, string param)
 		{
 			string[] value = param.Split('X').ToArray();
 			if (value.Length != 4)

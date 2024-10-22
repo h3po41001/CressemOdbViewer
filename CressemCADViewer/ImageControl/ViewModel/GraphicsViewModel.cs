@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Controls;
 using CressemFramework.Observer;
 using ImageControl.Model;
@@ -42,9 +44,9 @@ namespace ImageControl.ViewModel
 			return _graphics.LoadRoi(roiShape);
 		}
 
-		public void AddShape(IShapeBase shape)
+		public void AddShapes(IEnumerable<IShapeBase> shape)
 		{
-			_graphics.AddShape(shape);
+			_graphics.AddShapes(shape);
 		}
 
 		public void ClearShape()

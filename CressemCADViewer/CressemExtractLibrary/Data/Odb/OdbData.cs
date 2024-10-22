@@ -73,8 +73,12 @@ namespace CressemExtractLibrary.Data.Odb
 			return null;
 		}
 
-		public override IFeatureBase[] GetFeatures(string stepName, string layerName)
+		public override IFeatureBase[] GetFeatures(string stepName, string layerName,
+			out double xDatum, out double yDatum)
 		{
+			xDatum = 0.0;
+			yDatum = 0.0;
+
 			foreach (OdbStep step in OdbSteps)
 			{
 				if (step.MatrixStep.Name.Equals(stepName) is true)
@@ -83,6 +87,9 @@ namespace CressemExtractLibrary.Data.Odb
 					{
 						if (layer.MatrixLayer.Name.Equals(layerName) is true)
 						{
+							xDatum = step.StepHdr.XDatum;
+							yDatum = step.StepHdr.YDatum;
+
 							return layer.Features.FeatureList.ToArray();
 						}
 					}

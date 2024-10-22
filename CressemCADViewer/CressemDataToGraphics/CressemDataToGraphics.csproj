@@ -38,6 +38,8 @@
     <Compile Include="Converter\MmInchConverter.cs" />
     <Compile Include="DataToGraphics.cs" />
     <Compile Include="Factory\DataToGraphicsFactory.cs" />
+    <Compile Include="Factory\GdiPlusFactory.cs" />
+    <Compile Include="Factory\OpenGlFactory.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeArc.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeBase.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeEllipse.cs" />

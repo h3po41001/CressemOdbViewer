@@ -9,7 +9,7 @@ namespace ImageControl.Model.Shape.Gdi
 		protected GdiShape(float pixelResolution)
 		{
 			PixelResolution = pixelResolution;
-			DefaultPen = new Pen(Color.White, 1f);
+			DefaultPen = new Pen(Color.White, 0.1f);
 		}
 
 		public float PixelResolution { get; private set; } = 1.0f;

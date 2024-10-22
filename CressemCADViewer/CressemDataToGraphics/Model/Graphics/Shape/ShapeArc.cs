@@ -9,7 +9,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 	{
 		private ShapeArc() { }
 
-		private ShapeArc(float pixelResolution,
+		public ShapeArc(float pixelResolution,
 			float x, float y,
 			float width, float height,
 			float startAngle, float sweepAngle) : base(pixelResolution)
