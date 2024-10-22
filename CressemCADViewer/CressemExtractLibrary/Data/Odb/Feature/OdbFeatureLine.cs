@@ -8,19 +8,16 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public OdbFeatureLine(int index, bool isMM,
 			double sx, double sy, double ex, double ey,
-			int symbolNum, string polarity, 
-			string decode) : base(index, isMM, sx, sy, polarity, decode)
+			int symbolNum, string polarity, string decode,
+			string attrString) : base(index, isMM, sx, sy, polarity, decode, symbolNum, attrString)
 		{
 			Ex = ex;
 			Ey = ey;
-			SymbolNum = symbolNum;
 		}
 
 		public double Ex { get; private set; }
 
 		public double Ey { get; private set; }
-
-		public int SymbolNum { get; private set; }
 
 		static public OdbFeatureLine Create(int index, bool isMM, string[] param)
 		{
@@ -59,9 +56,12 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] split = param[7].Split(';');
+			string[] splited = param[7].Split(';');
 
-			return new OdbFeatureLine(index, isMM, sx, sy, ex, ey, symbolNum, param[6], split[0]);
+			string decode = splited[0];
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
+			return new OdbFeatureLine(index, isMM, sx, sy, ex, ey, symbolNum, param[6], decode, attrString);
 		}
 	}
 }

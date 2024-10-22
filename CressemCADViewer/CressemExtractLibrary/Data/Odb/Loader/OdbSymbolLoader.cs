@@ -28,8 +28,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 		}
 
-		public bool LoadStandardSymbols(int index, string symbolData, 
-			out OdbSymbolBase odbFeatureSymbol)
+		public bool LoadStandardSymbols(string indexString, string symbolData,
+			List<OdbSymbolUser> userSymbols, out OdbSymbolBase odbFeatureSymbol)
 		{
 			odbFeatureSymbol = null;
 			if (symbolData.Length == 0)
@@ -52,12 +52,17 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				return false;
 			}
 
-			odbFeatureSymbol = MakeSymbol(index, name, param);
+			if (int.TryParse(indexString.Substring(1), out int index) is false)
+			{
+				return false;
+			}
+
+			odbFeatureSymbol = MakeSymbol(index, name, userSymbols, param);
 
 			return (odbFeatureSymbol is null) is false;
 		}
 
-		public bool LoadUserSymbols(string dirPath, 
+		public bool LoadUserSymbols(string dirPath,
 			out List<OdbSymbolUser> userSymbols)
 		{
 			userSymbols = null;
@@ -95,7 +100,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			return true;
 		}
 
-		private OdbSymbolBase MakeSymbol(int index, string name, string param)
+		private OdbSymbolBase MakeSymbol(int index, string name,
+			List<OdbSymbolUser> userSymbols, string param)
 		{
 			if (name.ToUpper().Equals("R") is true)
 			{
@@ -298,6 +304,10 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			{
 				// Hole
 				return OdbSymbolHole.Create(index, param);
+			}
+			else
+			{
+				return userSymbols.Find(symbol => symbol.Name.ToUpper().Equals(name.ToUpper()));
 			}
 
 			return null;

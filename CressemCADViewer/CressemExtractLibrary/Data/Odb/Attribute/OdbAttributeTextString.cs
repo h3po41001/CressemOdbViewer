@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CressemExtractLibrary.Data.Odb.Attribute
+﻿namespace CressemExtractLibrary.Data.Odb.Attribute
 {
 	internal class OdbAttributeTextString
 	{
@@ -28,7 +22,8 @@ namespace CressemExtractLibrary.Data.Odb.Attribute
 				return null;
 			}
 
-			if (int.TryParse(split[0], out int index) is false)
+			string indexString = split[0].Substring(1);
+			if (int.TryParse(indexString, out int index) is false)
 			{
 				return null;
 			}

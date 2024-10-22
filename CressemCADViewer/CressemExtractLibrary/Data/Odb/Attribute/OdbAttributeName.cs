@@ -2,6 +2,8 @@
 {
 	internal class OdbAttributeName
 	{
+		private OdbAttributeName() { }
+
 		public OdbAttributeName(int index, string name)
 		{
 			Index = index;
@@ -20,7 +22,8 @@
 				return null;
 			}
 
-			if (int.TryParse(split[0], out int index) is false)
+			string indexString = split[0].Substring(1);
+			if (int.TryParse(indexString, out int index) is false)
 			{
 				return null;
 			}

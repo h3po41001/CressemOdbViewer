@@ -17,7 +17,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			double e, double elementWidth, double barcodeHeight, 
 			string fasc, string checkSum, string invertBg, 
 			string astr, string astrPos, 
-			string text) : base(index, isMM, x, y, polarity, "")
+			string text, string attrString) : base(index, isMM, x, y, polarity, "", -1, attrString)
 		{
 			Name = name;
 			Font = font;
@@ -97,11 +97,14 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] split = param[10].Split(';');
+			string[] splited = param[10].Split(';');
+
+			string text = splited[0];
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
 
 			return new OdbFeatureBarcode(index, isMM, x, y, param[3], param[4], param[5],
 				e, elementWidth, barcodeHeight,
-				param[9], param[10], param[11], param[12], param[13], split[0]);
+				param[9], param[10], param[11], param[12], param[13], text, attrString);
 		}
 	}
 }

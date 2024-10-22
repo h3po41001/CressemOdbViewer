@@ -9,14 +9,13 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public OdbFeatureArc(int index, bool isMM, double sx, double sy,
 			double ex, double ey,
 			double cx, double cy, int symbolNum, 
-			string polarity, string decode, 
-			string cw) : base(index, isMM, sx, sy, polarity, decode)
+			string polarity, string decode, string cw, 
+			string attrString) : base(index, isMM, sx, sy, polarity, decode, symbolNum, attrString)
 		{
 			Ex = ex;
 			Ey = ey;
 			Cx = cx;
 			Cy = cy;
-			SymbolNum = symbolNum;
 			// Y : CW, N : CCW
 			IsClockWise = cw.Equals("Y") is true;
 		}
@@ -28,8 +27,6 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public double Cx { get; private set; }
 
 		public double Cy { get; private set; }
-
-		public int SymbolNum { get; private set; }
 
 		public bool IsClockWise { get; private set; }
 
@@ -82,8 +79,11 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 			string[] splited = param[10].Split(';');
 
+			string cw = splited[0];
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
 			return new OdbFeatureArc(index, isMM, sx, sy, ex, ey, cx, cy, 
-				symbolNum, param[8], param[9], splited[0]);
+				symbolNum, param[8], param[9], cw, attrString);
 		}
 	}
 }

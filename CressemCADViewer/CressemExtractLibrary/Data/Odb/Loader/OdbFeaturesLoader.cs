@@ -34,11 +34,12 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			features = new OdbFeatures();
 			string line = string.Empty;
 
+			// Symbol
 			using (StreamReader reader = new StreamReader(path))
 			{
 				string[] splited;
-				bool isMM = false;
 				int index = -1;
+				bool isMM = false;
 
 				while (reader.EndOfStream is false)
 				{
@@ -52,25 +53,34 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					char firstChar = line.FirstOrDefault();
 					if (firstChar.Equals('@') is true)  // attribute인 경우
 					{
-						continue;
+						var attrName = OdbAttributeName.Create(line);
+						if (attrName is null)
+						{
+							continue;
+						}
+
+						features.AddAttributeName(attrName);
 					}
 					else if (firstChar.Equals('&') is true)  // attribute text인 경우
 					{
-						continue;
+						var attrText = OdbAttributeTextString.Create(line);
+						if (attrText is null)
+						{
+							continue;
+						}
+
+						features.AddAttributeText(attrText);
 					}
 					else if (firstChar.Equals('#') is true)  // 주석인 경우
 					{
 						continue;
 					}
-
-					index++;
-
-					if (firstChar.Equals('$') is true)  // Symbol인 경우
+					else if (firstChar.Equals('$') is true)  // Symbol인 경우
 					{
 						splited = line.Split(' ').Select(
 							data => data.ToUpper()).ToArray();
 
-						if (OdbSymbolLoader.Instance.LoadStandardSymbols(index, splited[1],
+						if (OdbSymbolLoader.Instance.LoadStandardSymbols(splited[0], splited[1], userSymbols,
 							out OdbSymbolBase odbFeatureSymbol) is false)
 						{
 							continue;
@@ -88,6 +98,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						// Feature인 경우
 						splited = line.Split(' ').Select(
 							data => data.ToUpper()).ToArray();
+
+						index++;
 
 						// Line
 						if (splited[0].Equals("L") is true)
@@ -162,14 +174,14 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 		public bool LoadSurface(int index, string[] firstLine, StreamReader reader, bool isMM,
 			out OdbFeatureSurface surface)
 		{
-			surface = null;
+			string[] splited = firstLine[2].Split(';');
 
 			string polarity = firstLine[1];
-			string decode = firstLine[2];
+			string decode = splited[0];
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
 
-			surface = new OdbFeatureSurface(index, isMM, polarity, decode);
+			surface = new OdbFeatureSurface(index, isMM, polarity, decode, attrString);
 
-			string[] splited = null;
 			string line = string.Empty;
 
 			while (reader.EndOfStream is false)
@@ -231,7 +243,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						if (splited[0].Equals("OS") is true)
 						{
 							polygon.AddFeature(new OdbFeatureLine(index, isMM, 
-								sx, sy, x, y, -1, "", ""));
+								sx, sy, x, y, -1, "", "", ""));
 
 							sx = x;
 							sy = y;
@@ -249,7 +261,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							}
 
 							polygon.AddFeature(new OdbFeatureArc(index, isMM,
-									sx, sy, x, y, cx, cy, -1, "", "", splited[5]));
+									sx, sy, x, y, cx, cy, -1, "", "", splited[5], ""));
 
 							sx = x;
 							sy = y;

@@ -10,8 +10,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		private OdbFeatureSurface() { }
 
-		public OdbFeatureSurface(int index, bool isMM, string polarity, string decode) :
-			base(index, isMM, 0, 0, polarity, decode)
+		public OdbFeatureSurface(int index, bool isMM, string polarity, string decode,
+			string attrString) : base(index, isMM, 0, 0, polarity, decode, -1, attrString)
 		{
 			_polygons = new List<OdbFeaturePolygon>();
 		}

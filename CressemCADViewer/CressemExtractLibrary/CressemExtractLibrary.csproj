@@ -63,6 +63,7 @@
     <Compile Include="Data\Interface\Features\IFeaturePolygon.cs" />
     <Compile Include="Data\Interface\Features\IFeatureSurface.cs" />
     <Compile Include="Data\Interface\Features\IFeatureText.cs" />
+    <Compile Include="Data\Odb\Attribute\OdbAttribute.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeName.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeaturePolygon.cs" />
     <Compile Include="Data\Odb\Attribute\OdbAttributeTextString.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Data\Odb\Feature\OdbFeaturePad.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatures.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureSurface.cs" />
-    <Compile Include="Data\Odb\Feature\OdbFeatureSymbol.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureText.cs" />
     <Compile Include="Data\Odb\Font\OdbFont.cs" />
     <Compile Include="Data\Odb\Layer\OdbLayer.cs" />
@@ -86,7 +86,6 @@
     <Compile Include="Data\Odb\OdbData.cs" />
     <Compile Include="Data\Odb\OdbEnum.cs" />
     <Compile Include="Data\Odb\Matrix\OdbMatrixStep.cs" />
-    <Compile Include="Data\Odb\Attribute\OdbAttributeList.cs" />
     <Compile Include="Data\Odb\Loader\OdbLoader.cs" />
     <Compile Include="Data\Odb\OdbSummary.cs" />
     <Compile Include="Data\Odb\Step\OdbStep.cs" />

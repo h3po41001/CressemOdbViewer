@@ -11,7 +11,6 @@ namespace CressemExtractLibrary.Data.Odb.Layer
 			OdbFeatures features)
 		{
 			MatrixLayer = matrix;
-			//Attrutes = attrList;
 			Features = features;
 		}
 

@@ -9,7 +9,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public OdbFeatureText(int index, bool isMM, double x, double y,
 			string font, string polarity, int orientDef,
 			double sizeX, double sizeY, double widthFactor,
-			string text, int version) : base(index, isMM, x, y, polarity, "")
+			string text, int version, 
+			string attrString) : base(index, isMM, x, y, polarity, "", -1, attrString)
 		{
 			Font = font;
 			OrientDef = orientDef;
@@ -79,15 +80,18 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] split = param[10].Split(';');
+			string[] splited = param[10].Split(';');
 
-			if (int.TryParse(split[0], out int version) is false)
+			string versionString = splited[0];
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
+			if (int.TryParse(versionString, out int version) is false)
 			{
 				return null;
 			}
 
 			return new OdbFeatureText(index, isMM, x, y, param[3], param[4],
-				orientDef, sizeX, sizeY, widthFactor, param[9], version);
+				orientDef, sizeX, sizeY, widthFactor, param[9], version, attrString);
 		}
 	}
 }
