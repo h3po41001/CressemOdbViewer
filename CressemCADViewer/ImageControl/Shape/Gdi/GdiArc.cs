@@ -9,7 +9,7 @@ namespace ImageControl.Model.Shape.Gdi
 		public GdiArc(float pixelResolution,
 			float x, float y,
 			float width, float height,
-			float startAngle, float sweepAngle) : base(pixelResolution)
+			float startAngle, float sweepAngle, float lineWidth) : base(pixelResolution)
 		{
 			X = x;
 			Y = y;
@@ -17,6 +17,7 @@ namespace ImageControl.Model.Shape.Gdi
 			Height = height;
 			StartAngle = startAngle;
 			SweepAngle = sweepAngle;
+			LineWidth = lineWidth;
 		}
 
 		public float X { get; private set; }
@@ -31,8 +32,15 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float SweepAngle { get; private set; }
 
+		public float LineWidth { get; private set; }
+
 		public override void Draw(Graphics graphics)
 		{
+			if (LineWidth > 0)
+			{
+				DefaultPen.Width = LineWidth * PixelResolution;
+			}
+
 			graphics.DrawArc(
 				DefaultPen,
 				X * PixelResolution,

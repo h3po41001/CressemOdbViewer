@@ -8,6 +8,7 @@ using CressemDataToGraphics;
 using CressemDataToGraphics.Model;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
+using CressemExtractLibrary.Data.Interface.Features;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.ViewModel;
@@ -83,19 +84,20 @@ namespace CressemCADViewer.ViewModel
 			// 데이터 상에는 자기 자신의 값 형태 있음
 			bool useMM = true;
 
-			var profile = ExtractLibrary.Instance.GetStepRoi("UNIT");		
-			var features = ExtractLibrary.Instance.GetFeatures("UNIT", "L01", 
+			var profile = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
+			var features = ExtractLibrary.Instance.GetFeatures(
+				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
 				out double xDatum, out double yDatum);
 			DataToGraphics dataToGraphics = new DataToGraphics(10.0f, GraphicsType.GdiPlus);
 
 			GraphicsView.ClearShape();
 
-			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, profile);
-			GraphicsView.LoadRoi(proflieShapes.ElementAt(0));
+			var proflieShapes = dataToGraphics.GetShapes(useMM, 0.0, 0.0, profile);
+			GraphicsView.LoadRoi(proflieShapes.Shapes.FirstOrDefault());
 
 			foreach (var feature in features)
 			{
-				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, feature));
+				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, 0.0, 0.0, feature));
 			}
 		}
 

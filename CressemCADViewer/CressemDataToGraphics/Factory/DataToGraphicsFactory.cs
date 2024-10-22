@@ -1,6 +1,4 @@
 ﻿using System;
-using CressemDataToGraphics.Converter;
-using CressemDataToGraphics.Model.Graphics.Shape;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Interface;
 
@@ -32,7 +30,7 @@ namespace CressemDataToGraphics.Factory
 			}
 		}
 
-		public IShapeBase[] DataToGdiPlus(bool useMM, float pixelResolution,
+		public IShapeList DataToGdiPlus(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeatureBase feature)
 		{
 			if (feature is null)
@@ -40,11 +38,8 @@ namespace CressemDataToGraphics.Factory
 				return null;
 			}
 
-			var featureShape = _gdiPlusFactory.CreateFeatureToShape(useMM, pixelResolution, feature);
-			var symbolShape = _gdiPlusFactory.CreateSymbolToShape(useMM, pixelResolution,
-				feature.IsMM, feature.X, feature.Y, feature.FeatureSymbol);
-			
-			return new IShapeBase[] { featureShape, symbolShape };
+			return _gdiPlusFactory.CreateFeatureToShape(useMM, pixelResolution, 
+				xDatum, yDatum, feature);
 		}
 
 		public IShapeBase DataToOpenGl(bool useMM, float pixelResolution,

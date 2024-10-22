@@ -37,28 +37,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				return false;
 			}
 
-			string pattern = @"[-+.\d]";
-			Match match = Regex.Match(symbolData, pattern);
-
-			string name = string.Concat(symbolData.Take(match.Index));
-			if (name == string.Empty)
-			{
-				return false;
-			}
-
-			string param = string.Concat(symbolData.Skip(match.Index));
-			if (param == string.Empty)
-			{
-				return false;
-			}
-
-			if (int.TryParse(indexString.Substring(1), out int index) is false)
-			{
-				return false;
-			}
-
-			odbFeatureSymbol = MakeSymbol(index, name, userSymbols, param);
-
+			odbFeatureSymbol = MakeSymbol(indexString, symbolData, userSymbols);
 			return (odbFeatureSymbol is null) is false;
 		}
 
@@ -86,8 +65,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				string symbolFeaturesPath = Path.Combine(symbolDirPath, FeaturesFileName);
 
 				if (OdbFeaturesLoader.Instance.Load(symbolFeaturesPath,
-					null,
-					out OdbFeatures features) is false)
+					null, out OdbFeatures features) is false)
 				{
 					return;
 				}
@@ -100,9 +78,29 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			return true;
 		}
 
-		private OdbSymbolBase MakeSymbol(int index, string name,
-			List<OdbSymbolUser> userSymbols, string param)
+		private OdbSymbolBase MakeSymbol(string indexString, string symbolData,
+			List<OdbSymbolUser> userSymbols)
 		{
+			string pattern = @"[-+.\d]";
+			Match match = Regex.Match(symbolData, pattern);
+
+			string name = string.Concat(symbolData.Take(match.Index));
+			if (name == string.Empty)
+			{
+				return null;
+			}
+
+			string param = string.Concat(symbolData.Skip(match.Index));
+			if (param == string.Empty)
+			{
+				return null;
+			}
+
+			if (int.TryParse(indexString.Substring(1), out int index) is false)
+			{
+				return null;
+			}
+
 			if (name.ToUpper().Equals("R") is true)
 			{
 				// Round
@@ -307,7 +305,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 			else
 			{
-				return userSymbols.Find(symbol => symbol.Name.ToUpper().Equals(name.ToUpper()));
+				return userSymbols.Find(symbol => symbol.Name.ToUpper().Equals(symbolData.ToUpper()));
 			}
 
 			return null;

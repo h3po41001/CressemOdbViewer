@@ -1,9 +1,7 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolRoundThermalRounded : ISymbolBase
+	public interface ISymbolRoundThermalRounded : ISymbolRound
 	{
-		double OuterDiameter { get; }
-
 		double InnerDiameter { get; }
 
 		double Angle { get; }

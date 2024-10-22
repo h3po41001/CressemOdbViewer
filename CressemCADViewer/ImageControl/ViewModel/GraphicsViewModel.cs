@@ -44,7 +44,7 @@ namespace ImageControl.ViewModel
 			return _graphics.LoadRoi(roiShape);
 		}
 
-		public void AddShapes(IEnumerable<IShapeBase> shape)
+		public void AddShapes(IShapeList shape)
 		{
 			_graphics.AddShapes(shape);
 		}

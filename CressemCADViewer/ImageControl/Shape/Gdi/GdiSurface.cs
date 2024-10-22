@@ -10,15 +10,15 @@ namespace ImageControl.Shape.Gdi
 		private GdiSurface() { }
 
 		public GdiSurface(float pixelResolution,
-			bool isPositive, IEnumerable<GdiPolygon> polygons) : base(pixelResolution) 
+			bool isPositive, IEnumerable<GdiShapePolygon> polygons) : base(pixelResolution) 
 		{
 			IsPositive = isPositive;
-			Polygons = new List<GdiPolygon>(polygons);
+			Polygons = new List<GdiShapePolygon>(polygons);
 		}
 
 		public bool IsPositive { get; private set; }
 
-		public List<GdiPolygon> Polygons { get; private set; }
+		public List<GdiShapePolygon> Polygons { get; private set; }
 
 		public override void Draw(Graphics graphics)
 		{

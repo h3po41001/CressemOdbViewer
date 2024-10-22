@@ -21,7 +21,7 @@ namespace CressemDataToGraphics
 
 		public GraphicsType GraphicsType { get; private set; }
 
-		public IEnumerable<IShapeBase> GetShapes(bool useMM,
+		public IShapeList GetShapes(bool useMM,
 			double xDatum, double yDatum, IFeatureBase feature)
 		{
 			if (feature is null)

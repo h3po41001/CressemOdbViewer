@@ -13,5 +13,7 @@
 		float StartAngle { get; }
 
 		float SweepAngle { get; }
+
+		float LineWidth { get; }
 	}
 }

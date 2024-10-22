@@ -35,7 +35,7 @@ namespace ImageControl.Model
 
 		public abstract bool LoadRoi(IShapeBase roiShape);
 
-		public abstract void AddShapes(IEnumerable<IShapeBase> shape);
+		public abstract void AddShapes(IShapeList shape);
 
 		public abstract void ClearShape();
 

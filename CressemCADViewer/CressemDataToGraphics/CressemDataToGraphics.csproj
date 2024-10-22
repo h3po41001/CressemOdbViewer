@@ -44,6 +44,7 @@
     <Compile Include="Model\Graphics\Shape\ShapeBase.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeEllipse.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeLIne.cs" />
+    <Compile Include="Model\Graphics\Shape\ShapeList.cs" />
     <Compile Include="Model\Graphics\Shape\ShapePolygon.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeRectangle.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeSurface.cs" />

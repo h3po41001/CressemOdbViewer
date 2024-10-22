@@ -86,9 +86,9 @@ namespace ImageControl.Model.Gdi
 			}
 		}
 
-		public override void AddShapes(IEnumerable<IShapeBase> shapes)
+		public override void AddShapes(IShapeList shapes)
 		{
-			foreach (var shape in shapes)
+			foreach (var shape in shapes.Shapes)
 			{
 				_gdiShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
 			}
@@ -171,9 +171,9 @@ namespace ImageControl.Model.Gdi
 			float offsetX = WindowPos.X - ProductPos.X * ScreenZoom;
 			float offsetY = WindowPos.Y - ProductPos.Y * ScreenZoom;
 			OffsetSize = new SizeF(offsetX, offsetY);
-			
+
 			WindowPos = new PointF(e.X, e.Y);
-			
+
 			float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
 			float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
 			ProductPos = new PointF(productX, productY);
@@ -240,7 +240,7 @@ namespace ImageControl.Model.Gdi
 			if (MousePressed && e.Button is MouseButtons.Left)
 			{
 				WindowPos = new PointF(e.X, e.Y);
-				
+
 				float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
 				float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
 				ProductPos = new PointF(productX, productY);

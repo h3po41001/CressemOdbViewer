@@ -10,12 +10,13 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public ShapeLine(float pixelResolution,
 			float sx, float sy,
-			float ex, float ey) : base(pixelResolution)
+			float ex, float ey, float width = 0) : base(pixelResolution)
 		{
 			Sx = sx;
 			Sy = sy;
 			Ex = ex;
 			Ey = ey;
+			Width = width;
 		}
 
 		public float Sx { get; private set; }
@@ -26,13 +27,16 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float Ey { get; private set; }
 
+		public float Width { get; private set; }
+
 		public static ShapeLine CreateGdiPlus(bool useMM, float pixelResolution,
-			IFeatureLine line)
+			double xDatum, double yDatum, double width, IFeatureLine line)
 		{
-			double sx = line.X;
-			double sy = line.Y;
-			double ex = line.Ex;
-			double ey = line.Ey;
+			double sx = line.X + xDatum;
+			double sy = line.Y + yDatum;
+			double ex = line.Ex + xDatum;
+			double ey = line.Ey + yDatum;
+			double lineWidth = width;
 
 			if (useMM is true)
 			{
@@ -42,6 +46,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					sy = sy.ConvertInchToMM();
 					ex = ex.ConvertInchToMM();
 					ey = ey.ConvertInchToMM();
+					lineWidth = lineWidth.ConvertInchToUM();
 				}
 			}
 			else
@@ -52,12 +57,13 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					sy = sy.ConvertMMToInch();
 					ex = ex.ConvertMMToInch();
 					ey = ey.ConvertMMToInch();
+					lineWidth = lineWidth.ConvertUMToInch();
 				}
 			}
 
 			return new ShapeLine(pixelResolution,
 				(float)sx, (float)-sy,
-				(float)ex, (float)-ey);
+				(float)ex, (float)-ey, (float)lineWidth);
 		}
 
 		public static ShapeLine CreateOpenGl(bool useMM, float pixelResolution,

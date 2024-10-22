@@ -1,9 +1,7 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolSquareThermalOpenCorners : ISymbolBase
+	public interface ISymbolSquareThermalOpenCorners : ISymbolRound
 	{
-		double OuterDiameter { get; }
-
 		double InnerDiameter { get; }
 
 		double Angle { get; }
@@ -11,6 +9,5 @@
 		int NumberOfSpoke { get; }
 
 		double Gap { get; }
-
 	}
 }

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CressemExtractLibrary.Data.Interface.Symbol
+﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolRoundedSquareThermalOpenCorners : ISymbolEditedCorner
+	public interface ISymbolRoundedSquareThermalOpenCorners : ISymbolEditedCorner, ISymbolRound
 	{
-		double OuterDiameter { get; }
-
 		double InnerDiameter { get; }
 
 		double Angle { get; }

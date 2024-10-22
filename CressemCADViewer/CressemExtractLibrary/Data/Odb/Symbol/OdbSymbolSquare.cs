@@ -2,18 +2,15 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolSquare : OdbSymbolBase, ISymbolSquare
+	internal class OdbSymbolSquare : OdbSymbolRound, ISymbolSquare
 	{
 		protected OdbSymbolSquare() { }
 
-		public OdbSymbolSquare(int index, double outerDiameter) : base(index)
+		public OdbSymbolSquare(int index, double outerDiameter) : base(index, outerDiameter)
 		{
-			OuterDiameter = outerDiameter;
 		}
 
-		public double OuterDiameter { get; private set; }
-
-		public static OdbSymbolSquare Create(int index, string param)
+		public static new OdbSymbolSquare Create(int index, string param)
 		{
 			if (double.TryParse(param, out double side) is false)
 			{

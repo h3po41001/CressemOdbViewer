@@ -11,14 +11,14 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 			double angle, int numberOfSpoke, double gap,
 			double cornerRadius, string corners) : base(index, cornerRadius, corners, numberOfSpoke)
 		{
-			OuterDiameter = outerDiameter;
+			Diameter = outerDiameter;
 			InnerDiameter = innerDiameter;
 			Angle = angle;
 			NumberOfSpoke = numberOfSpoke;
 			Gap = gap;
 		}
 
-		public double OuterDiameter { get; private set; }
+		public double Diameter { get; private set; }
 
 		public double InnerDiameter { get; private set; }
 

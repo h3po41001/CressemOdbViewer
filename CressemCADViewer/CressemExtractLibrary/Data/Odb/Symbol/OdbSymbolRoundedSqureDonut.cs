@@ -10,11 +10,11 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 			double outerDiameter, double innerDiameter, 
 			double cornerRad, string corners) : base(index, cornerRad, corners, 4)
 		{
-			OuterDiameter = outerDiameter;
+			Diameter = outerDiameter;
 			InnerDiameter = innerDiameter;
 		}
 
-		public double OuterDiameter { get; private set; }
+		public double Diameter { get; private set; }
 
 		public double InnerDiameter { get; private set; }
 

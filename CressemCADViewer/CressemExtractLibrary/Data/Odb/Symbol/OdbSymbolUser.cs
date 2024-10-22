@@ -25,6 +25,6 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public OdbFeatures Features { get; private set; }
 
-		public IEnumerable<IFeatureBase> FeaturesList { get; }
+		public IEnumerable<IFeatureBase> FeaturesList { get => Features.FeatureList; }
 	}
 }

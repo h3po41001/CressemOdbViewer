@@ -9,5 +9,7 @@
 		float Ex { get; }
 
 		float Ey { get; }
+
+		float Width { get; }
 	}
 }

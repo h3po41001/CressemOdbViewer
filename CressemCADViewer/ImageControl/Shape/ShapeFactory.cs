@@ -33,7 +33,7 @@ namespace ImageControl.Shape
 				return new GdiArc(arc.PixelResolution,
 					arc.X, arc.Y,
 					arc.Width, arc.Height,
-					arc.StartAngle, arc.SweepAngle);
+					arc.StartAngle, arc.SweepAngle, arc.LineWidth);
 			}
 			else if (shapeBase is IShapeEllipse ellipse)
 			{
@@ -43,7 +43,7 @@ namespace ImageControl.Shape
 			}
 			else if (shapeBase is IShapeSurface surface)
 			{
-				List<GdiPolygon> shapes = new List<GdiPolygon>();
+				List<GdiShapePolygon> shapes = new List<GdiShapePolygon>();
 				foreach (var polygon in surface.Polygons)
 				{
 					shapes.Add((dynamic)CreateGdiShape(polygon));
@@ -55,7 +55,7 @@ namespace ImageControl.Shape
 			else if (shapeBase is IShapeLine line)
 			{
 				return new GdiLine(line.PixelResolution,
-					line.Sx, line.Sy, line.Ex, line.Ey);
+					line.Sx, line.Sy, line.Ex, line.Ey, line.Width);
 			}
 			else if (shapeBase is IShapeRectangle rect)
 			{
@@ -65,12 +65,21 @@ namespace ImageControl.Shape
 			else if (shapeBase is IShapePolygon polygon)
 			{
 				List<GdiShape> shapes = new List<GdiShape>();
-				foreach (var shape in polygon.Shapes)
+				if (polygon.Shapes != null)
 				{
-					shapes.Add((dynamic)CreateGdiShape(shape));
+					foreach (var shape in polygon.Shapes)
+					{
+						shapes.Add((dynamic)CreateGdiShape(shape));
+					}
 				}
 
-				return new GdiPolygon(polygon.PixelResolution,
+				if (polygon.Points != null)
+				{
+					shapes.Add(new GdiPointsPolygon(polygon.PixelResolution, 
+						polygon.IsFill, polygon.Points));
+				}
+
+				return new GdiShapePolygon(polygon.PixelResolution,
 					polygon.IsFill, shapes);
 			}
 

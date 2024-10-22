@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace ImageControl.Shape.Interface
 {
@@ -7,5 +8,7 @@ namespace ImageControl.Shape.Interface
 		bool IsFill { get; }
 
 		IEnumerable<IShapeBase> Shapes { get; }
+
+		IEnumerable<PointF> Points { get; }
 	}
 }

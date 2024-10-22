@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using ImageControl.Model.Shape.Gdi;
+using ImageControl.Shape.Gdi;
 
 namespace ImageControl.Extension
 {
@@ -25,9 +27,9 @@ namespace ImageControl.Extension
 			{
 				path.AddArc(gdiArc, mul);
 			}
-			else
+			else if (gdiBase is GdiPointsPolygon gdiPolygon)
 			{
-				throw new System.NotImplementedException();
+				path.AddPolygon(gdiPolygon, mul);
 			}
 		}
 
@@ -59,6 +61,13 @@ namespace ImageControl.Extension
 			path.AddRectangle(new RectangleF(
 				rectangle.X * mul, rectangle.Y * mul,
 				rectangle.Width * mul, rectangle.Height * mul));
+		}
+
+		public static void AddPolygon(this GraphicsPath path,
+			GdiPointsPolygon polygon, float mul = 1.0f)
+		{
+			path.AddPolygon(polygon.Points.Select(
+				x => new PointF(x.X * mul, x.Y * mul)).ToArray());
 		}
 	}
 }

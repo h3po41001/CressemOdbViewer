@@ -12,7 +12,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public ShapeArc(float pixelResolution,
 			float x, float y,
 			float width, float height,
-			float startAngle, float sweepAngle) : base(pixelResolution)
+			float startAngle, float sweepAngle, float lineWidth) : base(pixelResolution)
 		{
 			X = x;
 			Y = y;
@@ -20,6 +20,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			Height = height;
 			StartAngle = startAngle;
 			SweepAngle = sweepAngle;
+			LineWidth = lineWidth;
 		}
 
 		public float X { get; private set; }
@@ -34,15 +35,18 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float SweepAngle { get; private set; }
 
+		public float LineWidth { get; private set; }
+
 		public static ShapeArc CreateGdiPlus(bool useMM, float pixelResolution,
-			IFeatureArc arc)
+			double xDatum, double yDatum, double width, IFeatureArc arc)
 		{
-			double sx = arc.X;
-			double sy = arc.Y;
-			double ex = arc.Ex;
-			double ey = arc.Ey;
-			double cx = arc.Cx;
-			double cy = arc.Cy;
+			double sx = arc.X + xDatum;
+			double sy = arc.Y + yDatum;
+			double ex = arc.Ex + xDatum;
+			double ey = arc.Ey + yDatum;
+			double cx = arc.Cx + xDatum;
+			double cy = arc.Cy + yDatum;
+			double lineWidth = width;
 
 			if (useMM is true)
 			{
@@ -54,6 +58,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					ey = ey.ConvertInchToMM();
 					cx = cx.ConvertInchToMM();
 					cy = cy.ConvertInchToMM();
+					lineWidth = lineWidth.ConvertInchToUM();
 				}
 			}
 			else
@@ -66,6 +71,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					ey = ey.ConvertMMToInch();
 					cx = cx.ConvertMMToInch();
 					cy = cy.ConvertMMToInch();
+					lineWidth = lineWidth.ConvertUMToInch();
 				}
 			}
 
@@ -87,11 +93,12 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 			return new ShapeArc(pixelResolution,
 				(float)(cx - radius),
-				(float)(-cy - radius),
+				(float)-(cy + radius),
 				(float)(radius * 2),
 				(float)(radius * 2),
 				(float)startAngle,
-				(float)sweepAngle);
+				(float)sweepAngle,
+				(float)lineWidth);
 		}
 
 		public static IShapeArc CreateOpenGl(float pixelResolution,

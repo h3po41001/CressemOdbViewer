@@ -21,7 +21,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		static public OdbFeatureLine Create(int index, bool isMM, string[] param)
 		{
-			if (param.Length != 8)
+			if (param.Length != 9)
 			{
 				return null;
 			}

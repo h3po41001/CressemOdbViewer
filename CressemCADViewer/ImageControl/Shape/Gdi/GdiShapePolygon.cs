@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using ImageControl.Extension;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiPolygon : GdiShape
+	internal class GdiShapePolygon : GdiShape
 	{
-		private GdiPolygon() { }
+		private GdiShapePolygon() { }
 
-		public GdiPolygon(float pixelResolution, bool isFill,
+		public GdiShapePolygon(float pixelResolution, bool isFill,
 			IEnumerable<GdiShape> shapes) : base(pixelResolution)
 		{
 			IsFill = isFill;

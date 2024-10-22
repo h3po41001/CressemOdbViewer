@@ -1,7 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolSquare : ISymbolBase
+	public interface ISymbolSquare : ISymbolRound
 	{
-		double OuterDiameter { get; }
 	}
 }

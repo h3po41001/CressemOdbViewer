@@ -2,22 +2,19 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRoundThermalSquared : OdbSymbolBase, ISymbolRoundThermalSquared
+	internal class OdbSymbolRoundThermalSquared : OdbSymbolRound, ISymbolRoundThermalSquared
 	{
 		private OdbSymbolRoundThermalSquared() { }
 		
 		public OdbSymbolRoundThermalSquared(int index,
 			double outerDiameter, double innerDiameter,
-			double angle, int numberOfSpoke, double gap) : base()
+			double angle, int numberOfSpoke, double gap) : base(index, outerDiameter)
 		{
-			OuterDiameter = outerDiameter;
 			InnerDiameter = innerDiameter;
 			Angle = angle;
 			NumberOfSpoke = numberOfSpoke;
 			Gap = gap;
 		}
-
-		public double OuterDiameter { get; private set; }
 
 		public double InnerDiameter { get; private set; }
 
@@ -27,7 +24,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public double Gap { get; private set; }
 
-		public static OdbSymbolRoundThermalSquared Create(int index, string param)
+		public static new OdbSymbolRoundThermalSquared Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 5)
