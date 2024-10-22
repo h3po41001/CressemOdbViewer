@@ -1,6 +1,8 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿using CressemExtractLibrary.Data.Interface.Symbol;
+
+namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRoundedSqureDonut : OdbSymbolEditedCorner
+	internal class OdbSymbolRoundedSqureDonut : OdbSymbolEditedCorner, ISymbolRoundedSqureDonut
 	{
 		private OdbSymbolRoundedSqureDonut() { }
 
@@ -20,7 +22,7 @@
 
 		public bool[] IsRounded { get => IsEditedCorner; }
 
-		public static new OdbSymbolRoundedSqureDonut Create(int index, string param)
+		public static OdbSymbolRoundedSqureDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 4)

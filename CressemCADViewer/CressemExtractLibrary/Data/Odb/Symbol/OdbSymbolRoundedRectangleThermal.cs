@@ -1,6 +1,8 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿using CressemExtractLibrary.Data.Interface.Symbol;
+
+namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRoundedRectangleThermal : OdbSymbolEditedCorner
+	internal class OdbSymbolRoundedRectangleThermal : OdbSymbolEditedCorner, ISymbolRoundedRectangleThermal
 	{
 		private OdbSymbolRoundedRectangleThermal() { }
 

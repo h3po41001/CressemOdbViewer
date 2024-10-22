@@ -41,6 +41,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		{
 			feature.SetSymbol(Symbols);
 			feature.SetAttribute(AttrNames, AttrTexts);
+
 			FeatureList.Add(feature);
 		}
 	}

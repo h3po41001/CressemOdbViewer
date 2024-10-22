@@ -1,6 +1,8 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿using CressemExtractLibrary.Data.Interface.Symbol;
+
+namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolOctagon : OdbSymbolRectangle
+	internal class OdbSymbolOctagon : OdbSymbolRectangle, ISymbolOctagon
 	{
 		protected OdbSymbolOctagon() { }
 

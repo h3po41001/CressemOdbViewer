@@ -1,4 +1,6 @@
-﻿namespace CressemExtractLibrary.Data.Interface.Features
+﻿using CressemExtractLibrary.Data.Interface.Symbol;
+
+namespace CressemExtractLibrary.Data.Interface.Features
 {
 	public interface IFeatureBase
 	{
@@ -9,5 +11,7 @@
 		double Y { get; }
 
 		string Polarity { get; }
+
+		ISymbolBase FeatureSymbol { get; }
 	}
 }

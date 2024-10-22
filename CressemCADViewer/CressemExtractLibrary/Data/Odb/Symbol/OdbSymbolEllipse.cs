@@ -1,6 +1,8 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Symbol
+﻿using CressemExtractLibrary.Data.Interface.Symbol;
+
+namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolEllipse : OdbSymbolBase
+	internal class OdbSymbolEllipse : OdbSymbolBase, ISymbolEllipse
 	{
 		private OdbSymbolEllipse() { }
 

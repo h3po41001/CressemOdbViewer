@@ -1,8 +1,9 @@
 ﻿using System.Linq;
+using CressemExtractLibrary.Data.Interface.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolChamferedRectangle : OdbSymbolEditedCorner
+	internal class OdbSymbolChamferedRectangle : OdbSymbolEditedCorner, ISymbolChamferedRectangle
 	{
 		private OdbSymbolChamferedRectangle() { }
 
@@ -21,7 +22,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		// RT = 0, LT = 1, LB = 2, RB = 3
 		public bool[] IsChamfered { get => IsEditedCorner; }
 
-		public static new OdbSymbolChamferedRectangle Create(int index, string param)
+		public static OdbSymbolChamferedRectangle Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 4)

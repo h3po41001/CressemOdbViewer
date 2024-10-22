@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Symbol;
 using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Symbol;
 
@@ -41,7 +41,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public string AttributeString { get; private set; }
 
-		public OdbSymbolBase FeatureSymbol { get; private set; }
+		public ISymbolBase FeatureSymbol { get; private set; }
 
 		public List<OdbAttribute> FeatureAttributes { get; private set; }
 

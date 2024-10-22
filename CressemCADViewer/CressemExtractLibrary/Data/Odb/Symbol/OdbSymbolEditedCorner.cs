@@ -1,8 +1,9 @@
 ﻿using System.Linq;
+using CressemExtractLibrary.Data.Interface.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolEditedCorner : OdbSymbolBase
+	internal class OdbSymbolEditedCorner : OdbSymbolBase, ISymbolEditedCorner
 	{
 		protected OdbSymbolEditedCorner() { }
 
