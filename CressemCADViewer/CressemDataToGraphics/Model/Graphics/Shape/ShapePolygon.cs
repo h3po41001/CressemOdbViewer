@@ -3,6 +3,7 @@ using System.Drawing;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Interface;
+using ImageControl.Extension;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
@@ -35,6 +36,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public IEnumerable<PointF> Points { get; private set; }
 
 		public static ShapePolygon CreateGdiPlus(bool useMM, float pixelResolution,
+			double xDatum, double yDatum,
 			bool isPositive, IFeaturePolygon polygon)
 		{
 			List<ShapeBase> shapes = new List<ShapeBase>();
@@ -46,19 +48,19 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (feature is IFeatureArc arc)
 				{
-					shapes.Add(ShapeArc.CreateGdiPlus(useMM, pixelResolution, 0, arc));
+					shapes.Add(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, arc));
 				}
 				else if (feature is IFeatureLine line)
 				{
-					shapes.Add(ShapeLine.CreateGdiPlus(useMM, pixelResolution, 0, line));
+					shapes.Add(ShapeLine.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, line));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
 				{
-					shapes.Add(CreateGdiPlus(useMM, pixelResolution, isPositive, subPolygon));
+					shapes.Add(CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
 				{
-					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, pixelResolution, surface));
+					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, surface));
 				}
 			}
 

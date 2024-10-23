@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Drawing;
+using System.Security.Cryptography;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
+using ImageControl.Extension;
 using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
@@ -9,7 +12,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 	{
 		private ShapeArc() { }
 
-		public ShapeArc(float pixelResolution,			
+		public ShapeArc(float pixelResolution,
 			float x, float y,
 			float width, float height,
 			float startAngle, float sweepAngle,
@@ -39,6 +42,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public float LineWidth { get; private set; }
 
 		public static ShapeArc CreateGdiPlus(bool useMM, float pixelResolution,
+			double xDatum, double yDatum,
 			double width, IFeatureArc arc)
 		{
 			double sx = arc.X;
@@ -76,9 +80,24 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 			}
 
-			double radius = Math.Sqrt(Math.Pow(sx - cx, 2) + Math.Pow(-(sy - cy), 2));
-			double startAngle = Math.Atan2(-(sy - cy), sx - cx) * (180 / Math.PI);
-			double endAngle = Math.Atan2(-(ey - cy), ex - cx) * (180 / Math.PI);
+			PointF start = new PointF((float)sx, (float)sy);
+			PointF end = new PointF((float)ex, (float)ey);
+			PointF center = new PointF((float)cx, (float)cy);
+
+			if (arc.OrientDef > 0)
+			{
+				PointF datum = new PointF((float)xDatum, (float)yDatum);
+				int orientAngle = (arc.OrientDef % 4) * 90;
+				bool isMirrorXAxis = arc.OrientDef >= 4;
+
+				start = start.Rotate(datum, orientAngle, isMirrorXAxis);
+				end = end.Rotate(datum, orientAngle, isMirrorXAxis);
+				center = center.Rotate(datum, orientAngle, isMirrorXAxis);
+			}
+
+			double radius = Math.Sqrt(Math.Pow(start.X - center.X, 2) + Math.Pow(-(start.Y - center.Y), 2));
+			double startAngle = Math.Atan2(-(sy - center.X), start.X - center.X) * (180 / Math.PI);
+			double endAngle = Math.Atan2(-(end.Y - center.Y), end.X - center.X) * (180 / Math.PI);
 			double sweepAngle = (endAngle - startAngle);
 
 			if (arc.IsClockWise is true)
@@ -92,7 +111,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					(float)sweepAngle - 360.0f : (float)sweepAngle;
 			}
 
-			return new ShapeArc(pixelResolution,				
+			return new ShapeArc(pixelResolution,
 				(float)(cx - radius),
 				(float)-(cy + radius),
 				(float)(radius * 2),

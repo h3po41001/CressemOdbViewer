@@ -51,7 +51,9 @@
     <Compile Include="Model\Enum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extension\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CressemExtractLibrary\CressemExtractLibrary.csproj">
       <Project>{082ec76a-fac5-480c-bb6f-27f636eeaf7c}</Project>

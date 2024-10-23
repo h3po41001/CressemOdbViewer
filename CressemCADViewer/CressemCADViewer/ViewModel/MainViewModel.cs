@@ -10,6 +10,7 @@ using CressemDataToGraphics.Model;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
 using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Symbol;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.ViewModel;
@@ -110,7 +111,14 @@ namespace CressemCADViewer.ViewModel
 			GraphicsView.LoadProfile(proflieShapes);
 			foreach (var feature in features)
 			{
-				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, feature));
+				if (feature is IFeaturePad pad)
+				{
+					if (pad.FeatureSymbol is ISymbolRectangle)
+					{
+						GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, feature));
+						//break;
+					}
+				}
 			}
 		}
 

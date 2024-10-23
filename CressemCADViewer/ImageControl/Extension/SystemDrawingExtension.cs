@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
 namespace ImageControl.Extension
 {
-	internal static class SystemDrawingExtension
+	public static class SystemDrawingExtension
 	{
 		public static Point GetCenter(this Rectangle rect)
 		{
@@ -34,6 +35,26 @@ namespace ImageControl.Extension
 			float bottom = rectangles.Max(x => x.Bottom);
 
 			return new RectangleF(left, top, right - left, bottom - top);
+		}
+
+		public static PointF Rotate(this PointF point, PointF center, float angle, bool isMirrorXAxis)
+		{
+			float radian = angle * (float)(Math.PI / 180);
+			float cosTheta = (float)Math.Cos(radian);
+			float sinTheta = (float)Math.Sin(radian);
+
+			float dx = point.X - center.X;
+			float dy = point.Y - center.Y;
+
+			float rotatedX = dx * cosTheta - dy * sinTheta;
+			float rotatedY = dx * sinTheta + dy * cosTheta;
+
+			if (isMirrorXAxis)
+			{
+				rotatedX = -rotatedX;
+			}
+
+			return new PointF(rotatedX + center.X, rotatedY + center.Y);
 		}
 	}
 }

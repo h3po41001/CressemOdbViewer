@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using CressemDataToGraphics.Converter;
-using CressemDataToGraphics.Model.Graphics.Shape;
+﻿using CressemDataToGraphics.Model.Graphics.Shape;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
 using ImageControl.Shape.Interface;
@@ -32,7 +30,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeatureArc arc)
 		{
-			ShapeList shapes = new ShapeList((float)xDatum, (float)yDatum, arc.OrientDef);
+			ShapeList shapes = new ShapeList();
 
 			if (arc.FeatureSymbol is ISymbolRound symbolRound)
 			{
@@ -42,14 +40,15 @@ namespace CressemDataToGraphics.Factory
 				var endSymbol = MakeSymbolShape(useMM, pixelResolution, arc.IsMM,
 					arc.Ex, arc.Ey, (dynamic)(arc.FeatureSymbol));
 
-				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, symbolRound.Diameter, arc));
+				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum,
+					symbolRound.Diameter, arc));
 
 				shapes.AddShape(startSymbol);
 				shapes.AddShape(endSymbol);
 			}
 			else
 			{
-				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, 0, arc));
+				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, arc));
 			}
 
 			return shapes;
@@ -57,7 +56,7 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
-			double cx, double cy, int orient, IFeatureBarcode barcode)
+			double xDatum, double yDatum, IFeatureBarcode barcode)
 		{
 			throw new System.NotImplementedException("바코드 아직 미구현");
 		}
@@ -65,7 +64,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeatureLine line)
 		{
-			ShapeList shapes = new ShapeList(xDatum, yDatum, line.OrientDef);
+			ShapeList shapes = new ShapeList();
 
 			if (line.FeatureSymbol is ISymbolRound symbolRound)
 			{
@@ -76,14 +75,14 @@ namespace CressemDataToGraphics.Factory
 					line.Ex, line.Ey, (dynamic)(line.FeatureSymbol));
 
 				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution,
-					symbolRound.Diameter, line));
+					xDatum, yDatum, symbolRound.Diameter, line));
 
 				shapes.AddShape(startSymbol);
 				shapes.AddShape(endSymbol);
 			}
 			else
 			{
-				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution, 0, line));
+				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, line));
 			}
 
 			return shapes;
@@ -92,11 +91,11 @@ namespace CressemDataToGraphics.Factory
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeaturePad pad)
 		{
-			ShapeList shapes = new ShapeList(xDatum, yDatum, pad.OrientDef);
-			if (pad.FeatureSymbol != null)
+			ShapeList shapes = new ShapeList();
+			if (pad.FeatureSymbol is ISymbolRectangle rect)
 			{
-				shapes.AddShape(MakeSymbolShape(useMM, pixelResolution, pad.IsMM,
-					pad.X, pad.Y, (dynamic)(pad.FeatureSymbol)));
+				shapes.AddShape(MakeSymbolShape(useMM, pixelResolution, xDatum, yDatum, pad.OrientDef,
+					pad.IsMM, pad.X, pad.Y, rect));
 			}
 
 			return shapes;
@@ -105,9 +104,9 @@ namespace CressemDataToGraphics.Factory
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeatureSurface surface)
 		{
-			ShapeList shapes = new ShapeList(xDatum, yDatum, surface.OrientDef);
+			ShapeList shapes = new ShapeList();
 			shapes.AddShape(ShapeSurface.CreateGdiPlus(
-				useMM, pixelResolution, surface));
+				useMM, pixelResolution, xDatum, yDatum, surface));
 
 			if (surface.FeatureSymbol != null)
 			{
@@ -132,16 +131,19 @@ namespace CressemDataToGraphics.Factory
 			bool isMM, double cx, double cy,
 			ISymbolSquare square)
 		{
-			return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
-				isMM, cx, cy, square.Diameter, square.Diameter);
+			return null;
+			//return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
+			//	isMM, cx, cy, square.Diameter, square.Diameter);
 		}
 
 		// Rectangle
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
+			double xDatum, double yDatum, int orient,
 			bool isMM, double cx, double cy,
 			ISymbolRectangle rect)
 		{
 			return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
+				xDatum, yDatum, orient,
 				isMM, cx, cy, rect.Width, rect.Height);
 		}
 
@@ -150,118 +152,120 @@ namespace CressemDataToGraphics.Factory
 			bool isMM, double cx, double cy,
 			ISymbolRoundedRectangle rect)
 		{
-			float sx = (float)cx;
-			float sy = (float)cy;
-			float fWidth = (float)rect.Width;
-			float fHeight = (float)rect.Height;
-			float radius = (float)rect.CornerRadius;
+			return null;
+			//float sx = (float)cx;
+			//float sy = (float)cy;
+			//float fWidth = (float)rect.Width;
+			//float fHeight = (float)rect.Height;
+			//float radius = (float)rect.CornerRadius;
 
-			if (useMM is true)
-			{
-				if (isMM is false)
-				{
-					sx = (float)cx.ConvertInchToMM();
-					sy = (float)cy.ConvertInchToMM();
-					fWidth = (float)rect.Width.ConvertInchToUM();
-					fHeight = (float)rect.Height.ConvertInchToUM();
-					radius = (float)rect.CornerRadius.ConvertInchToUM();
-				}
-			}
-			else
-			{
-				if (isMM is true)
-				{
-					sx = (float)cx.ConvertMMToInch();
-					sy = (float)cy.ConvertMMToInch();
-					fWidth = (float)rect.Width.ConvertUMToInch();
-					fHeight = (float)rect.Height.ConvertUMToInch();
-					radius = (float)rect.CornerRadius.ConvertUMToInch();
-				}
-			}
+			//if (useMM is true)
+			//{
+			//	if (isMM is false)
+			//	{
+			//		sx = (float)cx.ConvertInchToMM();
+			//		sy = (float)cy.ConvertInchToMM();
+			//		fWidth = (float)rect.Width.ConvertInchToUM();
+			//		fHeight = (float)rect.Height.ConvertInchToUM();
+			//		radius = (float)rect.CornerRadius.ConvertInchToUM();
+			//	}
+			//}
+			//else
+			//{
+			//	if (isMM is true)
+			//	{
+			//		sx = (float)cx.ConvertMMToInch();
+			//		sy = (float)cy.ConvertMMToInch();
+			//		fWidth = (float)rect.Width.ConvertUMToInch();
+			//		fHeight = (float)rect.Height.ConvertUMToInch();
+			//		radius = (float)rect.CornerRadius.ConvertUMToInch();
+			//	}
+			//}
 
-			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
-			// ODB에서 LT 좌표는 (sx - fWidth / 2), (sy + fHeight / 2) 
-			float cornerSx = sx - fWidth / 2;
-			float cornerSy = sy + fHeight / 2;
-			float cornerWidth = radius;
-			float cornerHeight = radius;
+			//// Gdi에 그릴때는 LT부터 width, height 만큼 그림
+			//// ODB에서 LT 좌표는 (sx - fWidth / 2), (sy + fHeight / 2) 
+			//float cornerSx = sx - fWidth / 2;
+			//float cornerSy = sy + fHeight / 2;
+			//float cornerWidth = radius;
+			//float cornerHeight = radius;
 
-			List<ShapeArc> arcList = new List<ShapeArc>();
-			// RT
-			if (rect.IsEditedCorner[0] is true)
-			{
-				cornerSx += (fWidth - radius);
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
-					cornerWidth, cornerHeight, 270, 90, 0));
-			}
+			//List<ShapeArc> arcList = new List<ShapeArc>();
+			//// RT
+			//if (rect.IsEditedCorner[0] is true)
+			//{
+			//	cornerSx += (fWidth - radius);
+			//	arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+			//		cornerWidth, cornerHeight, 270, 90, 0));
+			//}
 
-			// LT
-			if (rect.IsEditedCorner[1] is true)
-			{
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
-					cornerWidth, cornerHeight, 180, 90, 0));
-			}
+			//// LT
+			//if (rect.IsEditedCorner[1] is true)
+			//{
+			//	arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+			//		cornerWidth, cornerHeight, 180, 90, 0));
+			//}
 
-			// LB
-			if (rect.IsEditedCorner[2] is true)
-			{
-				cornerSy += (-fHeight + radius);
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
-					cornerWidth, cornerHeight, 90, 90, 0));
-			}
+			//// LB
+			//if (rect.IsEditedCorner[2] is true)
+			//{
+			//	cornerSy += (-fHeight + radius);
+			//	arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+			//		cornerWidth, cornerHeight, 90, 90, 0));
+			//}
 
-			// RB
-			if (rect.IsEditedCorner[3] is true)
-			{
-				cornerSx += (fWidth - radius);
-				cornerSy += (-fHeight + radius);
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
-					cornerWidth, cornerHeight, 0, 90, 0));
-			}
+			//// RB
+			//if (rect.IsEditedCorner[3] is true)
+			//{
+			//	cornerSx += (fWidth - radius);
+			//	cornerSy += (-fHeight + radius);
+			//	arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+			//		cornerWidth, cornerHeight, 0, 90, 0));
+			//}
 
-			return new ShapePolygon(pixelResolution, true, arcList);
+			//return new ShapePolygon(pixelResolution, true, arcList);
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double cx, double cy, ISymbolButterfly butterfly)
 		{
-			float sx = (float)cx;
-			float sy = (float)cy;
-			float width = (float)butterfly.Diameter;
-			float height = (float)butterfly.Diameter;
+			return null;
+			//float sx = (float)cx;
+			//float sy = (float)cy;
+			//float width = (float)butterfly.Diameter;
+			//float height = (float)butterfly.Diameter;
 
-			if (useMM is true)
-			{
-				if (isMM is false)
-				{
-					sx = (float)cx.ConvertInchToMM();
-					sy = (float)cy.ConvertInchToMM();
-					width = (float)butterfly.Diameter.ConvertInchToUM();
-					height = (float)butterfly.Diameter.ConvertInchToUM();
-				}
-			}
-			else
-			{
-				if (isMM is true)
-				{
-					sx = (float)cx.ConvertMMToInch();
-					sy = (float)cy.ConvertMMToInch();
-					width = (float)butterfly.Diameter.ConvertUMToInch();
-					height = (float)butterfly.Diameter.ConvertUMToInch();
-				}
-			}
+			//if (useMM is true)
+			//{
+			//	if (isMM is false)
+			//	{
+			//		sx = (float)cx.ConvertInchToMM();
+			//		sy = (float)cy.ConvertInchToMM();
+			//		width = (float)butterfly.Diameter.ConvertInchToUM();
+			//		height = (float)butterfly.Diameter.ConvertInchToUM();
+			//	}
+			//}
+			//else
+			//{
+			//	if (isMM is true)
+			//	{
+			//		sx = (float)cx.ConvertMMToInch();
+			//		sy = (float)cy.ConvertMMToInch();
+			//		width = (float)butterfly.Diameter.ConvertUMToInch();
+			//		height = (float)butterfly.Diameter.ConvertUMToInch();
+			//	}
+			//}
 
-			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
-			// ODB에서 LT 좌표는 (sx - width / 2), (sy + height / 2) 
-			// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
-			var leftTop = new ShapeArc(pixelResolution,
-				(sx - width / 2), -(sy + height / 2), width / 2, height / 2, 180, 90, 0);
+			//// Gdi에 그릴때는 LT부터 width, height 만큼 그림
+			//// ODB에서 LT 좌표는 (sx - width / 2), (sy + height / 2) 
+			//// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
+			//var leftTop = new ShapeArc(pixelResolution,
+			//	(sx - width / 2), -(sy + height / 2), width / 2, height / 2, 180, 90, 0);
 
-			var rightBottom = new ShapeArc(pixelResolution,
-				sx, -sy, width / 2, height / 2, 270, 90, 0);
+			//var rightBottom = new ShapeArc(pixelResolution,
+			//	sx, -sy, width / 2, height / 2, 270, 90, 0);
 
-			return new ShapePolygon(pixelResolution, true,
-				new ShapeBase[] { leftTop, rightBottom });
+			//return new ShapePolygon(pixelResolution, true,
+			//	new ShapeBase[] { leftTop, rightBottom });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
@@ -274,43 +278,44 @@ namespace CressemDataToGraphics.Factory
 			bool isMM, double cx, double cy,
 			ISymbolDiamond diamond)
 		{
-			float fx = (float)cx;
-			float fy = (float)cy;
-			float fWidth = (float)diamond.Width;
-			float fHeight = (float)diamond.Height;
+			return null;
+			//float fx = (float)cx;
+			//float fy = (float)cy;
+			//float fWidth = (float)diamond.Width;
+			//float fHeight = (float)diamond.Height;
 
-			if (useMM is true)
-			{
-				if (isMM is false)
-				{
-					fx = (float)cx.ConvertInchToMM();
-					fy = (float)cy.ConvertInchToMM();
-					fWidth = (float)diamond.Width.ConvertInchToUM();
-					fHeight = (float)diamond.Height.ConvertInchToUM();
-				}
-			}
-			else
-			{
-				if (isMM is true)
-				{
-					fx = (float)cx.ConvertMMToInch();
-					fy = (float)cy.ConvertMMToInch();
-					fWidth = (float)diamond.Width.ConvertUMToInch();
-					fHeight = (float)diamond.Height.ConvertUMToInch();
-				}
-			}
+			//if (useMM is true)
+			//{
+			//	if (isMM is false)
+			//	{
+			//		fx = (float)cx.ConvertInchToMM();
+			//		fy = (float)cy.ConvertInchToMM();
+			//		fWidth = (float)diamond.Width.ConvertInchToUM();
+			//		fHeight = (float)diamond.Height.ConvertInchToUM();
+			//	}
+			//}
+			//else
+			//{
+			//	if (isMM is true)
+			//	{
+			//		fx = (float)cx.ConvertMMToInch();
+			//		fy = (float)cy.ConvertMMToInch();
+			//		fWidth = (float)diamond.Width.ConvertUMToInch();
+			//		fHeight = (float)diamond.Height.ConvertUMToInch();
+			//	}
+			//}
 
-			var topRight = new ShapeLine(pixelResolution,
-				fx, -(fy + fHeight / 2), fx + fWidth / 2, -fy);
-			var topLeft = new ShapeLine(pixelResolution,
-				fx, -(fy + fHeight / 2), fx - fWidth / 2, -fy);
-			var bottomRight = new ShapeLine(pixelResolution,
-				fx, -(fy - fHeight / 2), fx + fWidth / 2, -fy);
-			var bottomLeft = new ShapeLine(pixelResolution,
-				fx, -(fy - fHeight / 2), fx - fWidth / 2, -fy);
+			//var topRight = new ShapeLine(pixelResolution,
+			//	fx, -(fy + fHeight / 2), fx + fWidth / 2, -fy);
+			//var topLeft = new ShapeLine(pixelResolution,
+			//	fx, -(fy + fHeight / 2), fx - fWidth / 2, -fy);
+			//var bottomRight = new ShapeLine(pixelResolution,
+			//	fx, -(fy - fHeight / 2), fx + fWidth / 2, -fy);
+			//var bottomLeft = new ShapeLine(pixelResolution,
+			//	fx, -(fy - fHeight / 2), fx - fWidth / 2, -fy);
 
-			return new ShapePolygon(pixelResolution, true,
-				new ShapeBase[] { topRight, topLeft, bottomRight, bottomLeft });
+			//return new ShapePolygon(pixelResolution, true,
+			//	new ShapeBase[] { topRight, topLeft, bottomRight, bottomLeft });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
@@ -493,16 +498,17 @@ namespace CressemDataToGraphics.Factory
 			bool isMM, double cx, double cy,
 			ISymbolSquareButterfly squareButterfly)
 		{
-			double halfDiameter = squareButterfly.Diameter / 2;
+			return null;
+			//double halfDiameter = squareButterfly.Diameter / 2;
 
-			var leftTop = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
-				cx - halfDiameter, cy - halfDiameter, halfDiameter, halfDiameter);
+			//var leftTop = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
+			//	cx - halfDiameter, cy - halfDiameter, halfDiameter, halfDiameter);
 
-			var rightBottom = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
-				cx, cy, halfDiameter, halfDiameter);
+			//var rightBottom = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
+			//	cx, cy, halfDiameter, halfDiameter);
 
-			return new ShapePolygon(pixelResolution, true,
-				new ShapeBase[] { leftTop, rightBottom });
+			//return new ShapePolygon(pixelResolution, true,
+			//	new ShapeBase[] { leftTop, rightBottom });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
@@ -552,17 +558,6 @@ namespace CressemDataToGraphics.Factory
 			ISymbolUser user)
 		{
 			return null;
-			ShapeList shapes = new ShapeList(cx, cy, 0);
-			if (user.FeaturesList != null)
-			{
-				foreach (var feature in user.FeaturesList)
-				{
-					shapes.AddShape(MakeFeatureShape(useMM, pixelResolution, cx, cy, 0,
-						(dynamic)feature));
-				}
-			}
-
-			return shapes;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,

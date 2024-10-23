@@ -28,7 +28,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics, Matrix _)
 		{
-			graphics.FillRectangle(new SolidBrush(Color.DarkGreen), 
+			graphics.FillRectangle(new SolidBrush(Color.Red), 
 				X * PixelResolution,
 				Y * PixelResolution,
 				Width * PixelResolution,

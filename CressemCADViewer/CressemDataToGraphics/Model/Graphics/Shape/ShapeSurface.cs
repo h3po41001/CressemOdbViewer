@@ -23,6 +23,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public IEnumerable<IShapePolygon> Polygons { get; private set; }
 
 		public static ShapeSurface CreateGdiPlus(bool useMM, float pixelResolution,
+			double xDatum, double yDatum,
 			IFeatureSurface surface)
 		{
 			if (surface is null)
@@ -35,8 +36,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 			foreach (var polygon in surface.Polygons)
 			{
-				polygons.Add(ShapePolygon.CreateGdiPlus(useMM, pixelResolution, 
-					isPositive, polygon));
+				polygons.Add(ShapePolygon.CreateGdiPlus(useMM, pixelResolution,
+					xDatum, yDatum, isPositive, polygon));
 			}
 
 			return new ShapeSurface(pixelResolution, 

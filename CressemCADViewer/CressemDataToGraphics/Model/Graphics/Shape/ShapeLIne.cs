@@ -1,5 +1,7 @@
-﻿using CressemDataToGraphics.Converter;
+﻿using System.Drawing;
+using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
+using ImageControl.Extension;
 using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
@@ -31,7 +33,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public float Width { get; private set; }
 
 		public static ShapeLine CreateGdiPlus(bool useMM, float pixelResolution,
-			 double width, IFeatureLine line)
+			double xDatum, double yDatum,
+			double width, IFeatureLine line)
 		{
 			double sx = line.X;
 			double sy = line.Y;
@@ -62,9 +65,22 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 			}
 
+			PointF start = new PointF((float)sx, (float)sy);
+			PointF end = new PointF((float)ex, (float)ey);
+
+			if (line.OrientDef > 0)
+			{
+				PointF datum = new PointF((float)xDatum, (float)yDatum);
+				int orientAngle = (line.OrientDef % 4) * 90;
+				bool isMirrorXAxis = line.OrientDef >= 4;
+
+				start = start.Rotate(datum, orientAngle, isMirrorXAxis);
+				end = end.Rotate(datum, orientAngle, isMirrorXAxis);
+			}
+
 			return new ShapeLine(pixelResolution,
-				(float)sx, (float)-sy,
-				(float)ex, (float)-ey, (float)lineWidth);
+				(float)start.X, (float)-start.Y,
+				(float)end.X, (float)-end.Y, (float)lineWidth);
 		}
 
 		public static ShapeLine CreateOpenGl(bool useMM, float pixelResolution,
