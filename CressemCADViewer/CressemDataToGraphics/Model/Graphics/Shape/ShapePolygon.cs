@@ -13,14 +13,18 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		}
 
 		public ShapePolygon(float pixelResolution,
-			bool isFill, IEnumerable<ShapeBase> shapes) : base(pixelResolution)
+			float xDatum, float yDatum, int orient,
+			bool isFill,
+			IEnumerable<ShapeBase> shapes) : base(pixelResolution, xDatum, yDatum, orient)
 		{
 			IsFill = isFill;
 			Shapes = shapes;
 		}
 
 		public ShapePolygon(float pixelResolution,
-			bool isFill, IEnumerable<PointF> points) : base(pixelResolution)
+			float xDatum, float yDatum, int orient,
+			bool isFill, 
+			IEnumerable<PointF> points) : base(pixelResolution, xDatum, yDatum, orient)
 		{
 			IsFill = isFill;
 			Points = points;
@@ -60,7 +64,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 			}
 
-			return new ShapePolygon(pixelResolution, isFill, shapes);
+			return new ShapePolygon(pixelResolution, (float)xDatum, (float)yDatum, 0, isFill, shapes);
 		}
 
 		public static ShapePolygon CreateGdiPlus(bool useMM, float pixelResolution,
@@ -94,8 +98,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			}
 
 			bool isIsland = polygonType.Equals("I") is true;
-			bool isFill = isPositive is true ? isIsland : !isIsland; 
-			
+			bool isFill = isPositive is true ? isIsland : !isIsland;
+
 			return new ShapePolygon(pixelResolution, isFill, calcPoints);
 		}
 

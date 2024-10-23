@@ -9,8 +9,10 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		private ShapeLine() { }
 
 		public ShapeLine(float pixelResolution,
+			float xDatum, float yDatum, int orient,
 			float sx, float sy,
-			float ex, float ey, float width = 0) : base(pixelResolution)
+			float ex, float ey, 
+			float width = 0) : base(pixelResolution, xDatum, yDatum, orient)
 		{
 			Sx = sx;
 			Sy = sy;
@@ -62,6 +64,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			}
 
 			return new ShapeLine(pixelResolution,
+				 (float)xDatum, (float)yDatum, 0,
 				(float)sx, (float)-sy,
 				(float)ex, (float)-ey, (float)lineWidth);
 		}

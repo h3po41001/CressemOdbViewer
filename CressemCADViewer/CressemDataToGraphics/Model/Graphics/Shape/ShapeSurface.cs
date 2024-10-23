@@ -10,8 +10,10 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 		}
 
-		public ShapeSurface(float pixelResolution, bool isPositive,
-			IEnumerable<ShapePolygon> polygons) : base(pixelResolution)
+		public ShapeSurface(float pixelResolution,
+			float xDatum, float yDatum, int orient,
+			bool isPositive,
+			IEnumerable<ShapePolygon> polygons) : base(pixelResolution, xDatum, yDatum, orient)
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -38,7 +40,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					xDatum, yDatum, isPositive, polygon));
 			}
 
-			return new ShapeSurface(pixelResolution, isPositive, polygons);
+			return new ShapeSurface(pixelResolution, 
+				(float)xDatum, (float)yDatum, 0, isPositive, polygons);
 		}
 
 		public static IShapeSurface CreateOpenGl(IFeatureSurface surface)

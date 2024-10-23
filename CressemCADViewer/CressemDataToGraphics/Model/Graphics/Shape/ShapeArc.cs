@@ -10,9 +10,11 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		private ShapeArc() { }
 
 		public ShapeArc(float pixelResolution,
+			float xDatum, float yDatum, int orient,
 			float x, float y,
 			float width, float height,
-			float startAngle, float sweepAngle, float lineWidth) : base(pixelResolution)
+			float startAngle, float sweepAngle,
+			float lineWidth) : base(pixelResolution, xDatum, yDatum, orient)
 		{
 			X = x;
 			Y = y;
@@ -92,6 +94,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			}
 
 			return new ShapeArc(pixelResolution,
+				(float)xDatum, (float)yDatum, 0,
 				(float)(cx - radius),
 				(float)-(cy + radius),
 				(float)(radius * 2),
