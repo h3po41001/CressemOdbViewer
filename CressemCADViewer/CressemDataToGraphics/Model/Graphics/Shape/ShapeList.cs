@@ -14,14 +14,19 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<IShapeBase> Shapes { get => _shapes; }
 
-		public void AddShape(IShapeBase shape)
+		public void AddShape(object shape)
 		{
-			_shapes.Add(shape);
-		}
-
-		public void AddShape(IShapeList shapes)
-		{
-			_shapes.AddRange(shapes.Shapes);
+			if (shape != null)
+			{
+				if (shape is IShapeBase shapeBase)
+				{
+					_shapes.Add(shapeBase);
+				}
+                else if (shape is IShapeList shapeList)
+				{
+					_shapes.AddRange(shapeList.Shapes);
+				}
+			}
 		}
 	}
 }

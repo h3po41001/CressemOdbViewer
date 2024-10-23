@@ -13,11 +13,11 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		private OdbFeatureBarcode() { }
 
 		public OdbFeatureBarcode(int index, bool isMM, double x, double y, 
-			string name, string font, string polarity,
+			string name, string font, string polarity, int orient,
 			double e, double elementWidth, double barcodeHeight, 
 			string fasc, string checkSum, string invertBg, 
 			string astr, string astrPos, 
-			string text, string attrString) : base(index, isMM, x, y, polarity, "", -1, attrString)
+			string text, string attrString) : base(index, isMM, x, y, polarity, "", orient, - 1, attrString)
 		{
 			Name = name;
 			Font = font;
@@ -82,17 +82,22 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			if (double.TryParse(param[6], out double e) is false)
+			if (int.TryParse(param[6], out int orient) is false)
 			{
 				return null;
 			}
 
-			if (double.TryParse(param[7], out double elementWidth) is false)
+			if (double.TryParse(param[7], out double e) is false)
 			{
 				return null;
 			}
 
-			if (double.TryParse(param[8], out double barcodeHeight) is false)
+			if (double.TryParse(param[8], out double elementWidth) is false)
+			{
+				return null;
+			}
+
+			if (double.TryParse(param[9], out double barcodeHeight) is false)
 			{
 				return null;
 			}
@@ -103,7 +108,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
 
 			return new OdbFeatureBarcode(index, isMM, x, y, param[3], param[4], param[5],
-				e, elementWidth, barcodeHeight,
+				orient, e, elementWidth, barcodeHeight,
 				param[9], param[10], param[11], param[12], param[13], text, attrString);
 		}
 	}

@@ -11,7 +11,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		protected OdbFeatureBase() { }
 
 		public OdbFeatureBase(int index, bool isMM, double x, double y,
-			string polarity, string decode, int symbolNum, 
+			string polarity, string decode, int orient, int symbolNum,
 			string attributeString)
 		{
 			Index = index;
@@ -20,6 +20,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			Y = y;
 			Polarity = polarity;
 			Decode = decode;
+			OrientDef = orient;
 			SymbolNum = symbolNum;
 			AttributeString = attributeString;
 		}
@@ -33,9 +34,13 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public double Y { get; private set; }
 
 		public string Polarity { get; private set; }
-		
+
 		// gerber decode
 		public string Decode { get; private set; }
+
+		// 0 : 0도, 1 : 90도, 2 : 180도, 3 : 270도, 4 : 0도 X축 미러, 5 : 90도 X축 미러, 6 : 180도 X축 미러, 7 : 270도 X축 미러
+		// 8 :  any angle rotation, no mirror, 9 : any angle rotation, X-axis mirror
+		public int OrientDef { get; private set; }
 
 		public int SymbolNum { get; private set; }
 
@@ -74,7 +79,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				}
 
 				if (attrSplited.Length == 1)
-				{					
+				{
 					FeatureAttributes.Add(new OdbAttribute(attrNames[index].Name, string.Empty));
 				}
 				else if (attrSplited.Length == 2)

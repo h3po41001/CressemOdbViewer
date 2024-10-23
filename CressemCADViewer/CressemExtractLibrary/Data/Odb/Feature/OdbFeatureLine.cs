@@ -9,7 +9,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public OdbFeatureLine(int index, bool isMM,
 			double sx, double sy, double ex, double ey,
 			int symbolNum, string polarity, string decode,
-			string attrString) : base(index, isMM, sx, sy, polarity, decode, symbolNum, attrString)
+			string attrString) : base(index, isMM, sx, sy, polarity, decode, 0, symbolNum, attrString)
 		{
 			Ex = ex;
 			Ey = ey;

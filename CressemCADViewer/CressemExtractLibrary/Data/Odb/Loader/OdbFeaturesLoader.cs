@@ -210,11 +210,6 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					// I : Island, H : Hole
 					string polyType = splited[3];
 
-					//List<OdbPolygonAttr> polygonAttrList = new List<OdbPolygonAttr>
-					//{
-					//	new OdbPolygonOB(sbx, sby, polyType)
-					//};
-
 					OdbFeaturePolygon polygon = new OdbFeaturePolygon(polyType);
 
 					// Define of one polygon

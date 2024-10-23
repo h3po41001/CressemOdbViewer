@@ -106,13 +106,13 @@ namespace CressemCADViewer.ViewModel
 
 			GraphicsView.ClearShape();
 
-			var proflieShapes = dataToGraphics.GetShapes(useMM, 0.0, 0.0, profile);
+			var proflieShapes = dataToGraphics.GetShapes(useMM, 0.0, 0.0, 0, profile);
 			GraphicsView.LoadProfile(proflieShapes.Shapes.FirstOrDefault());
 			GraphicsView.AddProfile(proflieShapes);
 
 			foreach (var feature in features)
 			{
-				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, 0.0, 0.0, feature));
+				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, 0.0, 0.0, 0, feature));
 			}
 		}
 

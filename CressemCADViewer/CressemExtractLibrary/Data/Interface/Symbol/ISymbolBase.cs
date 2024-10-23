@@ -3,5 +3,7 @@
 	public interface ISymbolBase
 	{
 		int Index { get; }
+
+		int Orient { get; }
 	}
 }

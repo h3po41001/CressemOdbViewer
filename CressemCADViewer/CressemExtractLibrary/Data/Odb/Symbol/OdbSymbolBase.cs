@@ -12,5 +12,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 		}
 
 		public int Index { get; private set; } = -1;
+
+		public int Orient { get; set; } = 0;
 	}
 }

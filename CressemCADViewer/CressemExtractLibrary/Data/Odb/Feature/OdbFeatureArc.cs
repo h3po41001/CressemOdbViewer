@@ -8,9 +8,9 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public OdbFeatureArc(int index, bool isMM, double sx, double sy,
 			double ex, double ey,
-			double cx, double cy, int symbolNum, 
-			string polarity, string decode, string cw, 
-			string attrString) : base(index, isMM, sx, sy, polarity, decode, symbolNum, attrString)
+			double cx, double cy, int symbolNum,
+			string polarity, string decode, string cw,
+			string attrString) : base(index, isMM, sx, sy, polarity, decode, 0, symbolNum, attrString)
 		{
 			Ex = ex;
 			Ey = ey;
@@ -82,7 +82,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			string cw = splited[0];
 			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
 
-			return new OdbFeatureArc(index, isMM, sx, sy, ex, ey, cx, cy, 
+			return new OdbFeatureArc(index, isMM, sx, sy, ex, ey, cx, cy,
 				symbolNum, param[8], param[9], cw, attrString);
 		}
 	}
