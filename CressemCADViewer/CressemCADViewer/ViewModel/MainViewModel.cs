@@ -86,7 +86,7 @@ namespace CressemCADViewer.ViewModel
 			string fileName = Path.GetFileName(PropertyView.OdbLoadPath);
 			string saveFolder = Path.GetDirectoryName(PropertyView.OdbLoadPath);
 
-			Processor.Run(DesignFormat.Odb, Path.Combine(saveFolder, fileName), 
+			Processor.Run(DesignFormat.Odb, Path.Combine(saveFolder, fileName),
 				Path.Combine(saveFolder, Path.GetFileNameWithoutExtension(fileName)));
 		}
 
@@ -106,13 +106,11 @@ namespace CressemCADViewer.ViewModel
 
 			GraphicsView.ClearShape();
 
-			var proflieShapes = dataToGraphics.GetShapes(useMM, 0.0, 0.0, 0, profile);
-			GraphicsView.LoadProfile(proflieShapes.Shapes.FirstOrDefault());
-			GraphicsView.AddProfile(proflieShapes);
-
+			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, profile);
+			GraphicsView.LoadProfile(proflieShapes);
 			foreach (var feature in features)
 			{
-				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, 0.0, 0.0, 0, feature));
+				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, feature));
 			}
 		}
 

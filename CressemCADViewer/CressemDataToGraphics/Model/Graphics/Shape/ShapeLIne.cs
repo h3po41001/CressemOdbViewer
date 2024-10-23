@@ -9,10 +9,9 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		private ShapeLine() { }
 
 		public ShapeLine(float pixelResolution,
-			float xDatum, float yDatum, int orient,
 			float sx, float sy,
-			float ex, float ey, 
-			float width = 0) : base(pixelResolution, xDatum, yDatum, orient)
+			float ex, float ey,
+			float width = 0) : base(pixelResolution)
 		{
 			Sx = sx;
 			Sy = sy;
@@ -32,12 +31,12 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public float Width { get; private set; }
 
 		public static ShapeLine CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, double width, IFeatureLine line)
+			 double width, IFeatureLine line)
 		{
-			double sx = line.X + xDatum;
-			double sy = line.Y + yDatum;
-			double ex = line.Ex + xDatum;
-			double ey = line.Ey + yDatum;
+			double sx = line.X;
+			double sy = line.Y;
+			double ex = line.Ex;
+			double ey = line.Ey;
 			double lineWidth = width;
 
 			if (useMM is true)
@@ -64,7 +63,6 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			}
 
 			return new ShapeLine(pixelResolution,
-				 (float)xDatum, (float)yDatum, 0,
 				(float)sx, (float)-sy,
 				(float)ex, (float)-ey, (float)lineWidth);
 		}

@@ -13,18 +13,16 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		}
 
 		public ShapePolygon(float pixelResolution,
-			float xDatum, float yDatum, int orient,
 			bool isFill,
-			IEnumerable<ShapeBase> shapes) : base(pixelResolution, xDatum, yDatum, orient)
+			IEnumerable<ShapeBase> shapes) : base(pixelResolution)
 		{
 			IsFill = isFill;
 			Shapes = shapes;
 		}
 
 		public ShapePolygon(float pixelResolution,
-			float xDatum, float yDatum, int orient,
-			bool isFill, 
-			IEnumerable<PointF> points) : base(pixelResolution, xDatum, yDatum, orient)
+			bool isFill,
+			IEnumerable<PointF> points) : base(pixelResolution)
 		{
 			IsFill = isFill;
 			Points = points;
@@ -37,7 +35,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public IEnumerable<PointF> Points { get; private set; }
 
 		public static ShapePolygon CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, bool isPositive, IFeaturePolygon polygon)
+			bool isPositive, IFeaturePolygon polygon)
 		{
 			List<ShapeBase> shapes = new List<ShapeBase>();
 
@@ -48,27 +46,27 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (feature is IFeatureArc arc)
 				{
-					shapes.Add(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, arc));
+					shapes.Add(ShapeArc.CreateGdiPlus(useMM, pixelResolution, 0, arc));
 				}
 				else if (feature is IFeatureLine line)
 				{
-					shapes.Add(ShapeLine.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, line));
+					shapes.Add(ShapeLine.CreateGdiPlus(useMM, pixelResolution, 0, line));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
 				{
-					shapes.Add(CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, isPositive, subPolygon));
+					shapes.Add(CreateGdiPlus(useMM, pixelResolution, isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
 				{
-					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, surface));
+					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, pixelResolution, surface));
 				}
 			}
 
-			return new ShapePolygon(pixelResolution, (float)xDatum, (float)yDatum, 0, isFill, shapes);
+			return new ShapePolygon(pixelResolution, isFill, shapes);
 		}
 
 		public static ShapePolygon CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, bool isMM, bool isPositive, string polygonType,
+			double xDatum, double yDatum, int orient, bool isMM, bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
 			List<PointF> calcPoints = new List<PointF>();

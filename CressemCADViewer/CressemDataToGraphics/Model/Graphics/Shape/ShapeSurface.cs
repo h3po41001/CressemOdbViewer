@@ -11,9 +11,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		}
 
 		public ShapeSurface(float pixelResolution,
-			float xDatum, float yDatum, int orient,
 			bool isPositive,
-			IEnumerable<ShapePolygon> polygons) : base(pixelResolution, xDatum, yDatum, orient)
+			IEnumerable<ShapePolygon> polygons) : base(pixelResolution)
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -24,7 +23,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public IEnumerable<IShapePolygon> Polygons { get; private set; }
 
 		public static ShapeSurface CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, IFeatureSurface surface)
+			IFeatureSurface surface)
 		{
 			if (surface is null)
 			{
@@ -37,11 +36,11 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			foreach (var polygon in surface.Polygons)
 			{
 				polygons.Add(ShapePolygon.CreateGdiPlus(useMM, pixelResolution, 
-					xDatum, yDatum, isPositive, polygon));
+					isPositive, polygon));
 			}
 
 			return new ShapeSurface(pixelResolution, 
-				(float)xDatum, (float)yDatum, 0, isPositive, polygons);
+				isPositive, polygons);
 		}
 
 		public static IShapeSurface CreateOpenGl(IFeatureSurface surface)

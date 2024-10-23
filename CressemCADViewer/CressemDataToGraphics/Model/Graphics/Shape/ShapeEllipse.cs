@@ -10,9 +10,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		}
 
 		public ShapeEllipse(float pixelResolution,
-			float xDatum, float yDatum, int orient,
 			float x, float y,
-			float width, float height) : base(pixelResolution, xDatum, yDatum, orient)
+			float width, float height) : base(pixelResolution)
 		{
 			X = x;
 			Y = y;
@@ -29,8 +28,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public float Height { get; set; }
 
 		public static ShapeEllipse CreateGdiPlus(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, double width, double height)
+			bool isMM, double cx, double cy, double width, double height)
 		{
 			float sx = (float)cx;
 			float sy = (float)cy;
@@ -61,7 +59,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
 			// ODB에서 LT 좌표는 (sx - fWidth / 2), (sy + fHeight / 2) 
 			// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
-			return new ShapeEllipse(pixelResolution, (float)xDatum, (float)yDatum, orient,
+			return new ShapeEllipse(pixelResolution, 
 				(sx - fWidth / 2), -(sy + fHeight / 2), fWidth, fHeight);
 		}
 	}

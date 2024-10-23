@@ -31,7 +31,7 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		public IShapeList DataToGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, IFeatureBase feature)
+			double xDatum, double yDatum, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
@@ -39,7 +39,7 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			return _gdiPlusFactory.CreateFeatureToShape(useMM, pixelResolution, 
-				xDatum, yDatum, orient, feature);
+				xDatum, yDatum, feature);
 		}
 
 		public IShapeBase DataToOpenGl(bool useMM, float pixelResolution,

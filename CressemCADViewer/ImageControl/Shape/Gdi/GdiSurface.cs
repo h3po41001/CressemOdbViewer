@@ -8,8 +8,8 @@ namespace ImageControl.Shape.Gdi
 	{
 		private GdiSurface() { }
 
-		public GdiSurface(float pixelResolution,
-			bool isPositive, IEnumerable<GdiShapePolygon> polygons) : base(pixelResolution) 
+		public GdiSurface(float pixelResolution, bool isPositive, 
+			IEnumerable<GdiShapePolygon> polygons) : base(pixelResolution) 
 		{
 			IsPositive = isPositive;
 			Polygons = new List<GdiShapePolygon>(polygons);

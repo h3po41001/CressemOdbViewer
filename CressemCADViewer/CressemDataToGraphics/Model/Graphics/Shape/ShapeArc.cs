@@ -9,12 +9,11 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 	{
 		private ShapeArc() { }
 
-		public ShapeArc(float pixelResolution,
-			float xDatum, float yDatum, int orient,
+		public ShapeArc(float pixelResolution,			
 			float x, float y,
 			float width, float height,
 			float startAngle, float sweepAngle,
-			float lineWidth) : base(pixelResolution, xDatum, yDatum, orient)
+			float lineWidth) : base(pixelResolution)
 		{
 			X = x;
 			Y = y;
@@ -40,14 +39,14 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public float LineWidth { get; private set; }
 
 		public static ShapeArc CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, double width, IFeatureArc arc)
+			double width, IFeatureArc arc)
 		{
-			double sx = arc.X + xDatum;
-			double sy = arc.Y + yDatum;
-			double ex = arc.Ex + xDatum;
-			double ey = arc.Ey + yDatum;
-			double cx = arc.Cx + xDatum;
-			double cy = arc.Cy + yDatum;
+			double sx = arc.X;
+			double sy = arc.Y;
+			double ex = arc.Ex;
+			double ey = arc.Ey;
+			double cx = arc.Cx;
+			double cy = arc.Cy;
 			double lineWidth = width;
 
 			if (useMM is true)
@@ -93,8 +92,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					(float)sweepAngle - 360.0f : (float)sweepAngle;
 			}
 
-			return new ShapeArc(pixelResolution,
-				(float)xDatum, (float)yDatum, 0,
+			return new ShapeArc(pixelResolution,				
 				(float)(cx - radius),
 				(float)-(cy + radius),
 				(float)(radius * 2),

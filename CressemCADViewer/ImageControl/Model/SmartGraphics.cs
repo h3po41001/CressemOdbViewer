@@ -33,9 +33,7 @@ namespace ImageControl.Model
 
 		public abstract void Initialize();
 		
-		public abstract bool LoadProfile(IShapeBase roiShape);
-
-		public abstract void AddProfile(IShapeList roiShape);
+		public abstract bool LoadProfile(IShapeList profileShape);
 
 		public abstract void AddShapes(IShapeList shape);
 

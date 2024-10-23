@@ -50,6 +50,7 @@
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
     <Compile Include="Shape\Gdi\GdiEllipse.cs" />
+    <Compile Include="Shape\Gdi\GdiGraphicsPath.cs" />
     <Compile Include="Shape\Gdi\GdiLine.cs" />
     <Compile Include="Shape\Gdi\GdiPointsPolygon.cs" />
     <Compile Include="Shape\Gdi\GdiShapePolygon.cs" />

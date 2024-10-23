@@ -46,13 +46,24 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadProfile(IShapeBase roiShape)
+		public override bool LoadProfile(IShapeList shapeList)
 		{
-			if (roiShape is null)
+			if (shapeList is null)
 			{
 				return false;
 			}
 
+			if (shapeList.Shapes is null)
+			{
+				return false;
+			}
+
+			foreach (var sh in shapeList.Shapes)
+			{
+				_gdiProfileShapes.Add(ShapeFactory.Instance.CreateGdiShape(sh));
+			}
+
+			var roiShape = shapeList.Shapes.FirstOrDefault();
 			PixelResolution = roiShape.PixelResolution;
 
 			var shape = ShapeFactory.Instance.CreateGdiShape(roiShape);
@@ -84,14 +95,6 @@ namespace ImageControl.Model.Gdi
 			else
 			{
 				return false;
-			}
-		}
-
-		public override void AddProfile(IShapeList roiShape)
-		{
-			foreach (var shape in roiShape.Shapes)
-			{
-				_gdiProfileShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
 			}
 		}
 

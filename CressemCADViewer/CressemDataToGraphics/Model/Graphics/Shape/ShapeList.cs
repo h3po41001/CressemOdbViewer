@@ -7,10 +7,21 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 	{
 		private List<IShapeBase> _shapes;
 
-		public ShapeList()
+		private ShapeList()		{					}
+
+		public ShapeList(double xDatum, double yDatum, int globalOrient)
 		{
+			Xdatum = (float)xDatum;
+			Ydatum = (float)yDatum;
+			Orient = globalOrient;
 			_shapes = new List<IShapeBase>();
 		}
+
+		public float Xdatum { get; private set; }
+
+		public float Ydatum { get; private set; }
+
+		public int Orient { get; private set; }
 
 		public IEnumerable<IShapeBase> Shapes { get => _shapes; }
 
@@ -28,5 +39,6 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 			}
 		}
+
 	}
 }

@@ -14,7 +14,7 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		public IShapeList CreateFeatureToShape(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, IFeatureBase feature)
+			double xDatum, double yDatum, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
@@ -26,31 +26,30 @@ namespace CressemDataToGraphics.Factory
 				return null;
 			}
 
-			return MakeFeatureShape(useMM, pixelResolution, xDatum, yDatum, orient, (dynamic)feature);
+			return MakeFeatureShape(useMM, pixelResolution, xDatum, yDatum, (dynamic)feature);
 		}
 
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, IFeatureArc arc)
+			double xDatum, double yDatum, IFeatureArc arc)
 		{
-			ShapeList shapes = new ShapeList();
+			ShapeList shapes = new ShapeList((float)xDatum, (float)yDatum, arc.OrientDef);
 
 			if (arc.FeatureSymbol is ISymbolRound symbolRound)
 			{
 				var startSymbol = MakeSymbolShape(useMM, pixelResolution, arc.IsMM,
-					xDatum, yDatum, arc.X, arc.Y, orient, (dynamic)(arc.FeatureSymbol));
+					xDatum, yDatum, arc.X, arc.Y, 0, (dynamic)(arc.FeatureSymbol));
 
 				var endSymbol = MakeSymbolShape(useMM, pixelResolution, arc.IsMM,
-					xDatum, yDatum, arc.Ex, arc.Ey, orient, (dynamic)(arc.FeatureSymbol));
+					xDatum, yDatum, arc.Ex, arc.Ey, 0, (dynamic)(arc.FeatureSymbol));
 
-				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum,
-					symbolRound.Diameter, arc));
+				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, symbolRound.Diameter, arc));
 
 				shapes.AddShape(startSymbol);
 				shapes.AddShape(endSymbol);
 			}
 			else
 			{
-				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, arc));
+				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, 0, arc));
 			}
 
 			return shapes;
@@ -64,19 +63,19 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, IFeatureLine line)
+			double xDatum, double yDatum, IFeatureLine line)
 		{
-			ShapeList shapes = new ShapeList();
+			ShapeList shapes = new ShapeList(xDatum, yDatum, line.OrientDef);
 
 			if (line.FeatureSymbol is ISymbolRound symbolRound)
 			{
 				var startSymbol = MakeSymbolShape(useMM, pixelResolution, line.IsMM,
-					xDatum, yDatum, line.X, line.Y, orient, (dynamic)(line.FeatureSymbol));
+					line.X, line.Y, (dynamic)(line.FeatureSymbol));
 
 				var endSymbol = MakeSymbolShape(useMM, pixelResolution, line.IsMM,
-					xDatum, yDatum, line.Ex, line.Ey, orient, (dynamic)(line.FeatureSymbol));
+					line.Ex, line.Ey, (dynamic)(line.FeatureSymbol));
 
-				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum,
+				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution,
 					symbolRound.Diameter, line));
 
 				shapes.AddShape(startSymbol);
@@ -84,36 +83,36 @@ namespace CressemDataToGraphics.Factory
 			}
 			else
 			{
-				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, line));
+				shapes.AddShape(ShapeLine.CreateGdiPlus(useMM, pixelResolution, 0, line));
 			}
 
 			return shapes;
 		}
 
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, IFeaturePad pad)
+			double xDatum, double yDatum, IFeaturePad pad)
 		{
-			ShapeList shapes = new ShapeList();
+			ShapeList shapes = new ShapeList(xDatum, yDatum, pad.OrientDef);
 			if (pad.FeatureSymbol != null)
 			{
 				shapes.AddShape(MakeSymbolShape(useMM, pixelResolution, pad.IsMM,
-					 xDatum, yDatum, pad.X, pad.Y, orient, (dynamic)(pad.FeatureSymbol)));
+					pad.X, pad.Y, (dynamic)(pad.FeatureSymbol)));
 			}
 
 			return shapes;
 		}
 
 		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, IFeatureSurface surface)
+			double xDatum, double yDatum, IFeatureSurface surface)
 		{
-			ShapeList shapes = new ShapeList();
-			shapes.AddShape(ShapeSurface.CreateGdiPlus(useMM, pixelResolution,
-				xDatum, yDatum, surface));
+			ShapeList shapes = new ShapeList(xDatum, yDatum, surface.OrientDef);
+			shapes.AddShape(ShapeSurface.CreateGdiPlus(
+				useMM, pixelResolution, surface));
 
 			if (surface.FeatureSymbol != null)
 			{
 				shapes.AddShape(MakeSymbolShape(useMM, pixelResolution, surface.IsMM,
-					 xDatum, yDatum, surface.X, surface.Y, orient, (dynamic)(surface.FeatureSymbol)));
+					 xDatum, yDatum, surface.X, surface.Y, 0, (dynamic)(surface.FeatureSymbol)));
 			}
 
 			return shapes;
@@ -121,35 +120,35 @@ namespace CressemDataToGraphics.Factory
 
 		// Round
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRound round)
+			bool isMM, double cx, double cy,
+			ISymbolRound round)
 		{
 			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, round.Diameter, round.Diameter);
+				isMM, cx, cy, round.Diameter, round.Diameter);
 		}
 
 		// Square
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquare square)
+			bool isMM, double cx, double cy,
+			ISymbolSquare square)
 		{
 			return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, square.Diameter, square.Diameter);
+				isMM, cx, cy, square.Diameter, square.Diameter);
 		}
 
 		// Rectangle
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRectangle rect)
+			bool isMM, double cx, double cy,
+			ISymbolRectangle rect)
 		{
 			return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, rect.Width, rect.Height);
+				isMM, cx, cy, rect.Width, rect.Height);
 		}
 
 		// Rounded Rectangle
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedRectangle rect)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedRectangle rect)
 		{
 			float sx = (float)cx;
 			float sy = (float)cy;
@@ -192,20 +191,23 @@ namespace CressemDataToGraphics.Factory
 			if (rect.IsEditedCorner[0] is true)
 			{
 				cornerSx += (fWidth - radius);
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy, cornerWidth, cornerHeight, 270, 90, 0));
+				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+					cornerWidth, cornerHeight, 270, 90, 0));
 			}
 
 			// LT
 			if (rect.IsEditedCorner[1] is true)
 			{
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy, cornerWidth, cornerHeight, 180, 90, 0));
+				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+					cornerWidth, cornerHeight, 180, 90, 0));
 			}
 
 			// LB
 			if (rect.IsEditedCorner[2] is true)
 			{
 				cornerSy += (-fHeight + radius);
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy, cornerWidth, cornerHeight, 90, 90, 0));
+				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+					cornerWidth, cornerHeight, 90, 90, 0));
 			}
 
 			// RB
@@ -213,15 +215,15 @@ namespace CressemDataToGraphics.Factory
 			{
 				cornerSx += (fWidth - radius);
 				cornerSy += (-fHeight + radius);
-				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy, cornerWidth, cornerHeight, 0, 90, 0));
+				arcList.Add(new ShapeArc(pixelResolution, cornerSx, -cornerSy,
+					cornerWidth, cornerHeight, 0, 90, 0));
 			}
 
 			return new ShapePolygon(pixelResolution, true, arcList);
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolButterfly butterfly)
+			bool isMM, double cx, double cy, ISymbolButterfly butterfly)
 		{
 			float sx = (float)cx;
 			float sy = (float)cy;
@@ -252,22 +254,25 @@ namespace CressemDataToGraphics.Factory
 			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
 			// ODB에서 LT 좌표는 (sx - width / 2), (sy + height / 2) 
 			// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
-			var leftTop = new ShapeArc(pixelResolution, (sx - width / 2), -(sy + height / 2), width / 2, height / 2, 180, 90, 0);
-			var rightBottom = new ShapeArc(pixelResolution, sx, -sy, width / 2, height / 2, 270, 90, 0);
+			var leftTop = new ShapeArc(pixelResolution,
+				(sx - width / 2), -(sy + height / 2), width / 2, height / 2, 180, 90, 0);
 
-			return new ShapePolygon(pixelResolution, true, new ShapeBase[] { leftTop, rightBottom });
+			var rightBottom = new ShapeArc(pixelResolution,
+				sx, -sy, width / 2, height / 2, 270, 90, 0);
+
+			return new ShapePolygon(pixelResolution, true,
+				new ShapeBase[] { leftTop, rightBottom });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolChamferedRectangle rect)
+			bool isMM, double cx, double cy, ISymbolChamferedRectangle rect)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolDiamond diamond)
+			bool isMM, double cx, double cy,
+			ISymbolDiamond diamond)
 		{
 			float fx = (float)cx;
 			float fy = (float)cy;
@@ -304,7 +309,8 @@ namespace CressemDataToGraphics.Factory
 			var bottomLeft = new ShapeLine(pixelResolution,
 				fx, -(fy - fHeight / 2), fx - fWidth / 2, -fy);
 
-			return new ShapePolygon(pixelResolution, true, new ShapeBase[] { topRight, topLeft, bottomRight, bottomLeft });
+			return new ShapePolygon(pixelResolution, true,
+				new ShapeBase[] { topRight, topLeft, bottomRight, bottomLeft });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
@@ -319,234 +325,239 @@ namespace CressemDataToGraphics.Factory
 			int orient, ISymbolEllipse ellipse)
 		{
 			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, ellipse.Width, ellipse.Height);
+				isMM, cx, cy, ellipse.Width, ellipse.Height);
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolHalfOval halfOval)
+			bool isMM, double cx, double cy,
+			 ISymbolHalfOval halfOval)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolHole hole)
+			bool isMM, double cx, double cy,
+			ISymbolHole hole)
 		{
 			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, hole.Diameter, hole.Diameter);
+				isMM, cx, cy, hole.Diameter, hole.Diameter);
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolHorizontalHexagon hexagon)
+			bool isMM, double cx, double cy,
+			ISymbolHorizontalHexagon hexagon)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolMoire moire)
+			bool isMM, double cx, double cy,
+			ISymbolMoire moire)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolOctagon octagon)
+			bool isMM, double cx, double cy,
+			ISymbolOctagon octagon)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolOval oval)
+			bool isMM, double cx, double cy,
+			ISymbolOval oval)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolOvalDonut ovalDonut)
+			bool isMM, double cx, double cy,
+			ISymbolOvalDonut ovalDonut)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolOvalThermal ovalThermal)
+			bool isMM, double cx, double cy,
+			ISymbolOvalThermal ovalThermal)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolOvalThermalOpenCorners ovalThermalOpenCorners)
+			bool isMM, double cx, double cy,
+			ISymbolOvalThermalOpenCorners ovalThermalOpenCorners)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRectangleDonut rectangleDonut)
+			bool isMM, double cx, double cy,
+			ISymbolRectangleDonut rectangleDonut)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRectangularThermal rectangularThermal)
+			bool isMM, double cx, double cy,
+			ISymbolRectangularThermal rectangularThermal)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRectangularThermalOpenCorners rectangularThermalOpenCorners)
+			bool isMM, double cx, double cy,
+			ISymbolRectangularThermalOpenCorners rectangularThermalOpenCorners)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundDonut roundDonut)
+			bool isMM, double cx, double cy,
+			ISymbolRoundDonut roundDonut)
 		{
 			var outerCircle = ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, roundDonut.Diameter, roundDonut.Diameter);
+				isMM, cx, cy, roundDonut.Diameter, roundDonut.Diameter);
 
 			var innerCircle = ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
-				isMM, xDatum, yDatum, cx, cy, orient, roundDonut.InnerDiameter, roundDonut.InnerDiameter);
+				isMM, cx, cy, roundDonut.InnerDiameter, roundDonut.InnerDiameter);
 
-			var outerPoly = new ShapePolygon(pixelResolution, true, new ShapeBase[] { outerCircle });
-			var innerPoly = new ShapePolygon(pixelResolution, false, new ShapeBase[] { innerCircle });
+			var outerPoly = new ShapePolygon(pixelResolution, true,
+				new ShapeBase[] { outerCircle });
 
-			return new ShapeSurface(pixelResolution, true, new ShapePolygon[] { outerPoly, innerPoly });
+			var innerPoly = new ShapePolygon(pixelResolution, false,
+				new ShapeBase[] { innerCircle });
+
+			return new ShapeSurface(pixelResolution, true,
+				new ShapePolygon[] { outerPoly, innerPoly });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedRectangleDonut roundedRectangleDonut)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedRectangleDonut roundedRectangleDonut)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedRectangleThermal roundedRectangleThermal)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedRectangleThermal roundedRectangleThermal)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedRectangleThermalOpenCorners roundedRectangleThermalOpenCorners)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedRectangleThermalOpenCorners roundedRectangleThermalOpenCorners)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedSquareThermal roundedSquareThermal)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedSquareThermal roundedSquareThermal)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedSquareThermalOpenCorners roundedSquareThermalOpenCorners)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedSquareThermalOpenCorners roundedSquareThermalOpenCorners)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundedSqureDonut roundedSqureDonut)
+			bool isMM, double cx, double cy,
+			ISymbolRoundedSqureDonut roundedSqureDonut)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundThermalRounded roundThermalRounded)
+			bool isMM, double cx, double cy,
+			ISymbolRoundThermalRounded roundThermalRounded)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolRoundThermalSquared roundThermalSquared)
+			bool isMM, double cx, double cy,
+			ISymbolRoundThermalSquared roundThermalSquared)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquareButterfly squareButterfly)
+			bool isMM, double cx, double cy,
+			ISymbolSquareButterfly squareButterfly)
 		{
 			double halfDiameter = squareButterfly.Diameter / 2;
 
 			var leftTop = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx - halfDiameter, cy - halfDiameter, orient, halfDiameter, halfDiameter);
+				cx - halfDiameter, cy - halfDiameter, halfDiameter, halfDiameter);
 
 			var rightBottom = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, orient, halfDiameter, halfDiameter);
+				cx, cy, halfDiameter, halfDiameter);
 
-			return new ShapePolygon(pixelResolution, true, new ShapeBase[] { leftTop, rightBottom });
+			return new ShapePolygon(pixelResolution, true,
+				new ShapeBase[] { leftTop, rightBottom });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquareDonut squareDonut)
+			bool isMM, double cx, double cy,
+			ISymbolSquareDonut squareDonut)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquareRoundDonut squareRoundDonut)
+			bool isMM, double cx, double cy,
+			ISymbolSquareRoundDonut squareRoundDonut)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquareRoundThermal squareRoundThermal)
+			bool isMM, double cx, double cy,
+			ISymbolSquareRoundThermal squareRoundThermal)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquareThermal squareThermal)
+			bool isMM, double cx, double cy,
+			ISymbolSquareThermal squareThermal)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolSquareThermalOpenCorners squareThermalOpenCorners)
+			bool isMM, double cx, double cy,
+			ISymbolSquareThermalOpenCorners squareThermalOpenCorners)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolTriangle triangle)
+			bool isMM, double cx, double cy,
+			ISymbolTriangle triangle)
 		{
 			return null;
 		}
 
 		private IShapeList MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolUser user)
+			bool isMM, double cx, double cy,
+			ISymbolUser user)
 		{
-			ShapeList shapes = new ShapeList();
+			ShapeList shapes = new ShapeList(cx, cy, 0);
 			if (user.FeaturesList != null)
 			{
 				foreach (var feature in user.FeaturesList)
 				{
-					shapes.AddShape(MakeFeatureShape(useMM, pixelResolution, cx, cy,
-						orient, (dynamic)feature));
+					shapes.AddShape(MakeFeatureShape(useMM, pixelResolution, cx, cy, 0,
+						(dynamic)feature));
 				}
 			}
 
