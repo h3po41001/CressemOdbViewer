@@ -10,7 +10,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 		}
 
-		private ShapeSurface(float pixelResolution, bool isPositive,
+		public ShapeSurface(float pixelResolution, bool isPositive,
 			IEnumerable<ShapePolygon> polygons) : base(pixelResolution)
 		{
 			IsPositive = isPositive;

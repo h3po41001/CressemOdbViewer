@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using CressemCADViewer.Model;
@@ -17,14 +18,17 @@ namespace CressemCADViewer.ViewModel
 {
 	public class MainViewModel
 	{
+		private Window _parent = null;
+
 		private MainViewModel() { }
 
-		public MainViewModel(LogControlViewModel logView)
+		public MainViewModel(Window parent, LogControlViewModel logView)
 		{
+			_parent = parent;
 			LogView = logView;
 
 			GraphicsView = new GraphicsViewModel();
-			PropertyView = new PropertyViewModel();
+			PropertyView = new PropertyViewModel(_parent);
 			AlarmView = new AlarmViewModel();
 			LogoView = new LogoViewModel();
 			Processor = new Processor();
@@ -55,6 +59,7 @@ namespace CressemCADViewer.ViewModel
 		{
 			PropertyView.SelectedStepChangedEvent += PropertyView_SelectedStepChangedEvent;
 			PropertyView.SelectedLayerChangedEvent += PropertyView_SelectedLayerChangedEvent;
+			PropertyView.ExtractEvent += PropertyView_ExtractEvent; ;
 			PropertyView.LoadCamImageEvent += PropertyView_LoadCamImageEvent;
 			LogoView.LogoDoubleClickedEvent += LogoView_LogoDoubleClickedEvent;
 			Processor.ProcessStarted += Processor_ProcessStarted;
@@ -76,6 +81,15 @@ namespace CressemCADViewer.ViewModel
 		{
 		}
 
+		private void PropertyView_ExtractEvent(object sender, RoutedEventArgs e)
+		{
+			string fileName = Path.GetFileName(PropertyView.OdbLoadPath);
+			string saveFolder = Path.GetDirectoryName(PropertyView.OdbLoadPath);
+
+			Processor.Run(DesignFormat.Odb, Path.Combine(saveFolder, fileName), 
+				Path.Combine(saveFolder, Path.GetFileNameWithoutExtension(fileName)));
+		}
+
 		private void PropertyView_LoadCamImageEvent(object sender, RoutedEventArgs e)
 		{
 			// 임시
@@ -93,7 +107,8 @@ namespace CressemCADViewer.ViewModel
 			GraphicsView.ClearShape();
 
 			var proflieShapes = dataToGraphics.GetShapes(useMM, 0.0, 0.0, profile);
-			GraphicsView.LoadRoi(proflieShapes.Shapes.FirstOrDefault());
+			GraphicsView.LoadProfile(proflieShapes.Shapes.FirstOrDefault());
+			GraphicsView.AddProfile(proflieShapes);
 
 			foreach (var feature in features)
 			{
@@ -103,7 +118,6 @@ namespace CressemCADViewer.ViewModel
 
 		private void LogoView_LogoDoubleClickedEvent(object sender, EventArgs e)
 		{
-			Processor.Run(DesignFormat.Odb, "D:\\Odb_Test\\21fcb008-01.tgz", "D:\\Odb_Test\\21fcb008-01");
 		}
 
 		private void Processor_ProcessStarted(object sender, bool e)

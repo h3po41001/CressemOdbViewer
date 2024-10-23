@@ -18,11 +18,6 @@ namespace CressemCADViewer
 		{
 			get
 			{
-				if (_mainViewModel == null)
-				{
-					_mainViewModel = new MainViewModel(_logView);
-				}
-
 				return _mainViewModel;
 			}
 		}
@@ -30,17 +25,17 @@ namespace CressemCADViewer
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
 			_logView = new LogControlViewModel(Current.Dispatcher);
-
+			
 			var folderPath = Directory.GetCurrentDirectory();
 			CLogger.Instance.Initialize(folderPath + "\\Log");
 
 			_logView.AddLogClass("App");
 			CLogger.Instance.AddInfoLog("App", "Start Application", true);
 
-			MainWindow = new MainWindow
-			{
-				DataContext = MainViewModel,
-			};
+			MainWindow = new MainWindow();
+			
+			_mainViewModel = new MainViewModel(MainWindow, _logView);
+			MainWindow.DataContext = _mainViewModel;
 
 			MainWindow.ShowDialog();
 		}

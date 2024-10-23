@@ -28,7 +28,17 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.FillRectangle(new SolidBrush(DefaultPen.Color), 
+			graphics.FillRectangle(new SolidBrush(Color.DarkGreen), 
+				X * PixelResolution,
+				Y * PixelResolution,
+				Width * PixelResolution,
+				Height * PixelResolution);
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			DefaultPen.Color = Color.White;
+			graphics.DrawRectangle(DefaultPen,
 				X * PixelResolution,
 				Y * PixelResolution,
 				Width * PixelResolution,

@@ -41,6 +41,7 @@ namespace ImageControl.Model.Shape.Gdi
 				DefaultPen.Width = LineWidth * PixelResolution;
 			}
 
+			DefaultPen.Color = Color.DarkGreen;
 			graphics.DrawArc(
 				DefaultPen,
 				X * PixelResolution,
@@ -48,6 +49,19 @@ namespace ImageControl.Model.Shape.Gdi
 				Width * PixelResolution, 
 				Height * PixelResolution,
 				StartAngle, 
+				SweepAngle);
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			DefaultPen.Color = Color.White;
+			graphics.DrawArc(
+				DefaultPen,
+				X * PixelResolution,
+				Y * PixelResolution,
+				Width * PixelResolution,
+				Height * PixelResolution,
+				StartAngle,
 				SweepAngle);
 		}
 	}

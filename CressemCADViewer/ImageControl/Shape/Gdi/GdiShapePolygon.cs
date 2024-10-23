@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using ImageControl.Extension;
 
 namespace ImageControl.Model.Shape.Gdi
@@ -33,9 +32,15 @@ namespace ImageControl.Model.Shape.Gdi
 		public override void Draw(Graphics graphics)
 		{
 			if (IsFill)
-				graphics.FillPath(new SolidBrush(Color.White), GraphicsPath);
+				graphics.FillPath(new SolidBrush(Color.DarkGreen), GraphicsPath);
 			else
 				graphics.FillPath(new SolidBrush(Color.Black), GraphicsPath);
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			DefaultPen.Color = Color.White;
+			graphics.DrawPath(DefaultPen, GraphicsPath);
 		}
 	}
 }

@@ -19,6 +19,7 @@ namespace ImageControl.Model.Gdi
 		public override event EventHandler MouseMoveEvent = delegate { };
 
 		private readonly GdiWinformView _gdiView = new GdiWinformView();
+		private readonly List<GdiShape> _gdiProfileShapes = new List<GdiShape>();
 		private readonly List<GdiShape> _gdiShapes = new List<GdiShape>();
 		private WindowsFormsHost _gdiControl;
 		private Graphics _gdiGraphics;
@@ -45,7 +46,7 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadRoi(IShapeBase roiShape)
+		public override bool LoadProfile(IShapeBase roiShape)
 		{
 			if (roiShape is null)
 			{
@@ -83,6 +84,14 @@ namespace ImageControl.Model.Gdi
 			else
 			{
 				return false;
+			}
+		}
+
+		public override void AddProfile(IShapeList roiShape)
+		{
+			foreach (var shape in roiShape.Shapes)
+			{
+				_gdiProfileShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
 			}
 		}
 
@@ -132,6 +141,16 @@ namespace ImageControl.Model.Gdi
 
 		private void DrawShapes()
 		{
+			foreach (var shape in _gdiProfileShapes)
+			{
+				if (shape is null)
+				{
+					continue;
+				}
+
+				shape.DrawProfile(_gdiGraphics);
+			}
+
 			foreach (var shape in _gdiShapes)
 			{
 				if (shape is null)

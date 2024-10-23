@@ -39,9 +39,14 @@ namespace ImageControl.ViewModel
 			}
 		}
 
-		public bool LoadRoi(IShapeBase roiShape)
+		public bool LoadProfile(IShapeBase roiShape)
 		{
-			return _graphics.LoadRoi(roiShape);
+			return _graphics.LoadProfile(roiShape);
+		}
+
+		public void AddProfile(IShapeList profileShape)
+		{
+			_graphics.AddProfile(profileShape);
 		}
 
 		public void AddShapes(IShapeList shape)

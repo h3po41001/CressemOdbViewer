@@ -123,7 +123,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double cx, double cy, ISymbolRound round)
 		{
-			return MakeSymbolShapeEllipse(useMM, pixelResolution,
+			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
 				isMM, cx, cy, round.Diameter, round.Diameter);
 		}
 
@@ -131,7 +131,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double cx, double cy, ISymbolSquare square)
 		{
-			return MakeSymbolShapeRectangle(useMM, pixelResolution,
+			return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
 				isMM, cx, cy, square.Diameter, square.Diameter);
 		}
 
@@ -139,7 +139,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double cx, double cy, ISymbolRectangle rect)
 		{
-			return MakeSymbolShapeRectangle(useMM, pixelResolution,
+			return ShapeRectangle.CreateGdiPlus(useMM, pixelResolution,
 				isMM, cx, cy, rect.Width, rect.Height);
 		}
 
@@ -309,7 +309,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double x, double y, ISymbolEllipse ellipse)
 		{
-			return MakeSymbolShapeEllipse(useMM, pixelResolution,
+			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
 				isMM, x, y, ellipse.Width, ellipse.Height);
 		}
 
@@ -322,7 +322,7 @@ namespace CressemDataToGraphics.Factory
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double x, double y, ISymbolHole hole)
 		{
-			return MakeSymbolShapeEllipse(useMM, pixelResolution,
+			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
 				isMM, x, y, hole.Diameter, hole.Diameter);
 		}
 
@@ -389,7 +389,16 @@ namespace CressemDataToGraphics.Factory
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
 			bool isMM, double cx, double cy, ISymbolRoundDonut roundDonut)
 		{
-			return null;
+			var outerCircle = ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
+				isMM, cx, cy, roundDonut.Diameter, roundDonut.Diameter);
+
+			var innerCircle = ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
+				isMM, cx, cy, roundDonut.InnerDiameter, roundDonut.InnerDiameter);
+
+			var outerPoly = new ShapePolygon(pixelResolution, true, new ShapeBase[] { outerCircle });
+			var innerPoly = new ShapePolygon(pixelResolution, false, new ShapeBase[] { innerCircle });
+
+			return new ShapeSurface(pixelResolution, true, new ShapePolygon[] { outerPoly, innerPoly });
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
@@ -445,10 +454,10 @@ namespace CressemDataToGraphics.Factory
 		{
 			double halfDiameter = squareButterfly.Diameter / 2;
 
-			var leftTop = MakeSymbolShapeRectangle(useMM, pixelResolution, isMM,
+			var leftTop = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
 				x - halfDiameter, y - halfDiameter, halfDiameter, halfDiameter);
 
-			var rightBottom = MakeSymbolShapeRectangle(useMM, pixelResolution, isMM,
+			var rightBottom = ShapeRectangle.CreateGdiPlus(useMM, pixelResolution, isMM,
 				x, y, halfDiameter, halfDiameter);
 
 			return new ShapePolygon(pixelResolution, true, new ShapeBase[] { leftTop, rightBottom });
@@ -510,76 +519,6 @@ namespace CressemDataToGraphics.Factory
 			bool isMM, double cx, double cy, ISymbolVerticalHexagon verticalHexagon)
 		{
 			return null;
-		}
-
-		private ShapeEllipse MakeSymbolShapeEllipse(bool useMM, float pixelResolution,
-			bool isMM, double cx, double cy, double width, double height)
-		{
-			float sx = (float)cx;
-			float sy = (float)cy;
-			float fWidth = (float)width;
-			float fHeight = (float)height;
-
-			if (useMM is true)
-			{
-				if (isMM is false)
-				{
-					sx = (float)cx.ConvertInchToMM();
-					sy = (float)cy.ConvertInchToMM();
-					fWidth = (float)width.ConvertInchToUM();
-					fHeight = (float)height.ConvertInchToUM();
-				}
-			}
-			else
-			{
-				if (isMM is true)
-				{
-					sx = (float)cx.ConvertMMToInch();
-					sy = (float)cy.ConvertMMToInch();
-					fWidth = (float)width.ConvertUMToInch();
-					fHeight = (float)height.ConvertUMToInch();
-				}
-			}
-
-			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
-			// ODB에서 LT 좌표는 (sx - fWidth / 2), (sy + fHeight / 2) 
-			// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
-			return new ShapeEllipse(pixelResolution, (sx - fWidth / 2), -(sy + fHeight / 2), fWidth, fHeight);
-		}
-
-		private ShapeRectangle MakeSymbolShapeRectangle(bool useMM, float pixelResolution,
-			bool isMM, double cx, double cy, double width, double height)
-		{
-			float sx = (float)cx;
-			float sy = (float)cy;
-			float fWidth = (float)width;
-			float fHeight = (float)height;
-
-			if (useMM is true)
-			{
-				if (isMM is false)
-				{
-					sx = (float)cx.ConvertInchToMM();
-					sy = (float)cy.ConvertInchToMM();
-					fWidth = (float)width.ConvertInchToUM();
-					fHeight = (float)height.ConvertInchToUM();
-				}
-			}
-			else
-			{
-				if (isMM is true)
-				{
-					sx = (float)cx.ConvertMMToInch();
-					sy = (float)cy.ConvertMMToInch();
-					fWidth = (float)width.ConvertUMToInch();
-					fHeight = (float)height.ConvertUMToInch();
-				}
-			}
-
-			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
-			// ODB에서 LT 좌표는 (sx - fWidth / 2), (sy + fHeight / 2) 
-			// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
-			return new ShapeRectangle(pixelResolution, (sx - fWidth / 2), -(sy + fHeight / 2), fWidth, fHeight);
-		}
+		}		
 	}
 }

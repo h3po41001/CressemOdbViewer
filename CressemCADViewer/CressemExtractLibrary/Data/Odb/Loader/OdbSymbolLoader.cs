@@ -144,7 +144,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				// Octagon
 				return OdbSymbolOctagon.Create(index, param);
 			}
-			else if (name.ToUpper().Equals("DOUNT_R") is true)
+			else if (name.ToUpper().Equals("DONUT_R") is true)
 			{
 				// Round Donut
 				return OdbSymbolRoundDonut.Create(index, param);

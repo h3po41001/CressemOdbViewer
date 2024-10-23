@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
@@ -37,6 +35,17 @@ namespace ImageControl.Model.Shape.Gdi
 			{
 				DefaultPen.Width = LineWidth * PixelResolution;
 			}
+
+			DefaultPen.Color = Color.DarkGreen;
+
+			graphics.DrawLine(DefaultPen, Sx * PixelResolution, Sy * PixelResolution,
+				Ex * PixelResolution, Ey * PixelResolution);
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			LineWidth = 0.1f;
+			DefaultPen.Color = Color.White;
 
 			graphics.DrawLine(DefaultPen, Sx * PixelResolution, Sy * PixelResolution,
 				Ex * PixelResolution, Ey * PixelResolution);

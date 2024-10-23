@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
@@ -28,7 +26,17 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.FillEllipse(new SolidBrush(DefaultPen.Color),
+			graphics.FillEllipse(new SolidBrush(Color.DarkGreen),
+				X * PixelResolution,
+				Y * PixelResolution,
+				Width * PixelResolution,
+				Height * PixelResolution);
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			DefaultPen.Color = Color.White;
+			graphics.DrawEllipse(DefaultPen,
 				X * PixelResolution,
 				Y * PixelResolution,
 				Width * PixelResolution,

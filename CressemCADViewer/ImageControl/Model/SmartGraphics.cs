@@ -32,8 +32,10 @@ namespace ImageControl.Model
 		protected bool MousePressed { get; set; }
 
 		public abstract void Initialize();
+		
+		public abstract bool LoadProfile(IShapeBase roiShape);
 
-		public abstract bool LoadRoi(IShapeBase roiShape);
+		public abstract void AddProfile(IShapeList roiShape);
 
 		public abstract void AddShapes(IShapeList shape);
 

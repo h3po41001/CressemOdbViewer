@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using ImageControl.Model.Shape.Gdi;
 
 namespace ImageControl.Shape.Gdi
@@ -25,6 +24,14 @@ namespace ImageControl.Shape.Gdi
 			foreach (var polygon in Polygons)
 			{
 				polygon.Draw(graphics);
+			}
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			foreach (var polygon in Polygons)
+			{
+				polygon.DrawProfile(graphics);
 			}
 		}
 	}

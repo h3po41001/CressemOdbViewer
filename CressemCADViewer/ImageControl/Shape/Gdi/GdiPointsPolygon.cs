@@ -20,7 +20,13 @@ namespace ImageControl.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.FillPolygon(new SolidBrush(Color.White), Points.ToArray());
+			graphics.FillPolygon(new SolidBrush(Color.DarkGreen), Points.ToArray());
+		}
+
+		public override void DrawProfile(Graphics graphics)
+		{
+			DefaultPen.Color = Color.White;
+			graphics.DrawPolygon(DefaultPen, Points.ToArray());
 		}
 	}
 }

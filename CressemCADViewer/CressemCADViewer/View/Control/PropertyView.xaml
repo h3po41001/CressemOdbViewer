@@ -10,12 +10,16 @@
 			 mc:Ignorable="d">
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
+			<RowDefinition Height="0.3*" />
+			<RowDefinition Height="0.05*" />
+			<RowDefinition Height="0.05*" />
+			<RowDefinition Height="0.6*" />
 		</Grid.RowDefinitions>
-		<dxprg:PropertyGridControl x:Name="AiGrid"
-								   BorderThickness="0"
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0.5*" />
+			<ColumnDefinition Width="0.5*" />
+		</Grid.ColumnDefinitions>
+		<dxprg:PropertyGridControl BorderThickness="0"
 								   HeaderColumnWidth="200"
 								   ScrollViewer.VerticalScrollBarVisibility="Disabled"
 								   SelectedObject="{Binding Path=.}"
@@ -24,7 +28,19 @@
 								   ShowSearchBox="False"
 								   ShowToolPanel="False"
 								   Grid.Row="0"
-								   Grid.Column="0">
+								   Grid.Column="0"
+								   Grid.ColumnSpan="2">
+			<dxprg:PropertyDefinition Header="ODB 경로"
+									  Path="OdbLoadPath">
+				<dxprg:PropertyDefinition.EditSettings>
+					<dxe:ButtonEditSettings DefaultButtonClick="ButtonEditSettings_DefaultButtonClick">
+						<dxmvvm:Interaction.Behaviors>
+							<dxmvvm:EventToCommand Command="{Binding ClickOdbLoadPathCommand}"
+												   EventName="DefaultButtonClick" />
+						</dxmvvm:Interaction.Behaviors>
+					</dxe:ButtonEditSettings>
+				</dxprg:PropertyDefinition.EditSettings>
+			</dxprg:PropertyDefinition>
 			<dxprg:PropertyDefinition x:Name="stepNames"
 									  AllowExpanding="Never"
 									  Header="Step"
@@ -68,9 +84,15 @@
 				</dxprg:PropertyDefinition.ContentTemplate>
 			</dxprg:PropertyDefinition>
 		</dxprg:PropertyGridControl>
+		<Button Command="{Binding ExtractCommand}"
+				Content="Extract"
+				Grid.Row="2"
+				Grid.Column="0"
+				Width="200" />
 		<Button Command="{Binding LoadCamImageCommand}"
 				Content="Load"
-				Grid.Row="1"
+				Grid.Row="2"
+				Grid.Column="1"
 				Width="200" />
 	</Grid>
 </UserControl>
