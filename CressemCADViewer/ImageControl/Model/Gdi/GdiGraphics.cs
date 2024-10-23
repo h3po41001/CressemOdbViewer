@@ -154,14 +154,14 @@ namespace ImageControl.Model.Gdi
 				shape.DrawProfile(_gdiGraphics);
 			}
 
-			foreach (var shape in _gdiShapes)
+			foreach (var graphics in _gdiShapes)
 			{
-				if (shape is null)
+				if (graphics is null)
 				{
 					continue;
 				}
 
-				shape.Draw(_gdiGraphics);
+				graphics.Draw(_gdiGraphics);
 			}
 		}
 

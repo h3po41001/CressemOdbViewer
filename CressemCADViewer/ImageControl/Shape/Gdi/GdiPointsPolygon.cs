@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+using System.Drawing.Drawing2D;
 using ImageControl.Model.Shape.Gdi;
 
 namespace ImageControl.Shape.Gdi
@@ -18,8 +18,8 @@ namespace ImageControl.Shape.Gdi
 
 		public List<PointF> Points { get; private set; }
 
-		public override void Draw(Graphics graphics)
-		{
+		public override void Draw(Graphics graphics, Matrix _)
+		{			
 			graphics.FillPolygon(new SolidBrush(Color.DarkGreen), Points.ToArray());
 		}
 

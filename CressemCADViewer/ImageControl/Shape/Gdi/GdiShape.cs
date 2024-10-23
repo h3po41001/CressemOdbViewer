@@ -11,16 +11,13 @@ namespace ImageControl.Model.Shape.Gdi
 		{
 			PixelResolution = pixelResolution;
 			DefaultPen = new Pen(Color.White, 0.1f);
-			GraphicsPath = new GraphicsPath();
 		}
 
 		public float PixelResolution { get; private set; } = 1.0f;
 
-		public GraphicsPath GraphicsPath { get; private set; }
-
 		protected Pen DefaultPen { get; private set; }
 
-		public abstract void Draw(Graphics graphics);
+		public abstract void Draw(Graphics graphics, Matrix matrix = null);
 
 		public abstract void DrawProfile(Graphics graphics);
 	}

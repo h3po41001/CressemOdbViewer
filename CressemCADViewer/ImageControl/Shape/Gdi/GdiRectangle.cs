@@ -26,7 +26,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Draw(Graphics graphics, Matrix _)
 		{
 			graphics.FillRectangle(new SolidBrush(Color.DarkGreen), 
 				X * PixelResolution,

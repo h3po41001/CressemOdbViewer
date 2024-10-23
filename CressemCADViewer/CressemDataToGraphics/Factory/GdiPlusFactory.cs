@@ -37,10 +37,10 @@ namespace CressemDataToGraphics.Factory
 			if (arc.FeatureSymbol is ISymbolRound symbolRound)
 			{
 				var startSymbol = MakeSymbolShape(useMM, pixelResolution, arc.IsMM,
-					xDatum, yDatum, arc.X, arc.Y, 0, (dynamic)(arc.FeatureSymbol));
+					arc.X, arc.Y, (dynamic)(arc.FeatureSymbol));
 
 				var endSymbol = MakeSymbolShape(useMM, pixelResolution, arc.IsMM,
-					xDatum, yDatum, arc.Ex, arc.Ey, 0, (dynamic)(arc.FeatureSymbol));
+					arc.Ex, arc.Ey, (dynamic)(arc.FeatureSymbol));
 
 				shapes.AddShape(ShapeArc.CreateGdiPlus(useMM, pixelResolution, symbolRound.Diameter, arc));
 
@@ -314,15 +314,15 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolEditedCorner corner)
+			bool isMM, double cx, double cy,
+			ISymbolEditedCorner corner)
 		{
 			return null;
 		}
 
 		private IShapeBase MakeSymbolShape(bool useMM, float pixelResolution,
-			bool isMM, double xDatum, double yDatum, double cx, double cy,
-			int orient, ISymbolEllipse ellipse)
+			bool isMM, double cx, double cy,
+			ISymbolEllipse ellipse)
 		{
 			return ShapeEllipse.CreateGdiPlus(useMM, pixelResolution,
 				isMM, cx, cy, ellipse.Width, ellipse.Height);
@@ -551,6 +551,7 @@ namespace CressemDataToGraphics.Factory
 			bool isMM, double cx, double cy,
 			ISymbolUser user)
 		{
+			return null;
 			ShapeList shapes = new ShapeList(cx, cy, 0);
 			if (user.FeaturesList != null)
 			{

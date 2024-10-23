@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace ImageControl.Model.Shape.Gdi
 {
@@ -34,7 +35,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float LineWidth { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Draw(Graphics graphics, Matrix _)
 		{
 			if (LineWidth > 0)
 			{

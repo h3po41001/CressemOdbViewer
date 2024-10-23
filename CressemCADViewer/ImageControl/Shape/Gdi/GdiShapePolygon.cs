@@ -15,6 +15,8 @@ namespace ImageControl.Model.Shape.Gdi
 			IsFill = isFill;
 
 			Shapes = new List<GdiShape>(shapes);
+			GraphicsPath = new GraphicsPath();
+
 			foreach (var shape in Shapes)
 			{
 				GraphicsPath.Add(shape, pixelResolution);
@@ -25,12 +27,19 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public List<GdiShape> Shapes { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public GraphicsPath GraphicsPath { get; private set; }
+
+		public override void Draw(Graphics graphics, Matrix matrix)
 		{
+			if (matrix != null)
+			{
+				GraphicsPath.Transform(matrix);
+			}
+
 			if (IsFill)
 				graphics.FillPath(new SolidBrush(Color.DarkGreen), GraphicsPath);
 			else
-				graphics.FillPath(new SolidBrush(Color.Black), GraphicsPath);
+				graphics.FillPath(new SolidBrush(Color.Black), GraphicsPath);			
 		}
 
 		public override void DrawProfile(Graphics graphics)

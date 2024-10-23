@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace ImageControl.Model.Shape.Gdi
 {
@@ -24,7 +25,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Draw(Graphics graphics, Matrix _)
 		{
 			graphics.FillEllipse(new SolidBrush(Color.DarkGreen),
 				X * PixelResolution,

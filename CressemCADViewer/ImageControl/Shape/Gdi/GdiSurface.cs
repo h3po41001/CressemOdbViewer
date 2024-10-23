@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using ImageControl.Model.Shape.Gdi;
 
 namespace ImageControl.Shape.Gdi
@@ -19,11 +20,11 @@ namespace ImageControl.Shape.Gdi
 
 		public List<GdiShapePolygon> Polygons { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Draw(Graphics graphics, Matrix matrix)
 		{
 			foreach (var polygon in Polygons)
 			{
-				polygon.Draw(graphics);
+				polygon.Draw(graphics, matrix);
 			}
 		}
 

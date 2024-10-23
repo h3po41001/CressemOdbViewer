@@ -31,6 +31,20 @@ namespace ImageControl.Extension
 			{
 				path.AddPolygon(gdiPolygon, mul);
 			}
+			//else if (gdiBase is GdiShapePolygon gdiShapePolygon)
+			//{
+			//	foreach (var shape in gdiShapePolygon.Shapes)
+			//	{
+			//		path.Add(shape, mul);
+			//	}
+			//}
+			//else if (gdiBase is GdiSurface gdiSurface)
+			//{
+			//	foreach (var polygon in gdiSurface.Polygons)
+			//	{
+			//		path.Add(polygon, mul);
+			//	}
+			//}
 		}
 
 		private static void AddArc(this GraphicsPath path,
