@@ -31,18 +31,11 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<IShapeBase> Shapes { get => _shapes; }
 
-		public void AddShape(object shape)
+		public void AddShape(IEnumerable<IShapeBase> shapes)
 		{
-			if (shape != null)
+			if (shapes != null)
 			{
-				if (shape is IShapeBase shapeBase)
-				{
-					_shapes.Add(shapeBase);
-				}
-				else if (shape is IShapeList shapeList)
-				{
-					_shapes.AddRange(shapeList.Shapes);
-				}
+				_shapes.AddRange(shapes);
 			}
 		}
 	}

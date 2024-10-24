@@ -2,19 +2,25 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolOvalDonut : OdbSymbolOval, ISymbolOvalDonut
+	internal class OdbSymbolOvalDonut : OdbSymbolBase, ISymbolOvalDonut
 	{
 		private OdbSymbolOvalDonut() { }
 
 		public OdbSymbolOvalDonut(int index, double width, double height, 
-			double lineWidth) : base(index, width, height)
+			double lineWidth) : base(index)
 		{
+			Width = width;
+			Height = height;
 			LineWidth = lineWidth;
 		}
 
+		public double Width { get; private set; }
+
+		public double Height { get; private set; }
+
 		public double LineWidth { get; private set; }
 
-		public static new OdbSymbolOvalDonut Create(int index, string param)
+		public static OdbSymbolOvalDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 3)

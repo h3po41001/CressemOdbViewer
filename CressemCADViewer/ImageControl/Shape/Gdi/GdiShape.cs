@@ -17,7 +17,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		protected Pen DefaultPen { get; private set; }
 
-		public abstract void Draw(Graphics graphics, Matrix matrix = null);
+		public abstract void Draw(Graphics graphics);
 
 		public abstract void DrawProfile(Graphics graphics);
 	}

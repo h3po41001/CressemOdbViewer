@@ -1,6 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolSquare : ISymbolRound
+	public interface ISymbolSquare : ISymbolIRegularShape
 	{
 	}
 }

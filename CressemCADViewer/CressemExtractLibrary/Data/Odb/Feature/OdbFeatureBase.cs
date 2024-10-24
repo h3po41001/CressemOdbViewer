@@ -42,6 +42,10 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		// 8 :  any angle rotation, no mirror, 9 : any angle rotation, X-axis mirror
 		public int OrientDef { get; private set; }
 
+		public int Orient { get => (OrientDef % 4) * 90; }
+
+		public bool IsMirrorXAxis { get => OrientDef >= 4; }
+
 		public int SymbolNum { get; private set; }
 
 		public string AttributeString { get; private set; }

@@ -1,6 +1,9 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolDiamond : ISymbolRectangle
+	public interface ISymbolDiamond : ISymbolBase
 	{
+		double Width { get; }
+
+		double Height { get; }
 	}
 }

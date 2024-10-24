@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
@@ -9,8 +8,6 @@ using CressemDataToGraphics;
 using CressemDataToGraphics.Model;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
-using CressemExtractLibrary.Data.Interface.Features;
-using CressemExtractLibrary.Data.Interface.Symbol;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.ViewModel;
@@ -103,22 +100,16 @@ namespace CressemCADViewer.ViewModel
 			var features = ExtractLibrary.Instance.GetFeatures(
 				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
 				out double xDatum, out double yDatum);
-			DataToGraphics dataToGraphics = new DataToGraphics(10.0f, GraphicsType.GdiPlus);
+			DataToGraphics dataToGraphics = new DataToGraphics(0.1f, GraphicsType.GdiPlus);
 
 			GraphicsView.ClearShape();
 
-			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, profile);
+			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, profile);
 			GraphicsView.LoadProfile(proflieShapes);
+
 			foreach (var feature in features)
 			{
-				if (feature is IFeaturePad pad)
-				{
-					if (pad.FeatureSymbol is ISymbolRectangle)
-					{
-						GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, feature));
-						//break;
-					}
-				}
+				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, feature));
 			}
 		}
 

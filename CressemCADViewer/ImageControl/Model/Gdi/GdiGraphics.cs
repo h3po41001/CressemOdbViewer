@@ -100,6 +100,11 @@ namespace ImageControl.Model.Gdi
 
 		public override void AddShapes(IShapeList shapes)
 		{
+			if (shapes is null)
+			{
+				return;
+			}
+
 			foreach (var shape in shapes.Shapes)
 			{
 				_gdiShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));

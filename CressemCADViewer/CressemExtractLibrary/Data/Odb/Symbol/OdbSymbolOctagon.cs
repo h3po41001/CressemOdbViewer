@@ -2,19 +2,25 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolOctagon : OdbSymbolRectangle, ISymbolOctagon
+	internal class OdbSymbolOctagon : OdbSymbolBase, ISymbolOctagon
 	{
 		protected OdbSymbolOctagon() { }
 
-		public OdbSymbolOctagon(int index, double width, double height,
-			double corner) : base(index, width, height)
+		public OdbSymbolOctagon(int index,
+			double width, double height, double corner) : base(index)
 		{
+			Width = width;
+			Height = height;
 			CornerSize = corner;
 		}
 
+		public double Width { get; private set; }
+
+		public double Height { get; private set; }
+
 		public double CornerSize { get; private set; }
 
-		public static new OdbSymbolOctagon Create(int index, string param)
+		public static OdbSymbolOctagon Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 3)

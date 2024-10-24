@@ -72,6 +72,7 @@
     <Compile Include="Data\Interface\Symbol\ISymbolHalfOval.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolHole.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolHorizontalHexagon.cs" />
+    <Compile Include="Data\Interface\Symbol\ISymbolIRegularShape.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolMoire.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolOctagon.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolOval.cs" />

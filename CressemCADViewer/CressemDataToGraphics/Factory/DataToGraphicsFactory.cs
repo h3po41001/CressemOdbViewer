@@ -21,7 +21,7 @@ namespace CressemDataToGraphics.Factory
 		{
 			get
 			{
-				if (_instance == null)
+				if (_instance is null)
 				{
 					_instance = new DataToGraphicsFactory();
 				}
@@ -31,15 +31,18 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		public IShapeList DataToGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, IFeatureBase feature)
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
 				return null;
 			}
 
-			return _gdiPlusFactory.CreateFeatureToShape(useMM, pixelResolution, 
-				xDatum, yDatum, feature);
+			return _gdiPlusFactory.CreateFeatureToShape(useMM,
+				pixelResolution,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis, feature);
 		}
 
 		public IShapeBase DataToOpenGl(bool useMM, float pixelResolution,

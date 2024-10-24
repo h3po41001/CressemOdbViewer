@@ -35,8 +35,10 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<PointF> Points { get; private set; }
 
-		public static ShapePolygon CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum,
+		public static ShapePolygon CreateGdiPlus(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
 			bool isPositive, IFeaturePolygon polygon)
 		{
 			List<ShapeBase> shapes = new List<ShapeBase>();
@@ -48,19 +50,36 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (feature is IFeatureArc arc)
 				{
-					shapes.Add(ShapeArc.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, arc));
+					shapes.Add(ShapeArc.CreateGdiPlus(useMM,
+						pixelResolution, isMM,
+						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
+						orient, isMirrorXAxis,
+						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
+						arc.IsClockWise, 0));
 				}
 				else if (feature is IFeatureLine line)
 				{
-					shapes.Add(ShapeLine.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, 0, line));
+					shapes.Add(ShapeLine.CreateGdiPlus(useMM,
+						pixelResolution, isMM,
+						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
+						polygon.Orient, polygon.IsMirrorXAxis,
+						line.X, line.Y, line.Ex, line.Ey, 0));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
 				{
-					shapes.Add(CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, isPositive, subPolygon));
+					shapes.Add(CreateGdiPlus(useMM,
+						pixelResolution, isMM,
+						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
+						polygon.Orient, polygon.IsMirrorXAxis,
+						isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
 				{
-					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, pixelResolution, xDatum, yDatum, surface));
+					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, 
+						pixelResolution, isMM,
+						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
+						polygon.Orient, polygon.IsMirrorXAxis, isPositive, 
+						surface.Polygons));
 				}
 			}
 

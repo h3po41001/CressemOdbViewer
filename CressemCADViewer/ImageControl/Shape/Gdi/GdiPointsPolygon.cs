@@ -18,7 +18,7 @@ namespace ImageControl.Shape.Gdi
 
 		public List<PointF> Points { get; private set; }
 
-		public override void Draw(Graphics graphics, Matrix _)
+		public override void Draw(Graphics graphics)
 		{			
 			graphics.FillPolygon(new SolidBrush(Color.DarkGreen), Points.ToArray());
 		}

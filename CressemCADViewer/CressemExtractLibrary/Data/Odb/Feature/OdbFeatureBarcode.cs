@@ -14,7 +14,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public OdbFeatureBarcode(int index, bool isMM, double x, double y, 
 			string name, string font, string polarity, int orient,
-			double e, double elementWidth, double barcodeHeight, 
+			string e, double elementWidth, double barcodeHeight, 
 			string fasc, string checkSum, string invertBg, 
 			string astr, string astrPos, 
 			string text, string attrString) : base(index, isMM, x, y, polarity, "", orient, - 1, attrString)
@@ -37,7 +37,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public string Font { get; private set; }
 
 		// a constant value (reserved for future use)
-		public double E { get; private set; }
+		public string E { get; private set; }
 
 		public double ElementWidth { get; private set; }
 
@@ -60,8 +60,12 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public string Text { get; private set; }
 
-		public static OdbFeatureBarcode Create(int index, bool isMM, string[] param)
+		public static OdbFeatureBarcode Create(int index, bool isMM, string paramString)
 		{
+			string[] splited = paramString.ToUpper().Split(';');
+			string[] param = splited[0].Trim().Split(' ');
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
 			if (param.Length != 15)
 			{
 				return null;
@@ -82,34 +86,40 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
+			string barcode = param[3];
+			string font = param[4];
+			string polarity = param[5];
+
 			if (int.TryParse(param[6], out int orient) is false)
 			{
 				return null;
 			}
 
-			if (double.TryParse(param[7], out double e) is false)
+			//if (double.TryParse(param[7], out double e) is false)
+			//{
+			//	return null;
+			//}
+
+			if (double.TryParse(param[7], out double elementWidth) is false)
 			{
 				return null;
 			}
 
-			if (double.TryParse(param[8], out double elementWidth) is false)
+			if (double.TryParse(param[8], out double barcodeHeight) is false)
 			{
 				return null;
 			}
 
-			if (double.TryParse(param[9], out double barcodeHeight) is false)
-			{
-				return null;
-			}
+			string fasc = param[9];
+			string checkSum = param[10];
+			string invertBg = param[11];
+			string astr = param[12];
+			string astrPos = param[13];
+			string text = param[14];
 
-			string[] splited = param[10].Split(';');
-
-			string text = splited[0];
-			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
-
-			return new OdbFeatureBarcode(index, isMM, x, y, param[3], param[4], param[5],
-				orient, e, elementWidth, barcodeHeight,
-				param[9], param[10], param[11], param[12], param[13], text, attrString);
+			return new OdbFeatureBarcode(index, isMM, x, y, barcode, font, polarity,
+				orient, "E", elementWidth, barcodeHeight,
+				fasc, checkSum, invertBg, astr, astrPos, text, attrString);
 		}
 	}
 }

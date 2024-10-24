@@ -22,7 +22,8 @@ namespace CressemDataToGraphics
 		public GraphicsType GraphicsType { get; private set; }
 
 		public IShapeList GetShapes(bool useMM,
-			double xDatum, double yDatum, IFeatureBase feature)
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
@@ -32,17 +33,10 @@ namespace CressemDataToGraphics
 			if (GraphicsType is GraphicsType.GdiPlus)
 			{
 				return DataToGraphicsFactory.Instance.DataToGdiPlus(useMM,
-					PixelResolution, xDatum, yDatum, feature);
+					PixelResolution, xDatum, yDatum, cx, cy, orient, isMirrorXAxis, feature);
 			}
-			else if (GraphicsType is GraphicsType.OpenGl)
-			{
-				return DataToGraphicsFactory.Instance.DataToGdiPlus(useMM,
-					PixelResolution, xDatum, yDatum, feature);
-			}
-			else
-			{
-				return null;
-			}
+
+			return null;
 		}
 	}
 }

@@ -13,8 +13,12 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		{
 		}
 
-		public static OdbFeaturePad Create(int index, bool isMM, string[] param)
+		public static OdbFeaturePad Create(int index, bool isMM, string paramString)
 		{
+			string[] splited = paramString.ToUpper().Split(';');
+			string[] param = splited[0].Trim().Split(' ');
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
 			if (param.Length != 7)
 			{
 				return null;
@@ -40,12 +44,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] splited = param[6].Split(';');
-
-			string orientString = splited[0];
-			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
-
-			if (int.TryParse(orientString, out int orientDef) is false)
+			if (int.TryParse(param[6], out int orientDef) is false)
 			{
 				return null;
 			}

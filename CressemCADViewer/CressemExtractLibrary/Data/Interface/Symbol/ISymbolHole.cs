@@ -1,6 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolHole : ISymbolRound
+	public interface ISymbolHole : ISymbolIRegularShape
 	{
 		string PlatingStatus { get; }
 

@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Reflection.Emit;
 using CressemDataToGraphics.Converter;
 using ImageControl.Extension;
 using ImageControl.Shape.Interface;
@@ -30,13 +29,14 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float Height { get; set; }
 
-		public static ShapeRectangle CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient,
-			bool isMM, double cx, double cy,
+		public static ShapeRectangle CreateGdiPlus(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
 			double width, double height)
 		{
-			float sx = (float)cx;
-			float sy = (float)cy;
+			float fcx = (float)cx;
+			float fcy = (float)cy;
 			float fWidth = (float)width;
 			float fHeight = (float)height;
 
@@ -44,8 +44,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (isMM is false)
 				{
-					sx = (float)cx.ConvertInchToMM();
-					sy = (float)cy.ConvertInchToMM();
+					fcx = (float)cx.ConvertInchToMM();
+					fcy = (float)cy.ConvertInchToMM();
 					fWidth = (float)width.ConvertInchToUM();
 					fHeight = (float)height.ConvertInchToUM();
 				}
@@ -54,24 +54,22 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (isMM is true)
 				{
-					sx = (float)cx.ConvertMMToInch();
-					sy = (float)cy.ConvertMMToInch();
+					fcx = (float)cx.ConvertMMToInch();
+					fcy = (float)cy.ConvertMMToInch();
 					fWidth = (float)width.ConvertUMToInch();
 					fHeight = (float)height.ConvertUMToInch();
 				}
 			}
 
-			PointF lt = new PointF(sx - fWidth / 2, sy + fHeight / 2);
-			PointF rb = new PointF(sx + fWidth / 2, sy - fHeight / 2);
+			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
+			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
 
 			if (orient > 0)
 			{
-				PointF datum = new PointF((float)(xDatum + sx), (float)(yDatum + sy));
-				int orientAngle = (orient % 4) * 90;
-				bool isMirrorXAxis = orient >= 4;
+				PointF datum = new PointF((float)(xDatum + fcx), (float)(yDatum + fcy));
 
-				lt = lt.Rotate(datum, orientAngle, isMirrorXAxis);
-				rb = rb.Rotate(datum, orientAngle, isMirrorXAxis);
+				lt = lt.Rotate(datum, orient, isMirrorXAxis);
+				rb = rb.Rotate(datum, orient, isMirrorXAxis);
 
 				float left = lt.X;
 				float right = rb.X;

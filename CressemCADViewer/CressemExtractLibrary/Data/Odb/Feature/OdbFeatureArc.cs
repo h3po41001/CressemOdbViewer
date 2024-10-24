@@ -30,8 +30,12 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public bool IsClockWise { get; private set; }
 
-		public static OdbFeatureArc Create(int index, bool isMM, string[] param)
+		public static OdbFeatureArc Create(int index, bool isMM, string paramString)
 		{
+			string[] splited = paramString.ToUpper().Split(';');
+			string[] param = splited[0].Trim().Split(' ');
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
 			if (param.Length != 11)
 			{
 				return null;
@@ -77,11 +81,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] splited = param[10].Split(';');
-
-			string cw = splited[0];
-			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
-
+			string cw = param[10];
 			return new OdbFeatureArc(index, isMM, sx, sy, ex, ey, cx, cy,
 				symbolNum, param[8], param[9], cw, attrString);
 		}

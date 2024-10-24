@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CressemExtractLibrary.Data.Interface.Symbol
+﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolOval : ISymbolRectangle
+	public interface ISymbolOval : ISymbolBase
 	{
+		double Width { get; }
+
+		double Height { get; }
 	}
 }

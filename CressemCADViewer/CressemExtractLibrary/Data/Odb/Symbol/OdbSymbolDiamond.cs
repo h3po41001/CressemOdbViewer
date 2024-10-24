@@ -2,16 +2,22 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolDiamond : OdbSymbolRectangle, ISymbolDiamond
+	internal class OdbSymbolDiamond : OdbSymbolBase, ISymbolDiamond
 	{
 		protected OdbSymbolDiamond() { }
 
-		public OdbSymbolDiamond(int index, double width, double height) : 
-			base(index, width, height)
+		public OdbSymbolDiamond(int index, 
+			double width, double height) : base(index)
 		{
+			Width = width;
+			Height = height;
 		}
 
-		public static new OdbSymbolDiamond Create(int index, string param)
+		public double Width { get; private set; }
+
+		public double Height { get; private set; }
+
+		public static OdbSymbolDiamond Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 2)

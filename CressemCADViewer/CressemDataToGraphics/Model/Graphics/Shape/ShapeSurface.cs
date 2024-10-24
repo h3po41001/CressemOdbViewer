@@ -22,25 +22,28 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<IShapePolygon> Polygons { get; private set; }
 
-		public static ShapeSurface CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum,
-			IFeatureSurface surface)
+		public static ShapeSurface CreateGdiPlus(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, 
+			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
 		{
-			if (surface is null)
+			if (featurePolygons is null)
 			{
 				return null;
 			}
 
-			bool isPositive = surface.Polarity.Equals("P") is true;
 			List<ShapePolygon> polygons = new List<ShapePolygon>();
 
-			foreach (var polygon in surface.Polygons)
+			foreach (var polygon in featurePolygons)
 			{
-				polygons.Add(ShapePolygon.CreateGdiPlus(useMM, pixelResolution,
-					xDatum, yDatum, isPositive, polygon));
+				polygons.Add(ShapePolygon.CreateGdiPlus(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis, isPositive, polygon));
 			}
 
-			return new ShapeSurface(pixelResolution, 
+			return new ShapeSurface(pixelResolution,
 				isPositive, polygons);
 		}
 

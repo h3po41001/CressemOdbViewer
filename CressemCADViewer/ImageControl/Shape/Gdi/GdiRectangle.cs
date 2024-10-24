@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
@@ -26,9 +25,9 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
-		public override void Draw(Graphics graphics, Matrix _)
+		public override void Draw(Graphics graphics)
 		{
-			graphics.FillRectangle(new SolidBrush(Color.Red), 
+			graphics.FillRectangle(new SolidBrush(Color.DarkGreen), 
 				X * PixelResolution,
 				Y * PixelResolution,
 				Width * PixelResolution,

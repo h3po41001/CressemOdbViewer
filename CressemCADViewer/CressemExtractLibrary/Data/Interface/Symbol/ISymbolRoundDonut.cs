@@ -1,6 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolRoundDonut : ISymbolRound
+	public interface ISymbolRoundDonut : ISymbolIRegularShape
 	{
 		double InnerDiameter { get; }
 	}

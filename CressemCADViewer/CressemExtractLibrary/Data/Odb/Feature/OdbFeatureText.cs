@@ -33,8 +33,12 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		// 0 : previous version, 1 : current version
 		public int Version { get; private set; }
 
-		public static OdbFeatureText Create(int index, bool isMM, string[] param)
+		public static OdbFeatureText Create(int index, bool isMM, string paramString)
 		{
+			string[] splited = paramString.ToUpper().Split(';');
+			string[] param = splited[0].Trim().Split(' ');
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
 			if (param.Length != 11)
 			{
 				return null;
@@ -75,12 +79,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] splited = param[10].Split(';');
-
-			string versionString = splited[0];
-			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
-
-			if (int.TryParse(versionString, out int version) is false)
+			if (int.TryParse(param[10], out int version) is false)
 			{
 				return null;
 			}

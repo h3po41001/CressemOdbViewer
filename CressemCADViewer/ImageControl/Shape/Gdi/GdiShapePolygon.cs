@@ -29,13 +29,8 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public GraphicsPath GraphicsPath { get; private set; }
 
-		public override void Draw(Graphics graphics, Matrix matrix)
+		public override void Draw(Graphics graphics)
 		{
-			if (matrix != null)
-			{
-				GraphicsPath.Transform(matrix);
-			}
-
 			if (IsFill)
 				graphics.FillPath(new SolidBrush(Color.DarkGreen), GraphicsPath);
 			else

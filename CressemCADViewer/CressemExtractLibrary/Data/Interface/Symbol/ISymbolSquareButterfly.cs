@@ -1,6 +1,6 @@
 ﻿namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolSquareButterfly : ISymbolRound
+	public interface ISymbolSquareButterfly : ISymbolIRegularShape
 	{
 	}
 }

@@ -2,21 +2,27 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolRoundedRectangleDonut : OdbSymbolRoundedRectangle, ISymbolRoundedRectangleDonut
+	internal class OdbSymbolRoundedRectangleDonut : OdbSymbolEditedCorner, ISymbolRoundedRectangleDonut
 	{
 		private OdbSymbolRoundedRectangleDonut() { }
 
 		public OdbSymbolRoundedRectangleDonut(int index, 
 			double width, double height,
-			double lineWidth, double cornerRadius, string corners) : 
-			base(index, width, height, cornerRadius, corners) 
+			double lineWidth, double cornerRadius, 
+			string corners) : base(index, cornerRadius, corners, 4) 
 		{
+			Width = width;
+			Height = height;
 			LineWidth = lineWidth;
 		}
 
+		public double Width { get; private set; }
+
+		public double Height { get; private set; }
+
 		public double LineWidth { get; private set; }
 
-		public static new OdbSymbolRoundedRectangleDonut Create(int index, string param)
+		public static OdbSymbolRoundedRectangleDonut Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 5)

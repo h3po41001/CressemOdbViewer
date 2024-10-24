@@ -25,7 +25,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
-		public override void Draw(Graphics graphics, Matrix _)
+		public override void Draw(Graphics graphics)
 		{
 			graphics.FillEllipse(new SolidBrush(Color.DarkGreen),
 				X * PixelResolution,

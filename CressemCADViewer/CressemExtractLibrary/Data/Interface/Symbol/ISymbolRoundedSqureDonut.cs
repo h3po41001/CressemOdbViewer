@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace CressemExtractLibrary.Data.Interface.Symbol
 {
-	public interface ISymbolRoundedSqureDonut : ISymbolEditedCorner, ISymbolRound
+	public interface ISymbolRoundedSqureDonut : ISymbolEditedCorner
 	{
+		double Diameter { get; }
+
 		double InnerDiameter { get; }
 
 		double Radius { get; }

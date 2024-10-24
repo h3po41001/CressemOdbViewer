@@ -35,7 +35,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float LineWidth { get; private set; }
 
-		public override void Draw(Graphics graphics, Matrix _)
+		public override void Draw(Graphics graphics)
 		{
 			if (LineWidth > 0)
 			{

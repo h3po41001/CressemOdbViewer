@@ -32,55 +32,54 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float Width { get; private set; }
 
-		public static ShapeLine CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum,
-			double width, IFeatureLine line)
+		public static ShapeLine CreateGdiPlus(bool useMM, 
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			double sx, double sy, double ex, double ey, double width)
 		{
-			double sx = line.X;
-			double sy = line.Y;
-			double ex = line.Ex;
-			double ey = line.Ey;
-			double lineWidth = width;
+			float fsx = (float)sx;
+			float fsy = (float)sy;
+			float fex = (float)ex;
+			float fey = (float)ey;
+			float fwidth = (float)width;
 
 			if (useMM is true)
 			{
-				if (line.IsMM is false)
+				if (isMM is false)
 				{
-					sx = sx.ConvertInchToMM();
-					sy = sy.ConvertInchToMM();
-					ex = ex.ConvertInchToMM();
-					ey = ey.ConvertInchToMM();
-					lineWidth = lineWidth.ConvertInchToUM();
+					fsx = (float)sx.ConvertInchToMM();
+					fsy = (float)sy.ConvertInchToMM();
+					fex = (float)ex.ConvertInchToMM();
+					fey = (float)ey.ConvertInchToMM();
+					fwidth = (float)width.ConvertInchToUM();
 				}
 			}
 			else
 			{
-				if (line.IsMM is true)
+				if (isMM is true)
 				{
-					sx = sx.ConvertMMToInch();
-					sy = sy.ConvertMMToInch();
-					ex = ex.ConvertMMToInch();
-					ey = ey.ConvertMMToInch();
-					lineWidth = lineWidth.ConvertUMToInch();
+					fsx = (float)sx.ConvertMMToInch();
+					fsy = (float)sy.ConvertMMToInch();
+					fex = (float)ex.ConvertMMToInch();
+					fey = (float)ey.ConvertMMToInch();
+					fwidth = (float)width.ConvertUMToInch();
 				}
 			}
 
-			PointF start = new PointF((float)sx, (float)sy);
-			PointF end = new PointF((float)ex, (float)ey);
+			PointF start = new PointF(fsx, fsy);
+			PointF end = new PointF(fex, fey);
 
-			if (line.OrientDef > 0)
+			if (orient > 0)
 			{
-				PointF datum = new PointF((float)xDatum, (float)yDatum);
-				int orientAngle = (line.OrientDef % 4) * 90;
-				bool isMirrorXAxis = line.OrientDef >= 4;
+				PointF datum = new PointF((float)(xDatum + cx), (float)(yDatum + cx));
 
-				start = start.Rotate(datum, orientAngle, isMirrorXAxis);
-				end = end.Rotate(datum, orientAngle, isMirrorXAxis);
+				start = start.Rotate(datum, orient, isMirrorXAxis);
+				end = end.Rotate(datum, orient, isMirrorXAxis);
 			}
 
 			return new ShapeLine(pixelResolution,
-				(float)start.X, (float)-start.Y,
-				(float)end.X, (float)-end.Y, (float)lineWidth);
+				start.X, -start.Y, end.X, -end.Y, fwidth);
 		}
 
 		public static ShapeLine CreateOpenGl(bool useMM, float pixelResolution,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Security.Cryptography;
+using System.Threading;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Extension;
@@ -41,58 +42,60 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float LineWidth { get; private set; }
 
-		public static ShapeArc CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum,
-			double width, IFeatureArc arc)
+		public static ShapeArc CreateGdiPlus(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			double sx, double sy, double ex, double ey, double arcCx, double arcCy,	
+			bool isClockWise, double width)
 		{
-			double sx = arc.X;
-			double sy = arc.Y;
-			double ex = arc.Ex;
-			double ey = arc.Ey;
-			double cx = arc.Cx;
-			double cy = arc.Cy;
-			double lineWidth = width;
+			float fsx = (float)sx;
+			float fsy = (float)sy;
+			float fex = (float)ex;
+			float fey = (float)ey;
+			float fAcx = (float)arcCx;
+			float fAcy = (float)arcCy;
+			float fwidth = (float)width;
 
 			if (useMM is true)
 			{
-				if (arc.IsMM is false)
+				if (isMM is false)
 				{
-					sx = sx.ConvertInchToMM();
-					sy = sy.ConvertInchToMM();
-					ex = ex.ConvertInchToMM();
-					ey = ey.ConvertInchToMM();
-					cx = cx.ConvertInchToMM();
-					cy = cy.ConvertInchToMM();
-					lineWidth = lineWidth.ConvertInchToUM();
+					fsx = (float)sx.ConvertInchToMM();
+					fsy = (float)sy.ConvertInchToMM();
+					fex = (float)ex.ConvertInchToMM();
+					fey = (float)ey.ConvertInchToMM();
+					fAcx = (float)arcCx.ConvertInchToMM();
+					fAcy = (float)arcCy.ConvertInchToMM();
+					fwidth = (float)width.ConvertInchToUM();
 				}
 			}
 			else
 			{
-				if (arc.IsMM is true)
+				if (isMM is true)
 				{
-					sx = sx.ConvertMMToInch();
-					sy = sy.ConvertMMToInch();
-					ex = ex.ConvertMMToInch();
-					ey = ey.ConvertMMToInch();
-					cx = cx.ConvertMMToInch();
-					cy = cy.ConvertMMToInch();
-					lineWidth = lineWidth.ConvertUMToInch();
+					fsx = (float)sx.ConvertMMToInch();
+					fsy = (float)sy.ConvertMMToInch();
+					fex = (float)ex.ConvertMMToInch();
+					fey = (float)ey.ConvertMMToInch();
+					fAcx = (float)arcCx.ConvertMMToInch();
+					fAcy = (float)arcCy.ConvertMMToInch();
+					fwidth = (float)width.ConvertUMToInch();
 				}
 			}
 
-			PointF start = new PointF((float)sx, (float)sy);
-			PointF end = new PointF((float)ex, (float)ey);
-			PointF center = new PointF((float)cx, (float)cy);
+			PointF start = new PointF(fsx, fsy);
+			PointF end = new PointF(fex, fey);
+			PointF center = new PointF(fAcx, fAcy);
 
-			if (arc.OrientDef > 0)
+			if (orient > 0)
 			{
-				PointF datum = new PointF((float)xDatum, (float)yDatum);
-				int orientAngle = (arc.OrientDef % 4) * 90;
-				bool isMirrorXAxis = arc.OrientDef >= 4;
+				PointF datum = new PointF(
+					(float)(xDatum + cx), (float)(yDatum + cy));
 
-				start = start.Rotate(datum, orientAngle, isMirrorXAxis);
-				end = end.Rotate(datum, orientAngle, isMirrorXAxis);
-				center = center.Rotate(datum, orientAngle, isMirrorXAxis);
+				start = start.Rotate(datum, orient, isMirrorXAxis);
+				end = end.Rotate(datum, orient, isMirrorXAxis);
+				center = center.Rotate(datum, orient, isMirrorXAxis);
 			}
 
 			double radius = Math.Sqrt(Math.Pow(start.X - center.X, 2) + Math.Pow(-(start.Y - center.Y), 2));
@@ -100,7 +103,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			double endAngle = Math.Atan2(-(end.Y - center.Y), end.X - center.X) * (180 / Math.PI);
 			double sweepAngle = (endAngle - startAngle);
 
-			if (arc.IsClockWise is true)
+			if (isClockWise is true)
 			{
 				sweepAngle = sweepAngle <= 0 ?
 					(float)sweepAngle + 360.0f : (float)sweepAngle;
@@ -112,13 +115,13 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			}
 
 			return new ShapeArc(pixelResolution,
-				(float)(cx - radius),
-				(float)-(cy + radius),
+				(float)(fAcx - radius),
+				(float)-(fAcy + radius),
 				(float)(radius * 2),
 				(float)(radius * 2),
 				(float)startAngle,
 				(float)sweepAngle,
-				(float)lineWidth);
+				(float)fwidth);
 		}
 
 		public static IShapeArc CreateOpenGl(float pixelResolution,

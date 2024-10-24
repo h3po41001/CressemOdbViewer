@@ -1,4 +1,5 @@
-﻿using CressemExtractLibrary.Data.Interface.Features;
+﻿using System.Linq;
+using CressemExtractLibrary.Data.Interface.Features;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {
@@ -19,14 +20,18 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public double Ey { get; private set; }
 
-		static public OdbFeatureLine Create(int index, bool isMM, string[] param)
+		static public OdbFeatureLine Create(int index, bool isMM, string paramString)
 		{
-			if (param.Length != 9)
+			string[] splited = paramString.ToUpper().Split(';');			
+			string[] param = splited[0].Trim().Split(' ');
+			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
+
+			if (param.Length != 8)
 			{
 				return null;
 			}
 
-			if (param[0] != "L")
+			if (param[0].Equals("L") is false)
 			{
 				return null;
 			}
@@ -56,11 +61,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return null;
 			}
 
-			string[] splited = param[7].Split(';');
-
-			string decode = splited[0];
-			string attrString = splited.Length > 1 ? splited[1] : string.Empty;
-
+			string decode = param[7];			
 			return new OdbFeatureLine(index, isMM, sx, sy, ex, ey, symbolNum, param[6], decode, attrString);
 		}
 	}

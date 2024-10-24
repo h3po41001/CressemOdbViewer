@@ -33,8 +33,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			odbSteps = null;
 			ConcurrentQueue<OdbStep> stepQueue = new ConcurrentQueue<OdbStep>();
 
-			//foreach (var step in steps)
-			Parallel.ForEach(odbData.OdbMatrixInfo.Steps, step =>
+			foreach (var step in odbData.OdbMatrixInfo.Steps)
+			//Parallel.ForEach(odbData.OdbMatrixInfo.Steps, step =>
 			{
 				string stepFolder = Path.Combine(dirPath, StepFolderName, step.Name);
 				string stepHeaderPath = Path.Combine(stepFolder, StepHeaderFileName);
@@ -44,23 +44,27 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				if (LoadOdbStepHeader(stepHeaderPath,
 					out OdbStepHeader stepHeader) is false)
 				{
-					return;
+					//return;
+					continue;
 				}
 
 				if (LoadOdbStepProfile(stepProfilePath, odbData,
 					out OdbStepProfile stepProfile) is false)
 				{
-					return;
+					//return;
+					continue;
 				}
 
 				if (LoadOdbStepLayer(stepLayerPath, odbData,
 					out List<OdbLayer> stepLayer) is false)
 				{
-					return;
+					//return;
+					continue;
 				}
 
 				stepQueue.Enqueue(new OdbStep(step, stepHeader, stepProfile, stepLayer));
-			});
+				//});
+			}
 
 			odbSteps = new List<OdbStep>(stepQueue);
 
@@ -307,6 +311,11 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 			foreach (var refLayer in odbData.OdbMatrixInfo.Layers)
 			{
+				if (refLayer.Name.ToUpper().Equals("SIGT") is false)
+				{
+					continue;
+				}
+
 				string layerFilePath = Path.Combine(path, refLayer.Name, FeaturesFileName);
 				if (File.Exists(layerFilePath) is false)
 				{

@@ -2,18 +2,21 @@
 
 namespace CressemExtractLibrary.Data.Odb.Symbol
 {
-	internal class OdbSymbolHole : OdbSymbolRound, ISymbolHole
+	internal class OdbSymbolHole : OdbSymbolBase, ISymbolHole
 	{
 		private OdbSymbolHole() { }
 
 		public OdbSymbolHole(int index, 
 			double diameter, string platingStatus, 
-			double plusTolerance, double minusTolerance) : base(index, diameter)
+			double plusTolerance, double minusTolerance) : base(index)
 		{
+			Diameter = diameter;
 			PlatingStatus = platingStatus;
 			PlusTolerance = plusTolerance;
 			MinusTolerance = minusTolerance;
 		}
+
+		public double Diameter { get; private set; }
 
 		public string PlatingStatus { get; private set; }
 
@@ -21,7 +24,7 @@ namespace CressemExtractLibrary.Data.Odb.Symbol
 
 		public double MinusTolerance { get; private set; }
 
-		public static new OdbSymbolHole Create(int index, string param)
+		public static OdbSymbolHole Create(int index, string param)
 		{
 			string[] split = param.Split('X');
 			if (split.Length != 4)

@@ -18,9 +18,7 @@ namespace CressemCADViewer.Model
 
 		public void Run(DesignFormat format, string loadPath, string savePath)
 		{
-			//if (_task != null && _task.Status is TaskStatus.Running)
-			//	return;
-
+			bool result = false;
 			_task = Task.Run(() =>
 			{
 				if (ExtractLibrary.Instance.SetData(format, loadPath, savePath) is true)
@@ -29,18 +27,21 @@ namespace CressemCADViewer.Model
 
 					if (ExtractLibrary.Instance.Extract() is true)
 					{
-						ProcessCompleted(this, true);
+						result = true;
 					}
 					else
 					{
-						ProcessCompleted(this, false);
+						result = false;
 					}
 				}
 				else
 				{
-					ProcessStarted(this, false);
+					result = false;
 				}
 			});
+
+			_task.Wait();
+			ProcessCompleted(this, result);
 		}
 	}
 }
