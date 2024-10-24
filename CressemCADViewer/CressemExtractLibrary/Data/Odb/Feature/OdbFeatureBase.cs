@@ -71,6 +71,11 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				return;
 			}
 
+			if (attrTexts is null || attrTexts.Count < 1)
+			{
+				return;
+			}
+
 			FeatureAttributes = new List<OdbAttribute>();
 
 			string[] splited = AttributeString.Split(',');
@@ -90,7 +95,10 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 				{
 					if (int.TryParse(attrSplited[1], out int textIndex) is true)
 					{
-						FeatureAttributes.Add(new OdbAttribute(attrNames[index].Name, attrTexts[textIndex].Text));
+						if (attrTexts.Count > textIndex)
+						{
+							FeatureAttributes.Add(new OdbAttribute(attrNames[index].Name, attrTexts[textIndex].Text));
+						}
 					}
 				}
 			}

@@ -18,6 +18,12 @@ namespace ImageControl.Model.Shape.Gdi
 			Ex = ex;
 			Ey = ey;
 			LineWidth = width;
+
+			DefaultPen.Width = LineWidth;
+			DefaultPen.Color = Color.DarkGreen;
+
+			ProfilePen.Width = LineWidth;
+			ProfilePen.Color = Color.White;
 		}
 
 		public float Sx { get; private set; }
@@ -32,24 +38,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			if (LineWidth > 0)
-			{
-				DefaultPen.Width = LineWidth * PixelResolution;
-			}
-
-			DefaultPen.Color = Color.DarkGreen;
-
-			graphics.DrawLine(DefaultPen, Sx * PixelResolution, Sy * PixelResolution,
-				Ex * PixelResolution, Ey * PixelResolution);
+			graphics.DrawLine(DefaultPen, Sx, Sy, Ex, Ey);
 		}
 
 		public override void DrawProfile(Graphics graphics)
 		{
-			LineWidth = 0.1f;
-			DefaultPen.Color = Color.White;
-
-			graphics.DrawLine(DefaultPen, Sx * PixelResolution, Sy * PixelResolution,
-				Ex * PixelResolution, Ey * PixelResolution);
+			graphics.DrawLine(ProfilePen, Sx, Sy, Ex, Ey);
 		}
 	}
 }

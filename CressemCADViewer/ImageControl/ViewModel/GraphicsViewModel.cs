@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.Gdi;

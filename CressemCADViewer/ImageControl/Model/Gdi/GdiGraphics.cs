@@ -25,6 +25,7 @@ namespace ImageControl.Model.Gdi
 		private Graphics _gdiGraphics;
 		private Bitmap _image = null;
 		private RectangleF _roi = new RectangleF();
+		private SolidBrush _background = new SolidBrush(Color.Black);
 
 		public GdiGraphics() : base()
 		{
@@ -127,13 +128,14 @@ namespace ImageControl.Model.Gdi
 
 			_gdiGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			_gdiGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+			_gdiGraphics.SetClip(new Rectangle(0, 0, _gdiView.Width, _gdiView.Height));
 			_gdiGraphics.TranslateTransform(
 				OffsetSize.Width - _roi.X * ScreenZoom,
 				OffsetSize.Height - _roi.Y * ScreenZoom);
 			_gdiGraphics.ScaleTransform(ScreenZoom, ScreenZoom);
 
 			_gdiGraphics.DrawImage(_image, _roi);
-			_gdiGraphics.FillRectangle(new SolidBrush(Color.Black), _roi.X, _roi.Y, _roi.Width, _roi.Height);
+			_gdiGraphics.FillRectangle(_background, _roi.X, _roi.Y, _roi.Width, _roi.Height);
 
 			DrawShapes();
 			_gdiGraphics.ResetTransform();

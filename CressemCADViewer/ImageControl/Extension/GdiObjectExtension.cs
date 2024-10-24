@@ -8,28 +8,27 @@ namespace ImageControl.Extension
 {
 	internal static class GdiObjectExtension
 	{
-		public static void Add(this GraphicsPath path,
-			GdiShape gdiBase, float mul = 1.0f)
+		public static void Add(this GraphicsPath path, GdiShape gdiBase)
 		{
 			if (gdiBase is GdiLine gdiLine)
 			{
-				path.AddLine(gdiLine, mul);
+				path.AddLine(gdiLine);
 			}
 			else if (gdiBase is GdiRectangle gdiRectangle)
 			{
-				path.AddRectangle(gdiRectangle, mul);
+				path.AddRectangle(gdiRectangle);
 			}
 			else if (gdiBase is GdiEllipse gdiEllipse)
 			{
-				path.AddEllipse(gdiEllipse, mul);
+				path.AddEllipse(gdiEllipse);
 			}
 			else if (gdiBase is GdiArc gdiArc)
 			{
-				path.AddArc(gdiArc, mul);
+				path.AddArc(gdiArc);
 			}
 			else if (gdiBase is GdiPointsPolygon gdiPolygon)
 			{
-				path.AddPolygon(gdiPolygon, mul);
+				path.AddPolygon(gdiPolygon);
 			}
 			//else if (gdiBase is GdiShapePolygon gdiShapePolygon)
 			//{

@@ -15,6 +15,7 @@ namespace ImageControl.Model.Shape.Gdi
 			Y = y;
 			Width = width;
 			Height = height;
+			ProfilePen.Color = Color.White;
 		}
 
 		public float X { get; private set; }
@@ -27,21 +28,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.FillEllipse(new SolidBrush(Color.DarkGreen),
-				X * PixelResolution,
-				Y * PixelResolution,
-				Width * PixelResolution,
-				Height * PixelResolution);
+			graphics.FillEllipse(SolidBrush, X, Y, Width, Height);
 		}
 
 		public override void DrawProfile(Graphics graphics)
 		{
-			DefaultPen.Color = Color.White;
-			graphics.DrawEllipse(DefaultPen,
-				X * PixelResolution,
-				Y * PixelResolution,
-				Width * PixelResolution,
-				Height * PixelResolution);
+			graphics.DrawEllipse(ProfilePen, X, Y, Width, Height);
 		}
 	}
 }

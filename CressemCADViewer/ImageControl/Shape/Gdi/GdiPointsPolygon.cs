@@ -12,6 +12,8 @@ namespace ImageControl.Shape.Gdi
 		{
 			IsFill = isFill;
 			Points = new List<PointF>(points);
+
+			ProfilePen.Color = Color.White;
 		}
 
 		public bool IsFill { get; private set; }
@@ -20,13 +22,12 @@ namespace ImageControl.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{			
-			graphics.FillPolygon(new SolidBrush(Color.DarkGreen), Points.ToArray());
+			graphics.FillPolygon(SolidBrush, Points.ToArray());
 		}
 
 		public override void DrawProfile(Graphics graphics)
 		{
-			DefaultPen.Color = Color.White;
-			graphics.DrawPolygon(DefaultPen, Points.ToArray());
+			graphics.DrawPolygon(ProfilePen, Points.ToArray());
 		}
 	}
 }

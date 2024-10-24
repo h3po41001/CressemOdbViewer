@@ -38,7 +38,7 @@ namespace ImageControl.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.FillRegion(new SolidBrush(Color.DarkGreen), GraphicsRegion);
+			graphics.FillRegion(SolidBrush, GraphicsRegion);
 		}
 
 		public override void DrawProfile(Graphics graphics)

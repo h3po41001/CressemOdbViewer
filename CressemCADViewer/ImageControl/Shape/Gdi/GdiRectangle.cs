@@ -7,14 +7,16 @@ namespace ImageControl.Model.Shape.Gdi
 	{
 		private GdiRectangle() { }
 
-		public GdiRectangle(float pixelResolution, 
-			float x, float y, 
+		public GdiRectangle(float pixelResolution,
+			float x, float y,
 			float width, float height) : base(pixelResolution)
 		{
 			X = x;
 			Y = y;
 			Width = width;
 			Height = height;
+
+			ProfilePen.Color = Color.White;
 		}
 
 		public float X { get; private set; }
@@ -27,21 +29,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			graphics.FillRectangle(new SolidBrush(Color.DarkGreen), 
-				X * PixelResolution,
-				Y * PixelResolution,
-				Width * PixelResolution,
-				Height * PixelResolution);
+			graphics.FillRectangle(SolidBrush, X, Y, Width, Height);
 		}
 
 		public override void DrawProfile(Graphics graphics)
 		{
-			DefaultPen.Color = Color.White;
-			graphics.DrawRectangle(DefaultPen,
-				X * PixelResolution,
-				Y * PixelResolution,
-				Width * PixelResolution,
-				Height * PixelResolution);
+			graphics.DrawRectangle(ProfilePen, X, Y, Width, Height);
 		}
 	}
 }

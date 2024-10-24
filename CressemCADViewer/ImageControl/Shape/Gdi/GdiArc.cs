@@ -19,6 +19,12 @@ namespace ImageControl.Model.Shape.Gdi
 			StartAngle = startAngle;
 			SweepAngle = sweepAngle;
 			LineWidth = lineWidth;
+
+			DefaultPen.Width = LineWidth;
+			DefaultPen.Color = Color.DarkGreen;
+
+			ProfilePen.Width = LineWidth;
+			ProfilePen.Color = Color.White;
 		}
 
 		public float X { get; private set; }
@@ -37,33 +43,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			if (LineWidth > 0)
-			{
-				DefaultPen.Width = LineWidth * PixelResolution;
-			}
-
-			DefaultPen.Color = Color.DarkGreen;
-			graphics.DrawArc(
-				DefaultPen,
-				X * PixelResolution,
-				Y * PixelResolution,
-				Width * PixelResolution, 
-				Height * PixelResolution,
-				StartAngle, 
-				SweepAngle);
+			graphics.DrawArc(DefaultPen, X, Y, Width, Height, StartAngle, SweepAngle);
 		}
 
 		public override void DrawProfile(Graphics graphics)
 		{
-			DefaultPen.Color = Color.White;
-			graphics.DrawArc(
-				DefaultPen,
-				X * PixelResolution,
-				Y * PixelResolution,
-				Width * PixelResolution,
-				Height * PixelResolution,
-				StartAngle,
-				SweepAngle);
+			graphics.DrawArc(ProfilePen, X, Y, Width, Height, StartAngle, SweepAngle);
 		}
 	}
 }
