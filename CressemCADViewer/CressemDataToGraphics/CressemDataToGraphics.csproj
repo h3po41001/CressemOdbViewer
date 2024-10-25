@@ -39,7 +39,7 @@
     <Compile Include="DataToGraphics.cs" />
     <Compile Include="Factory\DataToGraphicsFactory.cs" />
     <Compile Include="Factory\GdiPlusFactory.cs" />
-    <Compile Include="Factory\OpenGlFactory.cs" />
+    <Compile Include="Factory\DirectXFactory.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeArc.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeBase.cs" />
     <Compile Include="Model\Graphics\Shape\ShapeEllipse.cs" />

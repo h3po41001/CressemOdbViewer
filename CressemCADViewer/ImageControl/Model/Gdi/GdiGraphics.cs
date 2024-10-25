@@ -71,9 +71,14 @@ namespace ImageControl.Model.Gdi
 			}
 
 			var shape = GdiShapeFactory.Instance.CreateGdiShape(roiShape);
-			if (shape is GdiSurface surface)
+			if (shape is IGdiSurface surface)
 			{
-				var bounds = surface.Polygons.Select(poly => poly.GraphicsPath.GetBounds());
+				List<RectangleF> bounds = new List<RectangleF>();
+				foreach (GdiShapePolygon polygon in surface.Polygons.Cast<GdiShapePolygon>())
+				{
+					bounds.Add(polygon.GraphicsPath.GetBounds());
+				}
+
 				_roi = bounds.GetBounds();
 				_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
 

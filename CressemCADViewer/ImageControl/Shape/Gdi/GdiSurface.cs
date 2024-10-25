@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using ImageControl.Extension;
 using ImageControl.Model.Shape.Gdi;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Shape.Gdi
 {
-	internal class GdiSurface : GdiShape
+	internal class GdiSurface : GdiShape, IGdiSurface
 	{
 		private GdiSurface() { }
 
 		public GdiSurface(bool isPositive, 
-			IEnumerable<GdiShapePolygon> polygons) : base()
+			IEnumerable<IGdiPolygon> polygons) : base()
 		{
 			IsPositive = isPositive;
-			Polygons = new List<GdiShapePolygon>(polygons);
+			Polygons = new List<IGdiPolygon>(polygons);
 			GraphicsRegion = new Region();
 			GraphicsRegion.MakeEmpty();
 
-			foreach (var polygon in Polygons)
+			foreach (GdiShapePolygon polygon in Polygons)
 			{
 				if (polygon.IsFill)
 				{
@@ -32,7 +33,7 @@ namespace ImageControl.Shape.Gdi
 
 		public bool IsPositive { get; private set; }
 
-		public List<GdiShapePolygon> Polygons { get; private set; }
+		public IEnumerable<IGdiPolygon> Polygons { get; private set; }
 
 		public Region GraphicsRegion { get; private set; }
 
@@ -43,10 +44,7 @@ namespace ImageControl.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			foreach (var polygon in Polygons)
-			{
-				polygon.Draw(graphics);
-			}
+			return;
 		}
 	}
 }

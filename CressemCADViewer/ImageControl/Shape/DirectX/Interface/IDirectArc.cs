@@ -1,6 +1,6 @@
 ﻿namespace ImageControl.Shape.DirectX.Interface
 {
-	internal interface IDirectArc
+	public interface IDirectArc : IDirectShape
 	{
 		float Sx { get; }
 

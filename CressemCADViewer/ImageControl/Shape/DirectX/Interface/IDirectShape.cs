@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ImageControl.Shape.DirectX.Interface
+﻿namespace ImageControl.Shape.DirectX.Interface
 {
-	internal interface IDirectShape
+	public interface IDirectShape
 	{
 	}
 }

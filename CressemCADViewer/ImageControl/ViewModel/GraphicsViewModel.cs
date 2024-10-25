@@ -2,8 +2,10 @@
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.DirectX;
+using ImageControl.Model.Gdi;
 using ImageControl.Shape.Gdi.Interface;
 using ImageControl.View.DirectX;
+using ImageControl.View.Gdi;
 
 namespace ImageControl.ViewModel
 {
@@ -16,10 +18,10 @@ namespace ImageControl.ViewModel
 		public GraphicsViewModel() 
 		{
 			// 변경해야함.. 옵션에 따라
-			//_graphicsView = new GdiGraphicsView();
-			//_graphics = new GdiGraphics();
-			_graphicsView = new DirectXView();
-			_graphics = new DirectXGraphics();
+			_graphicsView = new GdiGraphicsView();
+			_graphics = new GdiGraphics();
+			//_graphicsView = new DirectXView();
+			//_graphics = new DirectXGraphics();
 
 			_graphicsView.DataContext = _graphics;
 			

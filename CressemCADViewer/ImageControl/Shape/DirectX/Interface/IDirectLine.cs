@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ImageControl.Shape.DirectX.Interface
+﻿namespace ImageControl.Shape.DirectX.Interface
 {
-	internal interface IDirectLine
+	public interface IDirectLine : IDirectShape
 	{
+		float Sx { get; }
+
+		float Sy { get; }
+
+		float Ex { get; }
+
+		float Ey { get; }
 	}
 }

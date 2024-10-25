@@ -1,5 +1,6 @@
 ﻿using System;
 using CressemExtractLibrary.Data.Interface.Features;
+using ImageControl.Shape.DirectX.Interface;
 using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Factory
@@ -9,12 +10,12 @@ namespace CressemDataToGraphics.Factory
 		private static DataToGraphicsFactory _instance;
 
 		private readonly GdiPlusFactory _gdiPlusFactory;
-		private readonly OpenGlFactory _openGlFactory;
+		private readonly DirectXFactory _directXFactory;
 
 		private DataToGraphicsFactory()
 		{
 			_gdiPlusFactory = new GdiPlusFactory();
-			_openGlFactory = new OpenGlFactory();
+			_directXFactory = new DirectXFactory();
 		}
 
 		public static DataToGraphicsFactory Instance
@@ -45,10 +46,19 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis, feature);
 		}
 
-		public IGdiBase DataToOpenGl(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, IFeatureBase feature)
+		public IDirectShape DataToDirectX(bool useMM, float pixelResolution,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{
-			throw new NotImplementedException("Not Implemented Shape [Open Gl]");
+			if (feature is null)
+			{
+				return null;
+			}
+
+			return _directXFactory.CreateFeatureToShape(useMM,
+				pixelResolution,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis, feature);
 		}
 	}
 }

@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal abstract class GdiShape
+	internal abstract class GdiShape : IGdiBase
 	{
 		protected GdiShape()
 		{
