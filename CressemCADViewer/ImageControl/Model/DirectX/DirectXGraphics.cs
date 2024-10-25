@@ -110,11 +110,11 @@ namespace ImageControl.Model.DirectX
 			// 폴리곤 그리기
 			using (SolidColorBrush brush = new SolidColorBrush(_renderTarget, new RawColor4(0, 1, 0, 1)))
 			{
-				RawVector2 startPoint = new RawVector2(300, 300); // 아크의 시작점
-				RawVector2 endPoint = new RawVector2(500, 500);   // 아크의 끝점
+				RawVector2 startPoint = new RawVector2(300.5f, 300.5f); // 아크의 시작점
+				RawVector2 endPoint = new RawVector2(500.5f, 500.5f);   // 아크의 끝점
 
-				float radiusX = 30; // x축 반지름
-				float radiusY = 50; // y축 반지름
+				float radiusX = 1f; // x축 반지름
+				float radiusY = 1f; // y축 반지름
 
 				float rotationAngle = 0; // 회전 각도 (도 단위)
 				ArcSize arcSize = ArcSize.Small; // 아크의 크기 (Small 또는 Large)
