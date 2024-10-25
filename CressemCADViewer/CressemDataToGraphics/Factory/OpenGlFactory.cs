@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CressemExtractLibrary.Data.Interface.Symbol;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Factory
 {

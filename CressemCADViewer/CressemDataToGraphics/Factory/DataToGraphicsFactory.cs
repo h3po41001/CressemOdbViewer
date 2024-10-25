@@ -1,6 +1,6 @@
 ﻿using System;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Factory
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CressemDataToGraphics.Model.Graphics.Shape;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Factory
 {

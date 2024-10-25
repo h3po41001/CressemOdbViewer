@@ -1,4 +1,4 @@
-﻿namespace ImageControl.Shape.Interface
+﻿namespace ImageControl.Shape.Gdi.Interface
 {
 	public interface IGdiEllipse : IGdiBase
 	{

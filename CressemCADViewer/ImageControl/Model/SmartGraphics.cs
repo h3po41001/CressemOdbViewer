@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model
 {

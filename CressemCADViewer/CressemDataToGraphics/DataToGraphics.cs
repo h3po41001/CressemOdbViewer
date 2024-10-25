@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using CressemDataToGraphics.Factory;
+﻿using CressemDataToGraphics.Factory;
 using CressemDataToGraphics.Model;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics
 {

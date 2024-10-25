@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using ImageControl.Model.Shape.Gdi;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Shape.Gdi
 {

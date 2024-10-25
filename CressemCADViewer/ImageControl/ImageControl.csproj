@@ -88,14 +88,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Shape\Gdi\GdiSurface.cs" />
-    <Compile Include="Shape\Interface\IGdiArc.cs" />
-    <Compile Include="Shape\Interface\IGdiBase.cs" />
-    <Compile Include="Shape\Interface\IGdiEllipse.cs" />
-    <Compile Include="Shape\Interface\IGdiLine.cs" />
-    <Compile Include="Shape\Interface\IGdiList.cs" />
-    <Compile Include="Shape\Interface\IGdiPolygon.cs" />
-    <Compile Include="Shape\Interface\IGdiRectangle.cs" />
-    <Compile Include="Shape\Interface\IGdiSurface.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiArc.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiBase.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiEllipse.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiLine.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiList.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiPolygon.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiRectangle.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiSurface.cs" />
     <Compile Include="Shape\Gdi\GdiShapeFactory.cs" />
     <Compile Include="ViewModel\GraphicsViewModel.cs" />
     <Compile Include="View\DirectX\DirectXView.xaml.cs">

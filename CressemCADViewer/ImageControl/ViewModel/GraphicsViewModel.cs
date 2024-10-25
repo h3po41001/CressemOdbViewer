@@ -2,7 +2,7 @@
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.DirectX;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 using ImageControl.View.DirectX;
 
 namespace ImageControl.ViewModel

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {

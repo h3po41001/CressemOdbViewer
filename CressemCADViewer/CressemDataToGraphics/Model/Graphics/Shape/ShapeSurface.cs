@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {

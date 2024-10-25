@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {

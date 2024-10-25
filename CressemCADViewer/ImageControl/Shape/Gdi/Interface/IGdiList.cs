@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ImageControl.Shape.Interface
+namespace ImageControl.Shape.Gdi.Interface
 {
 	public interface IGdiList
 	{

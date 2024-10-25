@@ -2,7 +2,7 @@
 using System.Drawing;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 using ImageControl.Extension;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape

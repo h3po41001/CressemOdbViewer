@@ -10,7 +10,7 @@ using ImageControl.Gdi.View;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape;
 using ImageControl.Shape.Gdi;
-using ImageControl.Shape.Interface;
+using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Gdi
 {
