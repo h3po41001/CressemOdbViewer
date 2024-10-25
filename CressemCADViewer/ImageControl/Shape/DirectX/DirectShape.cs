@@ -22,7 +22,9 @@ namespace ImageControl.Shape.DirectX
 
 		protected RenderTarget Render { get; private set; }
 
-		public abstract void Draw();
+		public abstract void SetShape();
+
+		public abstract void Draw(RenderTarget render);
 
 		public abstract void Fill(RenderTarget render);
 	}
