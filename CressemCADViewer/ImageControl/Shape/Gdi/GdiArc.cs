@@ -1,16 +1,15 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiArc : GdiShape
+	internal class GdiArc : GdiShape, IGdiArc
 	{
 		private GdiArc() { }
 
-		public GdiArc(float pixelResolution,
-			float x, float y,
+		public GdiArc(float x, float y,
 			float width, float height,
-			float startAngle, float sweepAngle, float lineWidth) : base(pixelResolution)
+			float startAngle, float sweepAngle, float lineWidth) : base()
 		{
 			X = x;
 			Y = y;
@@ -41,12 +40,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float LineWidth { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Fill(Graphics graphics)
 		{
 			graphics.DrawArc(DefaultPen, X, Y, Width, Height, StartAngle, SweepAngle);
 		}
 
-		public override void DrawProfile(Graphics graphics)
+		public override void Draw(Graphics graphics)
 		{
 			graphics.DrawArc(ProfilePen, X, Y, Width, Height, StartAngle, SweepAngle);
 		}

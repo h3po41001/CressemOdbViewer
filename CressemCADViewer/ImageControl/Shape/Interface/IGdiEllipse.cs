@@ -1,6 +1,6 @@
 ﻿namespace ImageControl.Shape.Interface
 {
-	public interface IShapeArc : IShapeBase
+	public interface IGdiEllipse : IGdiBase
 	{
 		float X { get; }
 
@@ -9,11 +9,5 @@
 		float Width { get; }
 
 		float Height { get; }
-
-		float StartAngle { get; }
-
-		float SweepAngle { get; }
-
-		float LineWidth { get; }
 	}
 }

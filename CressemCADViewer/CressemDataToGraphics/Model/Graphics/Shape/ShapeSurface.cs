@@ -4,7 +4,7 @@ using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeSurface : ShapeBase, IShapeSurface
+	internal class ShapeSurface : ShapeBase, IGdiSurface
 	{
 		private ShapeSurface() : base()
 		{
@@ -20,7 +20,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsPositive { get; private set; }
 
-		public IEnumerable<IShapePolygon> Polygons { get; private set; }
+		public IEnumerable<IGdiPolygon> Polygons { get; private set; }
 
 		public static ShapeSurface CreateGdiPlus(bool useMM,
 			float pixelResolution, bool isMM,
@@ -47,7 +47,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				isPositive, polygons);
 		}
 
-		public static IShapeSurface CreateOpenGl(IFeatureSurface surface)
+		public static IGdiSurface CreateOpenGl(IFeatureSurface surface)
 		{
 			throw new System.NotImplementedException();
 		}

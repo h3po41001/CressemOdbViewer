@@ -2,7 +2,7 @@
 
 namespace ImageControl.Shape.Interface
 {
-	public interface IShapeList
+	public interface IGdiList
 	{
 		//float Xdatum { get; }
 
@@ -14,6 +14,6 @@ namespace ImageControl.Shape.Interface
 
 		//bool IsMirrorXAxis { get; }
 
-		IEnumerable<IShapeBase> Shapes { get; }
+		IEnumerable<IGdiBase> Shapes { get; }
 	}
 }

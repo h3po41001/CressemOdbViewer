@@ -47,7 +47,7 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadProfile(IShapeList shapeList)
+		public override bool LoadProfile(IGdiList shapeList)
 		{
 			if (shapeList is null)
 			{
@@ -61,13 +61,16 @@ namespace ImageControl.Model.Gdi
 
 			foreach (var sh in shapeList.Shapes)
 			{
-				_gdiProfileShapes.Add(ShapeFactory.Instance.CreateGdiShape(sh));
+				_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(sh));
 			}
 
 			var roiShape = shapeList.Shapes.FirstOrDefault();
-			PixelResolution = roiShape.PixelResolution;
+			if (roiShape is null)
+			{
+				return false;
+			}
 
-			var shape = ShapeFactory.Instance.CreateGdiShape(roiShape);
+			var shape = GdiShapeFactory.Instance.CreateGdiShape(roiShape);
 			if (shape is GdiSurface surface)
 			{
 				var bounds = surface.Polygons.Select(poly => poly.GraphicsPath.GetBounds());
@@ -99,7 +102,7 @@ namespace ImageControl.Model.Gdi
 			}
 		}
 
-		public override void AddShapes(IShapeList shapes)
+		public override void AddShapes(IGdiList shapes)
 		{
 			if (shapes is null)
 			{
@@ -108,7 +111,7 @@ namespace ImageControl.Model.Gdi
 
 			foreach (var shape in shapes.Shapes)
 			{
-				_gdiShapes.Add(ShapeFactory.Instance.CreateGdiShape(shape));
+				_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(shape));
 			}
 		}
 
@@ -158,7 +161,7 @@ namespace ImageControl.Model.Gdi
 					continue;
 				}
 
-				shape.DrawProfile(_gdiGraphics);
+				shape.Draw(_gdiGraphics);
 			}
 
 			foreach (var graphics in _gdiShapes)
@@ -168,7 +171,7 @@ namespace ImageControl.Model.Gdi
 					continue;
 				}
 
-				graphics.Draw(_gdiGraphics);
+				graphics.Fill(_gdiGraphics);
 			}
 		}
 

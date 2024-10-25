@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using ImageControl.Gdi.View;
 using ImageControl.Model.Shape.Gdi;
+using ImageControl.Shape.DirectX;
 using ImageControl.Shape.Interface;
-using System.Windows.Forms;
-
 using SharpDX;
 using SharpDX.Direct2D1;
-using SharpDX.DXGI;
-using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using Device = SharpDX.Direct3D11.Device;
 using Factory = SharpDX.Direct2D1.Factory;
@@ -23,8 +23,8 @@ namespace ImageControl.Model.DirectX
 		public override event EventHandler MouseMoveEvent = delegate { };
 
 		private readonly DirectXWinformView _directXView = new DirectXWinformView();
-		private readonly List<GdiShape> _gdiProfileShapes = new List<GdiShape>();
-		private readonly List<GdiShape> _gdiShapes = new List<GdiShape>();
+		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
+		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
 		private WindowsFormsHost _directXControl;
 
 		private Device _d3dDevice;
@@ -62,7 +62,7 @@ namespace ImageControl.Model.DirectX
 			_d2dFactory = new Factory();
 
 			// 백 버퍼로부터 RenderTarget 생성
-			using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
+			using (var backBuffer = _swapChain.GetBackBuffer<Texture2D>(0))
 			using (var surface = backBuffer.QueryInterface<Surface>())
 			{
 				RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
@@ -73,28 +73,31 @@ namespace ImageControl.Model.DirectX
 
 			_renderTimer = new Timer
 			{
-				Interval = 30 // 약 60FPS
+				Interval = 30 // 약 30FPS
 			};
+
+			_directShapes.Add(new DirectArc(100, 100, 200, 200, 100, 100, 0, true, false, _d2dFactory, _renderTarget, Color.Red));
+			_directShapes.Add(new DirectEllipse(120.8f, 96.5f, 31.5f, 19.2f, _d2dFactory, _renderTarget, Color.Red));
 
 			_renderTimer.Tick += RenderTimer_Tick;
 			_renderTimer.Start();
 
 			_directXView.GraphicsPaint += OnPaint;
-			//_directXView.GraphicsMouseWheel += GdiMouseWheel;
+			_directXView.GraphicsMouseWheel += OnMouseWheel;
 			_directXView.GraphicsResize += OnResize;
-			//_directXView.GraphicsMouseDoubleClick += GdiMouseDoubleClick;
-			//_directXView.GraphicsMouseDown += GdiMouseDown;
-			//_directXView.GraphicsMouseMove += GdiMouseMove;
-			//_directXView.GraphicsMouseUp += GdiMouseUp;
-			//_directXView.GraphicsPrevKeyDown += GdiPrevkeyDown;
-		}
+			_directXView.GraphicsMouseDoubleClick += OnMouseDoubleClick;
+			_directXView.GraphicsMouseDown += OnMouseDown;
+			_directXView.GraphicsMouseMove += OnMouseMove;
+			_directXView.GraphicsMouseUp += OnMouseUp;
+			_directXView.GraphicsPrevKeyDown += OnPrevkeyDown;
+		}		
 
-		public override bool LoadProfile(IShapeList profileShape)
+		public override bool LoadProfile(IGdiList profileShape)
 		{
 			return true;
 		}
 
-		public override void AddShapes(IShapeList shape)
+		public override void AddShapes(IGdiList shape)
 		{
 		}
 
@@ -107,47 +110,9 @@ namespace ImageControl.Model.DirectX
 			_renderTarget.BeginDraw();
 			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
 
-			// 폴리곤 그리기
-			using (SolidColorBrush brush = new SolidColorBrush(_renderTarget, new RawColor4(0, 1, 0, 1)))
+			foreach (var shapes in _directShapes)
 			{
-				RawVector2 startPoint = new RawVector2(300.5f, 300.5f); // 아크의 시작점
-				RawVector2 endPoint = new RawVector2(500.5f, 500.5f);   // 아크의 끝점
-
-				float radiusX = 1f; // x축 반지름
-				float radiusY = 1f; // y축 반지름
-
-				float rotationAngle = 0; // 회전 각도 (도 단위)
-				ArcSize arcSize = ArcSize.Small; // 아크의 크기 (Small 또는 Large)
-				SweepDirection sweepDirection = SweepDirection.Clockwise;
-
-				// 경로 그리기
-				using (var pathGeometry = new PathGeometry(_d2dFactory))
-				{
-					using (GeometrySink sink = pathGeometry.Open())
-					{
-						sink.BeginFigure(startPoint, FigureBegin.Filled);
-
-						// ArcSegment 생성
-						ArcSegment arcSegment = new ArcSegment()
-						{
-							Point = endPoint,
-							Size = new Size2F(radiusX, radiusY),
-							RotationAngle = rotationAngle,
-							ArcSize = arcSize,
-							SweepDirection = sweepDirection
-						};
-
-						// 아크 세그먼트 추가
-						sink.AddArc(arcSegment);
-
-						// 도형 종료
-						sink.EndFigure(FigureEnd.Open);
-						sink.Close();
-					}
-
-
-					_renderTarget.FillGeometry(pathGeometry, brush);
-				}
+				shapes.Fill(_renderTarget);
 			}
 
 			_renderTarget.EndDraw();
@@ -157,7 +122,11 @@ namespace ImageControl.Model.DirectX
 		private void OnPaint(object sender, Graphics graphics)
 		{
 			OnDraw();
-		}
+		}		
+
+		private void OnMouseWheel(object sender, MouseEventArgs arg)
+		{
+		}		
 
 		private void OnResize(object sender, EventArgs arg)
 		{
@@ -182,9 +151,28 @@ namespace ImageControl.Model.DirectX
 			}
 		}
 
+		private void OnMouseDoubleClick(object sender, MouseEventArgs arg)
+		{
+		}
+
+		private void OnMouseDown(object sender, MouseEventArgs arg)
+		{
+		}
+
+		private void OnMouseMove(object sender, MouseEventArgs arg)
+		{
+		}
+
+		private void OnMouseUp(object sender, MouseEventArgs arg)
+		{
+		}
+
+		private void OnPrevkeyDown(object sender, PreviewKeyDownEventArgs arg)
+		{
+		}
+
 		private void RenderTimer_Tick(object sender, EventArgs e)
 		{
-			// 화면 갱신 요청
 			OnDraw();
 		}
 	}

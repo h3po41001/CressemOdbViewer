@@ -1,6 +1,6 @@
 ﻿namespace ImageControl.Shape.Interface
 {
-	public interface IShapeLine : IShapeBase
+	public interface IGdiLine : IGdiBase
 	{
 		float Sx { get; }
 
@@ -10,6 +10,6 @@
 
 		float Ey { get; }
 
-		float Width { get; }
+		float LineWidth { get; }
 	}
 }

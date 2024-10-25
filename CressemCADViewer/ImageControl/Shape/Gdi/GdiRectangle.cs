@@ -1,15 +1,15 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiRectangle : GdiShape
+	internal class GdiRectangle : GdiShape, IGdiRectangle
 	{
 		private GdiRectangle() { }
 
-		public GdiRectangle(float pixelResolution,
-			float x, float y,
-			float width, float height) : base(pixelResolution)
+		public GdiRectangle(float x, float y,
+			float width, float height) : base()
 		{
 			X = x;
 			Y = y;
@@ -27,12 +27,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Fill(Graphics graphics)
 		{
 			graphics.FillRectangle(SolidBrush, X, Y, Width, Height);
 		}
 
-		public override void DrawProfile(Graphics graphics)
+		public override void Draw(Graphics graphics)
 		{
 			graphics.DrawRectangle(ProfilePen, X, Y, Width, Height);
 		}

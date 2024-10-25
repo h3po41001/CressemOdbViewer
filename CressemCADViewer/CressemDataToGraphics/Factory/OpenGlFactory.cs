@@ -14,12 +14,12 @@ namespace CressemDataToGraphics.Factory
 		{
 		}
 
-		public IShapeBase CreateFeatureToShape()
+		public IGdiBase CreateFeatureToShape()
 		{
 			throw new NotImplementedException();
 		}
 
-		public IShapeBase CreateSymbolToShape()
+		public IGdiBase CreateSymbolToShape()
 		{
 			throw new NotImplementedException();
 		}

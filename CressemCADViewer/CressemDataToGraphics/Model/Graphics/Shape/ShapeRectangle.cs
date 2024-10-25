@@ -5,7 +5,7 @@ using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeRectangle : ShapeBase, IShapeRectangle
+	internal class ShapeRectangle : ShapeBase, IGdiRectangle
 	{
 		private ShapeRectangle() : base()
 		{

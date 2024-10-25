@@ -1,17 +1,16 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiLine : GdiShape
+	internal class GdiLine : GdiShape, IGdiLine
 	{
 		private GdiLine() : base()
 		{
 		}
 
-		public GdiLine(float pixelResolution,
-			float sx, float sy,
-			float ex, float ey, float width) : base(pixelResolution)
+		public GdiLine(float sx, float sy,
+			float ex, float ey, float width) : base()
 		{
 			Sx = sx;
 			Sy = sy;
@@ -36,12 +35,12 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float LineWidth { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Fill(Graphics graphics)
 		{
 			graphics.DrawLine(DefaultPen, Sx, Sy, Ex, Ey);
 		}
 
-		public override void DrawProfile(Graphics graphics)
+		public override void Draw(Graphics graphics)
 		{
 			graphics.DrawLine(ProfilePen, Sx, Sy, Ex, Ey);
 		}

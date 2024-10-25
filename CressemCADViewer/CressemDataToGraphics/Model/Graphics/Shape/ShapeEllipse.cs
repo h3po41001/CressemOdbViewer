@@ -5,7 +5,7 @@ using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeEllipse : ShapeBase, IShapeEllipse
+	internal class ShapeEllipse : ShapeBase, IGdiEllipse
 	{
 		private ShapeEllipse() : base()
 		{

@@ -30,7 +30,7 @@ namespace CressemDataToGraphics.Factory
 			}
 		}
 
-		public IShapeList DataToGdiPlus(bool useMM, float pixelResolution,
+		public IGdiList DataToGdiPlus(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{
@@ -45,7 +45,7 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis, feature);
 		}
 
-		public IShapeBase DataToOpenGl(bool useMM, float pixelResolution,
+		public IGdiBase DataToOpenGl(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeatureBase feature)
 		{
 			throw new NotImplementedException("Not Implemented Shape [Open Gl]");

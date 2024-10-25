@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using ImageControl.Model.Shape.Gdi;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Shape.Gdi
 {
-	internal class GdiPointsPolygon : GdiShape
+	internal class GdiPointsPolygon : GdiShape, IGdiPolygon
 	{
-		public GdiPointsPolygon(float pixelResolution, bool isFill,
-			IEnumerable<PointF> points) : base(pixelResolution)
+		public GdiPointsPolygon(bool isFill,
+			IEnumerable<PointF> points) : base()
 		{
 			IsFill = isFill;
 			Points = new List<PointF>(points);
@@ -18,14 +20,16 @@ namespace ImageControl.Shape.Gdi
 
 		public bool IsFill { get; private set; }
 
-		public List<PointF> Points { get; private set; }
+		public IEnumerable<PointF> Points { get; private set; }
 
-		public override void Draw(Graphics graphics)
-		{			
+		public IEnumerable<IGdiBase> Shapes { get; private set; }
+
+		public override void Fill(Graphics graphics)
+		{
 			graphics.FillPolygon(SolidBrush, Points.ToArray());
 		}
 
-		public override void DrawProfile(Graphics graphics)
+		public override void Draw(Graphics graphics)
 		{
 			graphics.DrawPolygon(ProfilePen, Points.ToArray());
 		}

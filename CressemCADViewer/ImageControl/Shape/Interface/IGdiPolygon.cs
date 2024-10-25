@@ -3,11 +3,11 @@ using System.Drawing;
 
 namespace ImageControl.Shape.Interface
 {
-	public interface IShapePolygon : IShapeBase
+	public interface IGdiPolygon : IGdiBase
 	{
 		bool IsFill { get; }
 
-		IEnumerable<IShapeBase> Shapes { get; }
+		IEnumerable<IGdiBase> Shapes { get; }
 
 		IEnumerable<PointF> Points { get; }
 	}

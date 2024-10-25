@@ -3,30 +3,31 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape.Gdi;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Extension
 {
 	internal static class GdiObjectExtension
 	{
-		public static void Add(this GraphicsPath path, GdiShape gdiBase)
+		public static void Add(this GraphicsPath path, IGdiBase gdiBase)
 		{
-			if (gdiBase is GdiLine gdiLine)
+			if (gdiBase is IGdiLine gdiLine)
 			{
 				path.AddLine(gdiLine);
 			}
-			else if (gdiBase is GdiRectangle gdiRectangle)
+			else if (gdiBase is IGdiRectangle gdiRectangle)
 			{
 				path.AddRectangle(gdiRectangle);
 			}
-			else if (gdiBase is GdiEllipse gdiEllipse)
+			else if (gdiBase is IGdiEllipse gdiEllipse)
 			{
 				path.AddEllipse(gdiEllipse);
 			}
-			else if (gdiBase is GdiArc gdiArc)
+			else if (gdiBase is IGdiArc gdiArc)
 			{
 				path.AddArc(gdiArc);
 			}
-			else if (gdiBase is GdiPointsPolygon gdiPolygon)
+			else if (gdiBase is IGdiPolygon gdiPolygon)
 			{
 				path.AddPolygon(gdiPolygon);
 			}
@@ -47,7 +48,7 @@ namespace ImageControl.Extension
 		}
 
 		private static void AddArc(this GraphicsPath path,
-			GdiArc arc, float mul = 1.0f)
+			IGdiArc arc, float mul = 1.0f)
 		{
 			path.AddArc(arc.X * mul, arc.Y * mul,
 				arc.Width * mul, arc.Height * mul,
@@ -55,21 +56,21 @@ namespace ImageControl.Extension
 		}
 
 		public static void AddLine(this GraphicsPath path,
-			GdiLine line, float mul = 1.0f)
+			IGdiLine line, float mul = 1.0f)
 		{
 			path.AddLine(line.Sx * mul, line.Sy * mul,
 				line.Ex * mul, line.Ey * mul);
 		}
 
 		public static void AddEllipse(this GraphicsPath path,
-			GdiEllipse ellipse, float mul = 1.0f)
+			IGdiEllipse ellipse, float mul = 1.0f)
 		{
 			path.AddEllipse(ellipse.X * mul, ellipse.Y * mul,
 				ellipse.Width * mul, ellipse.Height * mul);
 		}
 
 		public static void AddRectangle(this GraphicsPath path,
-			GdiRectangle rectangle, float mul = 1.0f)
+			IGdiRectangle rectangle, float mul = 1.0f)
 		{
 			path.AddRectangle(new RectangleF(
 				rectangle.X * mul, rectangle.Y * mul,
@@ -77,7 +78,7 @@ namespace ImageControl.Extension
 		}
 
 		public static void AddPolygon(this GraphicsPath path,
-			GdiPointsPolygon polygon, float mul = 1.0f)
+			IGdiPolygon polygon, float mul = 1.0f)
 		{
 			path.AddPolygon(polygon.Points.Select(
 				x => new PointF(x.X * mul, x.Y * mul)).ToArray());

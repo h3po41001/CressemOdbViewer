@@ -6,7 +6,7 @@ using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeLine : ShapeBase, IShapeLine
+	internal class ShapeLine : ShapeBase, IGdiLine
 	{
 		private ShapeLine() { }
 
@@ -19,7 +19,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			Sy = sy;
 			Ex = ex;
 			Ey = ey;
-			Width = width;
+			LineWidth = width;
 		}
 
 		public float Sx { get; private set; }
@@ -30,7 +30,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float Ey { get; private set; }
 
-		public float Width { get; private set; }
+		public float LineWidth { get; private set; }
 
 		public static ShapeLine CreateGdiPlus(bool useMM, 
 			float pixelResolution, bool isMM,

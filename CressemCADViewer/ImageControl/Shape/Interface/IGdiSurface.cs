@@ -2,10 +2,10 @@
 
 namespace ImageControl.Shape.Interface
 {
-	public interface IShapeSurface : IShapeBase
+	public interface IGdiSurface : IGdiBase
 	{
 		bool IsPositive { get; }
 
-		IEnumerable<IShapePolygon> Polygons { get; }
+		IEnumerable<IGdiPolygon> Polygons { get; }
 	}
 }

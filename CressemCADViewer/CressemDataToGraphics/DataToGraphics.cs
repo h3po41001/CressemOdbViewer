@@ -21,7 +21,7 @@ namespace CressemDataToGraphics
 
 		public GraphicsType GraphicsType { get; private set; }
 
-		public IShapeList GetShapes(bool useMM,
+		public IGdiList GetShapes(bool useMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{

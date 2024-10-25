@@ -5,17 +5,12 @@ namespace ImageControl.Model.Shape.Gdi
 {
 	internal abstract class GdiShape
 	{
-		protected GdiShape() { }
-
-		protected GdiShape(float pixelResolution)
+		protected GdiShape()
 		{
-			PixelResolution = pixelResolution;
 			SolidBrush = new SolidBrush(Color.DarkGreen);
 			DefaultPen = new Pen(Color.White, 0.1f);
 			ProfilePen = new Pen(Color.White, 0.1f);
 		}
-
-		public float PixelResolution { get; private set; } = 1.0f;
 
 		protected SolidBrush SolidBrush { get; private set; }
 
@@ -23,8 +18,8 @@ namespace ImageControl.Model.Shape.Gdi
 
 		protected Pen ProfilePen { get; private set; }
 
-		public abstract void Draw(Graphics graphics);
+		public abstract void Fill(Graphics graphics);
 
-		public abstract void DrawProfile(Graphics graphics);
+		public abstract void Draw(Graphics graphics);
 	}
 }

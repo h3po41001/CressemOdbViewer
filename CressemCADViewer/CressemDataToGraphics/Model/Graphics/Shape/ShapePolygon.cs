@@ -7,7 +7,7 @@ using ImageControl.Extension;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapePolygon : ShapeBase, IShapePolygon
+	internal class ShapePolygon : ShapeBase, IGdiPolygon
 	{
 		private ShapePolygon() : base()
 		{
@@ -31,7 +31,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<IShapeBase> Shapes { get; private set; }
+		public IEnumerable<IGdiBase> Shapes { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 
@@ -122,7 +122,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			return new ShapePolygon(pixelResolution, isFill, calcPoints);
 		}
 
-		public static IShapePolygon CreateOpenGl()
+		public static IGdiPolygon CreateOpenGl()
 		{
 			throw new System.NotImplementedException();
 		}

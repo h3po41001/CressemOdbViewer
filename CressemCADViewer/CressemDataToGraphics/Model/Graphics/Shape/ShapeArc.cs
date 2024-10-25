@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Security.Cryptography;
-using System.Threading;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Extension;
@@ -9,7 +7,7 @@ using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeArc : ShapeBase, IShapeArc
+	internal class ShapeArc : ShapeBase, IGdiArc
 	{
 		private ShapeArc() { }
 
@@ -124,7 +122,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				(float)fwidth);
 		}
 
-		public static IShapeArc CreateOpenGl(float pixelResolution,
+		public static IGdiArc CreateOpenGl(float pixelResolution,
 			IFeatureArc arc)
 		{
 			throw new NotImplementedException();

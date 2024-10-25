@@ -13,7 +13,7 @@ namespace CressemDataToGraphics.Factory
 		{
 		}
 
-		public IShapeList CreateFeatureToShape(bool useMM,
+		public IGdiList CreateFeatureToShape(bool useMM,
 			float pixelResolution,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)
@@ -33,7 +33,7 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis, (dynamic)feature);
 		}
 
-		private IShapeList MakeFeatureShape(bool useMM,
+		private IGdiList MakeFeatureShape(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureArc arc)
@@ -80,13 +80,13 @@ namespace CressemDataToGraphics.Factory
 
 		}
 
-		private IShapeList MakeFeatureShape(bool useMM, float pixelResolution,
+		private IGdiList MakeFeatureShape(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, IFeatureBarcode barcode)
 		{
 			throw new System.NotImplementedException("바코드 아직 미구현");
 		}
 
-		private IShapeList MakeFeatureShape(bool useMM,
+		private IGdiList MakeFeatureShape(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureLine line)
@@ -130,7 +130,7 @@ namespace CressemDataToGraphics.Factory
 			return shapeList;
 		}
 
-		private IShapeList MakeFeatureShape(bool useMM,
+		private IGdiList MakeFeatureShape(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeaturePad pad)
@@ -162,7 +162,7 @@ namespace CressemDataToGraphics.Factory
 			return shapeList;
 		}
 
-		private IShapeList MakeFeatureShape(bool useMM,
+		private IGdiList MakeFeatureShape(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
@@ -398,7 +398,7 @@ namespace CressemDataToGraphics.Factory
 				new ShapePolygon[] { outerPoly, innerPoly });
 		}
 
-		private IEnumerable<IShapeList> MakeUser(bool useMM,
+		private IEnumerable<IGdiList> MakeUser(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,

@@ -60,6 +60,11 @@
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\DirectX\DirectXGraphics.cs" />
     <Compile Include="Model\Event\Event.cs" />
+    <Compile Include="Shape\DirectX\DirectArc.cs" />
+    <Compile Include="Shape\DirectX\DirectEllipse.cs" />
+    <Compile Include="Shape\DirectX\DirectLine.cs" />
+    <Compile Include="Shape\DirectX\DirectRectangle.cs" />
+    <Compile Include="Shape\DirectX\DirectShape.cs" />
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
     <Compile Include="Shape\Gdi\GdiEllipse.cs" />
@@ -83,15 +88,15 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Shape\Gdi\GdiSurface.cs" />
-    <Compile Include="Shape\Interface\IShapeArc.cs" />
-    <Compile Include="Shape\Interface\IShapeBase.cs" />
-    <Compile Include="Shape\Interface\IShapeEllipse.cs" />
-    <Compile Include="Shape\Interface\IShapeLine.cs" />
-    <Compile Include="Shape\Interface\IShapeList.cs" />
-    <Compile Include="Shape\Interface\IShapePolygon.cs" />
-    <Compile Include="Shape\Interface\IShapeRectangle.cs" />
-    <Compile Include="Shape\Interface\IShapeSurface.cs" />
-    <Compile Include="Shape\ShapeFactory.cs" />
+    <Compile Include="Shape\Interface\IGdiArc.cs" />
+    <Compile Include="Shape\Interface\IGdiBase.cs" />
+    <Compile Include="Shape\Interface\IGdiEllipse.cs" />
+    <Compile Include="Shape\Interface\IGdiLine.cs" />
+    <Compile Include="Shape\Interface\IGdiList.cs" />
+    <Compile Include="Shape\Interface\IGdiPolygon.cs" />
+    <Compile Include="Shape\Interface\IGdiRectangle.cs" />
+    <Compile Include="Shape\Interface\IGdiSurface.cs" />
+    <Compile Include="Shape\Gdi\GdiShapeFactory.cs" />
     <Compile Include="ViewModel\GraphicsViewModel.cs" />
     <Compile Include="View\DirectX\DirectXView.xaml.cs">
       <DependentUpon>DirectXView.xaml</DependentUpon>

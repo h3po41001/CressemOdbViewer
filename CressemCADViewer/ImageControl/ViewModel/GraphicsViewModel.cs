@@ -39,12 +39,12 @@ namespace ImageControl.ViewModel
 			}
 		}
 
-		public bool LoadProfile(IShapeList profileShape)
+		public bool LoadProfile(IGdiList profileShape)
 		{
 			return _graphics.LoadProfile(profileShape);
 		}
 
-		public void AddShapes(IShapeList shape)
+		public void AddShapes(IGdiList shape)
 		{
 			_graphics.AddShapes(shape);
 		}

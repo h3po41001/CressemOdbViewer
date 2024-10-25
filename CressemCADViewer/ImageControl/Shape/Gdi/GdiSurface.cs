@@ -9,8 +9,8 @@ namespace ImageControl.Shape.Gdi
 	{
 		private GdiSurface() { }
 
-		public GdiSurface(float pixelResolution, bool isPositive,
-			IEnumerable<GdiShapePolygon> polygons) : base(pixelResolution)
+		public GdiSurface(bool isPositive, 
+			IEnumerable<GdiShapePolygon> polygons) : base()
 		{
 			IsPositive = isPositive;
 			Polygons = new List<GdiShapePolygon>(polygons);
@@ -36,16 +36,16 @@ namespace ImageControl.Shape.Gdi
 
 		public Region GraphicsRegion { get; private set; }
 
-		public override void Draw(Graphics graphics)
+		public override void Fill(Graphics graphics)
 		{
 			graphics.FillRegion(SolidBrush, GraphicsRegion);
 		}
 
-		public override void DrawProfile(Graphics graphics)
+		public override void Draw(Graphics graphics)
 		{
 			foreach (var polygon in Polygons)
 			{
-				polygon.DrawProfile(graphics);
+				polygon.Draw(graphics);
 			}
 		}
 	}
