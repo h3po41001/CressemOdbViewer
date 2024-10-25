@@ -3,7 +3,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiArc : GdiShape, IGdiArc
+	internal class GdiArc : GdiShape
 	{
 		private GdiArc() { }
 

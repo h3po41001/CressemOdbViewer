@@ -4,15 +4,15 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeSurface : ShapeBase, IGdiSurface
+	internal class ShapeGdiSurface : ShapeGdiBase, IGdiSurface
 	{
-		private ShapeSurface() : base()
+		private ShapeGdiSurface() : base()
 		{
 		}
 
-		public ShapeSurface(float pixelResolution,
+		public ShapeGdiSurface(float pixelResolution,
 			bool isPositive,
-			IEnumerable<ShapePolygon> polygons) : base(pixelResolution)
+			IEnumerable<ShapeGdiPolygon> polygons) : base(pixelResolution)
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -22,7 +22,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<IGdiPolygon> Polygons { get; private set; }
 
-		public static ShapeSurface CreateGdiPlus(bool useMM,
+		public static ShapeGdiSurface CreateGdiPlus(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, 
@@ -33,17 +33,17 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				return null;
 			}
 
-			List<ShapePolygon> polygons = new List<ShapePolygon>();
+			List<ShapeGdiPolygon> polygons = new List<ShapeGdiPolygon>();
 
 			foreach (var polygon in featurePolygons)
 			{
-				polygons.Add(ShapePolygon.CreateGdiPlus(useMM,
+				polygons.Add(ShapeGdiPolygon.CreateGdiPlus(useMM,
 					pixelResolution, isMM,
 					xDatum, yDatum, cx, cy,
 					orient, isMirrorXAxis, isPositive, polygon));
 			}
 
-			return new ShapeSurface(pixelResolution,
+			return new ShapeGdiSurface(pixelResolution,
 				isPositive, polygons);
 		}
 

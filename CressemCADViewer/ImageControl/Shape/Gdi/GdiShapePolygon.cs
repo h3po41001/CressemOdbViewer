@@ -2,22 +2,21 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using ImageControl.Extension;
-using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiShapePolygon : GdiShape, IGdiPolygon
+	internal class GdiShapePolygon : GdiShape
 	{
 		private SolidBrush _holeBrush = null;
 
 		private GdiShapePolygon() { }
 
 		public GdiShapePolygon(bool isFill,
-			IEnumerable<IGdiBase> shapes) : base()
+			IEnumerable<GdiShape> shapes) : base()
 		{
 			IsFill = isFill;
 
-			Shapes = new List<IGdiBase>(shapes);
+			Shapes = new List<GdiShape>(shapes);
 			GraphicsPath = new GraphicsPath();
 			_holeBrush = new SolidBrush(Color.Black);
 			ProfilePen.Color = Color.White;
@@ -30,9 +29,7 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<PointF> Points { get; private set; }
-
-		public IEnumerable<IGdiBase> Shapes { get; private set; }
+		public IEnumerable<GdiShape> Shapes { get; private set; }
 
 		public GraphicsPath GraphicsPath { get; private set; }
 

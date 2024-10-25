@@ -57,7 +57,7 @@ namespace ImageControl.Shape.Gdi
 			}
 			else if (shapeBase is IGdiPolygon polygon)
 			{
-				List<IGdiBase> shapes = new List<IGdiBase>();
+				List<GdiShape> shapes = new List<GdiShape>();
 				if (polygon.Shapes != null)
 				{
 					foreach (var shape in polygon.Shapes)

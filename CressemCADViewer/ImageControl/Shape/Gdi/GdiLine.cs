@@ -3,7 +3,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiLine : GdiShape, IGdiLine
+	internal class GdiLine : GdiShape
 	{
 		private GdiLine() : base()
 		{

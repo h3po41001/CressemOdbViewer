@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
@@ -12,7 +13,7 @@ namespace ImageControl.Shape.DirectX
 		{
 			Factory = factory;
 			Render = render;
-			Brush = new SolidColorBrush(Render, 
+			Brush = new SolidColorBrush(Render,
 				new RawColor4(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f));
 		}
 

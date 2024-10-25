@@ -100,7 +100,7 @@ namespace CressemCADViewer.ViewModel
 			var features = ExtractLibrary.Instance.GetFeatures(
 				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
 				out double xDatum, out double yDatum);
-			DataToGraphics dataToGraphics = new DataToGraphics(0.1f, GraphicsType.GdiPlus);
+			DataToGraphics dataToGraphics = new DataToGraphics(1.0f, GraphicsType.DirectX);
 
 			GraphicsView.ClearShape();
 
@@ -109,7 +109,13 @@ namespace CressemCADViewer.ViewModel
 
 			foreach (var feature in features)
 			{
-				GraphicsView.AddShapes(dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, feature));
+				var shape = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, feature);
+				if (shape is null)
+				{
+					continue;
+				}
+
+				GraphicsView.AddShapes(shape);
 			}
 		}
 

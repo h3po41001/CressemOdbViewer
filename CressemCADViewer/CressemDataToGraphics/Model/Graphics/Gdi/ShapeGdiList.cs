@@ -3,13 +3,13 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeList : IGdiList
+	internal class ShapeGdiList : IGdiList
 	{
 		private readonly List<IGdiBase> _shapes;
 
 		//private ShapeList() { }
 
-		public ShapeList()
+		public ShapeGdiList()
 		{
 			_shapes = new List<IGdiBase>();
 		}

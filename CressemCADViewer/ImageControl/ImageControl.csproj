@@ -56,6 +56,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extension\DirectXObjectExtension.cs" />
     <Compile Include="Extension\GdiObjectExtension.cs" />
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\DirectX\DirectXGraphics.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Shape\DirectX\DirectPathGeometry.cs" />
     <Compile Include="Shape\DirectX\DirectRectangle.cs" />
     <Compile Include="Shape\DirectX\DirectShape.cs" />
+    <Compile Include="Shape\DirectX\DirectShapeFactory.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectArc.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectEllipse.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectLine.cs" />

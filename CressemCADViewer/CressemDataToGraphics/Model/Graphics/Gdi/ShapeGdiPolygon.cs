@@ -7,21 +7,21 @@ using ImageControl.Extension;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapePolygon : ShapeBase, IGdiPolygon
+	internal class ShapeGdiPolygon : ShapeGdiBase, IGdiPolygon
 	{
-		private ShapePolygon() : base()
+		private ShapeGdiPolygon() : base()
 		{
 		}
 
-		public ShapePolygon(float pixelResolution,
+		public ShapeGdiPolygon(float pixelResolution,
 			bool isFill,
-			IEnumerable<ShapeBase> shapes) : base(pixelResolution)
+			IEnumerable<ShapeGdiBase> shapes) : base(pixelResolution)
 		{
 			IsFill = isFill;
 			Shapes = shapes;
 		}
 
-		public ShapePolygon(float pixelResolution,
+		public ShapeGdiPolygon(float pixelResolution,
 			bool isFill,
 			IEnumerable<PointF> points) : base(pixelResolution)
 		{
@@ -35,13 +35,13 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<PointF> Points { get; private set; }
 
-		public static ShapePolygon CreateGdiPlus(bool useMM,
+		public static ShapeGdiPolygon CreateGdiPlus(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
 			bool isPositive, IFeaturePolygon polygon)
 		{
-			List<ShapeBase> shapes = new List<ShapeBase>();
+			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
 
 			bool isIsland = polygon.PolygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;
@@ -50,7 +50,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (feature is IFeatureArc arc)
 				{
-					shapes.Add(ShapeArc.CreateGdiPlus(useMM,
+					shapes.Add(ShapeGdiArc.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
 						orient, isMirrorXAxis,
@@ -59,7 +59,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 				else if (feature is IFeatureLine line)
 				{
-					shapes.Add(ShapeLine.CreateGdiPlus(useMM,
+					shapes.Add(ShapeLine.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsMirrorXAxis,
@@ -75,7 +75,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 				else if (feature is IFeatureSurface surface)
 				{
-					shapes.Add(ShapeSurface.CreateGdiPlus(useMM, 
+					shapes.Add(ShapeGdiSurface.CreateGdiPlus(useMM, 
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsMirrorXAxis, isPositive, 
@@ -83,10 +83,10 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 			}
 
-			return new ShapePolygon(pixelResolution, isFill, shapes);
+			return new ShapeGdiPolygon(pixelResolution, isFill, shapes);
 		}
 
-		public static ShapePolygon CreateGdiPlus(bool useMM, float pixelResolution,
+		public static ShapeGdiPolygon CreateGdiPlus(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, int orient, bool isMM, bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
@@ -119,7 +119,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			bool isIsland = polygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;
 
-			return new ShapePolygon(pixelResolution, isFill, calcPoints);
+			return new ShapeGdiPolygon(pixelResolution, isFill, calcPoints);
 		}
 
 		public static IGdiPolygon CreateOpenGl()

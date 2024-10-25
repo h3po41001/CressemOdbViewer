@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using ImageControl.Gdi.View;
 using ImageControl.Shape.DirectX;
+using ImageControl.Shape.DirectX.Interface;
 using ImageControl.Shape.Gdi.Interface;
 using SharpDX;
 using SharpDX.Direct2D1;
@@ -91,13 +93,26 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsPrevKeyDown += OnPrevkeyDown;
 		}		
 
-		public override bool LoadProfile(IGdiList profileShape)
+		public override bool LoadProfile(object profileShape)
 		{
 			return true;
 		}
 
-		public override void AddShapes(IGdiList shape)
+		public override void AddShapes(object shape)
 		{
+			if (shape is IDirectList directList)
+			{
+				foreach (IDirectShape directShape in directList.Shapes)
+				{
+					if (directShape is null)
+					{
+						continue;
+					}
+
+					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
+						directShape, _d2dFactory, _renderTarget, Color.Red));
+				}
+			}
 		}
 
 		public override void ClearShape()
@@ -109,9 +124,14 @@ namespace ImageControl.Model.DirectX
 			_renderTarget.BeginDraw();
 			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
 
-			foreach (var shapes in _directShapes)
+			foreach (var shape in _directShapes)
 			{
-				shapes.Fill(_renderTarget);
+				if (shape is null)
+				{
+					continue;
+				}
+
+				shape.Fill(_renderTarget);
 			}
 
 			_renderTarget.EndDraw();

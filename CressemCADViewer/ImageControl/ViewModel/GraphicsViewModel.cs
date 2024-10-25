@@ -18,10 +18,10 @@ namespace ImageControl.ViewModel
 		public GraphicsViewModel() 
 		{
 			// 변경해야함.. 옵션에 따라
-			_graphicsView = new GdiGraphicsView();
-			_graphics = new GdiGraphics();
-			//_graphicsView = new DirectXView();
-			//_graphics = new DirectXGraphics();
+			//_graphicsView = new GdiGraphicsView();
+			//_graphics = new GdiGraphics();
+			_graphicsView = new DirectXView();
+			_graphics = new DirectXGraphics();
 
 			_graphicsView.DataContext = _graphics;
 			
@@ -41,12 +41,12 @@ namespace ImageControl.ViewModel
 			}
 		}
 
-		public bool LoadProfile(IGdiList profileShape)
+		public bool LoadProfile(object profileShape)
 		{
 			return _graphics.LoadProfile(profileShape);
 		}
 
-		public void AddShapes(IGdiList shape)
+		public void AddShapes(object shape)
 		{
 			_graphics.AddShapes(shape);
 		}

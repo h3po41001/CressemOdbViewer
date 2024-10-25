@@ -4,7 +4,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiEllipse : GdiShape, IGdiEllipse
+	internal class GdiEllipse : GdiShape
 	{
 		private GdiEllipse() { }
 

@@ -7,7 +7,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Shape.Gdi
 {
-	internal class GdiPointsPolygon : GdiShape, IGdiPolygon
+	internal class GdiPointsPolygon : GdiShape
 	{
 		public GdiPointsPolygon(bool isFill,
 			IEnumerable<PointF> points) : base()
@@ -21,8 +21,6 @@ namespace ImageControl.Shape.Gdi
 		public bool IsFill { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
-
-		public IEnumerable<IGdiBase> Shapes { get; private set; }
 
 		public override void Fill(Graphics graphics)
 		{

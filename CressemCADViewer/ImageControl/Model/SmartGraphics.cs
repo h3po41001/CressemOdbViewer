@@ -33,9 +33,9 @@ namespace ImageControl.Model
 
 		public abstract void Initialize();
 		
-		public abstract bool LoadProfile(IGdiList profileShape);
+		public abstract bool LoadProfile(object profileShape);
 
-		public abstract void AddShapes(IGdiList shape);
+		public abstract void AddShapes(object shape);
 
 		public abstract void ClearShape();
 

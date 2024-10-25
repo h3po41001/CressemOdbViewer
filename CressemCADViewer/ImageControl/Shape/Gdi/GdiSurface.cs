@@ -6,15 +6,15 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Shape.Gdi
 {
-	internal class GdiSurface : GdiShape, IGdiSurface
+	internal class GdiSurface : GdiShape
 	{
 		private GdiSurface() { }
 
 		public GdiSurface(bool isPositive, 
-			IEnumerable<IGdiPolygon> polygons) : base()
+			IEnumerable<GdiShapePolygon> polygons) : base()
 		{
 			IsPositive = isPositive;
-			Polygons = new List<IGdiPolygon>(polygons);
+			Polygons = new List<GdiShapePolygon>(polygons);
 			GraphicsRegion = new Region();
 			GraphicsRegion.MakeEmpty();
 
@@ -33,7 +33,7 @@ namespace ImageControl.Shape.Gdi
 
 		public bool IsPositive { get; private set; }
 
-		public IEnumerable<IGdiPolygon> Polygons { get; private set; }
+		public IEnumerable<GdiShapePolygon> Polygons { get; private set; }
 
 		public Region GraphicsRegion { get; private set; }
 

@@ -3,7 +3,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal abstract class GdiShape : IGdiBase
+	internal abstract class GdiShape
 	{
 		protected GdiShape()
 		{

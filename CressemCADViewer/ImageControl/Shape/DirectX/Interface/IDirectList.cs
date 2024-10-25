@@ -2,7 +2,7 @@
 
 namespace ImageControl.Shape.DirectX.Interface
 {
-	internal interface IDirectList
+	public interface IDirectList
 	{
 		IEnumerable<IDirectShape> Shapes { get; }
 	}

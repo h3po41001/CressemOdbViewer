@@ -4,7 +4,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
-	internal class GdiRectangle : GdiShape, IGdiRectangle
+	internal class GdiRectangle : GdiShape
 	{
 		private GdiRectangle() { }
 

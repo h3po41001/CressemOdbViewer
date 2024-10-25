@@ -55,7 +55,7 @@ namespace ImageControl.Shape.DirectX
 				ArcSegment arc = new ArcSegment()
 				{
 					Point = new RawVector2(Ex, Ey),
-					Size = new Size2F(Width / 2, Height / 2),
+					Size = new Size2F(100f, 100f),//Width / 2, Height / 2),
 					RotationAngle = Rotation,
 					SweepDirection = IsClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise,
 					ArcSize = IsLargeArc ? ArcSize.Large : ArcSize.Small

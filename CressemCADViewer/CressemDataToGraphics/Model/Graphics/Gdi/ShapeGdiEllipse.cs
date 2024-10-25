@@ -5,13 +5,13 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeRectangle : ShapeBase, IGdiRectangle
+	internal class ShapeGdiEllipse : ShapeGdiBase, IGdiEllipse
 	{
-		private ShapeRectangle() : base()
+		private ShapeGdiEllipse() : base()
 		{
 		}
 
-		public ShapeRectangle(float pixelResolution,
+		public ShapeGdiEllipse(float pixelResolution,
 			float x, float y,
 			float width, float height) : base(pixelResolution)
 		{
@@ -29,7 +29,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float Height { get; set; }
 
-		public static ShapeRectangle CreateGdiPlus(bool useMM,
+		public static ShapeGdiEllipse Create(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
@@ -98,7 +98,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			// Gdi에 그릴때는 LT부터 width, height 만큼 그림
 			// ODB에서 LT 좌표는 (sx - fWidth / 2), (sy + fHeight / 2) 
 			// 하지만 Gdi는 y좌표가 반대이므로 -1곱한다
-			return new ShapeRectangle(pixelResolution,
+			return new ShapeGdiEllipse(pixelResolution,
 				lt.X, -lt.Y, fWidth, fHeight);
 		}
 	}

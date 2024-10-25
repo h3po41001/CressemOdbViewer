@@ -2,11 +2,11 @@
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal abstract class ShapeBase : IGdiBase
+	internal abstract class ShapeGdiBase : IGdiBase
 	{
-		protected ShapeBase() { }
+		protected ShapeGdiBase() { }
 
-		protected ShapeBase(float pixelResolution)
+		protected ShapeGdiBase(float pixelResolution)
 		{
 			PixelResolution = pixelResolution;
 		}

@@ -46,7 +46,7 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis, feature);
 		}
 
-		public IDirectShape DataToDirectX(bool useMM, float pixelResolution,
+		public IDirectList DataToDirectX(bool useMM, float pixelResolution,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{
