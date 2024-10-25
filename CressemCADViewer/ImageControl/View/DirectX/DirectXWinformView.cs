@@ -5,7 +5,7 @@ using ImageControl.Model.Event;
 
 namespace ImageControl.Gdi.View
 {
-	public partial class GdiWinformView : UserControl
+	public partial class DirectXWinformView : UserControl
 	{
 		public event GraphicsEventHandler<Graphics> GraphicsPaint = delegate { };
 		public event GraphicsEventHandler<MouseEventArgs> GraphicsMouseWheel = delegate { };
@@ -16,8 +16,8 @@ namespace ImageControl.Gdi.View
 		public event GraphicsEventHandler<MouseEventArgs> GraphicsMouseUp = delegate { };
 		public event GraphicsEventHandler<PreviewKeyDownEventArgs> GraphicsPrevKeyDown = delegate { };
 		public event GraphicsEventHandler<KeyEventArgs> GraphicsKeyUp = delegate { };
-		
-		public GdiWinformView()
+
+		public DirectXWinformView()
 		{
 			InitializeComponent();
 		}
@@ -37,7 +37,7 @@ namespace ImageControl.Gdi.View
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
-			GraphicsResize(this, e);
+			GraphicsResize(this, e);		
 		}
 
 		protected override void OnMouseDoubleClick(MouseEventArgs e)

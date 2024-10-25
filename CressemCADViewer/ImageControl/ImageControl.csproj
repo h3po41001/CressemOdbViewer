@@ -25,6 +25,18 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct3D11.4.2.0\lib\net45\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DXGI.4.2.0\lib\net45\SharpDX.DXGI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -46,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Extension\GdiObjectExtension.cs" />
     <Compile Include="Extension\SystemDrawingExtension.cs" />
+    <Compile Include="Model\DirectX\DirectXGraphics.cs" />
     <Compile Include="Model\Event\Event.cs" />
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
@@ -80,6 +93,15 @@
     <Compile Include="Shape\Interface\IShapeSurface.cs" />
     <Compile Include="Shape\ShapeFactory.cs" />
     <Compile Include="ViewModel\GraphicsViewModel.cs" />
+    <Compile Include="View\DirectX\DirectXView.xaml.cs">
+      <DependentUpon>DirectXView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DirectX\DirectXWinformView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DirectX\DirectXWinformView.Designer.cs">
+      <DependentUpon>DirectXWinformView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Gdi\GdiGraphicsView.xaml.cs">
       <DependentUpon>GdiGraphicsView.xaml</DependentUpon>
     </Compile>
@@ -92,21 +114,36 @@
     <Compile Include="View\GraphicsView.xaml.cs">
       <DependentUpon>GraphicsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\OpenGL\OpenGlGraphicsView.xaml.cs">
+      <DependentUpon>OpenGlGraphicsView.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\DirectX\DirectXWinformView.resx">
+      <DependentUpon>DirectXWinformView.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\DirectX\DirectXView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Gdi\GdiGraphicsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GraphicsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\OpenGL\OpenGlGraphicsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,6 +154,7 @@
       <Name>CressemFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)Lib\OpenCvSharpExtern.dll" "$(SolutionDir)Lib"
