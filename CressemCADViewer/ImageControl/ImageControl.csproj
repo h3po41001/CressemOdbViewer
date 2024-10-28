@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,11 +66,12 @@
     <Compile Include="Shape\DirectX\DirectArc.cs" />
     <Compile Include="Shape\DirectX\DirectEllipse.cs" />
     <Compile Include="Shape\DirectX\DirectLine.cs" />
-    <Compile Include="Shape\DirectX\DirectList.cs" />
     <Compile Include="Shape\DirectX\DirectPathGeometry.cs" />
+    <Compile Include="Shape\DirectX\DirectPolygon.cs" />
     <Compile Include="Shape\DirectX\DirectRectangle.cs" />
     <Compile Include="Shape\DirectX\DirectShape.cs" />
     <Compile Include="Shape\DirectX\DirectShapeFactory.cs" />
+    <Compile Include="Shape\DirectX\DirectSurface.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectArc.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectEllipse.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectLine.cs" />

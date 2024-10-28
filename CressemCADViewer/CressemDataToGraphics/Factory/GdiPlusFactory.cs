@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CressemDataToGraphics.Model.Graphics.Shape;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;

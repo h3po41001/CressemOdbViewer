@@ -94,13 +94,7 @@ namespace ImageControl.Shape.Gdi
 
 		public GdiShape CreateGdiShape(IGdiText text)
 		{
-			if (text is null)
-			{
-				return null;
-			}
-
-			return null;
-			//return new GdiText(text.X, text.Y, text.Text, text.Font, text.Brush);
+			throw new System.NotImplementedException();
 		}
 
 		public GdiShape CreateGdiShape(IGdiSurface surface)

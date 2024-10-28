@@ -37,6 +37,22 @@ namespace ImageControl.Shape.Gdi
 
 		public Region GraphicsRegion { get; private set; }
 
+		public RectangleF GetBounds()
+		{
+			if (Polygons is null)
+			{
+				return RectangleF.Empty;
+			}
+
+			List<RectangleF> bounds = new List<RectangleF>();
+			foreach (var polygon in Polygons)
+			{
+				bounds.Add(polygon.GraphicsPath.GetBounds());
+			}
+
+			return bounds.GetBounds();
+		}
+
 		public override void Fill(Graphics graphics)
 		{
 			graphics.FillRegion(SolidBrush, GraphicsRegion);

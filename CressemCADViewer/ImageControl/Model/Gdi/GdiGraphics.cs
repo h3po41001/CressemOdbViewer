@@ -5,7 +5,6 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using ImageControl.Extension;
 using ImageControl.Gdi.View;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape.Gdi;
@@ -24,7 +23,6 @@ namespace ImageControl.Model.Gdi
 		private WindowsFormsHost _gdiControl;
 		private Graphics _gdiGraphics;
 		private Bitmap _image = null;
-		private RectangleF _roi = new RectangleF();
 		private SolidBrush _background = new SolidBrush(Color.Black);
 
 		public GdiGraphics() : base()
@@ -56,37 +54,36 @@ namespace ImageControl.Model.Gdi
 
 			if (list is IGdiList gdiList)
 			{
-				foreach (var sh in gdiList.Shapes)
+				foreach (var shape in gdiList.Shapes)
 				{
-					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)sh));
+					if (shape is null)
+					{
+						continue;
+					}
+
+					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)shape));
 				}
 
 				var roiShape = gdiList.Shapes.FirstOrDefault();
-				if (roiShape is IGdiShape roiGdiShape)
+				if (roiShape is IGdiSurface roiSurface)
 				{
-					var surface = GdiShapeFactory.Instance.CreateGdiShape((dynamic)roiGdiShape);
+					GdiSurface surface = GdiShapeFactory.Instance.CreateGdiShape((dynamic)roiSurface);
 
-					List<RectangleF> bounds = new List<RectangleF>();
-					foreach (var polygon in surface.Polygons)
-					{
-						bounds.Add(polygon.GraphicsPath.GetBounds());
-					}
-
-					_roi = bounds.GetBounds();
-					_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
+					Roi = surface.GetBounds();
+					_image = new Bitmap((int)(Roi.Width + 0.5f), (int)(Roi.Height + 0.5f));
 
 					// 화면에 맞추기 위함
-					ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
-					if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
+					ScreenZoom = (float)_gdiControl.RenderSize.Width / Roi.Width;
+					if ((float)_gdiControl.RenderSize.Height / Roi.Height < ScreenZoom)
 					{
-						ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
+						ScreenZoom = (float)_gdiControl.RenderSize.Height / Roi.Height;
 					}
 
 					WindowPos = new PointF(
 						(float)_gdiControl.RenderSize.Width / 2,
 						(float)_gdiControl.RenderSize.Height / 2);
 
-					ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
+					ProductPos = new PointF(Roi.Width / 2, Roi.Height / 2);
 
 					OffsetSize = new SizeF(
 						WindowPos.X - ProductPos.X * ScreenZoom,
@@ -110,10 +107,12 @@ namespace ImageControl.Model.Gdi
 			{
 				foreach (var shape in gdiList.Shapes)
 				{
-					if (shape is IGdiShape gdiShape)
+					if (shape is null)
 					{
-						_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)gdiShape));
+						continue;
 					}
+
+					_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)shape));
 				}
 			}
 		}
@@ -136,12 +135,12 @@ namespace ImageControl.Model.Gdi
 			_gdiGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 			_gdiGraphics.SetClip(new Rectangle(0, 0, _gdiView.Width, _gdiView.Height));
 			_gdiGraphics.TranslateTransform(
-				OffsetSize.Width - _roi.X * ScreenZoom,
-				OffsetSize.Height - _roi.Y * ScreenZoom);
+				OffsetSize.Width - Roi.X * ScreenZoom,
+				OffsetSize.Height - Roi.Y * ScreenZoom);
 			_gdiGraphics.ScaleTransform(ScreenZoom, ScreenZoom);
 
-			_gdiGraphics.DrawImage(_image, _roi);
-			_gdiGraphics.FillRectangle(_background, _roi.X, _roi.Y, _roi.Width, _roi.Height);
+			_gdiGraphics.DrawImage(_image, Roi);
+			_gdiGraphics.FillRectangle(_background, Roi.X, Roi.Y, Roi.Width, Roi.Height);
 
 			DrawShapes();
 			_gdiGraphics.ResetTransform();
@@ -294,17 +293,17 @@ namespace ImageControl.Model.Gdi
 			else if (e.KeyCode is Keys.Home)
 			{
 				// 화면에 맞추기 위함
-				ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
-				if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
+				ScreenZoom = (float)_gdiControl.RenderSize.Width / Roi.Width;
+				if ((float)_gdiControl.RenderSize.Height / Roi.Height < ScreenZoom)
 				{
-					ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
+					ScreenZoom = (float)_gdiControl.RenderSize.Height / Roi.Height;
 				}
 
 				WindowPos = new PointF(
 					(float)_gdiControl.RenderSize.Width / 2,
 					(float)_gdiControl.RenderSize.Height / 2);
 
-				ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
+				ProductPos = new PointF(Roi.Width / 2, Roi.Height / 2);
 
 				OffsetSize = new SizeF(
 					WindowPos.X - ProductPos.X * ScreenZoom,

@@ -24,6 +24,8 @@ namespace ImageControl.Model
 
 		protected float PixelResolution { get; set; }
 
+		protected RectangleF Roi { get; set; }
+
 		protected PointF StartPos { get; set; }
 
 		protected PointF WindowPos { get; set; }

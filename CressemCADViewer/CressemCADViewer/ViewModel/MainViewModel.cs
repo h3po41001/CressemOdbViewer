@@ -5,7 +5,6 @@ using System.Windows;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
 using CressemDataToGraphics;
-using CressemDataToGraphics.Model;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
 using CressemLogger;
@@ -25,7 +24,7 @@ namespace CressemCADViewer.ViewModel
 		{
 			_parent = parent;
 			LogView = logView;
-			GraphicsType = GraphicsType.GdiPlus;
+			GraphicsType = GraphicsType.DirectX;
 
 			GraphicsView = new GraphicsViewModel(GraphicsType);
 			PropertyView = new PropertyViewModel(_parent);

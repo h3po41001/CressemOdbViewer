@@ -54,7 +54,7 @@ namespace ImageControl.Shape.DirectX
 				ArcSegment arc = new ArcSegment()
 				{
 					Point = new RawVector2(Ex, Ey),
-					Size = new Size2F(100f, 100f),//Width / 2, Height / 2),
+					Size = new Size2F(Width / 2, Height / 2),
 					RotationAngle = Rotation,
 					SweepDirection = IsClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise,
 					ArcSize = IsLargeArc ? ArcSize.Large : ArcSize.Small
@@ -63,7 +63,7 @@ namespace ImageControl.Shape.DirectX
 				using (GeometrySink sink = PathGeometry.Open())
 				{
 					sink.BeginFigure(startPoint, FigureBegin.Filled);
-					sink.AddArc(arc);
+					sink.AddArc(arc);					
 					sink.EndFigure(FigureEnd.Closed);
 					sink.Close();
 				}
@@ -77,7 +77,7 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Draw(RenderTarget render)
 		{
-			Render.DrawGeometry(PathGeometry, Brush);
+			render.DrawGeometry(PathGeometry, Brush);
 		}
 
 		public override void Fill(RenderTarget render)

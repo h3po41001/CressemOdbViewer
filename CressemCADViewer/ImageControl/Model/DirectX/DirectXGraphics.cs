@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Numerics;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using ImageControl.Gdi.View;
@@ -43,7 +45,7 @@ namespace ImageControl.Model.DirectX
 				BufferCount = 1,
 				ModeDescription = new ModeDescription(
 					_directXView.ClientSize.Width, _directXView.ClientSize.Height,
-					new Rational(60, 1), Format.R8G8B8A8_UNorm),
+					new Rational(30, 1), Format.R8G8B8A8_UNorm),
 				IsWindowed = true,
 				OutputHandle = _directXView.Handle,
 				SampleDescription = new SampleDescription(1, 0),
@@ -108,6 +110,28 @@ namespace ImageControl.Model.DirectX
 					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						(dynamic)shape, _d2dFactory, _renderTarget, Color.Red));
 				}
+
+				var roiShape = directList.Shapes.FirstOrDefault();
+				if (roiShape is IDirectSurface roiSurface)
+				{
+					DirectSurface directSurface = DirectShapeFactory.Instance.CreateDirectShape(
+						(dynamic)roiSurface, _d2dFactory, _renderTarget, Color.Red);
+					
+					Roi = directSurface.GetBounds();
+				}
+
+				Matrix3x2 matrix = Matrix3x2.CreateTranslation(-Roi.X, -Roi.Y);
+				RawMatrix3x2 translation = new RawMatrix3x2()
+				{
+					M11 = matrix.M11,
+					M12 = matrix.M12,
+					M21 = matrix.M21,
+					M22 = matrix.M22,
+					M31 = matrix.M31,
+					M32 = matrix.M32
+				};
+
+				_renderTarget.Transform = translation;
 			}
 
 			return true;
@@ -124,6 +148,11 @@ namespace ImageControl.Model.DirectX
 			{
 				foreach (var shape in directList.Shapes)
 				{
+					if (shape is null)
+					{
+						continue;
+					}
+
 					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						(dynamic)shape, _d2dFactory, _renderTarget, Color.Red));
 				}
@@ -170,7 +199,8 @@ namespace ImageControl.Model.DirectX
 			}
 
 			Utilities.Dispose(ref _renderTarget);
-			_swapChain.ResizeBuffers(1, _directXView.ClientSize.Width, _directXView.ClientSize.Height, Format.R8G8B8A8_UNorm, SwapChainFlags.None);
+			_swapChain.ResizeBuffers(1, _directXView.ClientSize.Width, _directXView.ClientSize.Height,
+				Format.R8G8B8A8_UNorm, SwapChainFlags.None);
 
 			using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
 			{
