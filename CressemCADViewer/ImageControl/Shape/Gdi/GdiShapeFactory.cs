@@ -44,7 +44,7 @@ namespace ImageControl.Shape.Gdi
 				return null;
 			}
 
-			return new GdiEllipse(ellipse.X, ellipse.Y,
+			return new GdiEllipse(ellipse.Sx, ellipse.Sy,
 				ellipse.Width, ellipse.Height);
 		}
 

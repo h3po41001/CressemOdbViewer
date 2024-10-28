@@ -95,7 +95,7 @@ namespace ImageControl.Shape.DirectX
 				return null;
 			}
 
-			return new DirectEllipse(ellipse.Cx, ellipse.Cy,
+			return new DirectEllipse(ellipse.Sx, ellipse.Sy, 
 				ellipse.Width, ellipse.Height, factory, render, color);
 		}
 

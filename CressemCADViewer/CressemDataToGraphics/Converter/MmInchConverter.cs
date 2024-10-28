@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CressemDataToGraphics.Converter
 {
@@ -22,6 +24,16 @@ namespace CressemDataToGraphics.Converter
 			return Math.Round(inch * MM_TO_INCH / 1000, DIGITS);
 		}
 
+		public static IEnumerable<PointF> ConvertInchToMM(this IEnumerable<PointF> inch)
+		{
+			foreach (var point in inch)
+			{
+				yield return new PointF(
+					(float)ConvertInchToMM(point.X),
+					(float)ConvertInchToMM(point.Y));
+			}
+		}
+
 		public static double ConvertMMToInch(this double mm)
 		{
 			return Math.Round(mm / MM_TO_INCH, DIGITS);
@@ -30,6 +42,16 @@ namespace CressemDataToGraphics.Converter
 		public static double ConvertUMToInch(this double mm)
 		{
 			return Math.Round(mm * 1000 / MM_TO_INCH, DIGITS);
+		}
+
+		public static IEnumerable<PointF> ConvertMMToInch(this IEnumerable<PointF> mil)
+		{
+			foreach (var point in mil)
+			{
+				yield return new PointF(
+					(float)ConvertMMToInch(point.X),
+					(float)ConvertMMToInch(point.Y));
+			}
 		}
 
 		public static RectangleF ConvertInchToMM(this RectangleF inch)

@@ -43,11 +43,17 @@
     <Compile Include="Factory\ShapeFactory.cs" />
     <Compile Include="Model\Cad\ShapeArc.cs" />
     <Compile Include="Model\Cad\ShapeBase.cs" />
+    <Compile Include="Model\Cad\ShapeEllipse.cs" />
+    <Compile Include="Model\Cad\ShapeLine.cs" />
+    <Compile Include="Model\Cad\ShapePolygon.cs" />
+    <Compile Include="Model\Cad\ShapeRectangle.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectArc.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectBase.cs" />
+    <Compile Include="Model\Graphics\DirectX\ShapeDirectEllipse.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectLine.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectList.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectPolygon.cs" />
+    <Compile Include="Model\Graphics\DirectX\ShapeDirectRectangle.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectSurface.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiArc.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiBase.cs" />

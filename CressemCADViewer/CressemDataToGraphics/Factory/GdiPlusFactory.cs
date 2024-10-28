@@ -151,7 +151,7 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureText text)
 		{
-			return null;
+			throw new System.NotImplementedException("텍스트 아직 미구현");
 		}
 
 		private IGdiList MakeFeatureShape(bool useMM,
@@ -356,8 +356,8 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis,
 				width, height - radius * 2));
 
-			var polygon = new ShapeGdiPolygon(pixelResolution, true, shapeList);
-			return new ShapeGdiSurface(pixelResolution, true, new ShapeGdiPolygon[] { polygon });
+			var polygon = new ShapeGdiPolygon(true, shapeList);
+			return new ShapeGdiSurface(true, new ShapeGdiPolygon[] { polygon });
 		}
 
 		private ShapeGdiSurface MakeRoundDonut(bool useMM,
@@ -378,14 +378,10 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis,
 				innerDiameter, innerDiameter);
 
-			var outerPoly = new ShapeGdiPolygon(pixelResolution, true,
-				new ShapeGdiBase[] { outerCircle });
+			var outerPoly = new ShapeGdiPolygon(true, new ShapeGdiBase[] { outerCircle });
+			var innerPoly = new ShapeGdiPolygon(false, new ShapeGdiBase[] { innerCircle });
 
-			var innerPoly = new ShapeGdiPolygon(pixelResolution, false,
-				new ShapeGdiBase[] { innerCircle });
-
-			return new ShapeGdiSurface(pixelResolution, true,
-				new ShapeGdiPolygon[] { outerPoly, innerPoly });
+			return new ShapeGdiSurface(true, new ShapeGdiPolygon[] { outerPoly, innerPoly });
 		}
 
 		private IEnumerable<IGdiList> MakeUser(bool useMM,

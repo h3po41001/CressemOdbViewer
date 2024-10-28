@@ -10,9 +10,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 		}
 
-		public ShapeGdiSurface(float pixelResolution,
-			bool isPositive,
-			IEnumerable<ShapeGdiPolygon> polygons) : base(pixelResolution)
+		public ShapeGdiSurface(bool isPositive,
+			IEnumerable<ShapeGdiPolygon> polygons) : base()
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -43,8 +42,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					orient, isMirrorXAxis, isPositive, polygon));
 			}
 
-			return new ShapeGdiSurface(pixelResolution,
-				isPositive, polygons);
+			return new ShapeGdiSurface(isPositive, polygons);
 		}
 	}
 }

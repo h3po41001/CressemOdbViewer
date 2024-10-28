@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using CressemDataToGraphics.Converter;
+using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Extension;
 using ImageControl.Shape.DirectX.Interface;
@@ -15,17 +16,15 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		{
 		}
 
-		public ShapeDirectPolygon(float pixelResolution,
-			bool isFill,
-			IEnumerable<ShapeDirectBase> shapes) : base(pixelResolution)
+		public ShapeDirectPolygon(bool isFill,
+			IEnumerable<ShapeDirectBase> shapes) : base()
 		{
 			IsFill = isFill;
 			Shapes = shapes;
 		}
 
-		public ShapeDirectPolygon(float pixelResolution,
-			bool isFill,
-			IEnumerable<PointF> points) : base(pixelResolution)
+		public ShapeDirectPolygon(bool isFill,
+			IEnumerable<PointF> points) : base()
 		{
 			IsFill = isFill;
 			Points = points;
@@ -85,57 +84,21 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				}
 			}
 
-			return new ShapeDirectPolygon(pixelResolution, isFill, shapes);
+			return new ShapeDirectPolygon(isFill, shapes);
 		}
 
-		public static ShapeDirectPolygon CreateGdiPlus(bool useMM, 
+		public static ShapeDirectPolygon Create(bool useMM, 
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum,  double cx, double cy,
 			int orient, bool isMirrorXAxis,
 			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
-			PointF datum = new PointF(
-				(float)(xDatum + cx), (float)(yDatum + cy));
+			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM,
+				pixelResolution, isMM, xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
+				isPositive, polygonType, points);
 
-			List<PointF> calcPoints = new List<PointF>();
-			foreach (var point in points)
-			{
-				double x = point.X + xDatum;
-				double y = point.Y + yDatum;
-
-				if (useMM is true)
-				{
-					if (isMM is false)
-					{
-						x = x.ConvertInchToMM();
-						y = y.ConvertInchToMM();
-					}
-				}
-				else
-				{
-					if (isMM is true)
-					{
-						x = x.ConvertMMToInch();
-						y = y.ConvertMMToInch();
-					}
-				}
-
-				var converPoint = new PointF((float)x, (float)-y);
-				if (orient > 0)
-				{ 
-					calcPoints.Add(converPoint.Rotate(datum, orient, isMirrorXAxis)); 
-				}
-				else
-				{
-					calcPoints.Add(converPoint);
-				}
-			}
-
-			bool isIsland = polygonType.Equals("I") is true;
-			bool isFill = isPositive is true ? isIsland : !isIsland;
-
-			return new ShapeDirectPolygon(pixelResolution, isFill, calcPoints);
+			return new ShapeDirectPolygon(shapePolygon.IsFill, shapePolygon.Points);
 		}
 	}
 }

@@ -10,9 +10,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		{
 		}
 
-		public ShapeDirectSurface(float pixelResolution,
-			bool isPositive,
-			IEnumerable<ShapeDirectPolygon> polygons) : base(pixelResolution)
+		public ShapeDirectSurface(bool isPositive,
+			IEnumerable<ShapeDirectPolygon> polygons) : base()
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -43,8 +42,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 					orient, isMirrorXAxis, isPositive, polygon));
 			}
 
-			return new ShapeDirectSurface(pixelResolution,
-				isPositive, polygons);
+			return new ShapeDirectSurface(isPositive, polygons);
 		}
 	}
 }

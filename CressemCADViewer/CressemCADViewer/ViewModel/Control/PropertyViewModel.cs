@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using CressemFramework.Command;
 using CressemFramework.Observer;
+using ImageControl.Model;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace CressemCADViewer.ViewModel.Control
@@ -18,6 +19,7 @@ namespace CressemCADViewer.ViewModel.Control
 		private string _odbLoadPath = string.Empty;
 		private string[] _stepNames = null;
 		private string[] _layerNames = null;
+		private GraphicsType _graphicsType = GraphicsType.None;
 
 		public PropertyViewModel(Window parentWindow)
 		{
@@ -45,7 +47,7 @@ namespace CressemCADViewer.ViewModel.Control
 		public ICommand ExtractCommand { get; private set; }
 
 		[Browsable(false)]
-		public ICommand LoadCamImageCommand { get; private set; }		
+		public ICommand LoadCamImageCommand { get; private set; }
 
 		public string OdbLoadPath
 		{

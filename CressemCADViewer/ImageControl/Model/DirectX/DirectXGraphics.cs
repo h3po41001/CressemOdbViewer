@@ -80,9 +80,6 @@ namespace ImageControl.Model.DirectX
 				Interval = 30 // 약 30FPS
 			};
 
-			//_directShapes.Add(new DirectArc(100, 100, 200, 200, 100, 100, 0, true, false, _d2dFactory, _renderTarget, Color.Red));
-			//_directShapes.Add(new DirectEllipse(120.8f, 96.5f, 31.5f, 19.2f, _d2dFactory, _renderTarget, Color.Red));
-
 			_renderTimer.Tick += RenderTimer_Tick;
 			_renderTimer.Start();
 
@@ -225,6 +222,20 @@ namespace ImageControl.Model.DirectX
 
 		private void OnMouseMove(object sender, MouseEventArgs arg)
 		{
+			MousePos = new PointF(arg.X - OffsetSize.Width, arg.Y - OffsetSize.Height);
+
+			//if (MousePressed && arg.Button is MouseButtons.Left)
+			//{
+			//	float deltaX = e.X - WindowPos.X;
+			//	float deltaY = e.Y - WindowPos.Y;
+
+			//	OffsetSize = new SizeF(StartPos.X + deltaX,
+			//		StartPos.Y + deltaY);
+
+			//	_gdiView.Invalidate();
+			//}
+
+			MouseMoveEvent(this, null);
 		}
 
 		private void OnMouseUp(object sender, MouseEventArgs arg)

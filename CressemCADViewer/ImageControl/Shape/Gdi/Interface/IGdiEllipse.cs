@@ -2,9 +2,9 @@
 {
 	public interface IGdiEllipse : IGdiShape
 	{
-		float X { get; }
+		float Sx { get; }
 
-		float Y { get; }
+		float Sy { get; }
 
 		float Width { get; }
 

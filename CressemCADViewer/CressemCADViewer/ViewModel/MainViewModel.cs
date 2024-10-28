@@ -16,18 +16,16 @@ namespace CressemCADViewer.ViewModel
 {
 	public class MainViewModel
 	{
-		private Window _parent = null;
-
 		private MainViewModel() { }
 
-		public MainViewModel(Window parent, LogControlViewModel logView)
+		public MainViewModel(Window parent, GraphicsType graphics, LogControlViewModel logView)
 		{
-			_parent = parent;
+			Parent = parent;
+			GraphicsType = graphics;
 			LogView = logView;
-			GraphicsType = GraphicsType.DirectX;
 
-			GraphicsView = new GraphicsViewModel(GraphicsType);
-			PropertyView = new PropertyViewModel(_parent);
+			GraphicsView = new GraphicsViewModel(graphics);
+			PropertyView = new PropertyViewModel(parent);
 			AlarmView = new AlarmViewModel();
 			LogoView = new LogoViewModel();
 			Processor = new Processor();
@@ -35,6 +33,10 @@ namespace CressemCADViewer.ViewModel
 			InitLogView();
 			InitEvent();
 		}
+
+		public Window Parent { get; private set; }
+
+		public GraphicsType GraphicsType { get; private set; }
 
 		public GraphicsViewModel GraphicsView { get; private set; }
 
@@ -47,8 +49,6 @@ namespace CressemCADViewer.ViewModel
 		public LogoViewModel LogoView { get; private set; }
 
 		public Processor Processor { get; private set; }
-
-		public GraphicsType GraphicsType { get; set; }
 
 		private void InitLogView()
 		{
@@ -97,6 +97,7 @@ namespace CressemCADViewer.ViewModel
 			// inch 표시와 mm표시 구분해야함
 			// 아래는 전체에 어떻게 표시할지
 			// 데이터 상에는 자기 자신의 값 형태 있음
+			
 			bool useMM = true;
 
 			var profile = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
@@ -104,10 +105,11 @@ namespace CressemCADViewer.ViewModel
 				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
 				out double xDatum, out double yDatum);
 
-			DataToGraphics dataToGraphics = new DataToGraphics(1.0f, GraphicsType);
 			GraphicsView.ClearShape();
 
+			DataToGraphics dataToGraphics = new DataToGraphics(4.0f, GraphicsType);
 			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, profile);
+
 			GraphicsView.LoadProfile(proflieShapes);
 
 			foreach (var feature in features)

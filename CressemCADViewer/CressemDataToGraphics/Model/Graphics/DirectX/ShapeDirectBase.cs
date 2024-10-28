@@ -4,13 +4,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
 	internal class ShapeDirectBase : IDirectShape
 	{
-		protected ShapeDirectBase() { }
-
-		protected ShapeDirectBase(float pixelResolution)
+		protected ShapeDirectBase() 
 		{
-			PixelResolution = pixelResolution;
 		}
-
-		public float PixelResolution { get; private set; }
 	}
 }

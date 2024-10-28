@@ -60,12 +60,12 @@ namespace CressemDataToGraphics.Factory
 			}
 			else
 			{
-				//shapes.Add(ShapeGdiArc.CreateGdiPlus(useMM,
-				//	pixelResolution, isMM,
-				//	xDatum, yDatum, cx, cy,
-				//	orient, isMirrorXAxis,
-				//	arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
-				//	arc.IsClockWise, 0));
+				shapes.Add(ShapeDirectArc.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
+					arc.IsClockWise, 0));
 			}
 
 			return new ShapeDirectList(shapes);
@@ -78,6 +78,38 @@ namespace CressemDataToGraphics.Factory
 		{
 			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
 
+			if (line.FeatureSymbol is ISymbolIRegularShape regularShape)
+			{
+				var startSymbol = MakeSymbolShape(useMM,
+					pixelResolution, line.IsMM,
+					xDatum + cx, yDatum + cy, line.X, line.Y,
+					orient, isMirrorXAxis,
+					(dynamic)(line.FeatureSymbol));
+
+				var endSymbol = MakeSymbolShape(useMM,
+					pixelResolution, line.IsMM,
+					xDatum + cx, yDatum + cy, line.Ex, line.Ey,
+					orient, isMirrorXAxis,
+					(dynamic)(line.FeatureSymbol));
+
+				shapes.Add(ShapeDirectLine.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					line.X, line.Y, line.Ex, line.Ey, regularShape.Diameter));
+
+				shapes.Add(startSymbol);
+				shapes.Add(endSymbol);
+			}
+			else
+			{
+				shapes.Add(ShapeDirectLine.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					line.X, line.Y, line.Ex, line.Ey, 0));
+			}
+
 			return new ShapeDirectList(shapes);
 		}
 
@@ -86,9 +118,7 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBarcode barcode)
 		{
-			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
-
-			return new ShapeDirectList(shapes);
+			throw new System.NotImplementedException("바코드 아직 미구현");
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -98,6 +128,17 @@ namespace CressemDataToGraphics.Factory
 		{
 			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
 
+			if (pad.FeatureSymbol != null)
+			{
+				shapes.Add(MakeSymbolShape(useMM,
+					pixelResolution, isMM,
+					xDatum + cx, yDatum + cy,
+					pad.X, pad.Y,
+					(pad.Orient + orient) % 360,
+					isMirrorXAxis != pad.IsMirrorXAxis,
+					pad.FeatureSymbol));
+			}
+
 			return new ShapeDirectList(shapes);
 		}
 
@@ -106,9 +147,7 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureText text)
 		{
-			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
-
-			return new ShapeDirectList(shapes);
+			throw new System.NotImplementedException("텍스트 아직 미구현");
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -125,81 +164,234 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis,
 				isPositive, surface.Polygons));
 
-			//shapeList.AddShape(shapes);
-			//return shapeList;
 			return new ShapeDirectList(shapes);
 		}
 
-		private IDirectShape MakeSymbolShape(bool useMM,
+		private ShapeDirectBase MakeSymbolShape(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
 			ISymbolBase symbol)
 		{
-			//if (symbol is ISymbolRound round)
-			//{
-			//	return ShapeGdiEllipse.CreateGdiPlus(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		round.Diameter, round.Diameter);
-			//}
-			//else if (symbol is ISymbolSquare square)
-			//{
-			//	return ShapeGdiRectangle.CreateGdiPlus(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		square.Diameter, square.Diameter);
-			//}
-			//else if (symbol is ISymbolRectangle rectangle)
-			//{
-			//	return ShapeGdiRectangle.CreateGdiPlus(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		rectangle.Width, rectangle.Height);
-			//}
-			//else if (symbol is ISymbolEllipse ellipse)
-			//{
-			//	return ShapeGdiEllipse.CreateGdiPlus(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		ellipse.Width, ellipse.Height);
-			//}
-			//else if (symbol is ISymbolHole hole)
-			//{
-
-			//}
-			//else if (symbol is ISymbolRoundedRectangle roundedRectangle)
-			//{
-			//	return MakeRoundedRectangle(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		roundedRectangle.Width, roundedRectangle.Height,
-			//		roundedRectangle.CornerRadius,
-			//		roundedRectangle.IsEditedCorner);
-			//}
-			//else if (symbol is ISymbolRoundDonut roundDonut)
-			//{
-			//	return MakeRoundDonut(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		roundDonut.Diameter, roundDonut.InnerDiameter);
-			//}
-			//else if (symbol is ISymbolUser user)
-			//{
-			//	var userSymbolFeature = MakeUser(useMM,
-			//		pixelResolution, isMM,
-			//		xDatum, yDatum, cx, cy,
-			//		orient, isMirrorXAxis,
-			//		user.FeaturesList);
-			//}
+			if (symbol is ISymbolRound round)
+			{
+				return ShapeDirectEllipse.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					round.Diameter, round.Diameter);
+			}
+			else if (symbol is ISymbolSquare square)
+			{
+				return ShapeDirectRectangle.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					square.Diameter, square.Diameter);
+			}
+			else if (symbol is ISymbolRectangle rectangle)
+			{
+				return ShapeDirectRectangle.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					rectangle.Width, rectangle.Height);
+			}
+			else if (symbol is ISymbolEllipse ellipse)
+			{
+				return ShapeDirectEllipse.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					ellipse.Width, ellipse.Height);
+			}
+			else if (symbol is ISymbolHole hole)
+			{
+			}
+			else if (symbol is ISymbolRoundedRectangle roundedRectangle)
+			{
+				return MakeRoundedRectangle(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					roundedRectangle.Width, roundedRectangle.Height,
+					roundedRectangle.CornerRadius,
+					roundedRectangle.IsEditedCorner);
+			}
+			else if (symbol is ISymbolRoundDonut roundDonut)
+			{
+				return MakeRoundDonut(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					roundDonut.Diameter, roundDonut.InnerDiameter);
+			}
+			else if (symbol is ISymbolUser user)
+			{
+				var userSymbolFeature = MakeUser(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					user.FeaturesList);
+			}
 
 			return null;
+		}
+
+		private ShapeDirectSurface MakeRoundedRectangle(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			double width, double height, double radius, bool[] isEditedCorner)
+		{
+			double left = cx - width / 2;
+			double right = cx + width / 2;
+			double top = cy + height / 2;
+			double bottom = cy - height / 2;
+
+			List<ShapeDirectBase> shapeList = new List<ShapeDirectBase>();
+
+			// RT
+			if (isEditedCorner[0] is true)
+			{
+				shapeList.Add(ShapeDirectArc.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					right - radius, top, // st
+					right, top - radius, // ed
+					right - radius, top - radius, // center
+					true, 0));
+			}
+			else
+			{
+				shapeList.Add(ShapeDirectRectangle.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum,
+					right - radius / 2, top - radius / 2,
+					orient, isMirrorXAxis, radius, radius));
+			}
+
+			// LT
+			if (isEditedCorner[1] is true)
+			{
+				shapeList.Add(ShapeDirectArc.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					left + radius, top, // st
+					left, top - radius, // ed
+					left + radius, top - radius, // center
+					true, 0));
+			}
+			else
+			{
+				shapeList.Add(ShapeDirectRectangle.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum,
+					left + radius / 2, top - radius / 2,
+					orient, isMirrorXAxis, radius, radius));
+			}
+
+			// LB
+			if (isEditedCorner[2] is true)
+			{
+				shapeList.Add(ShapeDirectArc.Create(useMM,
+						pixelResolution, isMM,
+						xDatum, yDatum, cx, cy,
+						orient, isMirrorXAxis,
+						left + radius, bottom, // st
+						left, bottom + radius, // ed
+						left + radius, bottom + radius, // center
+						true, 0));
+			}
+			else
+			{
+				shapeList.Add(ShapeDirectRectangle.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum,
+					left + radius / 2, bottom + radius / 2,
+					orient, isMirrorXAxis, radius, radius));
+			}
+
+			// RB
+			if (isEditedCorner[3] is true)
+			{
+				shapeList.Add(ShapeDirectArc.Create(useMM,
+						pixelResolution, isMM,
+						xDatum, yDatum, cx, cy,
+						orient, isMirrorXAxis,
+						right - radius, bottom, // st
+						right, bottom + radius, // ed
+						right - radius, bottom + radius, // center
+						true, 0));
+			}
+			else
+			{
+				shapeList.Add(ShapeDirectRectangle.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum,
+					right - radius / 2, bottom + radius / 2,
+					orient, isMirrorXAxis, radius, radius));
+			}
+
+			// Center Rectangle
+			shapeList.Add(ShapeDirectRectangle.Create(
+				useMM, pixelResolution, isMM,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis,
+				width - radius * 2, height));
+
+			shapeList.Add(ShapeDirectRectangle.Create(
+				useMM, pixelResolution, isMM,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis,
+				width, height - radius * 2));
+
+			var polygon = new ShapeDirectPolygon(true, shapeList);
+			return new ShapeDirectSurface(true, new ShapeDirectPolygon[] { polygon });
+		}
+
+		private ShapeDirectSurface MakeRoundDonut(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			double outerDiameter, double innerDiameter)
+		{
+			var outerCircle = ShapeDirectEllipse.Create(useMM,
+				pixelResolution, isMM,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis,
+				outerDiameter, outerDiameter);
+
+			var innerCircle = ShapeDirectEllipse.Create(useMM,
+				pixelResolution, isMM,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis,
+				innerDiameter, innerDiameter);
+
+			var outerPoly = new ShapeDirectPolygon(true, new ShapeDirectBase[] { outerCircle });
+			var innerPoly = new ShapeDirectPolygon(false, new ShapeDirectBase[] { innerCircle });
+
+			return new ShapeDirectSurface(true, new ShapeDirectPolygon[] { outerPoly, innerPoly });
+		}
+
+		private IEnumerable<IDirectList> MakeUser(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			IEnumerable<IFeatureBase> features)
+		{
+			List<ShapeDirectList> shapeList = new List<ShapeDirectList>();
+			foreach (var feature in features)
+			{
+				shapeList.Add(MakeFeatureShape(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis, (dynamic)feature));
+			}
+
+			return shapeList;
 		}
 	}
 }

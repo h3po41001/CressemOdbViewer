@@ -9,10 +9,10 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 	{
 		private ShapeDirectLine() { }
 
-		public ShapeDirectLine(float pixelResolution,
+		public ShapeDirectLine(
 			float sx, float sy,
 			float ex, float ey,
-			float width = 0) : base(pixelResolution)
+			float width = 0) : base()
 		{
 			Sx = sx;
 			Sy = sy;
@@ -77,8 +77,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				end = end.Rotate(datum, orient, isMirrorXAxis);
 			}
 
-			return new ShapeDirectLine(pixelResolution,
-				start.X, -start.Y, end.X, -end.Y, fwidth);
+			return new ShapeDirectLine(start.X, -start.Y, end.X, -end.Y, fwidth);
 		}
 	}
 }

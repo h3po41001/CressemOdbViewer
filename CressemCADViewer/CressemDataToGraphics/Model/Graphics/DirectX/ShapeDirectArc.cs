@@ -49,7 +49,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			double sx, double sy, double ex, double ey, double arcCx, double arcCy,
 			bool isClockwise, double width)
 		{
-			var shapeArc = ShapeFactory.Instance.CreateArcShape(useMM, pixelResolution, isMM,
+			var shapeArc = ShapeFactory.Instance.CreateArc(useMM, pixelResolution, isMM,
 				xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
 				sx, sy, ex, ey, arcCx, arcCy, width);
 
@@ -69,8 +69,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				isLarge = true;
 			}
 
-			return new ShapeDirectArc(shapeArc.Sx, shapeArc.Sy,
-				shapeArc.Ex, shapeArc.Ey,
+			return new ShapeDirectArc(
+				shapeArc.Sx, -shapeArc.Sy,
+				shapeArc.Ex, -shapeArc.Ey,
 				shapeArc.Radius, shapeArc.Radius, 0,
 				isLarge, isClockwise);
 		}

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using CressemDataToGraphics.Converter;
+using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Gdi.Interface;
 
@@ -12,17 +13,15 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 		}
 
-		public ShapeGdiPolygon(float pixelResolution,
-			bool isFill,
-			IEnumerable<ShapeGdiBase> shapes) : base(pixelResolution)
+		public ShapeGdiPolygon(bool isFill,
+			IEnumerable<ShapeGdiBase> shapes) : base()
 		{
 			IsFill = isFill;
 			Shapes = shapes;
 		}
 
-		public ShapeGdiPolygon(float pixelResolution,
-			bool isFill,
-			IEnumerable<PointF> points) : base(pixelResolution)
+		public ShapeGdiPolygon(bool isFill,
+			IEnumerable<PointF> points) : base()
 		{
 			IsFill = isFill;
 			Points = points;
@@ -82,48 +81,23 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 			}
 
-			return new ShapeGdiPolygon(pixelResolution, isFill, shapes);
+			return new ShapeGdiPolygon(isFill, shapes);
 		}
 
-		public static ShapeGdiPolygon CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, bool isMM, bool isPositive, string polygonType,
+		public static ShapeGdiPolygon Create(bool useMM, 
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, 
+			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
-			List<PointF> calcPoints = new List<PointF>();
-			foreach (var point in points)
-			{
-				double x = point.X + xDatum;
-				double y = point.Y + yDatum;
+			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM, 
+				pixelResolution, isMM,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis,
+				isPositive, polygonType, points);
 
-				if (useMM is true)
-				{
-					if (isMM is false)
-					{
-						x = x.ConvertInchToMM();
-						y = y.ConvertInchToMM();
-					}
-				}
-				else
-				{
-					if (isMM is true)
-					{
-						x = x.ConvertMMToInch();
-						y = y.ConvertMMToInch();
-					}
-				}
-
-				calcPoints.Add(new PointF((float)x, (float)-y));
-			}
-
-			bool isIsland = polygonType.Equals("I") is true;
-			bool isFill = isPositive is true ? isIsland : !isIsland;
-
-			return new ShapeGdiPolygon(pixelResolution, isFill, calcPoints);
-		}
-
-		public static IGdiPolygon CreateOpenGl()
-		{
-			throw new System.NotImplementedException();
+			return new ShapeGdiPolygon(shapePolygon.IsFill, shapePolygon.Points);
 		}
 	}
 }

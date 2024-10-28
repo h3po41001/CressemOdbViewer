@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Windows.Controls;
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.DirectX;
@@ -16,18 +17,23 @@ namespace ImageControl.ViewModel
 		private Control _graphicsView = null;
 		private string _coordinate = string.Empty;
 
+		private GraphicsViewModel() { }
+
 		public GraphicsViewModel(GraphicsType graphicsType)
 		{
-			// 변경해야함.. 옵션에 따라
 			if (graphicsType is GraphicsType.GdiPlus)
 			{
 				_graphicsView = new GdiGraphicsView();
 				_graphics = new GdiGraphics();
 			}
-			else
+			else if (graphicsType is GraphicsType.DirectX)
 			{
 				_graphicsView = new DirectXView();
 				_graphics = new DirectXGraphics();
+			}
+			else
+			{
+				return;
 			}
 
 			_graphicsView.DataContext = _graphics;

@@ -75,6 +75,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\Control\SelectGraphicsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Control\AlarmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -98,8 +102,12 @@
     <Compile Include="Model\Enum.cs" />
     <Compile Include="Model\Processor.cs" />
     <Compile Include="ViewModel\Control\AlarmViewModel.cs" />
+    <Compile Include="ViewModel\Control\SelectGraphicsViewModel.cs" />
     <Compile Include="ViewModel\Control\LogoViewModel.cs" />
     <Compile Include="ViewModel\Control\PropertyViewModel.cs" />
+    <Compile Include="View\Control\SelectGraphicsView.xaml.cs">
+      <DependentUpon>SelectGraphicsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\Control\AlarmView.xaml.cs">
       <DependentUpon>AlarmView.xaml</DependentUpon>

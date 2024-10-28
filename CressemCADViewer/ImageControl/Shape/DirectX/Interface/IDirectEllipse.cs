@@ -2,9 +2,9 @@
 {
 	public interface IDirectEllipse : IDirectShape
 	{
-		float Cx { get; }
+		float Sx { get; }
 
-		float Cy { get; }
+		float Sy { get; }
 
 		float Width { get; }
 

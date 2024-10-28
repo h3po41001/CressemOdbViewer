@@ -10,20 +10,20 @@ namespace ImageControl.Shape.DirectX
 
 		private DirectEllipse() { }
 
-		public DirectEllipse(float cx, float cy, float width, float height,
+		public DirectEllipse(float sx, float sy, float width, float height,
 			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
 		{
-			Cx = cx;
-			Cy = cy;
+			Sx = sx;
+			Sy = sy;
 			Width = width;
 			Height = height;
 
 			SetShape();
 		}
 
-		public float Cx { get; private set; }
+		public float Sx { get; private set; }
 
-		public float Cy { get; private set; }
+		public float Sy { get; private set; }
 
 		public float Width { get; private set; }
 
@@ -34,7 +34,12 @@ namespace ImageControl.Shape.DirectX
 
 		public override void SetShape()
 		{
-			Ellipse = new Ellipse(new RawVector2(Cx, Cy), Width / 2, Height / 2);
+			float radiusWidth = Width / 2;
+			float radiusHeight = Height / 2;
+
+			Ellipse = new Ellipse(new RawVector2(
+				Sx + radiusWidth, Sy + radiusHeight), 
+				radiusWidth, radiusHeight);
 		}
 
 		public override void Draw(RenderTarget render)
