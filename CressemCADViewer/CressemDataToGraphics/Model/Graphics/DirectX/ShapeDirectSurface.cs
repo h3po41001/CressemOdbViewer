@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.DirectX.Interface;
 
-namespace CressemDataToGraphics.Model.Graphics.Shape
+namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeGdiSurface : ShapeGdiBase, IGdiSurface
+	internal class ShapeDirectSurface : ShapeDirectBase, IDirectSurface
 	{
-		private ShapeGdiSurface() : base()
+		private ShapeDirectSurface() : base()
 		{
 		}
 
-		public ShapeGdiSurface(float pixelResolution,
+		public ShapeDirectSurface(float pixelResolution,
 			bool isPositive,
-			IEnumerable<ShapeGdiPolygon> polygons) : base(pixelResolution)
+			IEnumerable<ShapeDirectPolygon> polygons) : base(pixelResolution)
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -20,12 +20,12 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsPositive { get; private set; }
 
-		public IEnumerable<IGdiPolygon> Polygons { get; private set; }
+		public IEnumerable<IDirectPolygon> Polygons { get; private set; }
 
-		public static ShapeGdiSurface Create(bool useMM,
+		public static ShapeDirectSurface Create(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, 
+			int orient, bool isMirrorXAxis,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
 		{
 			if (featurePolygons is null)
@@ -33,17 +33,17 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				return null;
 			}
 
-			List<ShapeGdiPolygon> polygons = new List<ShapeGdiPolygon>();
+			List<ShapeDirectPolygon> polygons = new List<ShapeDirectPolygon>();
 
 			foreach (var polygon in featurePolygons)
 			{
-				polygons.Add(ShapeGdiPolygon.Create(useMM,
+				polygons.Add(ShapeDirectPolygon.Create(useMM,
 					pixelResolution, isMM,
 					xDatum, yDatum, cx, cy,
 					orient, isMirrorXAxis, isPositive, polygon));
 			}
 
-			return new ShapeGdiSurface(pixelResolution,
+			return new ShapeDirectSurface(pixelResolution,
 				isPositive, polygons);
 		}
 	}

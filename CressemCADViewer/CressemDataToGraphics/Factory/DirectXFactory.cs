@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CressemDataToGraphics.Model.Graphics.DirectX;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
@@ -23,14 +22,9 @@ namespace CressemDataToGraphics.Factory
 				return null;
 			}
 
-			if (feature is IFeatureArc)
-			{
-				return MakeFeatureShape(useMM, pixelResolution,
-					feature.IsMM, xDatum, yDatum, cx, cy,
-					orient, isMirrorXAxis, (dynamic)feature);
-			}
-
-			return null;
+			return MakeFeatureShape(useMM, pixelResolution,
+				feature.IsMM, xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis, (dynamic)feature);
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -74,6 +68,65 @@ namespace CressemDataToGraphics.Factory
 				//	arc.IsClockWise, 0));
 			}
 
+			return new ShapeDirectList(shapes);
+		}
+
+		private IDirectList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureLine line)
+		{
+			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+
+			return new ShapeDirectList(shapes);
+		}
+
+		private IDirectList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureBarcode barcode)
+		{
+			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+
+			return new ShapeDirectList(shapes);
+		}
+
+		private IDirectList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeaturePad pad)
+		{
+			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+
+			return new ShapeDirectList(shapes);
+		}
+
+		private IDirectList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureText text)
+		{
+			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+
+			return new ShapeDirectList(shapes);
+		}
+
+		private IDirectList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureSurface surface)
+		{
+			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+
+			bool isPositive = surface.Polarity.Equals("P") is true;
+			shapes.Add(ShapeDirectSurface.Create(useMM,
+				pixelResolution, isMM,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis,
+				isPositive, surface.Polygons));
+
+			//shapeList.AddShape(shapes);
+			//return shapeList;
 			return new ShapeDirectList(shapes);
 		}
 

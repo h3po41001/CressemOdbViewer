@@ -1,4 +1,4 @@
-﻿namespace CressemDataToGraphics.Model
+﻿namespace ImageControl.Model
 {
 	public enum GraphicsType
 	{

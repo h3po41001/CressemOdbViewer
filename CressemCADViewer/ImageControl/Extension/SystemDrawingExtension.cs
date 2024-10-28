@@ -37,7 +37,7 @@ namespace ImageControl.Extension
 			return new RectangleF(left, top, right - left, bottom - top);
 		}
 
-		public static PointF Rotate(this PointF point, PointF center, float angle, bool isMirrorXAxis)
+		public static PointF Rotate(this PointF point, PointF center, int angle, bool isMirrorXAxis)
 		{
 			float radian = angle * (float)(Math.PI / 180);
 			float cosTheta = (float)Math.Cos(radian);

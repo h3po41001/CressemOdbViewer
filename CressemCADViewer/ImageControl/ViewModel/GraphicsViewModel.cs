@@ -12,20 +12,26 @@ namespace ImageControl.ViewModel
 {
 	public class GraphicsViewModel : ObservableObject
 	{
-		private readonly SmartGraphics _graphics = null;
-		private readonly Control _graphicsView = null;
+		private SmartGraphics _graphics = null;
+		private Control _graphicsView = null;
 		private string _coordinate = string.Empty;
 
-		public GraphicsViewModel() 
+		public GraphicsViewModel(GraphicsType graphicsType)
 		{
 			// 변경해야함.. 옵션에 따라
-			//_graphicsView = new GdiGraphicsView();
-			//_graphics = new GdiGraphics();
-			_graphicsView = new DirectXView();
-			_graphics = new DirectXGraphics();
+			if (graphicsType is GraphicsType.GdiPlus)
+			{
+				_graphicsView = new GdiGraphicsView();
+				_graphics = new GdiGraphics();
+			}
+			else
+			{
+				_graphicsView = new DirectXView();
+				_graphics = new DirectXGraphics();
+			}
 
 			_graphicsView.DataContext = _graphics;
-			
+
 			_graphics.Initialize();
 			_graphics.MouseMoveEvent += Graphics_MouseMoveEvent;
 		}

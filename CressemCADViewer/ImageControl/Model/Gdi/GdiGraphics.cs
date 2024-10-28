@@ -58,43 +58,41 @@ namespace ImageControl.Model.Gdi
 			{
 				foreach (var sh in gdiList.Shapes)
 				{
-					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(sh));
+					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)sh));
 				}
 
 				var roiShape = gdiList.Shapes.FirstOrDefault();
 				if (roiShape is IGdiShape roiGdiShape)
 				{
-					var shape = GdiShapeFactory.Instance.CreateGdiShape(roiGdiShape);
-					if (shape is IGdiSurface surface)
+					var surface = GdiShapeFactory.Instance.CreateGdiShape((dynamic)roiGdiShape);
+
+					List<RectangleF> bounds = new List<RectangleF>();
+					foreach (var polygon in surface.Polygons)
 					{
-						List<RectangleF> bounds = new List<RectangleF>();
-						foreach (GdiShapePolygon polygon in surface.Polygons.Cast<GdiShapePolygon>())
-						{
-							bounds.Add(polygon.GraphicsPath.GetBounds());
-						}
-
-						_roi = bounds.GetBounds();
-						_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
-
-						// 화면에 맞추기 위함
-						ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
-						if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
-						{
-							ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
-						}
-
-						WindowPos = new PointF(
-							(float)_gdiControl.RenderSize.Width / 2,
-							(float)_gdiControl.RenderSize.Height / 2);
-
-						ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
-
-						OffsetSize = new SizeF(
-							WindowPos.X - ProductPos.X * ScreenZoom,
-							WindowPos.Y - ProductPos.Y * ScreenZoom);
-
-						return true;
+						bounds.Add(polygon.GraphicsPath.GetBounds());
 					}
+
+					_roi = bounds.GetBounds();
+					_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
+
+					// 화면에 맞추기 위함
+					ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
+					if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
+					{
+						ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
+					}
+
+					WindowPos = new PointF(
+						(float)_gdiControl.RenderSize.Width / 2,
+						(float)_gdiControl.RenderSize.Height / 2);
+
+					ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
+
+					OffsetSize = new SizeF(
+						WindowPos.X - ProductPos.X * ScreenZoom,
+						WindowPos.Y - ProductPos.Y * ScreenZoom);
+
+					return true;
 				}
 			}
 
@@ -114,7 +112,7 @@ namespace ImageControl.Model.Gdi
 				{
 					if (shape is IGdiShape gdiShape)
 					{
-						_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(gdiShape));
+						_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)gdiShape));
 					}
 				}
 			}

@@ -24,13 +24,28 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public DirectShape CreateDirectShape(IDirectShape shapeBase,
+		public DirectShape CreateDirectShape(IDirectArc arc,
+			Factory factory, RenderTarget render, Color color)
+		{
+			if (arc is null)
+			{
+				return null;
+			}
+
+			return new DirectArc(arc.Sx, arc.Sy, arc.Ex, arc.Ey,
+				arc.Width, arc.Height,
+				arc.Rotation, arc.IsLargeArc, arc.IsClockwise,
+				factory, render, color);
+		}
+
+
+		public DirectShape CreateDirectShape(IDirectLine shapeBase,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (shapeBase is IDirectArc arc)
 			{
-				return new DirectArc(arc.Sx, arc.Sy, arc.Ex, arc.Ey, 
-					arc.Width, arc.Height, 
+				return new DirectArc(arc.Sx, arc.Sy, arc.Ex, arc.Ey,
+					arc.Width, arc.Height,
 					arc.Rotation, arc.IsLargeArc, arc.IsClockwise,
 					factory, render, color);
 			}

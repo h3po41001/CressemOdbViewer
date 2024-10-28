@@ -38,7 +38,6 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureArc arc)
 		{
-			ShapeGdiList shapeList = new ShapeGdiList();
 			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
 
 			if (arc.FeatureSymbol is ISymbolRound symbolRound)
@@ -75,8 +74,7 @@ namespace CressemDataToGraphics.Factory
 					arc.IsClockWise, 0));
 			}
 
-			shapeList.AddShape(shapes);
-			return shapeList;
+			return new ShapeGdiList(shapes);
 
 		}
 
@@ -91,7 +89,6 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureLine line)
 		{
-			ShapeGdiList shapeList = new ShapeGdiList();
 			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
 
 			if (line.FeatureSymbol is ISymbolIRegularShape regularShape)
@@ -108,7 +105,7 @@ namespace CressemDataToGraphics.Factory
 					orient, isMirrorXAxis,
 					(dynamic)(line.FeatureSymbol));
 
-				shapes.Add(ShapeLine.Create(useMM,
+				shapes.Add(ShapeGdiLine.Create(useMM,
 					pixelResolution, isMM,
 					xDatum, yDatum, cx, cy,
 					orient, isMirrorXAxis,
@@ -119,15 +116,14 @@ namespace CressemDataToGraphics.Factory
 			}
 			else
 			{
-				shapes.Add(ShapeLine.Create(useMM,
+				shapes.Add(ShapeGdiLine.Create(useMM,
 					pixelResolution, isMM,
 					xDatum, yDatum, cx, cy,
 					orient, isMirrorXAxis,
 					line.X, line.Y, line.Ex, line.Ey, 0));
 			}
 
-			shapeList.AddShape(shapes);
-			return shapeList;
+			return new ShapeGdiList(shapes);
 		}
 
 		private IGdiList MakeFeatureShape(bool useMM,
@@ -135,19 +131,10 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeaturePad pad)
 		{
-			ShapeGdiList shapeList = new ShapeGdiList();
 			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
 
 			if (pad.FeatureSymbol != null)
 			{
-				if (pad.FeatureSymbol is ISymbolRound symbol)
-				{
-					if (symbol.Diameter == 150)
-					{
-
-					}
-				}
-
 				shapes.Add(MakeSymbolShape(useMM,
 					pixelResolution, isMM,
 					xDatum + cx, yDatum + cy,
@@ -155,11 +142,17 @@ namespace CressemDataToGraphics.Factory
 					(pad.Orient + orient) % 360,
 					isMirrorXAxis != pad.IsMirrorXAxis,
 					pad.FeatureSymbol));
-
-				shapeList.AddShape(shapes);
 			}
 
-			return shapeList;
+			return new ShapeGdiList(shapes);
+		}
+
+		private IGdiList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureText text)
+		{
+			return null;
 		}
 
 		private IGdiList MakeFeatureShape(bool useMM,
@@ -168,19 +161,17 @@ namespace CressemDataToGraphics.Factory
 			int orient, bool isMirrorXAxis,
 			IFeatureSurface surface)
 		{
-			ShapeGdiList shapeList = new ShapeGdiList();
 			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
 
 			bool isPositive = surface.Polarity.Equals("P") is true;
 
-			shapes.Add(ShapeGdiSurface.CreateGdiPlus(useMM,
+			shapes.Add(ShapeGdiSurface.Create(useMM,
 				pixelResolution, isMM,
 				xDatum, yDatum, cx, cy,
 				orient, isMirrorXAxis,
 				isPositive, surface.Polygons));
 
-			shapeList.AddShape(shapes);
-			return shapeList;
+			return new ShapeGdiList(shapes);
 		}
 
 		private ShapeGdiBase MakeSymbolShape(bool useMM,

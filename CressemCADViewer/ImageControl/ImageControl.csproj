@@ -60,6 +60,7 @@
     <Compile Include="Extension\GdiObjectExtension.cs" />
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\DirectX\DirectXGraphics.cs" />
+    <Compile Include="Model\Enum.cs" />
     <Compile Include="Model\Event\Event.cs" />
     <Compile Include="Shape\DirectX\DirectArc.cs" />
     <Compile Include="Shape\DirectX\DirectEllipse.cs" />
@@ -73,8 +74,10 @@
     <Compile Include="Shape\DirectX\Interface\IDirectEllipse.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectLine.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectList.cs" />
+    <Compile Include="Shape\DirectX\Interface\IDirectPolygon.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectRectangle.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectShape.cs" />
+    <Compile Include="Shape\DirectX\Interface\IDirectSurface.cs" />
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
     <Compile Include="Shape\Gdi\GdiEllipse.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Shape\Gdi\Interface\IGdiRectangle.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiSurface.cs" />
     <Compile Include="Shape\Gdi\GdiShapeFactory.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiText.cs" />
     <Compile Include="Shape\Interface\IGraphicsList.cs" />
     <Compile Include="Shape\Interface\IGraphicsShape.cs" />
     <Compile Include="ViewModel\GraphicsViewModel.cs" />

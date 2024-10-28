@@ -10,6 +10,7 @@ using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
 using CressemLogger;
 using CressemLogger.ViewModel;
+using ImageControl.Model;
 using ImageControl.ViewModel;
 
 namespace CressemCADViewer.ViewModel
@@ -24,8 +25,9 @@ namespace CressemCADViewer.ViewModel
 		{
 			_parent = parent;
 			LogView = logView;
+			GraphicsType = GraphicsType.GdiPlus;
 
-			GraphicsView = new GraphicsViewModel();
+			GraphicsView = new GraphicsViewModel(GraphicsType);
 			PropertyView = new PropertyViewModel(_parent);
 			AlarmView = new AlarmViewModel();
 			LogoView = new LogoViewModel();
@@ -46,6 +48,8 @@ namespace CressemCADViewer.ViewModel
 		public LogoViewModel LogoView { get; private set; }
 
 		public Processor Processor { get; private set; }
+
+		public GraphicsType GraphicsType { get; set; }
 
 		private void InitLogView()
 		{
@@ -101,7 +105,7 @@ namespace CressemCADViewer.ViewModel
 				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
 				out double xDatum, out double yDatum);
 
-			DataToGraphics dataToGraphics = new DataToGraphics(1.0f, GraphicsType.DirectX);
+			DataToGraphics dataToGraphics = new DataToGraphics(1.0f, GraphicsType);
 			GraphicsView.ClearShape();
 
 			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, profile);

@@ -7,23 +7,13 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 {
 	internal class ShapeGdiList : IGdiList
 	{
-		private readonly List<IGdiShape> _shapes;
+		private ShapeGdiList() { }
 
-		//private ShapeList() { }
-
-		public ShapeGdiList()
+		public ShapeGdiList(IEnumerable<IGdiShape> shapes)
 		{
-			_shapes = new List<IGdiShape>();
+			Shapes = new List<IGdiShape>(shapes);
 		}
 
-		public IEnumerable<IGdiShape> Shapes { get => _shapes; }
-
-		public void AddShape(IEnumerable<IGdiShape> shapes)
-		{
-			if (shapes != null)
-			{
-				_shapes.AddRange(shapes);
-			}
-		}
+		public IEnumerable<IGdiShape> Shapes { get; private set; }
 	}
 }

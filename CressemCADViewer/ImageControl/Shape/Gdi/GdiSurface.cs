@@ -44,7 +44,10 @@ namespace ImageControl.Shape.Gdi
 
 		public override void Draw(Graphics graphics)
 		{
-			return;
+			foreach (var polygon in Polygons)
+			{
+				polygon.Draw(graphics);
+			}
 		}
 	}
 }

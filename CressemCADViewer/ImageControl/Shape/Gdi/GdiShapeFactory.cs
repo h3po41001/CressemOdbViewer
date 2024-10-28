@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape.Gdi.Interface;
+using SharpDX.DXGI;
 
 namespace ImageControl.Shape.Gdi
 {
@@ -24,57 +25,98 @@ namespace ImageControl.Shape.Gdi
 			}
 		}
 
-		public GdiShape CreateGdiShape(IGdiShape shapeBase)
+		public GdiShape CreateGdiShape(IGdiArc arc)
 		{
-			if (shapeBase is IGdiArc arc)
+			if (arc is null)
 			{
-				return new GdiArc(arc.X, arc.Y,
-					arc.Width, arc.Height,
-					arc.StartAngle, arc.SweepAngle, arc.LineWidth);
+				return null;
 			}
-			else if (shapeBase is IGdiEllipse ellipse)
-			{
-				return new GdiEllipse(ellipse.X, ellipse.Y,
-					ellipse.Width, ellipse.Height);
-			}
-			else if (shapeBase is IGdiSurface surface)
-			{
-				List<GdiShapePolygon> shapes = new List<GdiShapePolygon>();
-				foreach (var polygon in surface.Polygons)
-				{
-					shapes.Add((dynamic)CreateGdiShape(polygon));
-				}
 
-				return new GdiSurface(surface.IsPositive, shapes);
-			}
-			else if (shapeBase is IGdiLine line)
-			{
-				return new GdiLine(line.Sx, line.Sy, line.Ex, line.Ey, line.LineWidth);
-			}
-			else if (shapeBase is IGdiRectangle rect)
-			{
-				return new GdiRectangle(rect.X, rect.Y, rect.Width, rect.Height);
-			}
-			else if (shapeBase is IGdiPolygon polygon)
-			{
-				List<GdiShape> shapes = new List<GdiShape>();
-				if (polygon.Shapes != null)
-				{
-					foreach (var shape in polygon.Shapes)
-					{
-						shapes.Add((dynamic)CreateGdiShape(shape));
-					}
-				}
+			return new GdiArc(arc.X, arc.Y,
+				arc.Width, arc.Height,
+				arc.StartAngle, arc.SweepAngle, arc.LineWidth);
+		}
 
-				if (polygon.Points != null)
-				{
-					shapes.Add(new GdiPointsPolygon(polygon.IsFill, polygon.Points));
-				}
+		public GdiShape CreateGdiShape(IGdiEllipse ellipse)
+		{
+			if (ellipse is null)
+			{
+				return null;
+			}
 
-				return new GdiShapePolygon(polygon.IsFill, shapes);
+			return new GdiEllipse(ellipse.X, ellipse.Y,
+				ellipse.Width, ellipse.Height);
+		}
+
+		public GdiShape CreateGdiShape(IGdiLine line)
+		{
+			if (line is null)
+			{
+				return null;
+			}
+
+			return new GdiLine(line.Sx, line.Sy, line.Ex, line.Ey, line.LineWidth);
+		}
+
+		public GdiShape CreateGdiShape(IGdiPolygon polygon)
+		{
+			if (polygon is null)
+			{
+				return null;
+			}
+
+			List<GdiShape> shapes = new List<GdiShape>();
+			if (polygon.Shapes != null)
+			{
+				foreach (var shape in polygon.Shapes)
+				{
+					shapes.Add(CreateGdiShape((dynamic)shape));
+				}
+			}
+
+			if (polygon.Points != null)
+			{
+				shapes.Add(new GdiPointsPolygon(polygon.IsFill, polygon.Points));
+			}
+
+			return new GdiShapePolygon(polygon.IsFill, shapes);
+		}
+
+		public GdiShape CreateGdiShape(IGdiRectangle rect)
+		{
+			if (rect is null)
+			{
+				return null;
+			}
+
+			return new GdiRectangle(rect.X, rect.Y, rect.Width, rect.Height);
+		}
+
+		public GdiShape CreateGdiShape(IGdiText text)
+		{
+			if (text is null)
+			{
+				return null;
 			}
 
 			return null;
+			//return new GdiText(text.X, text.Y, text.Text, text.Font, text.Brush);
+		}
+
+		public GdiShape CreateGdiShape(IGdiSurface surface)
+		{
+			if (surface is null)
+			{
+				return null;
+			}
+
+			List<GdiShapePolygon> shapes = new List<GdiShapePolygon>();
+			foreach (var polygon in surface.Polygons)
+			{
+				shapes.Add((dynamic)CreateGdiShape(polygon));
+			}
+
+			return new GdiSurface(surface.IsPositive, shapes);
 		}
 	}
 }

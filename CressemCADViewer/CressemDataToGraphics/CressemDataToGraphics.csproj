@@ -45,7 +45,10 @@
     <Compile Include="Model\Cad\ShapeBase.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectArc.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectBase.cs" />
+    <Compile Include="Model\Graphics\DirectX\ShapeDirectLine.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectList.cs" />
+    <Compile Include="Model\Graphics\DirectX\ShapeDirectPolygon.cs" />
+    <Compile Include="Model\Graphics\DirectX\ShapeDirectSurface.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiArc.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiBase.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiEllipse.cs" />
@@ -54,7 +57,6 @@
     <Compile Include="Model\Graphics\Gdi\ShapeGdiPolygon.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiRectangle.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiSurface.cs" />
-    <Compile Include="Model\Enum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

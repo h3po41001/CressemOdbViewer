@@ -94,25 +94,40 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsPrevKeyDown += OnPrevkeyDown;
 		}
 
-		public override bool LoadProfile(IGraphicsList profileShape)
+		public override bool LoadProfile(IGraphicsList profileShapes)
 		{
+			if (profileShapes is null)
+			{
+				return false;
+			}
+
+			if (profileShapes is IDirectList directList)
+			{
+				foreach (var shape in directList.Shapes)
+				{
+					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
+						(dynamic)shape, _d2dFactory, _renderTarget, Color.Red));
+				}
+			}
 
 			return true;
 		}
 
 		public override void AddShapes(IGraphicsList shapes)
 		{
+			if (shapes is null)
+			{
+				return;
+			}
+
 			if (shapes is IDirectList directList)
 			{
 				foreach (var shape in directList.Shapes)
 				{
-					if (shape is IDirectShape directShape)
-					{
-						_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
-							directShape, _d2dFactory, _renderTarget, Color.Red));
-					}
+					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
+						(dynamic)shape, _d2dFactory, _renderTarget, Color.Red));
 				}
-			}			
+			}
 		}
 
 		public override void ClearShape()

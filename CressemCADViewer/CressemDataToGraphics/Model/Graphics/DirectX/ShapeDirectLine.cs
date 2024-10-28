@@ -1,16 +1,15 @@
 ﻿using System.Drawing;
 using CressemDataToGraphics.Converter;
-using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Extension;
-using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.DirectX.Interface;
 
-namespace CressemDataToGraphics.Model.Graphics.Shape
+namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeGdiLine : ShapeGdiBase, IGdiLine
+	internal class ShapeDirectLine : ShapeDirectBase, IDirectShape
 	{
-		private ShapeGdiLine() { }
+		private ShapeDirectLine() { }
 
-		public ShapeGdiLine(float pixelResolution,
+		public ShapeDirectLine(float pixelResolution,
 			float sx, float sy,
 			float ex, float ey,
 			float width = 0) : base(pixelResolution)
@@ -32,7 +31,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float LineWidth { get; private set; }
 
-		public static ShapeGdiLine Create(bool useMM, 
+		public static ShapeDirectLine Create(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
@@ -78,14 +77,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				end = end.Rotate(datum, orient, isMirrorXAxis);
 			}
 
-			return new ShapeGdiLine(pixelResolution,
+			return new ShapeDirectLine(pixelResolution,
 				start.X, -start.Y, end.X, -end.Y, fwidth);
-		}
-
-		public static ShapeGdiLine CreateOpenGl(bool useMM, float pixelResolution,
-			IFeatureLine line)
-		{
-			throw new System.NotImplementedException();
 		}
 	}
 }

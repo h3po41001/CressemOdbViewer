@@ -1,26 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Extension;
+using ImageControl.Shape.DirectX.Interface;
 
-namespace CressemDataToGraphics.Model.Graphics.Shape
+namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeGdiPolygon : ShapeGdiBase, IGdiPolygon
+	internal class ShapeDirectPolygon : ShapeDirectBase, IDirectPolygon
 	{
-		private ShapeGdiPolygon() : base()
+
+		private ShapeDirectPolygon() : base()
 		{
 		}
 
-		public ShapeGdiPolygon(float pixelResolution,
+		public ShapeDirectPolygon(float pixelResolution,
 			bool isFill,
-			IEnumerable<ShapeGdiBase> shapes) : base(pixelResolution)
+			IEnumerable<ShapeDirectBase> shapes) : base(pixelResolution)
 		{
 			IsFill = isFill;
 			Shapes = shapes;
 		}
 
-		public ShapeGdiPolygon(float pixelResolution,
+		public ShapeDirectPolygon(float pixelResolution,
 			bool isFill,
 			IEnumerable<PointF> points) : base(pixelResolution)
 		{
@@ -30,17 +33,17 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<IGdiShape> Shapes { get; private set; }
+		public IEnumerable<IDirectShape> Shapes { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 
-		public static ShapeGdiPolygon Create(bool useMM,
+		public static ShapeDirectPolygon Create(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
 			bool isPositive, IFeaturePolygon polygon)
 		{
-			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
+			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
 
 			bool isIsland = polygon.PolygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;
@@ -49,7 +52,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				if (feature is IFeatureArc arc)
 				{
-					shapes.Add(ShapeGdiArc.Create(useMM,
+					shapes.Add(ShapeDirectArc.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
 						orient, isMirrorXAxis,
@@ -58,7 +61,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 				else if (feature is IFeatureLine line)
 				{
-					shapes.Add(ShapeGdiLine.Create(useMM,
+					shapes.Add(ShapeDirectLine.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsMirrorXAxis,
@@ -74,21 +77,27 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				}
 				else if (feature is IFeatureSurface surface)
 				{
-					shapes.Add(ShapeGdiSurface.Create(useMM, 
+					shapes.Add(ShapeDirectSurface.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis, isPositive, 
+						polygon.Orient, polygon.IsMirrorXAxis, isPositive,
 						surface.Polygons));
 				}
 			}
 
-			return new ShapeGdiPolygon(pixelResolution, isFill, shapes);
+			return new ShapeDirectPolygon(pixelResolution, isFill, shapes);
 		}
 
-		public static ShapeGdiPolygon CreateGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, int orient, bool isMM, bool isPositive, string polygonType,
+		public static ShapeDirectPolygon CreateGdiPlus(bool useMM, 
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum,  double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
+			PointF datum = new PointF(
+				(float)(xDatum + cx), (float)(yDatum + cy));
+
 			List<PointF> calcPoints = new List<PointF>();
 			foreach (var point in points)
 			{
@@ -112,18 +121,21 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 					}
 				}
 
-				calcPoints.Add(new PointF((float)x, (float)-y));
+				var converPoint = new PointF((float)x, (float)-y);
+				if (orient > 0)
+				{ 
+					calcPoints.Add(converPoint.Rotate(datum, orient, isMirrorXAxis)); 
+				}
+				else
+				{
+					calcPoints.Add(converPoint);
+				}
 			}
 
 			bool isIsland = polygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;
 
-			return new ShapeGdiPolygon(pixelResolution, isFill, calcPoints);
-		}
-
-		public static IGdiPolygon CreateOpenGl()
-		{
-			throw new System.NotImplementedException();
+			return new ShapeDirectPolygon(pixelResolution, isFill, calcPoints);
 		}
 	}
 }
