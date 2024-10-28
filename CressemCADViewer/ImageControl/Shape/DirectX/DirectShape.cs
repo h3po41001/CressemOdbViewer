@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 

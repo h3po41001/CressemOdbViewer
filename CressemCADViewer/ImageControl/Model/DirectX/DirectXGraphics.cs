@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using ImageControl.Gdi.View;
 using ImageControl.Shape.DirectX;
 using ImageControl.Shape.DirectX.Interface;
-using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
@@ -42,9 +41,9 @@ namespace ImageControl.Model.DirectX
 			SwapChainDescription swapChainDesc = new SwapChainDescription()
 			{
 				BufferCount = 1,
-				ModeDescription =
-				new ModeDescription(_directXView.ClientSize.Width, _directXView.ClientSize.Height,
-				new Rational(60, 1), Format.R8G8B8A8_UNorm),
+				ModeDescription = new ModeDescription(
+					_directXView.ClientSize.Width, _directXView.ClientSize.Height,
+					new Rational(60, 1), Format.R8G8B8A8_UNorm),
 				IsWindowed = true,
 				OutputHandle = _directXView.Handle,
 				SampleDescription = new SampleDescription(1, 0),
@@ -64,12 +63,14 @@ namespace ImageControl.Model.DirectX
 
 			// 백 버퍼로부터 RenderTarget 생성
 			using (var backBuffer = _swapChain.GetBackBuffer<Texture2D>(0))
-			using (var surface = backBuffer.QueryInterface<Surface>())
 			{
-				RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-					new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied));
+				using (var surface = backBuffer.QueryInterface<Surface>())
+				{
+					RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
+						new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied));
 
-				_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
+					_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
+				}
 			}
 
 			_renderTimer = new Timer
@@ -77,8 +78,8 @@ namespace ImageControl.Model.DirectX
 				Interval = 30 // 약 30FPS
 			};
 
-			_directShapes.Add(new DirectArc(100, 100, 200, 200, 100, 100, 0, true, false, _d2dFactory, _renderTarget, Color.Red));
-			_directShapes.Add(new DirectEllipse(120.8f, 96.5f, 31.5f, 19.2f, _d2dFactory, _renderTarget, Color.Red));
+			//_directShapes.Add(new DirectArc(100, 100, 200, 200, 100, 100, 0, true, false, _d2dFactory, _renderTarget, Color.Red));
+			//_directShapes.Add(new DirectEllipse(120.8f, 96.5f, 31.5f, 19.2f, _d2dFactory, _renderTarget, Color.Red));
 
 			_renderTimer.Tick += RenderTimer_Tick;
 			_renderTimer.Start();
@@ -91,28 +92,27 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsMouseMove += OnMouseMove;
 			_directXView.GraphicsMouseUp += OnMouseUp;
 			_directXView.GraphicsPrevKeyDown += OnPrevkeyDown;
-		}		
+		}
 
-		public override bool LoadProfile(object profileShape)
+		public override bool LoadProfile(IGraphicsList profileShape)
 		{
+
 			return true;
 		}
 
-		public override void AddShapes(object shape)
+		public override void AddShapes(IGraphicsList shapes)
 		{
-			if (shape is IDirectList directList)
+			if (shapes is IDirectList directList)
 			{
-				foreach (IDirectShape directShape in directList.Shapes)
+				foreach (var shape in directList.Shapes)
 				{
-					if (directShape is null)
+					if (shape is IDirectShape directShape)
 					{
-						continue;
+						_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
+							directShape, _d2dFactory, _renderTarget, Color.Red));
 					}
-
-					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
-						directShape, _d2dFactory, _renderTarget, Color.Red));
 				}
-			}
+			}			
 		}
 
 		public override void ClearShape()
@@ -141,11 +141,11 @@ namespace ImageControl.Model.DirectX
 		private void OnPaint(object sender, Graphics graphics)
 		{
 			OnDraw();
-		}		
+		}
 
 		private void OnMouseWheel(object sender, MouseEventArgs arg)
 		{
-		}		
+		}
 
 		private void OnResize(object sender, EventArgs arg)
 		{

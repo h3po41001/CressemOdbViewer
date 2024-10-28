@@ -1,10 +1,9 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 
 namespace ImageControl.Shape.DirectX
 {
-	internal abstract class DirectPathGeometry : DirectShape, IDirectShape
+	internal abstract class DirectPathGeometry : DirectShape
 	{
 		protected DirectPathGeometry() : base() { }
 

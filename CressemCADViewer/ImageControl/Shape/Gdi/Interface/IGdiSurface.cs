@@ -2,7 +2,7 @@
 
 namespace ImageControl.Shape.Gdi.Interface
 {
-	public interface IGdiSurface : IGdiBase
+	public interface IGdiSurface : IGdiShape
 	{
 		bool IsPositive { get; }
 

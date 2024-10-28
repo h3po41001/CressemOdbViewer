@@ -4,6 +4,7 @@ using ImageControl.Model;
 using ImageControl.Model.DirectX;
 using ImageControl.Model.Gdi;
 using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 using ImageControl.View.DirectX;
 using ImageControl.View.Gdi;
 
@@ -41,14 +42,14 @@ namespace ImageControl.ViewModel
 			}
 		}
 
-		public bool LoadProfile(object profileShape)
+		public bool LoadProfile(IGraphicsList profileShape)
 		{
 			return _graphics.LoadProfile(profileShape);
 		}
 
-		public void AddShapes(object shape)
+		public void AddShapes(IGraphicsList shapes)
 		{
-			_graphics.AddShapes(shape);
+			_graphics.AddShapes(shapes);
 		}
 
 		public void ClearShape()

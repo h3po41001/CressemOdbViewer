@@ -99,7 +99,7 @@
     </Compile>
     <Compile Include="Shape\Gdi\GdiSurface.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiArc.cs" />
-    <Compile Include="Shape\Gdi\Interface\IGdiBase.cs" />
+    <Compile Include="Shape\Gdi\Interface\IGdiShape.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiEllipse.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiLine.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiList.cs" />
@@ -107,6 +107,8 @@
     <Compile Include="Shape\Gdi\Interface\IGdiRectangle.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiSurface.cs" />
     <Compile Include="Shape\Gdi\GdiShapeFactory.cs" />
+    <Compile Include="Shape\Interface\IGraphicsList.cs" />
+    <Compile Include="Shape\Interface\IGraphicsShape.cs" />
     <Compile Include="ViewModel\GraphicsViewModel.cs" />
     <Compile Include="View\DirectX\DirectXView.xaml.cs">
       <DependentUpon>DirectXView.xaml</DependentUpon>

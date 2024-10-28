@@ -1,8 +1,7 @@
 ﻿using CressemDataToGraphics.Factory;
 using CressemDataToGraphics.Model;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.DirectX.Interface;
-using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics
 {
@@ -21,7 +20,7 @@ namespace CressemDataToGraphics
 
 		public GraphicsType GraphicsType { get; private set; }
 
-		public object GetShapes(bool useMM,
+		public IGraphicsList GetShapes(bool useMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)
 		{

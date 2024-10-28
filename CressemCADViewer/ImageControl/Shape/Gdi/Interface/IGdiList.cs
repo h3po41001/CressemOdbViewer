@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Shape.Gdi.Interface
 {
-	public interface IGdiList
+	public interface IGdiList : IGraphicsList
 	{
-		IEnumerable<IGdiBase> Shapes { get; }
+		IEnumerable<IGdiShape> Shapes { get; }
 	}
 }

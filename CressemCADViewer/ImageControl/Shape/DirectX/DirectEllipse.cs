@@ -5,7 +5,7 @@ using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
-	internal class DirectEllipse : DirectShape, IDirectEllipse
+	internal class DirectEllipse : DirectShape
 	{
 
 		private DirectEllipse() { }

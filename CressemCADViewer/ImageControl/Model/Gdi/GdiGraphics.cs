@@ -8,9 +8,9 @@ using System.Windows.Forms.Integration;
 using ImageControl.Extension;
 using ImageControl.Gdi.View;
 using ImageControl.Model.Shape.Gdi;
-using ImageControl.Shape;
 using ImageControl.Shape.Gdi;
 using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model.Gdi
 {
@@ -47,79 +47,75 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadProfile(object list)
+		public override bool LoadProfile(IGraphicsList list)
 		{
 			if (list is null)
 			{
 				return false;
 			}
 
-			if (list is IGdiList shapeList)
+			if (list is IGdiList gdiList)
 			{
-				if (shapeList.Shapes is null)
-				{
-					return false;
-				}
-
-				foreach (var sh in shapeList.Shapes)
+				foreach (var sh in gdiList.Shapes)
 				{
 					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(sh));
 				}
 
-				var roiShape = shapeList.Shapes.FirstOrDefault();
-				if (roiShape is null)
+				var roiShape = gdiList.Shapes.FirstOrDefault();
+				if (roiShape is IGdiShape roiGdiShape)
 				{
-					return false;
-				}
-
-				var shape = GdiShapeFactory.Instance.CreateGdiShape(roiShape);
-				if (shape is IGdiSurface surface)
-				{
-					List<RectangleF> bounds = new List<RectangleF>();
-					foreach (GdiShapePolygon polygon in surface.Polygons.Cast<GdiShapePolygon>())
+					var shape = GdiShapeFactory.Instance.CreateGdiShape(roiGdiShape);
+					if (shape is IGdiSurface surface)
 					{
-						bounds.Add(polygon.GraphicsPath.GetBounds());
+						List<RectangleF> bounds = new List<RectangleF>();
+						foreach (GdiShapePolygon polygon in surface.Polygons.Cast<GdiShapePolygon>())
+						{
+							bounds.Add(polygon.GraphicsPath.GetBounds());
+						}
+
+						_roi = bounds.GetBounds();
+						_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
+
+						// 화면에 맞추기 위함
+						ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
+						if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
+						{
+							ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
+						}
+
+						WindowPos = new PointF(
+							(float)_gdiControl.RenderSize.Width / 2,
+							(float)_gdiControl.RenderSize.Height / 2);
+
+						ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
+
+						OffsetSize = new SizeF(
+							WindowPos.X - ProductPos.X * ScreenZoom,
+							WindowPos.Y - ProductPos.Y * ScreenZoom);
+
+						return true;
 					}
-
-					_roi = bounds.GetBounds();
-					_image = new Bitmap((int)(_roi.Width + 0.5f), (int)(_roi.Height + 0.5f));
-
-					// 화면에 맞추기 위함
-					ScreenZoom = (float)_gdiControl.RenderSize.Width / _roi.Width;
-					if ((float)_gdiControl.RenderSize.Height / _roi.Height < ScreenZoom)
-					{
-						ScreenZoom = (float)_gdiControl.RenderSize.Height / _roi.Height;
-					}
-
-					WindowPos = new PointF(
-						(float)_gdiControl.RenderSize.Width / 2,
-						(float)_gdiControl.RenderSize.Height / 2);
-
-					ProductPos = new PointF(_roi.Width / 2, _roi.Height / 2);
-
-					OffsetSize = new SizeF(
-						WindowPos.X - ProductPos.X * ScreenZoom,
-						WindowPos.Y - ProductPos.Y * ScreenZoom);
-
-					return true;
 				}
 			}
 
 			return false;
 		}
 
-		public override void AddShapes(object list)
+		public override void AddShapes(IGraphicsList list)
 		{
 			if (list is null)
 			{
 				return;
 			}
 
-			if (list is IGdiList shapes)
+			if (list is IGdiList gdiList)
 			{
-				foreach (var shape in shapes.Shapes)
+				foreach (var shape in gdiList.Shapes)
 				{
-					_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(shape));
+					if (shape is IGdiShape gdiShape)
+					{
+						_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(gdiShape));
+					}
 				}
 			}
 		}

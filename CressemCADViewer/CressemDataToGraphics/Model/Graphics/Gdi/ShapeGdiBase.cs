@@ -2,7 +2,7 @@
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal abstract class ShapeGdiBase : IGdiBase
+	internal abstract class ShapeGdiBase : IGdiShape
 	{
 		protected ShapeGdiBase() { }
 

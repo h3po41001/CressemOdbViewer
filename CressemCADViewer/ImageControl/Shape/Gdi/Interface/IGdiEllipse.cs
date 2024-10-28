@@ -1,6 +1,6 @@
 ﻿namespace ImageControl.Shape.Gdi.Interface
 {
-	public interface IGdiEllipse : IGdiBase
+	public interface IGdiEllipse : IGdiShape
 	{
 		float X { get; }
 

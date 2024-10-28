@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Model
 {
@@ -33,9 +34,9 @@ namespace ImageControl.Model
 
 		public abstract void Initialize();
 		
-		public abstract bool LoadProfile(object profileShape);
+		public abstract bool LoadProfile(IGraphicsList profileShape);
 
-		public abstract void AddShapes(object shape);
+		public abstract void AddShapes(IGraphicsList shape);
 
 		public abstract void ClearShape();
 

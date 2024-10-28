@@ -1,6 +1,6 @@
 ﻿namespace ImageControl.Shape.Gdi.Interface
 {
-	public interface IGdiRectangle : IGdiBase
+	public interface IGdiRectangle : IGdiShape
 	{
 		float X { get; }
 

@@ -24,7 +24,7 @@ namespace ImageControl.Shape.Gdi
 			}
 		}
 
-		public GdiShape CreateGdiShape(IGdiBase shapeBase)
+		public GdiShape CreateGdiShape(IGdiShape shapeBase)
 		{
 			if (shapeBase is IGdiArc arc)
 			{

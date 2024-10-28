@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
@@ -9,7 +10,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public ShapeDirectList(IEnumerable<IDirectShape> shapes)
 		{
-			Shapes = shapes;
+			Shapes = new List<IDirectShape>(shapes.Cast<IDirectShape>());
 		}
 
 		public IEnumerable<IDirectShape> Shapes { get; private set; }

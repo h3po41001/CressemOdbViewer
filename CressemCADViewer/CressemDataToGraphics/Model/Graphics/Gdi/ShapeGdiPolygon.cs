@@ -3,7 +3,6 @@ using System.Drawing;
 using CressemDataToGraphics.Converter;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Gdi.Interface;
-using ImageControl.Extension;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
@@ -31,7 +30,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<IGdiBase> Shapes { get; private set; }
+		public IEnumerable<IGdiShape> Shapes { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 

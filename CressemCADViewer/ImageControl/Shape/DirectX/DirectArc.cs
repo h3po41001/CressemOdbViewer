@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.DirectX.Interface;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
-	internal class DirectArc : DirectPathGeometry, IDirectArc
+	internal class DirectArc : DirectPathGeometry
 	{
 		private DirectArc() : base() { }
 

@@ -3,11 +3,11 @@ using System.Drawing;
 
 namespace ImageControl.Shape.Gdi.Interface
 {
-	public interface IGdiPolygon : IGdiBase
+	public interface IGdiPolygon : IGdiShape
 	{
 		bool IsFill { get; }
 
-		IEnumerable<IGdiBase> Shapes { get; }
+		IEnumerable<IGdiShape> Shapes { get; }
 
 		IEnumerable<PointF> Points { get; }
 	}

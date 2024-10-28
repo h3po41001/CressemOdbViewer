@@ -1,11 +1,10 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
-	internal class DirectRectangle : DirectShape, IDirectRectangle
+	internal class DirectRectangle : DirectShape
 	{
 		private DirectRectangle() : base() { }
 
