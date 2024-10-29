@@ -19,5 +19,7 @@
 		bool IsLargeArc { get; }
 
 		bool IsClockwise { get; }
+
+		float LineWidth { get; }
 	}
 }

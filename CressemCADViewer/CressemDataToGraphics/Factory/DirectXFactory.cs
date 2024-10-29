@@ -68,7 +68,7 @@ namespace CressemDataToGraphics.Factory
 					arc.IsClockWise, 0));
 			}
 
-			return new ShapeDirectList(shapes);
+			return new ShapeDirectList(arc.Polarity.Equals("P") , shapes);
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -110,7 +110,7 @@ namespace CressemDataToGraphics.Factory
 					line.X, line.Y, line.Ex, line.Ey, 0));
 			}
 
-			return new ShapeDirectList(shapes);
+			return new ShapeDirectList(line.Polarity.Equals("P"), shapes);
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -139,7 +139,7 @@ namespace CressemDataToGraphics.Factory
 					pad.FeatureSymbol));
 			}
 
-			return new ShapeDirectList(shapes);
+			return new ShapeDirectList(pad.Polarity.Equals("P"), shapes);
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -164,7 +164,7 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis,
 				isPositive, surface.Polygons));
 
-			return new ShapeDirectList(shapes);
+			return new ShapeDirectList(surface.Polarity.Equals("P"), shapes);
 		}
 
 		private ShapeDirectBase MakeSymbolShape(bool useMM,

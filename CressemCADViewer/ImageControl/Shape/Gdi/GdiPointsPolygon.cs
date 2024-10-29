@@ -9,22 +9,33 @@ namespace ImageControl.Shape.Gdi
 {
 	internal class GdiPointsPolygon : GdiShape
 	{
-		public GdiPointsPolygon(bool isFill,
-			IEnumerable<PointF> points) : base()
+		public GdiPointsPolygon(bool isPositive, 
+			bool isFill,
+			IEnumerable<PointF> points) : base(isPositive)
 		{
 			IsFill = isFill;
 			Points = new List<PointF>(points);
 
 			ProfilePen.Color = Color.White;
+			HoleBrush = new SolidBrush(Color.Black);
 		}
 
 		public bool IsFill { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 
+		public SolidBrush HoleBrush { get; private set; } 
+
 		public override void Fill(Graphics graphics)
 		{
-			graphics.FillPolygon(SolidBrush, Points.ToArray());
+			if (IsFill)
+			{
+				graphics.FillPolygon(SolidBrush, Points.ToArray());
+			}
+			else
+			{
+				graphics.FillPolygon(HoleBrush, Points.ToArray());
+			}
 		}
 
 		public override void Draw(Graphics graphics)

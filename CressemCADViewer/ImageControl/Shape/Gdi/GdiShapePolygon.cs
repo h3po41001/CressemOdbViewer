@@ -7,24 +7,23 @@ namespace ImageControl.Model.Shape.Gdi
 {
 	internal class GdiShapePolygon : GdiShape
 	{
-		private SolidBrush _holeBrush = null;
+		private GdiShapePolygon() : base() { }
 
-		private GdiShapePolygon() { }
-
-		public GdiShapePolygon(bool isFill,
-			IEnumerable<GdiShape> shapes) : base()
+		public GdiShapePolygon(bool isPositive, bool isFill,
+			IEnumerable<GdiShape> shapes) : base(isPositive)
 		{
 			IsFill = isFill;
 
 			Shapes = new List<GdiShape>(shapes);
 			GraphicsPath = new GraphicsPath();
-			_holeBrush = new SolidBrush(Color.Black);
 			ProfilePen.Color = Color.White;
 
 			foreach (var shape in Shapes)
 			{
 				GraphicsPath.Add(shape);
 			}
+
+			HoleBrush = new SolidBrush(Color.Black);
 		}
 
 		public bool IsFill { get; private set; }
@@ -33,12 +32,18 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public GraphicsPath GraphicsPath { get; private set; }
 
+		public SolidBrush HoleBrush { get; private set; }
+
 		public override void Fill(Graphics graphics)
 		{
 			if (IsFill)
+			{
 				graphics.FillPath(SolidBrush, GraphicsPath);
+			}
 			else
-				graphics.FillPath(_holeBrush, GraphicsPath);			
+			{
+				graphics.FillPath(HoleBrush, GraphicsPath);
+			}
 		}
 
 		public override void Draw(Graphics graphics)

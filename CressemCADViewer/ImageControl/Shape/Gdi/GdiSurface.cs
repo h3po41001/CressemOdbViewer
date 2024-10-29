@@ -11,9 +11,8 @@ namespace ImageControl.Shape.Gdi
 		private GdiSurface() { }
 
 		public GdiSurface(bool isPositive, 
-			IEnumerable<GdiShapePolygon> polygons) : base()
+			IEnumerable<GdiShapePolygon> polygons) : base(isPositive)
 		{
-			IsPositive = isPositive;
 			Polygons = new List<GdiShapePolygon>(polygons);
 			GraphicsRegion = new Region();
 			GraphicsRegion.MakeEmpty();
@@ -30,8 +29,6 @@ namespace ImageControl.Shape.Gdi
 				}
 			}
 		}
-
-		public bool IsPositive { get; private set; }
 
 		public IEnumerable<GdiShapePolygon> Polygons { get; private set; }
 

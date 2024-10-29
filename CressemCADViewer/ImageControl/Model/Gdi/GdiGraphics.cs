@@ -61,13 +61,13 @@ namespace ImageControl.Model.Gdi
 						continue;
 					}
 
-					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)shape));
+					_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(gdiList.IsPositive, (dynamic)shape));
 				}
 
 				var roiShape = gdiList.Shapes.FirstOrDefault();
 				if (roiShape is IGdiSurface roiSurface)
 				{
-					GdiSurface surface = GdiShapeFactory.Instance.CreateGdiShape((dynamic)roiSurface);
+					GdiSurface surface = GdiShapeFactory.Instance.CreateGdiShape(gdiList.IsPositive, (dynamic)roiSurface);
 
 					Roi = surface.GetBounds();
 					_image = new Bitmap((int)(Roi.Width + 0.5f), (int)(Roi.Height + 0.5f));
@@ -112,7 +112,8 @@ namespace ImageControl.Model.Gdi
 						continue;
 					}
 
-					_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape((dynamic)shape));
+					_gdiShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(gdiList.IsPositive,
+						(dynamic)shape));
 				}
 			}
 		}

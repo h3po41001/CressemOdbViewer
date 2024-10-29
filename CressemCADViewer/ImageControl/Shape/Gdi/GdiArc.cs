@@ -1,15 +1,18 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
 	internal class GdiArc : GdiShape
 	{
-		private GdiArc() { }
+		private GdiArc() : base() { }
 
-		public GdiArc(float x, float y,
+		public GdiArc(bool isPositive,
+			float x, float y,
 			float width, float height,
-			float startAngle, float sweepAngle, float lineWidth) : base()
+			float startAngle, float sweepAngle, 
+			float lineWidth) : base(isPositive)
 		{
 			X = x;
 			Y = y;
@@ -24,6 +27,8 @@ namespace ImageControl.Model.Shape.Gdi
 
 			ProfilePen.Width = LineWidth;
 			ProfilePen.Color = Color.White;
+
+			HolePen = new Pen(Color.Black, LineWidth);
 		}
 
 		public float X { get; private set; }
@@ -40,9 +45,18 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float LineWidth { get; private set; }
 
+		public Pen HolePen { get; private set; }
+
 		public override void Fill(Graphics graphics)
 		{
-			graphics.DrawArc(DefaultPen, X, Y, Width, Height, StartAngle, SweepAngle);
+			if (IsPositive)
+			{
+				graphics.DrawArc(DefaultPen, X, Y, Width, Height, StartAngle, SweepAngle);
+			}
+			else
+			{
+				graphics.DrawArc(HolePen, X, Y, Width, Height, StartAngle, SweepAngle);
+			}
 		}
 
 		public override void Draw(Graphics graphics)

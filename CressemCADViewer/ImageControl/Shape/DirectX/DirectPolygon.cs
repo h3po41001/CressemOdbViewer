@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using ImageControl.Extension;
 using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
@@ -10,20 +10,53 @@ namespace ImageControl.Shape.DirectX
 	{
 		private DirectPolygon() : base() { }
 
-		public DirectPolygon(IEnumerable<DirectShape> paths,
-			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
+		public DirectPolygon(bool isPositive,
+			bool isFill, IEnumerable<DirectShape> paths,
+			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
+			IsFill = isFill;
 			Paths = new List<DirectShape>(paths);
+			SetShape();
 		}
+
+		public bool IsFill { get; private set; }
 
 		public IEnumerable<DirectShape> Paths { get; private set; }
 
 		public override void SetShape()
 		{
-			throw new NotImplementedException();
+			try
+			{
+				ShapeGemotry = new PathGeometry(Factory);
+				using (var temp = ((PathGeometry)ShapeGemotry).Open())
+				{
+					temp.Close();
+				}
+
+				foreach (var shape in Paths)
+				{
+					PathGeometry resultGeometry = null;
+					if (IsFill is true)
+					{
+						resultGeometry = ShapeGemotry.Combine(shape, CombineMode.Union, Factory);
+					}
+					else
+					{
+						resultGeometry = ShapeGemotry.Combine(shape, CombineMode.Xor, Factory);
+					}
+
+					ShapeGemotry.Dispose();
+					ShapeGemotry = resultGeometry;
+				}
+			}
+			catch (System.Exception)
+			{
+				ShapeGemotry.Dispose();
+				throw;
+			}
 		}
 
-		public RectangleF GetBounds()
+		public override RectangleF GetBounds()
 		{
 			if (Paths is null)
 			{
@@ -33,17 +66,14 @@ namespace ImageControl.Shape.DirectX
 			List<RectangleF> bounds = new List<RectangleF>();
 			foreach (DirectShape shape in Paths)
 			{
-				if (shape is DirectPathGeometry path)
+				var pathBounds = shape.GetBounds();
+				bounds.Add(new RectangleF()
 				{
-					var pathBounds = path.PathGeometry.GetBounds();
-					bounds.Add(new RectangleF()
-					{
-						X = pathBounds.Left,
-						Y = pathBounds.Top,
-						Width = pathBounds.Right - pathBounds.Left,
-						Height = pathBounds.Bottom - pathBounds.Top
-					});
-				}
+					X = pathBounds.Left,
+					Y = pathBounds.Top,
+					Width = pathBounds.Right - pathBounds.Left,
+					Height = pathBounds.Bottom - pathBounds.Top
+				});
 			}
 
 			return bounds.GetBounds();
@@ -59,9 +89,13 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Fill(RenderTarget render)
 		{
-			foreach (var path in Paths)
+			if (IsFill is true)
 			{
-				path.Fill(render);
+				render.FillGeometry(ShapeGemotry, DefaultBrush);
+			}
+			else
+			{
+				render.FillGeometry(ShapeGemotry, HoleBrush);
 			}
 		}
 	}

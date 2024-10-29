@@ -1,21 +1,22 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using ImageControl.Shape.Gdi.Interface;
 
 namespace ImageControl.Model.Shape.Gdi
 {
 	internal class GdiEllipse : GdiShape
 	{
-		private GdiEllipse() { }
+		private GdiEllipse() : base() { }
 
-		public GdiEllipse(float x, float y,
-			float width, float height) : base()
+		public GdiEllipse(bool isPositive,
+			float x, float y,
+			float width, float height) : base(isPositive)
 		{
 			X = x;
 			Y = y;
 			Width = width;
 			Height = height;
 			ProfilePen.Color = Color.White;
+
+			HoleBrush = new SolidBrush(Color.Black);
 		}
 
 		public float X { get; private set; }
@@ -26,9 +27,18 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
+		public SolidBrush HoleBrush { get; private set; }
+
 		public override void Fill(Graphics graphics)
 		{
-			graphics.FillEllipse(SolidBrush, X, Y, Width, Height);
+			if (IsPositive)
+			{
+				graphics.FillEllipse(SolidBrush, X, Y, Width, Height);
+			}
+			else
+			{
+				graphics.FillEllipse(HoleBrush, X, Y, Width, Height);
+			}
 		}
 
 		public override void Draw(Graphics graphics)

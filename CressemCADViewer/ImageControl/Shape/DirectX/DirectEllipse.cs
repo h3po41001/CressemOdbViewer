@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
@@ -7,49 +6,53 @@ namespace ImageControl.Shape.DirectX
 {
 	internal class DirectEllipse : DirectShape
 	{
-
 		private DirectEllipse() { }
 
-		public DirectEllipse(float sx, float sy, float width, float height,
-			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
+		public DirectEllipse(bool isPositive,
+			float sx, float sy, float width, float height,
+			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
-			Sx = sx;
-			Sy = sy;
-			Width = width;
-			Height = height;
+			Width = width / 2;
+			Height = height / 2;
+			StartPt = new RawVector2(sx + width, sy + height);
 
 			SetShape();
 		}
 
-		public float Sx { get; private set; }
-
-		public float Sy { get; private set; }
+		public RawVector2 StartPt { get; private set; }
 
 		public float Width { get; private set; }
 
 		public float Height { get; private set; }
 
-
 		public Ellipse Ellipse { get; private set; }
 
 		public override void SetShape()
 		{
-			float radiusWidth = Width / 2;
-			float radiusHeight = Height / 2;
+			Ellipse = new Ellipse(StartPt, Width, Height);
+			ShapeGemotry = new EllipseGeometry(Factory, Ellipse);
+		}
 
-			Ellipse = new Ellipse(new RawVector2(
-				Sx + radiusWidth, Sy + radiusHeight), 
-				radiusWidth, radiusHeight);
+		public override RectangleF GetBounds()
+		{
+			return new RectangleF(StartPt.X - Width, StartPt.Y - Height, Width * 2, Height * 2);
 		}
 
 		public override void Draw(RenderTarget render)
 		{
-			render.DrawEllipse(Ellipse, Brush);
+			render.DrawEllipse(Ellipse, ProfileBrush);
 		}
 
 		public override void Fill(RenderTarget render)
 		{
-			render.FillEllipse(Ellipse, Brush);
+			if (IsPositive)
+			{
+				render.FillEllipse(Ellipse, DefaultBrush);
+			}
+			else
+			{
+				render.FillEllipse(Ellipse, HoleBrush);
+			}
 		}
 	}
 }

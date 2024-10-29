@@ -8,8 +8,9 @@ namespace ImageControl.Shape.DirectX
 	{
 		private DirectRectangle() : base() { }
 
-		public DirectRectangle(float left, float top, float right, float bottom,
-			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
+		public DirectRectangle(bool isPositive,
+			float left, float top, float right, float bottom,
+			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
 			Left = left;
 			Top = top;
@@ -32,16 +33,29 @@ namespace ImageControl.Shape.DirectX
 		public override void SetShape()
 		{
 			Rectangle = new RawRectangleF(Left, Top, Right, Bottom);
+			ShapeGemotry = new RectangleGeometry(Factory, Rectangle);
+		}
+
+		public override RectangleF GetBounds()
+		{
+			return new RectangleF(Left, Top, Right - Left, Bottom - Top);
 		}
 
 		public override void Draw(RenderTarget render)
 		{
-			throw new System.NotImplementedException();
+			render.DrawRectangle(Rectangle, ProfileBrush);
 		}
 
 		public override void Fill(RenderTarget render)
 		{
-			throw new System.NotImplementedException();
+			if (IsPositive is true)
+			{
+				render.FillRectangle(Rectangle, DefaultBrush);
+			}
+			else
+			{
+				render.FillRectangle(Rectangle, HoleBrush);
+			}
 		}
 	}
 }

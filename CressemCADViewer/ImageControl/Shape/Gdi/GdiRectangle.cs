@@ -6,10 +6,11 @@ namespace ImageControl.Model.Shape.Gdi
 {
 	internal class GdiRectangle : GdiShape
 	{
-		private GdiRectangle() { }
+		private GdiRectangle() :base() { }
 
-		public GdiRectangle(float x, float y,
-			float width, float height) : base()
+		public GdiRectangle(bool isPositive, 
+			float x, float y,
+			float width, float height) : base(isPositive)
 		{
 			X = x;
 			Y = y;
@@ -17,6 +18,8 @@ namespace ImageControl.Model.Shape.Gdi
 			Height = height;
 
 			ProfilePen.Color = Color.White;
+
+			HoleBrush = new SolidBrush(Color.Black);
 		}
 
 		public float X { get; private set; }
@@ -27,9 +30,18 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float Height { get; private set; }
 
+		public SolidBrush HoleBrush { get; private set; }
+
 		public override void Fill(Graphics graphics)
 		{
-			graphics.FillRectangle(SolidBrush, X, Y, Width, Height);
+			if (IsPositive)
+			{
+				graphics.FillRectangle(SolidBrush, X, Y, Width, Height);
+			}
+			else
+			{
+				graphics.FillRectangle(HoleBrush, X, Y, Width, Height);
+			}
 		}
 
 		public override void Draw(Graphics graphics)

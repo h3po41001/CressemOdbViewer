@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CressemDataToGraphics.Converter;
 using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
@@ -20,14 +21,14 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			IEnumerable<ShapeDirectBase> shapes) : base()
 		{
 			IsFill = isFill;
-			Shapes = shapes;
+			Shapes = new List<ShapeDirectBase>(shapes);
 		}
 
 		public ShapeDirectPolygon(bool isFill,
 			IEnumerable<PointF> points) : base()
 		{
 			IsFill = isFill;
-			Points = points;
+			Points = new List<PointF>(points.Select(x => new PointF(x.X, -x.Y)));
 		}
 
 		public bool IsFill { get; private set; }

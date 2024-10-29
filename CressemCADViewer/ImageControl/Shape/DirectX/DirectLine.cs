@@ -4,48 +4,60 @@ using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
-	internal class DirectLine : DirectPathGeometry
+	internal class DirectLine : DirectShape
 	{
 		private DirectLine() : base() { }
 
-		public DirectLine(float sx, float sy, float ex, float ey,
-			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
+		public DirectLine(bool isPositive,
+			float sx, float sy, float ex, float ey,
+			float lineWidth,
+			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
-			Sx = sx;
-			Sy = sy;
-			Ex = ex;
-			Ey = ey;
+			StartPt = new RawVector2(sx, sy);
+			EndPt = new RawVector2(ex, ey);
+			LineWidth = lineWidth > 0 ? lineWidth : 0.1f;
 
 			SetShape();
 		}
 
-		public float Sx { get; private set; }
+		public RawVector2 StartPt { get; private set; }
 
-		public float Sy { get; private set; }
+		public RawVector2 EndPt { get; private set; }
 
-		public float Ex { get; private set; }
-
-		public float Ey { get; private set; }
+		public float LineWidth { get; private set; }
 
 		public override void SetShape()
 		{
-			PathGeometry = new PathGeometry(Factory);
-			try
+			ShapeGemotry = new PathGeometry(Factory);
+					
+			using (GeometrySink sink = ((PathGeometry)ShapeGemotry).Open())
 			{
-				RawVector2 startPoint = new RawVector2(Sx, Sy);
-
-				using (GeometrySink sink = PathGeometry.Open())
-				{
-					sink.BeginFigure(startPoint, FigureBegin.Filled);
-					sink.AddLine(new RawVector2(Ex, Ey));
-					sink.EndFigure(FigureEnd.Closed);
-					sink.Close();
-				}
+				sink.BeginFigure(StartPt, FigureBegin.Filled);
+				sink.AddLine(EndPt);
+				sink.EndFigure(FigureEnd.Open);
+				sink.Close();
 			}
-			catch (System.Exception)
+		}
+
+		public override RectangleF GetBounds()
+		{
+			return new RectangleF(StartPt.X, StartPt.Y, EndPt.X - StartPt.X, EndPt.Y - StartPt.Y);
+		}
+
+		public override void Draw(RenderTarget render)
+		{
+			render.DrawLine(StartPt, EndPt, ProfileBrush, LineWidth);
+		}
+
+		public override void Fill(RenderTarget render)
+		{
+			if (IsPositive is true)
 			{
-				PathGeometry.Dispose();
-				throw;
+				render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
+			}
+			else
+			{
+				render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
 			}
 		}
 	}

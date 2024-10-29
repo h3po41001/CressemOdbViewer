@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ImageControl.Shape.Gdi.Interface;
-using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
@@ -9,10 +7,14 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 	{
 		private ShapeGdiList() { }
 
-		public ShapeGdiList(IEnumerable<IGdiShape> shapes)
+		public ShapeGdiList(bool isPositive, 
+			IEnumerable<IGdiShape> shapes)
 		{
+			IsPositive = isPositive;
 			Shapes = new List<IGdiShape>(shapes);
 		}
+
+		public bool IsPositive { get; private set; }
 
 		public IEnumerable<IGdiShape> Shapes { get; private set; }
 	}

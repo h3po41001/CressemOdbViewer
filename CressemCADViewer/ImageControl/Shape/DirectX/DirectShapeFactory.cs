@@ -9,9 +9,7 @@ namespace ImageControl.Shape.DirectX
 	{
 		private static DirectShapeFactory _instance;
 
-		private DirectShapeFactory()
-		{
-		}
+		private DirectShapeFactory() { }
 
 		public static DirectShapeFactory Instance
 		{
@@ -25,7 +23,7 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public DirectShape CreateDirectShape(IDirectShape shape,
+		public DirectShape CreateDirectShape(bool isPositive, IDirectShape shape,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (shape is null)
@@ -35,19 +33,19 @@ namespace ImageControl.Shape.DirectX
 
 			if (shape is IDirectArc arc)
 			{
-				return CreateDirectArc(arc, factory, render, color);
+				return CreateDirectArc(isPositive, arc, factory, render, color);
 			}
 			else if (shape is IDirectEllipse ellipse)
 			{
-				return CreateDirectEllipse(ellipse, factory, render, color);
+				return CreateDirectEllipse(isPositive, ellipse, factory, render, color);
 			}
 			else if (shape is IDirectLine line)
 			{
-				return CreateDirectLine(line, factory, render, color);
+				return CreateDirectLine(isPositive, line, factory, render, color);
 			}
 			else if (shape is IDirectPolygon polygon)
 			{
-				return CreateDirectPolygon(polygon, factory, render, color);
+				return CreateDirectPolygon(isPositive, polygon, factory, render, color);
 			}
 			else if (shape is IDirectRectangle rect)
 			{
@@ -55,13 +53,13 @@ namespace ImageControl.Shape.DirectX
 			}
 			else if (shape is IDirectSurface surface)
 			{
-				return CreateDirectSurface(surface, factory, render, color);
+				return CreateDirectSurface(isPositive, surface, factory, render, color);
 			}
 
 			return null;
 		}
 
-		private DirectShape CreateDirectArc(IDirectArc arc,
+		private DirectShape CreateDirectArc(bool isPositive, IDirectArc arc,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (arc is null)
@@ -69,13 +67,13 @@ namespace ImageControl.Shape.DirectX
 				return null;
 			}
 
-			return new DirectArc(arc.Sx, arc.Sy, arc.Ex, arc.Ey,
+			return new DirectArc(isPositive, arc.Sx, arc.Sy, arc.Ex, arc.Ey,
 				arc.Width, arc.Height,
-				arc.Rotation, arc.IsLargeArc, arc.IsClockwise,
+				arc.Rotation, arc.IsLargeArc, arc.IsClockwise, arc.LineWidth,
 				factory, render, color);
 		}
 
-		private DirectShape CreateDirectLine(IDirectLine line,
+		private DirectShape CreateDirectLine(bool isPositive, IDirectLine line,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (line is null)
@@ -83,11 +81,13 @@ namespace ImageControl.Shape.DirectX
 				return null;
 			}
 
-			return new DirectLine(line.Sx, line.Sy, line.Ex, line.Ey,
+			return new DirectLine(isPositive, 
+				line.Sx, line.Sy, 
+				line.Ex, line.Ey, line.LineWidth,
 				factory, render, color);
 		}
 
-		private DirectShape CreateDirectEllipse(IDirectEllipse ellipse,
+		private DirectShape CreateDirectEllipse(bool isPositive, IDirectEllipse ellipse,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (ellipse is null)
@@ -95,11 +95,11 @@ namespace ImageControl.Shape.DirectX
 				return null;
 			}
 
-			return new DirectEllipse(ellipse.Sx, ellipse.Sy, 
+			return new DirectEllipse(isPositive, ellipse.Sx, ellipse.Sy,
 				ellipse.Width, ellipse.Height, factory, render, color);
 		}
 
-		private DirectShape CreateDirectPolygon(IDirectPolygon polygon,
+		private DirectShape CreateDirectPolygon(bool isPositive, IDirectPolygon polygon,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (polygon is null)
@@ -117,11 +117,12 @@ namespace ImageControl.Shape.DirectX
 						continue;
 					}
 
-					shapes.Add(CreateDirectShape(shape, factory, render, color));
+					shapes.Add(CreateDirectShape(isPositive, shape, factory, render, color));
 				}
 			}
 
-			return new DirectPolygon(shapes, factory, render, color);
+			return new DirectPolygon(isPositive,
+				polygon.IsFill, shapes, factory, render, color);
 		}
 
 		private DirectShape CreateDirectRectangle(IDirectRectangle rectangle,
@@ -130,7 +131,7 @@ namespace ImageControl.Shape.DirectX
 			throw new System.NotImplementedException();
 		}
 
-		private DirectShape CreateDirectSurface(IDirectSurface surface,
+		private DirectShape CreateDirectSurface(bool isPositive, IDirectSurface surface,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (surface is null)
@@ -141,10 +142,10 @@ namespace ImageControl.Shape.DirectX
 			List<DirectShape> shapes = new List<DirectShape>();
 			foreach (var polygon in surface.Polygons)
 			{
-				shapes.Add(CreateDirectShape(polygon, factory, render, color));
+				shapes.Add(CreateDirectShape(isPositive, polygon, factory, render, color));
 			}
 
-			return new DirectSurface(shapes, factory, render, color);
+			return new DirectSurface(isPositive, shapes, factory, render, color);
 		}
 	}
 }

@@ -16,7 +16,8 @@ namespace CressemDataToGraphics.Model.Cad
 			bool isFill, IEnumerable<PointF> points) : base(cx, cy)
 		{
 			IsFill = isFill;
-			Points = new List<PointF>(points);
+			Points = new List<PointF>(points.Select(
+					x => new PointF(x.X * pixelResolution, x.Y * pixelResolution)));
 		}
 
 		public bool IsFill { get; private set; }

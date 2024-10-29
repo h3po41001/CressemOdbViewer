@@ -8,10 +8,13 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 	{
 		private ShapeDirectList() { }
 
-		public ShapeDirectList(IEnumerable<IDirectShape> shapes)
+		public ShapeDirectList(bool isPositive, IEnumerable<IDirectShape> shapes)
 		{
-			Shapes = new List<IDirectShape>(shapes.Cast<IDirectShape>());
+			IsPositive = isPositive;
+			Shapes = new List<IDirectShape>(shapes);
 		}
+
+		public bool IsPositive { get; private set; }
 
 		public IEnumerable<IDirectShape> Shapes { get; private set; }
 	}

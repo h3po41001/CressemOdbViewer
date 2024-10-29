@@ -12,7 +12,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			float ex, float ey,
 			float width, float height,
 			float rotation, bool isLargeArc,
-			bool isClockwise) : base()
+			bool isClockwise, float lineWidth) : base()
 		{
 			Sx = sx;
 			Sy = sy;
@@ -23,7 +23,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			Rotation = rotation;
 			IsLargeArc = isLargeArc;
 			IsClockwise = isClockwise;
+			LineWidth = lineWidth;
 		}
+
 		public float Sx { get; private set; }
 
 		public float Sy { get; private set; }
@@ -41,6 +43,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		public bool IsLargeArc { get; private set; }
 
 		public bool IsClockwise { get; private set; }
+
+		public float LineWidth { get; private set; }
 
 		public static ShapeDirectArc Create(bool useMM,
 			float pixelResolution, bool isMM,
@@ -73,7 +77,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				shapeArc.Sx, -shapeArc.Sy,
 				shapeArc.Ex, -shapeArc.Ey,
 				shapeArc.Radius, shapeArc.Radius, 0,
-				isLarge, isClockwise);
+				isLarge, isClockwise, shapeArc.Width);
 		}
 	}
 }

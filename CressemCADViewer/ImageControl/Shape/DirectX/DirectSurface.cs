@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ImageControl.Extension;
 using SharpDX.Direct2D1;
 
@@ -13,20 +10,58 @@ namespace ImageControl.Shape.DirectX
 	{
 		private DirectSurface() : base() { }
 
-		public DirectSurface(IEnumerable<DirectShape> polygons,
-			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
+		public DirectSurface(bool isPositive, 
+			IEnumerable<DirectShape> polygons,
+			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
 			Polygons = new List<DirectShape>(polygons);
+			SetShape();
 		}
 
 		public IEnumerable<DirectShape> Polygons { get; private set; }
 
 		public override void SetShape()
 		{
-			throw new NotImplementedException();
+			try
+			{
+				ShapeGemotry = new PathGeometry(Factory);
+				using (var temp = ((PathGeometry)ShapeGemotry).Open())
+				{
+					temp.Close();
+				}
+
+				foreach (DirectPolygon polygon in Polygons.Cast<DirectPolygon>())
+				{
+					var resultGeometry = new PathGeometry(Factory);
+					using (var sink = resultGeometry.Open())
+					{
+						if (polygon.IsFill is true)
+						{
+							resultGeometry = ShapeGemotry.Combine(polygon, CombineMode.Union, Factory);
+						}
+						else
+						{
+							resultGeometry = ShapeGemotry.Combine(polygon, CombineMode.Xor, Factory);
+						}
+
+						sink.Close();
+					}
+
+					if (resultGeometry is null)
+						continue;
+
+					ShapeGemotry.Dispose();
+					ShapeGemotry = resultGeometry;
+				}
+			}
+			catch (System.Exception)
+			{
+				ShapeGemotry.Dispose();
+				throw;
+			}
 		}
 
-		public RectangleF GetBounds()
+		public override RectangleF GetBounds()
 		{
 			if (Polygons is null)
 			{
@@ -55,9 +90,13 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Fill(RenderTarget render)
 		{
-			foreach (var polygon in Polygons)
+			if (IsPositive)
 			{
-				polygon.Fill(render);
+				render.FillGeometry(ShapeGemotry, DefaultBrush);
+			}
+			else
+			{
+				render.FillGeometry(ShapeGemotry, HoleBrush);
 			}
 		}
 	}

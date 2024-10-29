@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ImageControl.Shape.Interface
+﻿namespace ImageControl.Shape.Interface
 {
 	public interface IGraphicsList
 	{
+		bool IsPositive { get; }
 	}
 }

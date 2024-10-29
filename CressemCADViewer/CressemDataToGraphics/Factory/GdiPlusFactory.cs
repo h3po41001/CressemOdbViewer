@@ -73,7 +73,7 @@ namespace CressemDataToGraphics.Factory
 					arc.IsClockWise, 0));
 			}
 
-			return new ShapeGdiList(shapes);
+			return new ShapeGdiList(arc.Polarity.Equals("P"), shapes);
 
 		}
 
@@ -122,7 +122,7 @@ namespace CressemDataToGraphics.Factory
 					line.X, line.Y, line.Ex, line.Ey, 0));
 			}
 
-			return new ShapeGdiList(shapes);
+			return new ShapeGdiList(line.Polarity.Equals("P"), shapes);
 		}
 
 		private IGdiList MakeFeatureShape(bool useMM,
@@ -143,7 +143,7 @@ namespace CressemDataToGraphics.Factory
 					pad.FeatureSymbol));
 			}
 
-			return new ShapeGdiList(shapes);
+			return new ShapeGdiList(pad.Polarity.Equals("P"), shapes);
 		}
 
 		private IGdiList MakeFeatureShape(bool useMM,
@@ -170,7 +170,7 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis,
 				isPositive, surface.Polygons));
 
-			return new ShapeGdiList(shapes);
+			return new ShapeGdiList(surface.Polarity.Equals("P"), shapes);
 		}
 
 		private ShapeGdiBase MakeSymbolShape(bool useMM,

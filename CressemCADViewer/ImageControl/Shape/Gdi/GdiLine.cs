@@ -1,28 +1,30 @@
 ﻿using System.Drawing;
-using ImageControl.Shape.Gdi.Interface;
+using System.Drawing.Drawing2D;
 
 namespace ImageControl.Model.Shape.Gdi
 {
 	internal class GdiLine : GdiShape
 	{
-		private GdiLine() : base()
-		{
-		}
+		private GdiLine() : base() { }
 
-		public GdiLine(float sx, float sy,
-			float ex, float ey, float width) : base()
+		public GdiLine(bool isPositive, 
+			float sx, float sy,
+			float ex, float ey, 
+			float lineWidth) : base(isPositive)
 		{
 			Sx = sx;
 			Sy = sy;
 			Ex = ex;
 			Ey = ey;
-			LineWidth = width;
+			LineWidth = lineWidth;
 
 			DefaultPen.Width = LineWidth;
 			DefaultPen.Color = Color.DarkGreen;
 
 			ProfilePen.Width = LineWidth;
 			ProfilePen.Color = Color.White;
+
+			HolePen = new Pen(Color.Black, LineWidth);
 		}
 
 		public float Sx { get; private set; }
@@ -35,9 +37,18 @@ namespace ImageControl.Model.Shape.Gdi
 
 		public float LineWidth { get; private set; }
 
+		public Pen HolePen { get; private set; }
+
 		public override void Fill(Graphics graphics)
 		{
-			graphics.DrawLine(DefaultPen, Sx, Sy, Ex, Ey);
+			if (IsPositive)
+			{
+				graphics.DrawLine(DefaultPen, Sx, Sy, Ex, Ey);
+			}
+			else
+			{
+				graphics.DrawLine(HolePen, Sx, Sy, Ex, Ey);
+			}
 		}
 
 		public override void Draw(Graphics graphics)

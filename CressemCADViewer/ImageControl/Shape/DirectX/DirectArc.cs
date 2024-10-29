@@ -1,88 +1,90 @@
 ﻿using System.Drawing;
+using ImageControl.Extension;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
-	internal class DirectArc : DirectPathGeometry
+	internal class DirectArc : DirectShape
 	{
 		private DirectArc() : base() { }
 
-		public DirectArc(float sx, float sy, float ex, float ey,
-			float width, float height, float rotaion, bool isLargeArc, bool isClockwise,
-			Factory factory, RenderTarget render, Color color) : base(factory, render, color)
+		public DirectArc(bool isPositive, 
+			float sx, float sy, float ex, float ey,
+			float width, float height, float rotaion, 
+			bool isLargeArc, bool isClockwise, 
+			float lineWidth,
+			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
-			Sx = sx;
-			Sy = sy;
-			Ex = ex;
-			Ey = ey;
-			Width = width;
-			Height = height;
+			StartPt = new RawVector2(sx, sy);
+			EndPt = new RawVector2(ex, ey);
+			Size = new Size2F(width / 2, height / 2);
 			Rotation = rotaion;
-			IsLargeArc = isLargeArc;
-			IsClockwise = isClockwise;
+			ArcSz = isLargeArc ? ArcSize.Large : ArcSize.Small;
+			SweepDir = isClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise;
+			LineWidth = lineWidth;
 
 			SetShape();
 		}
 
-		public float Sx { get; private set; }
+		public RawVector2 StartPt { get; private set; }
 
-		public float Sy { get; private set; }
+		public RawVector2 EndPt { get; private set; }
 
-		public float Ex { get; private set; }
-
-		public float Ey { get; private set; }
-
-		public float Width { get; private set; }
-
-		public float Height { get; private set; }
+		public Size2F Size { get; private set; }
 
 		public float Rotation { get; private set; }
 
-		public bool IsLargeArc { get; private set; }
+		public SweepDirection SweepDir { get; private set; }
 
-		public bool IsClockwise { get; private set; }
+		public ArcSize ArcSz { get; private set; }
+
+		public float LineWidth { get; private set; }
+
+		public ArcSegment Arc { get; private set; }
 
 		public override void SetShape()
 		{
-			// 경로 그리기
-			PathGeometry = new PathGeometry(Factory);
-			try
+			Arc = new ArcSegment()
 			{
-				RawVector2 startPoint = new RawVector2(Sx, Sy);
-				ArcSegment arc = new ArcSegment()
-				{
-					Point = new RawVector2(Ex, Ey),
-					Size = new Size2F(Width / 2, Height / 2),
-					RotationAngle = Rotation,
-					SweepDirection = IsClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise,
-					ArcSize = IsLargeArc ? ArcSize.Large : ArcSize.Small
-				};
+				Point = EndPt,
+				Size = Size,
+				RotationAngle = Rotation,
+				SweepDirection = SweepDir,
+				ArcSize = ArcSz
+			};
 
-				using (GeometrySink sink = PathGeometry.Open())
-				{
-					sink.BeginFigure(startPoint, FigureBegin.Filled);
-					sink.AddArc(arc);					
-					sink.EndFigure(FigureEnd.Closed);
-					sink.Close();
-				}
-			}
-			catch (System.Exception)
+			ShapeGemotry = new PathGeometry(Factory);
+			using (GeometrySink sink = ((PathGeometry)ShapeGemotry).Open())
 			{
-				PathGeometry.Dispose();
-				throw;
+				sink.BeginFigure(StartPt, FigureBegin.Filled);
+				sink.AddArc(Arc);
+				sink.EndFigure(FigureEnd.Open);
+				sink.Close();
 			}
+		}
+
+		public override RectangleF GetBounds()
+		{
+			return ShapeGemotry.GetBounds().ToRectangleF();
 		}
 
 		public override void Draw(RenderTarget render)
 		{
-			render.DrawGeometry(PathGeometry, Brush);
+			render.DrawGeometry(ShapeGemotry, ProfileBrush, LineWidth);
 		}
 
 		public override void Fill(RenderTarget render)
 		{
-			render.FillGeometry(PathGeometry, Brush);
+			if (IsPositive is true)
+			{
+				render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
+			}
+			else
+			{
+				render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
+			}
 		}
 	}
 }
