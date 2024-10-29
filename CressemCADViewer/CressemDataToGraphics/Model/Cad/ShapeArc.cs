@@ -12,17 +12,20 @@ namespace CressemDataToGraphics.Model.Cad
 		private ShapeArc() { }
 
 		public ShapeArc(float pixelResolution,
+			float cx, float cy,
 			float sx, float sy,
 			float ex, float ey, 
-			float cx, float cy, float width,
+			float arcCx, float arcCy, float width,
 			float radius, float startAngle, float endAngle) : base(cx, cy)
 		{
 			Sx = sx * pixelResolution;
 			Sy = sy * pixelResolution;
 			Ex = ex * pixelResolution;
 			Ey = ey * pixelResolution;
+			ArcCx = arcCx * pixelResolution;
+			ArcCy = arcCy * pixelResolution;
 			Width = width * pixelResolution;
-			Radius = radius;
+			Radius = radius * pixelResolution;
 			StartAngle = startAngle;
 			EndAngle = endAngle;
 		}
@@ -34,6 +37,10 @@ namespace CressemDataToGraphics.Model.Cad
 		public float Ex { get; private set; }
 
 		public float Ey { get; private set; }
+
+		public float ArcCx { get; private set; }
+
+		public float ArcCy { get; private set; }
 
 		public float Width { get; private set; }
 

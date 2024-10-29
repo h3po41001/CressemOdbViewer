@@ -14,7 +14,7 @@ namespace ImageControl.Shape.DirectX
 			bool isFill, IEnumerable<DirectShape> paths,
 			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
-			IsFill = isFill;
+			IsFill = isPositive ? isFill : !isFill;
 			Paths = new List<DirectShape>(paths);
 			SetShape();
 		}
@@ -35,18 +35,22 @@ namespace ImageControl.Shape.DirectX
 
 				foreach (var shape in Paths)
 				{
-					PathGeometry resultGeometry = null;
-					if (IsFill is true)
+					PathGeometry templateGeometry = new PathGeometry(Factory);
+					using (var sink = templateGeometry.Open())
 					{
-						resultGeometry = ShapeGemotry.Combine(shape, CombineMode.Union, Factory);
-					}
-					else
-					{
-						resultGeometry = ShapeGemotry.Combine(shape, CombineMode.Xor, Factory);
+						if (IsFill is true)
+						{
+							ShapeGemotry.Combine(shape.ShapeGemotry, CombineMode.Union, sink);
+						}
+						else
+						{
+							ShapeGemotry.Combine(shape.ShapeGemotry, CombineMode.Xor, sink);
+						}
+
+						sink.Close();
 					}
 
-					ShapeGemotry.Dispose();
-					ShapeGemotry = resultGeometry;
+					ShapeGemotry = templateGeometry;
 				}
 			}
 			catch (System.Exception)

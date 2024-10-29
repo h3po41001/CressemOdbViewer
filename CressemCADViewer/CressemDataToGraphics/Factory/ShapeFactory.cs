@@ -101,7 +101,7 @@ namespace CressemDataToGraphics.Factory
 			double endAngle = Math.Atan2(end.Y - center.Y, end.X - center.X) * (180 / Math.PI);
 
 			return new ShapeArc(pixelResolution,
-				start.X, start.Y, end.X, end.Y, center.X, center.Y,
+				fcx, fcy, start.X, start.Y, end.X, end.Y, center.X, center.Y,
 				fwidth, (float)radius, (float)startAngle, (float)endAngle);
 		}
 

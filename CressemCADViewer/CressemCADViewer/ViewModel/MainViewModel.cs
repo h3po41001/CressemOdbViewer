@@ -105,7 +105,7 @@ namespace CressemCADViewer.ViewModel
 				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
 				out double xDatum, out double yDatum);
 
-			DataToGraphics dataToGraphics = new DataToGraphics(1.0f, GraphicsType);
+			DataToGraphics dataToGraphics = new DataToGraphics(1f, GraphicsType);
 			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, profile);
 
 			GraphicsView.ClearShape();

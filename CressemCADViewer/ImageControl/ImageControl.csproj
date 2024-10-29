@@ -57,7 +57,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extension\DirectXObjectExtension.cs" />
+    <Compile Include="Extension\DirectXExtension.cs" />
     <Compile Include="Extension\GdiObjectExtension.cs" />
     <Compile Include="Extension\SystemDrawingExtension.cs" />
     <Compile Include="Model\DirectX\DirectXGraphics.cs" />

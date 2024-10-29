@@ -9,33 +9,33 @@ namespace ImageControl.Shape.DirectX
 		private DirectEllipse() { }
 
 		public DirectEllipse(bool isPositive,
-			float sx, float sy, float width, float height,
+			float cx, float cy, float radiusX, float radiusY,
 			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
-			Width = width / 2;
-			Height = height / 2;
-			StartPt = new RawVector2(sx + width, sy + height);
+			RadiusX = radiusX;
+			RadiusY = radiusY;
+			CenterPt = new RawVector2(cx, cy);
 
 			SetShape();
 		}
 
-		public RawVector2 StartPt { get; private set; }
+		public RawVector2 CenterPt { get; private set; }
 
-		public float Width { get; private set; }
+		public float RadiusX { get; private set; }
 
-		public float Height { get; private set; }
+		public float RadiusY { get; private set; }
 
 		public Ellipse Ellipse { get; private set; }
 
 		public override void SetShape()
 		{
-			Ellipse = new Ellipse(StartPt, Width, Height);
+			Ellipse = new Ellipse(CenterPt, RadiusX, RadiusY);
 			ShapeGemotry = new EllipseGeometry(Factory, Ellipse);
 		}
 
 		public override RectangleF GetBounds()
 		{
-			return new RectangleF(StartPt.X - Width, StartPt.Y - Height, Width * 2, Height * 2);
+			return new RectangleF(CenterPt.X - RadiusX, CenterPt.Y - RadiusY, RadiusX * 2, RadiusY * 2);
 		}
 
 		public override void Draw(RenderTarget render)

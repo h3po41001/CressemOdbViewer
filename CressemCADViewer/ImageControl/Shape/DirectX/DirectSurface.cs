@@ -32,26 +32,27 @@ namespace ImageControl.Shape.DirectX
 
 				foreach (DirectPolygon polygon in Polygons.Cast<DirectPolygon>())
 				{
-					var resultGeometry = new PathGeometry(Factory);
-					using (var sink = resultGeometry.Open())
+					if (polygon.ShapeGemotry is null)
+					{
+						continue;
+					}
+
+					PathGeometry templateGeometry = new PathGeometry(Factory);
+					using (GeometrySink sink = templateGeometry.Open())
 					{
 						if (polygon.IsFill is true)
-						{
-							resultGeometry = ShapeGemotry.Combine(polygon, CombineMode.Union, Factory);
+						{							
+							ShapeGemotry.Combine(polygon.ShapeGemotry, CombineMode.Union, sink);
 						}
 						else
 						{
-							resultGeometry = ShapeGemotry.Combine(polygon, CombineMode.Xor, Factory);
+							ShapeGemotry.Combine(polygon.ShapeGemotry, CombineMode.Xor, sink);
 						}
 
 						sink.Close();
 					}
 
-					if (resultGeometry is null)
-						continue;
-
-					ShapeGemotry.Dispose();
-					ShapeGemotry = resultGeometry;
+					ShapeGemotry = templateGeometry;
 				}
 			}
 			catch (System.Exception)

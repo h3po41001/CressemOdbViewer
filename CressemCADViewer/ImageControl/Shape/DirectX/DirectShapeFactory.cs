@@ -95,8 +95,8 @@ namespace ImageControl.Shape.DirectX
 				return null;
 			}
 
-			return new DirectEllipse(isPositive, ellipse.Sx, ellipse.Sy,
-				ellipse.Width, ellipse.Height, factory, render, color);
+			return new DirectEllipse(isPositive, ellipse.Cx, ellipse.Cy,
+				ellipse.RadiusX, ellipse.RadiusY, factory, render, color);
 		}
 
 		private DirectShape CreateDirectPolygon(bool isPositive, IDirectPolygon polygon,

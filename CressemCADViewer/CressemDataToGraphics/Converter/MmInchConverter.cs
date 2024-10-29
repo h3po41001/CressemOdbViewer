@@ -19,9 +19,18 @@ namespace CressemDataToGraphics.Converter
 			return Math.Round(inch * MM_TO_INCH, DIGITS);
 		}
 
+		public static float ConvertInchToMM(this float inch)
+		{
+			return (float)Math.Round(inch * MM_TO_INCH, DIGITS);
+		}
+
 		public static double ConvertInchToUM(this double inch)
 		{
 			return Math.Round(inch * MM_TO_INCH / 1000, DIGITS);
+		}
+		public static float ConvertInchToUM(this float inch)
+		{
+			return (float)Math.Round(inch * MM_TO_INCH / 1000, DIGITS);
 		}
 
 		public static IEnumerable<PointF> ConvertInchToMM(this IEnumerable<PointF> inch)
@@ -39,9 +48,19 @@ namespace CressemDataToGraphics.Converter
 			return Math.Round(mm / MM_TO_INCH, DIGITS);
 		}
 
+		public static float ConvertMMToInch(this float mm)
+		{
+			return (float)Math.Round(mm / MM_TO_INCH, DIGITS);
+		}
+
 		public static double ConvertUMToInch(this double mm)
 		{
 			return Math.Round(mm * 1000 / MM_TO_INCH, DIGITS);
+		}
+
+		public static float ConvertUMToInch(this float mm)
+		{
+			return (float)Math.Round(mm * 1000 / MM_TO_INCH, DIGITS);
 		}
 
 		public static IEnumerable<PointF> ConvertMMToInch(this IEnumerable<PointF> mil)

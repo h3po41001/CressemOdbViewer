@@ -149,7 +149,7 @@ namespace ImageControl.Model.DirectX
 			_renderTarget.BeginDraw();
 			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
 			_renderTarget.EndDraw();
-
+			
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
@@ -183,7 +183,7 @@ namespace ImageControl.Model.DirectX
 				shape.Fill(_renderTarget);
 			}
 
-			_renderTarget.EndDraw();
+			_renderTarget.EndDraw();			
 			_swapChain.Present(1, PresentFlags.None);
 		}
 

@@ -1,33 +1,28 @@
-﻿using System.Drawing;
-using CressemDataToGraphics.Converter;
-using CressemDataToGraphics.Factory;
-using ImageControl.Extension;
+﻿using CressemDataToGraphics.Factory;
 using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
 	internal class ShapeDirectEllipse : ShapeDirectBase, IDirectEllipse
 	{
-		private ShapeDirectEllipse() : base()
+		private ShapeDirectEllipse() : base() { }
+
+		public ShapeDirectEllipse(float cx, float cy,
+			float radiusX, float radiusY) : base()
 		{
+			Cx = cx;
+			Cy = cy;
+			RadiusX = radiusX;
+			RadiusY = radiusY;
 		}
 
-		public ShapeDirectEllipse(float sx, float sy,
-			float width, float height) : base()
-		{
-			Sx = sx;
-			Sy = sy;
-			Width = width;
-			Height = height;
-		}
+		public float Cx { get; private set; }
 
-		public float Sx { get; private set; }
+		public float Cy { get; private set; }
 
-		public float Sy { get; private set; }
+		public float RadiusX { get; private set; }
 
-		public float Width { get; private set; }
-
-		public float Height { get; private set; }
+		public float RadiusY { get; private set; }
 
 		public static ShapeDirectEllipse Create(bool useMM,
 			float pixelResolution, bool isMM,
@@ -39,8 +34,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				xDatum, yDatum, cx, cy, orient, isMirrorXAxis, width, height);
 
 			// Graphics는 y좌표가 반대이므로 -1곱한다
-			return new ShapeDirectEllipse(shapeEllipse.Sx, -shapeEllipse.Sy,
-				shapeEllipse.Width, shapeEllipse.Height);
+			return new ShapeDirectEllipse(shapeEllipse.ShapeCx, -shapeEllipse.ShapeCy,
+				shapeEllipse.Width / 2, shapeEllipse.Height / 2);
 		}
 	}
 }
