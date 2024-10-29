@@ -37,6 +37,11 @@ namespace ImageControl.Extension
 			return new RectangleF(left, top, right - left, bottom - top);
 		}
 
+		public static PointF Offset(this PointF point, float dx, float dy)
+		{
+			return new PointF(point.X + dx, point.Y + dy);
+		}
+
 		public static PointF Rotate(this PointF point, PointF center, int angle, bool isMirrorXAxis)
 		{
 			float radian = angle * (float)(Math.PI / 180);

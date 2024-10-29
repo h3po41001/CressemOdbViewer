@@ -49,7 +49,7 @@ namespace ImageControl.Shape.DirectX
 			}
 			else if (shape is IDirectRectangle rect)
 			{
-				return CreateDirectRectangle(rect, factory, render, color);
+				return CreateDirectRectangle(isPositive, rect, factory, render, color);
 			}
 			else if (shape is IDirectSurface surface)
 			{
@@ -81,8 +81,8 @@ namespace ImageControl.Shape.DirectX
 				return null;
 			}
 
-			return new DirectLine(isPositive, 
-				line.Sx, line.Sy, 
+			return new DirectLine(isPositive,
+				line.Sx, line.Sy,
 				line.Ex, line.Ey, line.LineWidth,
 				factory, render, color);
 		}
@@ -125,10 +125,16 @@ namespace ImageControl.Shape.DirectX
 				polygon.IsFill, shapes, factory, render, color);
 		}
 
-		private DirectShape CreateDirectRectangle(IDirectRectangle rectangle,
+		private DirectShape CreateDirectRectangle(bool isPositive, IDirectRectangle rectangle,
 			Factory factory, RenderTarget render, Color color)
 		{
-			throw new System.NotImplementedException();
+			if (rectangle is null)
+			{
+				return null;
+			}
+
+			return new DirectRectangle(isPositive, rectangle.Left, rectangle.Top,
+				rectangle.Right, rectangle.Bottom, factory, render, color);
 		}
 
 		private DirectShape CreateDirectSurface(bool isPositive, IDirectSurface surface,

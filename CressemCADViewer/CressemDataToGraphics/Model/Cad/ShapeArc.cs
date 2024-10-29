@@ -16,7 +16,8 @@ namespace CressemDataToGraphics.Model.Cad
 			float sx, float sy,
 			float ex, float ey, 
 			float arcCx, float arcCy, float width,
-			float radius, float startAngle, float endAngle) : base(cx, cy)
+			float radius, float startAngle, 
+			float endAngle) : base(cx * pixelResolution, cy * pixelResolution)
 		{
 			Sx = sx * pixelResolution;
 			Sy = sy * pixelResolution;

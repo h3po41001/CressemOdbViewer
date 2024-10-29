@@ -12,7 +12,8 @@ namespace CressemDataToGraphics.Model.Cad
 
 		public ShapeRectangle(float pixelResolution,
 			float cx, float cy,
-			float sx, float sy, float width, float height) : base(cx, cy)
+			float sx, float sy, 
+			float width, float height) : base(cx * pixelResolution, cy * pixelResolution)
 		{
 			Sx = sx * pixelResolution;
 			Sy = sy * pixelResolution;

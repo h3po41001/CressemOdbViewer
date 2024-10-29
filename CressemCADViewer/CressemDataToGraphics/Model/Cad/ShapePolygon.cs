@@ -13,7 +13,8 @@ namespace CressemDataToGraphics.Model.Cad
 
 		public ShapePolygon(float pixelResolution,
 			float cx, float cy,
-			bool isFill, IEnumerable<PointF> points) : base(cx, cy)
+			bool isFill,
+			IEnumerable<PointF> points) : base(cx * pixelResolution, cy * pixelResolution)
 		{
 			IsFill = isFill;
 			Points = new List<PointF>(points.Select(

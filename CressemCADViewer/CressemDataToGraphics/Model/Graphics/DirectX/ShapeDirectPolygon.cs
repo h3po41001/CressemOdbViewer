@@ -48,6 +48,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			bool isIsland = polygon.PolygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;
 
+			int localOrient = (orient + polygon.Orient) % 360;
+			bool localIsMirrorXAxis = isMirrorXAxis ^ polygon.IsMirrorXAxis;
+
 			foreach (var feature in polygon.Features)
 			{
 				if (feature is IFeatureArc arc)
@@ -55,7 +58,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 					shapes.Add(ShapeDirectArc.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						orient, isMirrorXAxis,
+						localOrient, localIsMirrorXAxis,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
 						arc.IsClockWise, 0));
 				}
@@ -64,7 +67,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 					shapes.Add(ShapeDirectLine.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis,
+						localOrient, localIsMirrorXAxis,
 						line.X, line.Y, line.Ex, line.Ey, 0));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
@@ -72,7 +75,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 					shapes.Add(Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis,
+						localOrient, localIsMirrorXAxis,
 						isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
@@ -80,17 +83,17 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 					shapes.Add(ShapeDirectSurface.Create(useMM,
 						pixelResolution, isMM,
 						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis, isPositive,
-						surface.Polygons));
+						localOrient, localIsMirrorXAxis,
+						isPositive, surface.Polygons));
 				}
 			}
 
 			return new ShapeDirectPolygon(isFill, shapes);
 		}
 
-		public static ShapeDirectPolygon Create(bool useMM, 
+		public static ShapeDirectPolygon Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum,  double cx, double cy,
+			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
 			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)

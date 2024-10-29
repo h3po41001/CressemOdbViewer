@@ -81,17 +81,23 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF start = new PointF(fsx, fsy);
+			start = start.Offset(fDatumX, fDatumY);
+
 			PointF end = new PointF(fex, fey);
+			end = end.Offset(fDatumX, fDatumY);
+
 			PointF center = new PointF(fAcx, fAcy);
+			center = center.Offset(fDatumX, fDatumY);
 
 			if (orient > 0)
 			{
-				PointF datum = new PointF(
-					(float)(fDatumX + fcx), (float)(fDatumY + fcy));
+				PointF datum = new PointF(fcx, fcy);
+				datum = datum.Offset(fDatumX, fDatumY);
 
-				start = start.Rotate(datum, orient, isMirrorXAxis);
-				end = end.Rotate(datum, orient, isMirrorXAxis);
-				center = center.Rotate(datum, orient, isMirrorXAxis);
+				// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
+				start = start.Rotate(datum, -orient, isMirrorXAxis);
+				end = end.Rotate(datum, -orient, isMirrorXAxis);
+				center = center.Rotate(datum, -orient, isMirrorXAxis);
 			}
 
 			double radius = Math.Sqrt(
@@ -144,14 +150,19 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
+			lt = lt.Offset(fDatumX, fDatumY);
+
 			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
+			rb = rb.Offset(fDatumX, fDatumY);
 
 			if (orient > 0)
 			{
-				PointF datum = new PointF((float)(fDatumX + fcx), (float)(fDatumY + fcy));
+				PointF datum = new PointF(fcx, fcy);
+				datum = datum.Offset(fDatumX, fDatumY);
 
-				lt = lt.Rotate(datum, orient, isMirrorXAxis);
-				rb = rb.Rotate(datum, orient, isMirrorXAxis);
+				// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
+				lt = lt.Rotate(datum, -orient, isMirrorXAxis);
+				rb = rb.Rotate(datum, -orient, isMirrorXAxis);
 
 				float left = lt.X;
 				float right = rb.X;
@@ -230,14 +241,19 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF start = new PointF(fsx, fsy);
+			start = start.Offset(fDatumX, fDatumY);
+
 			PointF end = new PointF(fex, fey);
+			end = end.Offset(fDatumX, fDatumY);
 
 			if (orient > 0)
 			{
-				PointF datum = new PointF((float)(fDatumX + fcx), (float)(fDatumY + fcy));
+				PointF datum = new PointF(fcx, fcy);
+				datum = datum.Offset(fDatumX, fDatumY);
 
-				start = start.Rotate(datum, orient, isMirrorXAxis);
-				end = end.Rotate(datum, orient, isMirrorXAxis);
+				// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
+				start = start.Rotate(datum, -orient, isMirrorXAxis);
+				end = end.Rotate(datum, -orient, isMirrorXAxis);
 			}
 
 			return new ShapeLine(pixelResolution, fcx, fcy,
@@ -283,14 +299,19 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
+			lt = lt.Offset(fDatumX, fDatumY);
+
 			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
+			rb = rb.Offset(fDatumX, fDatumY);
 
 			if (orient > 0)
 			{
-				PointF datum = new PointF((float)(fDatumX + fcx), (float)(fDatumY + fcy));
+				PointF datum = new PointF(fcx, fcy);
+				datum = datum.Offset(fDatumX, fDatumY);
 
-				lt = lt.Rotate(datum, orient, isMirrorXAxis);
-				rb = rb.Rotate(datum, orient, isMirrorXAxis);
+				// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
+				lt = lt.Rotate(datum, -orient, isMirrorXAxis);
+				rb = rb.Rotate(datum, -orient, isMirrorXAxis);
 
 				float left = lt.X;
 				float right = rb.X;
@@ -357,14 +378,21 @@ namespace CressemDataToGraphics.Factory
 
 			List<PointF> calcPoints = new List<PointF>();
 
-			PointF datum = new PointF(fDatumX + fcx, fDatumY + fcy);
-			if (orient > 0)
+			PointF datum = new PointF(fcx, fcy);
+			datum = datum.Offset(fDatumX, fDatumY);
+
+			foreach (var point in fPoints)
 			{
-				foreach (var point in fPoints)
+				var calcPoint = point.Offset(fDatumX, fDatumY);
+				if (orient > 0)
 				{
-					calcPoints.Add(point.Rotate(datum, orient, isMirrorXAxis));
+					// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
+					calcPoint = calcPoint.Rotate(datum, -orient, isMirrorXAxis);
 				}
+
+				calcPoints.Add(calcPoint);
 			}
+
 
 			bool isIsland = polygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using CressemDataToGraphics.Model.Graphics.DirectX;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
@@ -8,9 +10,7 @@ namespace CressemDataToGraphics.Factory
 {
 	internal class DirectXFactory
 	{
-		public DirectXFactory()
-		{
-		}
+		public DirectXFactory() { }
 
 		public IDirectList CreateFeatureToShape(bool useMM,
 			float pixelResolution,
@@ -68,7 +68,7 @@ namespace CressemDataToGraphics.Factory
 					arc.IsClockWise, 0));
 			}
 
-			return new ShapeDirectList(arc.Polarity.Equals("P") , shapes);
+			return new ShapeDirectList(arc.Polarity.Equals("P"), shapes);
 		}
 
 		private IDirectList MakeFeatureShape(bool useMM,
@@ -126,17 +126,32 @@ namespace CressemDataToGraphics.Factory
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeaturePad pad)
 		{
-			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+			List<IDirectShape> shapes = new List<IDirectShape>();
 
 			if (pad.FeatureSymbol != null)
 			{
-				shapes.Add(MakeSymbolShape(useMM,
-					pixelResolution, isMM,
-					xDatum + cx, yDatum + cy,
-					pad.X, pad.Y,
-					(pad.Orient + orient) % 360,
-					isMirrorXAxis != pad.IsMirrorXAxis,
-					pad.FeatureSymbol));
+				if (pad.FeatureSymbol is ISymbolUser userSymbol)
+				{
+					var userSymbolFeature = MakeUser(useMM,
+						pixelResolution, isMM,
+						xDatum + cx, yDatum + cy,
+						pad.X, pad.Y,
+						(pad.Orient + orient) % 360,
+						isMirrorXAxis != pad.IsMirrorXAxis,
+						userSymbol.FeaturesList);
+
+					shapes.AddRange(userSymbolFeature);
+				}
+				else
+				{
+					shapes.Add(MakeSymbolShape(useMM,
+						pixelResolution, isMM,
+						xDatum + cx, yDatum + cy,
+						pad.X, pad.Y,
+						(pad.Orient + orient) % 360,
+						isMirrorXAxis != pad.IsMirrorXAxis,
+						pad.FeatureSymbol));
+				}
 			}
 
 			return new ShapeDirectList(pad.Polarity.Equals("P"), shapes);
@@ -205,8 +220,13 @@ namespace CressemDataToGraphics.Factory
 					orient, isMirrorXAxis,
 					ellipse.Width, ellipse.Height);
 			}
-			else if (symbol is ISymbolHole hole)
+			else if (symbol is ISymbolOval oval)
 			{
+				return ShapeDirectEllipse.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					oval.Width, oval.Height);
 			}
 			else if (symbol is ISymbolRoundedRectangle roundedRectangle)
 			{
@@ -226,13 +246,14 @@ namespace CressemDataToGraphics.Factory
 					orient, isMirrorXAxis,
 					roundDonut.Diameter, roundDonut.InnerDiameter);
 			}
-			else if (symbol is ISymbolUser user)
+			else if (symbol is ISymbolRoundThermalRounded roundThr)
 			{
-				var userSymbolFeature = MakeUser(useMM,
+				return MakeRoundThermalRounded(useMM,
 					pixelResolution, isMM,
 					xDatum, yDatum, cx, cy,
 					orient, isMirrorXAxis,
-					user.FeaturesList);
+					roundThr.Diameter, roundThr.InnerDiameter,
+					roundThr.Angle, roundThr.NumberOfSpoke, roundThr.Gap);
 			}
 
 			return null;
@@ -376,19 +397,32 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeDirectSurface(true, new ShapeDirectPolygon[] { outerPoly, innerPoly });
 		}
 
-		private IEnumerable<IDirectList> MakeUser(bool useMM,
+		private ShapeDirectSurface MakeRoundThermalRounded(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis,
+			double outDiameter, double innterDiameter,
+			double angle, int spokeNum, double gap)
+		{
+			//double ringWidth = 
+			return null;
+		}
+
+		private IEnumerable<IDirectShape> MakeUser(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
 			IEnumerable<IFeatureBase> features)
 		{
-			List<ShapeDirectList> shapeList = new List<ShapeDirectList>();
+			List<IDirectShape> shapeList = new List<IDirectShape>();
 			foreach (var feature in features)
 			{
-				shapeList.Add(MakeFeatureShape(useMM,
+				ShapeDirectList featureShapes = MakeFeatureShape(useMM,
 					pixelResolution, isMM,
-					xDatum, yDatum, cx, cy,
-					orient, isMirrorXAxis, (dynamic)feature));
+					xDatum + cx, yDatum + cy, feature.X, feature.Y,
+					orient, isMirrorXAxis, (dynamic)feature);
+
+				shapeList.AddRange(featureShapes.Shapes);
 			}
 
 			return shapeList;

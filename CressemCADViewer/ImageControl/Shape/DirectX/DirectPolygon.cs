@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ImageControl.Extension;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
@@ -27,31 +28,46 @@ namespace ImageControl.Shape.DirectX
 		{
 			try
 			{
-				ShapeGemotry = new PathGeometry(Factory);
-				using (var temp = ((PathGeometry)ShapeGemotry).Open())
+				if (Paths is null || Paths.Count() == 0)
 				{
-					temp.Close();
+					return;
 				}
 
-				foreach (var shape in Paths)
+				DirectLine firstLine = (DirectLine)Paths.FirstOrDefault(x => x is DirectLine);
+
+				PathGeometry pathGeometry = new PathGeometry(Factory);
+				using (var sink = pathGeometry.Open())
 				{
-					PathGeometry templateGeometry = new PathGeometry(Factory);
-					using (var sink = templateGeometry.Open())
+					sink.BeginFigure(firstLine.EndPt, FigureBegin.Filled);
+
+					foreach (var path in Paths.Skip(1))
 					{
-						if (IsFill is true)
+						if (path is null)
 						{
-							ShapeGemotry.Combine(shape.ShapeGemotry, CombineMode.Union, sink);
-						}
-						else
-						{
-							ShapeGemotry.Combine(shape.ShapeGemotry, CombineMode.Xor, sink);
+							continue;
 						}
 
-						sink.Close();
+						if (path is DirectLine line)
+						{
+							sink.AddLine(line.EndPt);
+						}
+						else if (path is DirectArc arc)
+						{
+							sink.AddArc(arc.Arc);
+						}
 					}
 
-					ShapeGemotry = templateGeometry;
+					sink.EndFigure(FigureEnd.Open);
+					sink.Close();
 				}
+
+				List<Geometry> geometries = new List<Geometry>
+				{
+					pathGeometry
+				};
+
+				geometries.AddRange(Paths.SkipWhile(x => x is DirectArc || x is DirectLine).Select(x => x.ShapeGemotry));
+				ShapeGemotry = new GeometryGroup(Factory, FillMode.Winding, geometries.ToArray());
 			}
 			catch (System.Exception)
 			{

@@ -1,29 +1,30 @@
 ﻿using CressemDataToGraphics.Factory;
+using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectRectangle : ShapeDirectBase
+	internal class ShapeDirectRectangle : ShapeDirectBase, IDirectRectangle
 	{
 		private ShapeDirectRectangle() : base()
 		{
 		}
 
-		public ShapeDirectRectangle(float sx, float sy,
-			float width, float height) : base()
+		public ShapeDirectRectangle(float left, float top,
+			float right, float bottom) : base()
 		{
-			Sx = sx;
-			Sy = sy;
-			Width = width;
-			Height = height;
+			Left = left;
+			Top = top;
+			Right = right;
+			Bottom = bottom;
 		}
 
-		public float Sx { get; private set; }
+		public float Left { get; private set; }
 
-		public float Sy { get; private set; }
+		public float Top { get; private set; }
 
-		public float Width { get; private set; }
+		public float Right { get; private set; }
 
-		public float Height { get; private set; }
+		public float Bottom { get; private set; }
 
 		public static ShapeDirectRectangle Create(bool useMM,
 			float pixelResolution, bool isMM,
@@ -31,11 +32,11 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			int orient, bool isMirrorXAxis,
 			double width, double height)
 		{
-			var shapeRectangle = ShapeFactory.Instance.CreateRectangle(useMM, pixelResolution, isMM,
+			var rect = ShapeFactory.Instance.CreateRectangle(useMM, pixelResolution, isMM,
 				xDatum, yDatum, cx, cy, orient, isMirrorXAxis, width, height);
 
-			return new ShapeDirectRectangle(shapeRectangle.Sx, -shapeRectangle.Sy,
-				shapeRectangle.Width, shapeRectangle.Height);
+			return new ShapeDirectRectangle(rect.Sx, -rect.Sy,
+				rect.Sx + rect.Width, -rect.Sy + rect.Height);
 		}
 	}
 }

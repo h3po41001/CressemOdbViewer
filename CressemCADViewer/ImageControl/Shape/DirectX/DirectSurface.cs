@@ -10,7 +10,7 @@ namespace ImageControl.Shape.DirectX
 	{
 		private DirectSurface() : base() { }
 
-		public DirectSurface(bool isPositive, 
+		public DirectSurface(bool isPositive,
 			IEnumerable<DirectShape> polygons,
 			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
@@ -41,7 +41,7 @@ namespace ImageControl.Shape.DirectX
 					using (GeometrySink sink = templateGeometry.Open())
 					{
 						if (polygon.IsFill is true)
-						{							
+						{
 							ShapeGemotry.Combine(polygon.ShapeGemotry, CombineMode.Union, sink);
 						}
 						else

@@ -13,13 +13,13 @@ namespace CressemDataToGraphics.Model.Cad
 		public ShapeLine(float pixelResolution,
 			float cx, float cy,
 			float sx, float sy,
-			float ex, float ey, float width = 0) : base(cx, cy)
+			float ex, float ey, float width = 0) : base(cx * pixelResolution, cy * pixelResolution)
 		{
-			Sx = sx;
-			Sy = sy;
-			Ex = ex;
-			Ey = ey;
-			LineWidth = width;
+			Sx = sx * pixelResolution;
+			Sy = sy * pixelResolution;
+			Ex = ex * pixelResolution;
+			Ey = ey * pixelResolution;
+			LineWidth = width * pixelResolution;
 		}
 
 		public float Sx { get; private set; }

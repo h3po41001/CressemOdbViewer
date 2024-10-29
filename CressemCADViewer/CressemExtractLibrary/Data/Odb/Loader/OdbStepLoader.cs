@@ -41,6 +41,11 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				string stepProfilePath = Path.Combine(stepFolder, ProfileFileName);
 				string stepLayerPath = Path.Combine(stepFolder, LayersFolderName);
 
+				//if (step.Name.ToUpper().Equals("UNIT") is false)
+				//{
+				//	return;
+				//}
+
 				if (LoadOdbStepHeader(stepHeaderPath,
 					out OdbStepHeader stepHeader) is false)
 				{
@@ -316,6 +321,11 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				{
 					continue;
 				}
+
+				//if (refLayer.Name.ToUpper().Equals("L01") is false)
+				//{
+				//	continue;
+				//}
 
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
 					odbData.OdbUserSymbols, out OdbFeatures features) is false)
