@@ -55,7 +55,6 @@
     <Compile Include="Model\Graphics\DirectX\ShapeDirectPolygon.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectRectangle.cs" />
     <Compile Include="Model\Graphics\DirectX\ShapeDirectSurface.cs" />
-    <Compile Include="Model\Graphics\DirectX\ShapeDirectSurfaces.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiArc.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiBase.cs" />
     <Compile Include="Model\Graphics\Gdi\ShapeGdiEllipse.cs" />

@@ -4,6 +4,8 @@ namespace CressemExtractLibrary.Data.Interface.Features
 {
 	public interface IFeatureBase
 	{
+		int Index { get; }
+
 		bool IsMM { get; }
 
 		double X { get; }

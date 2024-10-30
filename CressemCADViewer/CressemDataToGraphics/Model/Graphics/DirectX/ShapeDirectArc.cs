@@ -64,10 +64,10 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			double deltaAngle = endAngle - startAngle;
 			if (deltaAngle <= 0)
 			{
-				deltaAngle += 360.0;
+				deltaAngle += 360;
 			}
 
-			bool isLarge = (deltaAngle > 180) is true;
+			bool isLarge = (deltaAngle > 180) is true ? !isClockwise : isClockwise;
 
 			return new ShapeDirectArc(
 				shapeArc.Sx, -shapeArc.Sy,

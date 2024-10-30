@@ -19,7 +19,7 @@ namespace ImageControl.Shape.DirectX
 				new RawColor4(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f));
 
 			HoleBrush = new SolidColorBrush(Render,
-				new RawColor4(0, 0, 0, 1f));
+				new RawColor4(1, 0, 0, 1f));
 
 			ProfileBrush = new SolidColorBrush(Render,
 				new RawColor4(1, 1, 1, 1));

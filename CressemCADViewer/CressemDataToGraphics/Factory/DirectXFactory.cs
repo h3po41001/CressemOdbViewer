@@ -182,27 +182,6 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeDirectList(surface.Polarity.Equals("P"), shapes);
 		}
 
-		private IDirectList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, IFeatureSurfaces surfaces)
-		{
-
-			List<ShapeDirectSurface> surfaceList = new List<ShapeDirectSurface>();
-
-			foreach (var surface in surfaces.Features)
-			{
-				bool isPositive = surface.Polarity.Equals("P") is true;
-				surfaceList.Add(ShapeDirectSurface.Create(useMM,
-					pixelResolution, isMM,
-					xDatum, yDatum, cx, cy,
-					orient, isMirrorXAxis,
-					isPositive, surface.Polygons));
-			}
-
-			return new ShapeDirectList(true, new ShapeDirectBase[] { new ShapeDirectSurfaces(surfaceList) });
-		}
-
 		private ShapeDirectBase MakeSymbolShape(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,

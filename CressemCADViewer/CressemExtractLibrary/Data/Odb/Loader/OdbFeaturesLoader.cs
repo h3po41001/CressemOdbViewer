@@ -40,7 +40,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			using (StreamReader reader = new StreamReader(path))
 			{
 				string[] splited;
-				int index = -1;
+				int index = 0;
 				bool isMM = false;
 
 				while (reader.EndOfStream is false)
