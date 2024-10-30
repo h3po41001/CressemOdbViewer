@@ -10,9 +10,9 @@
 
 		float Ey { get; }
 
-		float Width { get; }
+		float RadiusWidth { get; }
 
-		float Height { get; }
+		float RadiusHeight { get; }
 
 		float Rotation { get; }
 

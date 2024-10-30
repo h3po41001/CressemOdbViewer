@@ -90,8 +90,6 @@ namespace CressemExtractLibrary.Data.Odb
 							xDatum = step.StepHdr.XDatum;
 							yDatum = step.StepHdr.YDatum;
 
-							var line = layer.Features.FeatureList.Where(x => x is IFeatureLine);
-
 							return layer.Features.FeatureList.ToArray();
 						}
 					}

@@ -331,6 +331,9 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					continue;
 				}
 
+				if (refLayer.Name.ToUpper().Equals("SIG2") is false)
+					continue;
+
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
 					odbData.OdbUserSymbols, out OdbFeatures features) is false)
 				{

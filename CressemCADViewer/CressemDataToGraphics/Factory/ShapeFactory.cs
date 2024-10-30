@@ -43,7 +43,7 @@ namespace CressemDataToGraphics.Factory
 			float fey = (float)ey;
 			float fAcx = (float)arcCx;
 			float fAcy = (float)arcCy;
-			float fwidth = (float)width;
+			float fWidth = (float)width;
 
 			if (useMM is true)
 			{
@@ -59,7 +59,7 @@ namespace CressemDataToGraphics.Factory
 					fey = (float)ey.ConvertInchToMM();
 					fAcx = (float)arcCx.ConvertInchToMM();
 					fAcy = (float)arcCy.ConvertInchToMM();
-					fwidth = (float)width.ConvertInchToUM();
+					fWidth = (float)width.ConvertInchToUM();
 				}
 			}
 			else
@@ -76,7 +76,7 @@ namespace CressemDataToGraphics.Factory
 					fey = (float)ey.ConvertMMToInch();
 					fAcx = (float)arcCx.ConvertMMToInch();
 					fAcy = (float)arcCy.ConvertMMToInch();
-					fwidth = (float)width.ConvertUMToInch();
+					fWidth = (float)width.ConvertUMToInch();
 				}
 			}
 
@@ -108,7 +108,7 @@ namespace CressemDataToGraphics.Factory
 
 			return new ShapeArc(pixelResolution,
 				fcx, fcy, start.X, start.Y, end.X, end.Y, center.X, center.Y,
-				fwidth, (float)radius, (float)startAngle, (float)endAngle);
+				fWidth, (float)radius, (float)startAngle, (float)endAngle);
 		}
 
 		public ShapeEllipse CreateEllipse(bool useMM,

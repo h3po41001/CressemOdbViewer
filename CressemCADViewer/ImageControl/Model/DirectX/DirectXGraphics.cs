@@ -36,6 +36,9 @@ namespace ImageControl.Model.DirectX
 		private Factory _d2dFactory;
 		private Timer _renderTimer;
 
+		private Matrix3x2 _scaleMatrix = new Matrix3x2();
+		private Matrix3x2 _translateMatrix = new Matrix3x2();
+
 		public override void Initialize()
 		{
 			ResetView();
@@ -97,22 +100,7 @@ namespace ImageControl.Model.DirectX
 					WindowPos.X - ProductPos.X * ScreenZoom,
 					WindowPos.Y - ProductPos.Y * ScreenZoom);
 
-				Matrix3x2 scaleMatrix = Matrix3x2.CreateScale(ScreenZoom, ScreenZoom);
-				Matrix3x2 transMatrix = Matrix3x2.CreateTranslation(
-					OffsetSize.Width, OffsetSize.Height);
-
-				var transformMat = Matrix3x2.Multiply(scaleMatrix, transMatrix);
-				RawMatrix3x2 matrix = new RawMatrix3x2()
-				{
-					M11 = transformMat.M11,
-					M12 = transformMat.M12,
-					M21 = transformMat.M21,
-					M22 = transformMat.M22,
-					M31 = transformMat.M31,
-					M32 = transformMat.M32
-				};
-
-				_renderTarget.Transform = matrix;
+				UpdateMatrix(true, true);
 			}
 
 			return true;
@@ -169,23 +157,6 @@ namespace ImageControl.Model.DirectX
 			_renderTarget.BeginDraw();
 			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
 
-			Matrix3x2 scaleMatrix = Matrix3x2.CreateScale(ScreenZoom, ScreenZoom);
-			Matrix3x2 transMatrix = Matrix3x2.CreateTranslation(
-				OffsetSize.Width, OffsetSize.Height);
-
-			var transformMat = Matrix3x2.Multiply(scaleMatrix, transMatrix);
-			RawMatrix3x2 matrix = new RawMatrix3x2()
-			{
-				M11 = transformMat.M11,
-				M12 = transformMat.M12,
-				M21 = transformMat.M21,
-				M22 = transformMat.M22,
-				M31 = transformMat.M31,
-				M32 = transformMat.M32
-			};
-
-			_renderTarget.Transform = matrix;
-
 			DrawShapes();
 
 			_renderTarget.EndDraw();
@@ -217,9 +188,9 @@ namespace ImageControl.Model.DirectX
 			{
 				ScreenZoom = 0.05f;
 			}
-			else if (ScreenZoom >= 100.0f)
+			else if (ScreenZoom >= 1000.0f)
 			{
-				ScreenZoom = 100.0f;
+				ScreenZoom = 1000.0f;
 			}
 
 			float offsetX = WindowPos.X - ProductPos.X * ScreenZoom;
@@ -230,6 +201,8 @@ namespace ImageControl.Model.DirectX
 			float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
 			float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
 			ProductPos = new PointF(productX, productY);
+
+			UpdateMatrix(true, true);
 
 			MouseMoveEvent(this, null);
 		}
@@ -282,6 +255,7 @@ namespace ImageControl.Model.DirectX
 				float deltaY = e.Y - WindowPos.Y;
 
 				OffsetSize = new SizeF(StartPos.X + deltaX, StartPos.Y + deltaY);
+				UpdateMatrix(false, true);
 			}
 
 			MouseMoveEvent(this, null);
@@ -297,6 +271,7 @@ namespace ImageControl.Model.DirectX
 				float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
 
 				ProductPos = new PointF(productX, productY);
+				UpdateMatrix(false, true);
 			}
 
 			MousePressed = false;
@@ -313,18 +288,29 @@ namespace ImageControl.Model.DirectX
 					ScreenZoom = _directXView.ClientSize.Height / Roi.Height;
 				}
 
+				// 줌이 적용되어있는 화면이라고 생각
 				WindowPos = new PointF(
 					_directXView.ClientSize.Width / 2,
 					_directXView.ClientSize.Height / 2);
 
 				// 중앙에 위치하기 위함
 				ProductPos = Roi.GetCenterF();
-				OffsetSize = new SizeF(WindowPos.X, WindowPos.Y);
+				OffsetSize = new SizeF(
+					WindowPos.X - ProductPos.X * ScreenZoom,
+					WindowPos.Y - ProductPos.Y * ScreenZoom);
+
+				UpdateMatrix(true, true);
 			}
 		}
 
 		private void ResetView()
 		{
+			if (_renderTimer != null)
+			{
+				_renderTimer.Stop();
+				_renderTimer.Dispose();
+			}
+
 			_directXView.GraphicsPaint -= OnPaint;
 			_directXView.GraphicsMouseWheel -= OnMouseWheel;
 			_directXView.GraphicsResize -= OnResize;
@@ -368,7 +354,7 @@ namespace ImageControl.Model.DirectX
 				BufferCount = 1,
 				ModeDescription = new ModeDescription(
 					_directXView.ClientSize.Width, _directXView.ClientSize.Height,
-					new Rational(30, 1), Format.R8G8B8A8_UNorm),
+					new Rational(50, 1), Format.R8G8B8A8_UNorm),
 				IsWindowed = true,
 				OutputHandle = _directXView.Handle,
 				SampleDescription = new SampleDescription(1, 0),
@@ -398,9 +384,41 @@ namespace ImageControl.Model.DirectX
 				}
 			}
 
-			_renderTimer = new Timer { Interval = 30 }; // 약 30FPS
+			_renderTimer = new Timer { Interval = 50 }; // 약 30FPS
 			_renderTimer.Tick += RenderTimer_Tick;
 			_renderTimer.Start();
+		}
+
+		private void UpdateMatrix(bool isScalUpdate, bool isTranslateUpdate)
+		{
+			if (isScalUpdate is false && isTranslateUpdate is false)
+			{
+				return;
+			}
+
+			if (isScalUpdate is true)
+			{
+				_scaleMatrix = Matrix3x2.CreateScale(ScreenZoom, ScreenZoom);
+			}
+
+			if (isTranslateUpdate is true)
+			{
+				_translateMatrix = Matrix3x2.CreateTranslation(
+					OffsetSize.Width, OffsetSize.Height);
+			}
+
+			var transformMat = Matrix3x2.Multiply(_scaleMatrix, _translateMatrix);
+			RawMatrix3x2 matrix = new RawMatrix3x2()
+			{
+				M11 = transformMat.M11,
+				M12 = transformMat.M12,
+				M21 = transformMat.M21,
+				M22 = transformMat.M22,
+				M31 = transformMat.M31,
+				M32 = transformMat.M32
+			};
+
+			_renderTarget.Transform = matrix;
 		}
 
 		private void RenderTimer_Tick(object sender, EventArgs e)

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
 using CressemDataToGraphics;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
+using CressemExtractLibrary.Data.Interface.Symbol;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.Model;
@@ -110,6 +112,11 @@ namespace CressemCADViewer.ViewModel
 
 			GraphicsView.ClearShape();
 			GraphicsView.LoadProfile(proflieShapes);
+
+			if (features.Any(x => x.FeatureSymbol is ISymbolUser) is true)
+			{
+
+			}
 
 			foreach (var feature in features)
 			{

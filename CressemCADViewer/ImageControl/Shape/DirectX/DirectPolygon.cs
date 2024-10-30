@@ -32,6 +32,8 @@ namespace ImageControl.Shape.DirectX
 					return;
 				}
 
+				ShapeGemotry = null;
+
 				List<Geometry> geometries = new List<Geometry>();
 				bool startedFigure = false;
 
@@ -79,10 +81,11 @@ namespace ImageControl.Shape.DirectX
 					}
 
 					if (startedFigure is true)
-					{
+					{						
 						sink.EndFigure(FigureEnd.Closed);
-						sink.Close();
 					}
+
+					sink.Close();
 				}
 
 				if (startedFigure is true)
@@ -90,11 +93,18 @@ namespace ImageControl.Shape.DirectX
 					geometries.Add(pathGeometry);
 				}
 
-				ShapeGemotry = new GeometryGroup(Factory, FillMode.Alternate, geometries.ToArray());
+				if (geometries.Any() is true)
+				{
+					ShapeGemotry = new GeometryGroup(Factory, FillMode.Alternate, geometries.ToArray());
+				}
+				else
+				{
+					ShapeGemotry = null;
+				}
 			}
 			catch (System.Exception)
 			{
-				ShapeGemotry.Dispose();
+				ShapeGemotry?.Dispose();
 				throw;
 			}
 		}
@@ -132,6 +142,11 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Fill(RenderTarget render, bool isHole)
 		{
+			if (ShapeGemotry is null)
+			{
+				return;
+			}
+
 			if (IsFill)
 			{
 				render.FillGeometry(ShapeGemotry, DefaultBrush);

@@ -62,7 +62,6 @@
     <Compile Include="Data\Interface\Features\IFeaturePad.cs" />
     <Compile Include="Data\Interface\Features\IFeaturePolygon.cs" />
     <Compile Include="Data\Interface\Features\IFeatureSurface.cs" />
-    <Compile Include="Data\Interface\Features\IFeatureSurfaces.cs" />
     <Compile Include="Data\Interface\Features\IFeatureText.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolBase.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolButterfly.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="Data\Odb\Feature\OdbFeaturePad.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatures.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureSurface.cs" />
-    <Compile Include="Data\Odb\Feature\OdbFeatureSurfaces.cs" />
     <Compile Include="Data\Odb\Feature\OdbFeatureText.cs" />
     <Compile Include="Data\Odb\Font\OdbFont.cs" />
     <Compile Include="Data\Odb\Layer\OdbLayer.cs" />

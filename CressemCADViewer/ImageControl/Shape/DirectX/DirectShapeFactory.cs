@@ -69,7 +69,7 @@ namespace ImageControl.Shape.DirectX
 			}
 
 			return new DirectArc(isPositive, arc.Sx, arc.Sy, arc.Ex, arc.Ey,
-				arc.Width, arc.Height,
+				arc.RadiusWidth, arc.RadiusHeight,
 				arc.Rotation, arc.IsLargeArc, arc.IsClockwise, arc.LineWidth,
 				factory, render, color);
 		}

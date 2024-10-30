@@ -19,7 +19,7 @@ namespace ImageControl.Shape.DirectX
 		{
 			StartPt = new RawVector2(sx, sy);
 			EndPt = new RawVector2(ex, ey);
-			Size = new Size2F(width / 2, height / 2);
+			Size = new Size2F(width, height);
 			Rotation = rotaion;
 			ArcSz = isLargeArc ? ArcSize.Large : ArcSize.Small;
 			SweepDir = isClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise;
@@ -79,13 +79,13 @@ namespace ImageControl.Shape.DirectX
 		{
 			if (IsPositive != isHole)
 			{
-				//render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
-				render.FillGeometry(ShapeGemotry, DefaultBrush);
+				render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
+				//render.FillGeometry(ShapeGemotry, DefaultBrush);
 			}
 			else
 			{
-				//render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
-				render.FillGeometry(ShapeGemotry, HoleBrush);
+				render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
+				//render.FillGeometry(ShapeGemotry, HoleBrush);
 			}
 		}
 	}

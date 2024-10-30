@@ -24,12 +24,32 @@ namespace ImageControl.Shape.DirectX
 		{
 			try
 			{
-				ShapeGemotry = new GeometryGroup(Factory, FillMode.Alternate,
-					Polygons.Select(p => p.ShapeGemotry).ToArray());
+				var geometries = new List<Geometry>();
+				foreach (var polygon in Polygons)
+				{
+					if (polygon is DirectPolygon directPolygon)
+					{
+						if (directPolygon.ShapeGemotry is null)
+						{
+							continue;
+						}
+
+						geometries.Add(directPolygon.ShapeGemotry);
+					}
+				}
+
+				if (geometries.Any() is true)
+				{
+					ShapeGemotry = new GeometryGroup(Factory, FillMode.Alternate, geometries.ToArray());
+				}
+				else
+				{
+					ShapeGemotry = null;
+				}
 			}
 			catch (System.Exception)
 			{
-				ShapeGemotry.Dispose();
+				ShapeGemotry?.Dispose();
 				throw;
 			}
 		}
@@ -63,6 +83,11 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Fill(RenderTarget render, bool isHole)
 		{
+			if (ShapeGemotry is null)
+			{
+				return;
+			}
+
 			if (IsPositive)
 			{
 				render.FillGeometry(ShapeGemotry, DefaultBrush);

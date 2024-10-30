@@ -11,7 +11,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public ShapeDirectArc(float sx, float sy,
 			float ex, float ey,
-			float width, float height,
+			float radiusWidth, float radiusHeight,
 			float rotation, bool isLargeArc,
 			bool isClockwise, float lineWidth) : base()
 		{
@@ -19,8 +19,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			Sy = sy;
 			Ex = ex;
 			Ey = ey;
-			Width = width;
-			Height = height;
+			RadiusWidth = radiusWidth;
+			RadiusHeight = radiusHeight;
 			Rotation = rotation;
 			IsLargeArc = isLargeArc;
 			IsClockwise = isClockwise;
@@ -35,9 +35,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public float Ey { get; private set; }
 
-		public float Width { get; private set; }
+		public float RadiusWidth { get; private set; }
 
-		public float Height { get; private set; }
+		public float RadiusHeight { get; private set; }
 
 		public float Rotation { get; private set; }
 

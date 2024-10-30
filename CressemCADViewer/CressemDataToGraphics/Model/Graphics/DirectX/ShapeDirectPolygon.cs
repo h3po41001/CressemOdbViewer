@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CressemDataToGraphics.Converter;
 using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Extension;
 using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
