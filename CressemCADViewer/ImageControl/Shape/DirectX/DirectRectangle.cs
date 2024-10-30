@@ -46,9 +46,9 @@ namespace ImageControl.Shape.DirectX
 			render.DrawRectangle(Rectangle, ProfileBrush);
 		}
 
-		public override void Fill(RenderTarget render)
+		public override void Fill(RenderTarget render, bool isHole)
 		{
-			if (IsPositive is true)
+			if (IsPositive != isHole)
 			{
 				render.FillRectangle(Rectangle, DefaultBrush);
 			}

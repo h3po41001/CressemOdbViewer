@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 
@@ -54,6 +55,10 @@ namespace ImageControl.Shape.DirectX
 			else if (shape is IDirectSurface surface)
 			{
 				return CreateDirectSurface(isPositive, surface, factory, render, color);
+			}
+			else if (shape is IDirectSurfaces surfaces)
+			{
+				return CreateDirectSurfaces(isPositive, surfaces, factory, render, color);
 			}
 
 			return null;
@@ -152,6 +157,23 @@ namespace ImageControl.Shape.DirectX
 			}
 
 			return new DirectSurface(isPositive, shapes, factory, render, color);
+		}
+
+		private DirectShape CreateDirectSurfaces(bool isPositive, IDirectSurfaces surfaces,
+			Factory factory, RenderTarget render, Color color)
+		{
+			if (surfaces is null)
+			{
+				return null;
+			}
+
+			List<DirectShape> shapes = new List<DirectShape>();
+			foreach (var surface in surfaces.Surfaces)
+			{
+				shapes.Add(CreateDirectShape(isPositive, surface, factory, render, color));
+			}
+
+			return new DirectSurfaces(isPositive, shapes.Cast<DirectSurface>(), factory, render, color);
 		}
 	}
 }

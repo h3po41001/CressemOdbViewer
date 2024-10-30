@@ -24,36 +24,8 @@ namespace ImageControl.Shape.DirectX
 		{
 			try
 			{
-				ShapeGemotry = new PathGeometry(Factory);
-				using (var temp = ((PathGeometry)ShapeGemotry).Open())
-				{
-					temp.Close();
-				}
-
-				foreach (DirectPolygon polygon in Polygons.Cast<DirectPolygon>())
-				{
-					if (polygon.ShapeGemotry is null)
-					{
-						continue;
-					}
-
-					PathGeometry templateGeometry = new PathGeometry(Factory);
-					using (GeometrySink sink = templateGeometry.Open())
-					{
-						if (polygon.IsFill is true)
-						{
-							ShapeGemotry.Combine(polygon.ShapeGemotry, CombineMode.Union, sink);
-						}
-						else
-						{
-							ShapeGemotry.Combine(polygon.ShapeGemotry, CombineMode.Xor, sink);
-						}
-
-						sink.Close();
-					}
-
-					ShapeGemotry = templateGeometry;
-				}
+				ShapeGemotry = new GeometryGroup(Factory, FillMode.Alternate,
+					Polygons.Select(p => p.ShapeGemotry).ToArray());
 			}
 			catch (System.Exception)
 			{
@@ -89,7 +61,7 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public override void Fill(RenderTarget render)
+		public override void Fill(RenderTarget render, bool isHole)
 		{
 			if (IsPositive)
 			{

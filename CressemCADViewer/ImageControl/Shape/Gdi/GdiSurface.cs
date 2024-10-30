@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using ImageControl.Extension;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape.Gdi.Interface;
@@ -16,7 +17,7 @@ namespace ImageControl.Shape.Gdi
 			Polygons = new List<GdiShapePolygon>(polygons);
 			GraphicsRegion = new Region();
 			GraphicsRegion.MakeEmpty();
-
+			
 			foreach (GdiShapePolygon polygon in Polygons)
 			{
 				if (polygon.IsFill)

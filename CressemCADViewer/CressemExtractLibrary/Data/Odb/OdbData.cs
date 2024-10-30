@@ -62,9 +62,9 @@ namespace CressemExtractLibrary.Data.Odb
 				{					
 					foreach (var feature in step.Profile.Features.FeatureList)
 					{
-						if (feature is OdbFeatureSurface surface)
+						if (feature is OdbFeatureSurface surfaces)
 						{
-							return surface;
+							return surfaces;
 						}
 					}
 				}

@@ -10,10 +10,10 @@ namespace ImageControl.Shape.DirectX
 	{
 		private DirectArc() : base() { }
 
-		public DirectArc(bool isPositive, 
+		public DirectArc(bool isPositive,
 			float sx, float sy, float ex, float ey,
-			float width, float height, float rotaion, 
-			bool isLargeArc, bool isClockwise, 
+			float width, float height, float rotaion,
+			bool isLargeArc, bool isClockwise,
 			float lineWidth,
 			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
 		{
@@ -75,15 +75,17 @@ namespace ImageControl.Shape.DirectX
 			render.DrawGeometry(ShapeGemotry, ProfileBrush, LineWidth);
 		}
 
-		public override void Fill(RenderTarget render)
+		public override void Fill(RenderTarget render, bool isHole)
 		{
-			if (IsPositive is true)
+			if (IsPositive != isHole)
 			{
-				render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
+				//render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
+				render.FillGeometry(ShapeGemotry, DefaultBrush);
 			}
 			else
 			{
-				render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
+				//render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
+				render.FillGeometry(ShapeGemotry, HoleBrush);
 			}
 		}
 	}

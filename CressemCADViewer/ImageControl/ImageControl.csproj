@@ -71,6 +71,7 @@
     <Compile Include="Shape\DirectX\DirectShape.cs" />
     <Compile Include="Shape\DirectX\DirectShapeFactory.cs" />
     <Compile Include="Shape\DirectX\DirectSurface.cs" />
+    <Compile Include="Shape\DirectX\DirectSurfaces.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectArc.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectEllipse.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectLine.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Shape\DirectX\Interface\IDirectRectangle.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectShape.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectSurface.cs" />
+    <Compile Include="Shape\DirectX\Interface\IDirectSurfaces.cs" />
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
     <Compile Include="Shape\Gdi\GdiEllipse.cs" />

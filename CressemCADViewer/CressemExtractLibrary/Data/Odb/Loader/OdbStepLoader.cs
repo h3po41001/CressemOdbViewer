@@ -33,6 +33,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			odbSteps = null;
 			ConcurrentQueue<OdbStep> stepQueue = new ConcurrentQueue<OdbStep>();
 
+			bool isUnit = odbData.OdbMatrixInfo.Steps.Any(x => x.Name.ToUpper().Equals("UNIT"));
+
 			//foreach (var step in odbData.OdbMatrixInfo.Steps)
 			Parallel.ForEach(odbData.OdbMatrixInfo.Steps, step =>
 			{
@@ -41,10 +43,10 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				string stepProfilePath = Path.Combine(stepFolder, ProfileFileName);
 				string stepLayerPath = Path.Combine(stepFolder, LayersFolderName);
 
-				//if (step.Name.ToUpper().Equals("UNIT") is false)
-				//{
-				//	return;
-				//}
+				if (isUnit is true && step.Name.ToUpper().Equals("UNIT") is false)
+				{
+					return;
+				}
 
 				if (LoadOdbStepHeader(stepHeaderPath,
 					out OdbStepHeader stepHeader) is false)
@@ -314,6 +316,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				return false;
 			}
 
+			bool isL01 = odbData.OdbMatrixInfo.Layers.Any(x => x.Name.ToUpper().Equals("L01"));
+
 			foreach (var refLayer in odbData.OdbMatrixInfo.Layers)
 			{
 				string layerFilePath = Path.Combine(path, refLayer.Name, FeaturesFileName);
@@ -322,10 +326,10 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					continue;
 				}
 
-				//if (refLayer.Name.ToUpper().Equals("L01") is false)
-				//{
-				//	continue;
-				//}
+				if (isL01 is true && refLayer.Name.ToUpper().Equals("L01") is false)
+				{
+					continue;
+				}
 
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
 					odbData.OdbUserSymbols, out OdbFeatures features) is false)

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using CressemDataToGraphics.Model.Graphics.DirectX;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
@@ -180,6 +180,27 @@ namespace CressemDataToGraphics.Factory
 				isPositive, surface.Polygons));
 
 			return new ShapeDirectList(surface.Polarity.Equals("P"), shapes);
+		}
+
+		private IDirectList MakeFeatureShape(bool useMM,
+			float pixelResolution, bool isMM,
+			double xDatum, double yDatum, double cx, double cy,
+			int orient, bool isMirrorXAxis, IFeatureSurfaces surfaces)
+		{
+
+			List<ShapeDirectSurface> surfaceList = new List<ShapeDirectSurface>();
+
+			foreach (var surface in surfaces.Features)
+			{
+				bool isPositive = surface.Polarity.Equals("P") is true;
+				surfaceList.Add(ShapeDirectSurface.Create(useMM,
+					pixelResolution, isMM,
+					xDatum, yDatum, cx, cy,
+					orient, isMirrorXAxis,
+					isPositive, surface.Polygons));
+			}
+
+			return new ShapeDirectList(true, new ShapeDirectBase[] { new ShapeDirectSurfaces(surfaceList) });
 		}
 
 		private ShapeDirectBase MakeSymbolShape(bool useMM,
@@ -391,20 +412,42 @@ namespace CressemDataToGraphics.Factory
 				orient, isMirrorXAxis,
 				innerDiameter, innerDiameter);
 
-			var outerPoly = new ShapeDirectPolygon(true, new ShapeDirectBase[] { outerCircle });
-			var innerPoly = new ShapeDirectPolygon(false, new ShapeDirectBase[] { innerCircle });
+			//var outerPoly = new ShapeDirectPolygon(true, new ShapeDirectBase[] { outerCircle });
+			//var innerPoly = new ShapeDirectPolygon(false, new ShapeDirectBase[] { innerCircle });
+			var polys = new ShapeDirectPolygon(false, new ShapeDirectBase[] { outerCircle, innerCircle });
 
-			return new ShapeDirectSurface(true, new ShapeDirectPolygon[] { outerPoly, innerPoly });
+			return new ShapeDirectSurface(true, new ShapeDirectPolygon[] { polys });
 		}
 
 		private ShapeDirectSurface MakeRoundThermalRounded(bool useMM,
 			float pixelResolution, bool isMM,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis,
-			double outDiameter, double innterDiameter,
+			double outDiameter, double innerDiameter,
 			double angle, int spokeNum, double gap)
 		{
-			//double ringWidth = 
+			double ringWidth = outDiameter - innerDiameter;
+			double radius = innerDiameter / 2 + ringWidth / 4;
+			double gapDegree = angle * 180 / Math.PI;
+			double oneOfDeg = (2 * Math.Asin(ringWidth / (8 * radius))) * 180.0 / Math.PI;
+			double pieceOfDeg = 360.0 / angle;
+
+			double radian = Math.PI / 180.0;
+			for (int i = 0; i < spokeNum; i++)
+			{
+				// 시작점 계산
+				double sX = radius * Math.Cos((angle + gapDegree / 2.0 + oneOfDeg / 2.0 + pieceOfDeg * i) * radian);
+				double sY = radius * Math.Sin((angle + gapDegree / 2.0 + oneOfDeg / 2.0 + pieceOfDeg * i) * radian);
+
+				// 끝점 계산
+				double eX = radius * Math.Cos((angle + gapDegree / 2.0 + oneOfDeg / 2.0 + pieceOfDeg * i + pieceOfDeg - gapDegree - oneOfDeg) * radian);
+				double eY = radius * Math.Sin((angle + gapDegree / 2.0 + oneOfDeg / 2.0 + pieceOfDeg * i + pieceOfDeg - gapDegree - oneOfDeg) * radian);
+
+				//ShapeDirectArc.Create(useMM, pixelResolution, isMM, xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
+				//	sX, sY, eX, eY, cx, cy, 
+			}
+
+
 			return null;
 		}
 

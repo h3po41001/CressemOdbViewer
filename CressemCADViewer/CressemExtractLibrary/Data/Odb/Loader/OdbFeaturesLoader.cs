@@ -32,6 +32,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			out OdbFeatures features)
 		{
 			features = new OdbFeatures();
+			List<OdbFeatureSurface> surfaceList = new List<OdbFeatureSurface>();
+
 			string line = string.Empty;
 
 			// Symbol
@@ -165,10 +167,16 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							}
 
 							features.AddFeature(surface);
+							//surfaceList.Add(surface);
 						}
 					}
 				}
 			}
+
+			//if (surfaceList.Any() is true)
+			//{
+			//	features.FeatureList.Add(new OdbFeatureSurfaces(surfaceList));
+			//}
 
 			return features.FeatureList.Any();
 		}
@@ -240,7 +248,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 						if (splited[0].Equals("OS") is true)
 						{
-							polygon.AddFeature(new OdbFeatureLine(index, isMM, 
+							polygon.AddFeature(new OdbFeatureLine(index, isMM,
 								sx, sy, x, y, -1, "", "", ""));
 
 							sx = x;

@@ -25,9 +25,9 @@ namespace ImageControl.Model.DirectX
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
 
-		private readonly DirectXWinformView _directXView = new DirectXWinformView();
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
+		private DirectXWinformView _directXView = new DirectXWinformView();
 		private WindowsFormsHost _directXControl;
 
 		private Device _d3dDevice;
@@ -38,10 +38,12 @@ namespace ImageControl.Model.DirectX
 
 		public override void Initialize()
 		{
+			ResetView();
+
 			_directXControl = GraphicsControl as WindowsFormsHost;
 			_directXControl.Child = _directXView;
-
-			RenderSatart();
+						
+			RenderStart();
 
 			_directXView.GraphicsPaint += OnPaint;
 			_directXView.GraphicsMouseWheel += OnMouseWheel;
@@ -72,7 +74,7 @@ namespace ImageControl.Model.DirectX
 					if (surface is null)
 					{
 						return false;
-					}	
+					}
 
 					Roi = surface.GetBounds();
 				}
@@ -149,7 +151,7 @@ namespace ImageControl.Model.DirectX
 			_renderTarget.BeginDraw();
 			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
 			_renderTarget.EndDraw();
-			
+
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
@@ -180,10 +182,10 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Fill(_renderTarget);
+				shape.Fill(_renderTarget, false);
 			}
 
-			_renderTarget.EndDraw();			
+			_renderTarget.EndDraw();
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
@@ -254,7 +256,21 @@ namespace ImageControl.Model.DirectX
 		{
 		}
 
-		private void RenderSatart()
+		private void ResetView()
+		{
+			_directXView.Dispose();
+			_directXView = new DirectXWinformView();
+			//_directXView.GraphicsPaint -= OnPaint;
+			//_directXView.GraphicsMouseWheel -= OnMouseWheel;
+			//_directXView.GraphicsResize -= OnResize;
+			//_directXView.GraphicsMouseDoubleClick -= OnMouseDoubleClick;
+			//_directXView.GraphicsMouseDown -= OnMouseDown;
+			//_directXView.GraphicsMouseMove -= OnMouseMove;
+			//_directXView.GraphicsMouseUp -= OnMouseUp;
+			//_directXView.GraphicsPrevKeyDown -= OnPrevkeyDown;
+		}
+
+		private void RenderStart()
 		{
 			SwapChainDescription swapChainDesc = new SwapChainDescription()
 			{

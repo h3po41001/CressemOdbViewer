@@ -103,17 +103,17 @@ namespace CressemCADViewer.ViewModel
 			var profile = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
 			var features = ExtractLibrary.Instance.GetFeatures(
 				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
-				out double xDatum, out double yDatum);
+				out double _, out double _);
 
 			DataToGraphics dataToGraphics = new DataToGraphics(1f, GraphicsType);
-			var proflieShapes = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, profile);
+			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, profile);
 
 			GraphicsView.ClearShape();
 			GraphicsView.LoadProfile(proflieShapes);
 
 			foreach (var feature in features)
 			{
-				var shape = dataToGraphics.GetShapes(useMM, xDatum, yDatum, 0, 0, 0, false, feature);
+				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, feature);
 				if (shape is null)
 				{
 					continue;

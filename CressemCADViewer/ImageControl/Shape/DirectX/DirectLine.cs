@@ -15,7 +15,7 @@ namespace ImageControl.Shape.DirectX
 		{
 			StartPt = new RawVector2(sx, sy);
 			EndPt = new RawVector2(ex, ey);
-			LineWidth = lineWidth > 0 ? lineWidth : 0.1f;
+			LineWidth = lineWidth > 0 ? lineWidth : 0.01f;
 
 			SetShape();
 		}
@@ -29,7 +29,6 @@ namespace ImageControl.Shape.DirectX
 		public override void SetShape()
 		{
 			ShapeGemotry = new PathGeometry(Factory);
-					
 			using (GeometrySink sink = ((PathGeometry)ShapeGemotry).Open())
 			{
 				sink.BeginFigure(StartPt, FigureBegin.Filled);
@@ -49,15 +48,17 @@ namespace ImageControl.Shape.DirectX
 			render.DrawLine(StartPt, EndPt, ProfileBrush, LineWidth);
 		}
 
-		public override void Fill(RenderTarget render)
+		public override void Fill(RenderTarget render, bool isHole)
 		{
-			if (IsPositive is true)
+			if (IsPositive != isHole)
 			{
-				render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
+				//render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
+				render.FillGeometry(ShapeGemotry, DefaultBrush);
 			}
 			else
 			{
-				render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
+				//render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
+				render.FillGeometry(ShapeGemotry, HoleBrush);
 			}
 		}
 	}

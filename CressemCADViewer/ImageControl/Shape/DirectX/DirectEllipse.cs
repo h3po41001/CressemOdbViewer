@@ -43,9 +43,9 @@ namespace ImageControl.Shape.DirectX
 			render.DrawEllipse(Ellipse, ProfileBrush);
 		}
 
-		public override void Fill(RenderTarget render)
+		public override void Fill(RenderTarget render, bool isHole)
 		{
-			if (IsPositive)
+			if (IsPositive != isHole)
 			{
 				render.FillEllipse(Ellipse, DefaultBrush);
 			}

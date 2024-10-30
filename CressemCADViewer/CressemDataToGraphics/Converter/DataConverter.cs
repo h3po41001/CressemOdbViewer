@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CressemDataToGraphics.Converter
 {
-	public static class MmInchConverter
+	public static class DataConverter
 	{
 		private static readonly double MM_TO_INCH = 25.4;
 		private static readonly int DIGITS = 10;
@@ -89,6 +89,17 @@ namespace CressemDataToGraphics.Converter
 				(float)ConvertMMToInch(mil.Y),
 				(float)ConvertUMToInch(mil.Width),
 				(float)ConvertUMToInch(mil.Height));
+		}
+
+		public static double ConvertNormalizeAngle(double angle)
+		{
+			double normalize = angle % 360;
+			if (normalize <= 0)
+			{
+				normalize += 360;
+			}
+
+			return normalize;
 		}
 	}
 }

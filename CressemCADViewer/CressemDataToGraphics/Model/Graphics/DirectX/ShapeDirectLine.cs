@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using CressemDataToGraphics.Converter;
-using CressemDataToGraphics.Factory;
-using ImageControl.Extension;
+﻿using CressemDataToGraphics.Factory;
 using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX

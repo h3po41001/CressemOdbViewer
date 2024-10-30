@@ -1,4 +1,5 @@
 ﻿using System;
+using CressemDataToGraphics.Converter;
 using CressemDataToGraphics.Factory;
 using ImageControl.Shape.DirectX.Interface;
 
@@ -57,21 +58,16 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
 				sx, sy, ex, ey, arcCx, arcCy, width);
 
-			double deltaAngle = shapeArc.EndAngle - shapeArc.StartAngle;
-			if (deltaAngle < 0)
+			double startAngle = DataConverter.ConvertNormalizeAngle(shapeArc.StartAngle);
+			double endAngle = DataConverter.ConvertNormalizeAngle(shapeArc.EndAngle);
+
+			double deltaAngle = endAngle - startAngle;
+			if (deltaAngle <= 0)
 			{
-				deltaAngle += 2 * Math.PI;
+				deltaAngle += 360.0;
 			}
 
-			bool isLarge;
-			if (deltaAngle <= Math.PI)
-			{
-				isLarge = false;
-			}
-			else
-			{
-				isLarge = true;
-			}
+			bool isLarge = (deltaAngle > 180) is true;
 
 			return new ShapeDirectArc(
 				shapeArc.Sx, -shapeArc.Sy,

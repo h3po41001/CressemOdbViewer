@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CressemExtractLibrary.Data.Interface.Features;
+﻿using CressemExtractLibrary.Data.Interface.Features;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
 {

@@ -202,7 +202,6 @@ namespace CressemDataToGraphics.Factory
 			float fDatumY = (float)yDatum;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
-
 			float fsx = (float)sx;
 			float fsy = (float)sy;
 			float fex = (float)ex;

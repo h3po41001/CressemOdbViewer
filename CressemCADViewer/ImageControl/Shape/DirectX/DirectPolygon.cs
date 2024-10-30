@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Linq;
 using ImageControl.Extension;
 using SharpDX.Direct2D1;
-using SharpDX.Mathematics.Interop;
 
 namespace ImageControl.Shape.DirectX
 {
@@ -33,41 +32,65 @@ namespace ImageControl.Shape.DirectX
 					return;
 				}
 
-				DirectLine firstLine = (DirectLine)Paths.FirstOrDefault(x => x is DirectLine);
+				List<Geometry> geometries = new List<Geometry>();
+				bool startedFigure = false;
 
 				PathGeometry pathGeometry = new PathGeometry(Factory);
 				using (var sink = pathGeometry.Open())
 				{
-					sink.BeginFigure(firstLine.EndPt, FigureBegin.Filled);
-
-					foreach (var path in Paths.Skip(1))
+					foreach (var path in Paths)
 					{
-						if (path is null)
+						if (path is DirectLine || path is DirectArc)
 						{
-							continue;
-						}
+							if (startedFigure is false)
+							{
+								if (path is DirectLine firstLine)
+								{
+									sink.BeginFigure(firstLine.StartPt, FigureBegin.Filled);
+									sink.AddLine(firstLine.EndPt);
+								}
+								else if (path is DirectArc firstArc)
+								{
+									sink.BeginFigure(firstArc.StartPt, FigureBegin.Filled);
+									sink.AddArc(firstArc.Arc);
+								}
 
-						if (path is DirectLine line)
-						{
-							sink.AddLine(line.EndPt);
+								startedFigure = true;
+							}
+
+							if (path is null)
+							{
+								continue;
+							}
+
+							if (path is DirectLine line)
+							{
+								sink.AddLine(line.EndPt);
+							}
+							else if (path is DirectArc arc)
+							{
+								sink.AddArc(arc.Arc);
+							}
 						}
-						else if (path is DirectArc arc)
+						else
 						{
-							sink.AddArc(arc.Arc);
+							geometries.Add(path.ShapeGemotry);
 						}
 					}
 
-					sink.EndFigure(FigureEnd.Open);
-					sink.Close();
+					if (startedFigure is true)
+					{
+						sink.EndFigure(FigureEnd.Closed);
+						sink.Close();
+					}
 				}
 
-				List<Geometry> geometries = new List<Geometry>
+				if (startedFigure is true)
 				{
-					pathGeometry
-				};
+					geometries.Add(pathGeometry);
+				}
 
-				geometries.AddRange(Paths.SkipWhile(x => x is DirectArc || x is DirectLine).Select(x => x.ShapeGemotry));
-				ShapeGemotry = new GeometryGroup(Factory, FillMode.Winding, geometries.ToArray());
+				ShapeGemotry = new GeometryGroup(Factory, FillMode.Alternate, geometries.ToArray());
 			}
 			catch (System.Exception)
 			{
@@ -107,9 +130,9 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public override void Fill(RenderTarget render)
+		public override void Fill(RenderTarget render, bool isHole)
 		{
-			if (IsFill is true)
+			if (IsFill)
 			{
 				render.FillGeometry(ShapeGemotry, DefaultBrush);
 			}
