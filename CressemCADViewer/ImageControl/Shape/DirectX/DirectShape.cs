@@ -35,16 +35,16 @@ namespace ImageControl.Shape.DirectX
 
 		public SolidColorBrush ProfileBrush { get; private set; }
 
+		public RectangleF Bounds { get; protected set; }
+
 		protected Factory Factory { get; private set; }
 
 		protected RenderTarget Render { get; private set; }
 
 		public abstract void SetShape();
 
-		public abstract RectangleF GetBounds();
+		public abstract void Draw(RenderTarget render, RectangleF roi);
 
-		public abstract void Draw(RenderTarget render);
-
-		public abstract void Fill(RenderTarget render, bool isHole);
+		public abstract void Fill(RenderTarget render, bool isHole, RectangleF roi);
 	}
 }

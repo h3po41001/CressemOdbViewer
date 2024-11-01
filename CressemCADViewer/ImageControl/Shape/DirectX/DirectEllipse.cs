@@ -31,27 +31,30 @@ namespace ImageControl.Shape.DirectX
 		{
 			Ellipse = new Ellipse(CenterPt, RadiusX, RadiusY);
 			ShapeGemotry = new EllipseGeometry(Factory, Ellipse);
+			Bounds = new RectangleF(CenterPt.X - RadiusX, 
+				CenterPt.Y - RadiusY, RadiusX * 2, RadiusY * 2);
 		}
 
-		public override RectangleF GetBounds()
+		public override void Draw(RenderTarget render, RectangleF roi)
 		{
-			return new RectangleF(CenterPt.X - RadiusX, CenterPt.Y - RadiusY, RadiusX * 2, RadiusY * 2);
-		}
-
-		public override void Draw(RenderTarget render)
-		{
-			render.DrawEllipse(Ellipse, ProfileBrush);
-		}
-
-		public override void Fill(RenderTarget render, bool isHole)
-		{
-			if (IsPositive != isHole)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.FillEllipse(Ellipse, DefaultBrush);
+				render.DrawEllipse(Ellipse, ProfileBrush);
 			}
-			else
+		}
+
+		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		{
+			//if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.FillEllipse(Ellipse, HoleBrush);
+				if (IsPositive != isHole)
+				{
+					render.FillEllipse(Ellipse, DefaultBrush);
+				}
+				else
+				{
+					render.FillEllipse(Ellipse, HoleBrush);
+				}
 			}
 		}
 	}

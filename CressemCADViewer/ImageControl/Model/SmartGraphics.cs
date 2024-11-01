@@ -30,6 +30,7 @@ namespace ImageControl.Model
 
 		protected PointF WindowPos { get; set; }
 
+		// 화면에서 중심에 표시되는 위치가 제품의 어디 위치인지
 		protected PointF ProductPos { get; set; }
 
 		protected bool MousePressed { get; set; }

@@ -36,29 +36,31 @@ namespace ImageControl.Shape.DirectX
 				sink.EndFigure(FigureEnd.Open);
 				sink.Close();
 			}
+
+			Bounds = new RectangleF(StartPt.X, StartPt.Y,
+				EndPt.X - StartPt.X, EndPt.Y - StartPt.Y);
 		}
 
-		public override RectangleF GetBounds()
+		public override void Draw(RenderTarget render, RectangleF roi)
 		{
-			return new RectangleF(StartPt.X, StartPt.Y, EndPt.X - StartPt.X, EndPt.Y - StartPt.Y);
-		}
-
-		public override void Draw(RenderTarget render)
-		{
-			render.DrawLine(StartPt, EndPt, ProfileBrush, LineWidth);
-		}
-
-		public override void Fill(RenderTarget render, bool isHole)
-		{
-			if (IsPositive != isHole)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
-				//render.FillGeometry(ShapeGemotry, DefaultBrush);
+				render.DrawLine(StartPt, EndPt, ProfileBrush, LineWidth);
 			}
-			else
+		}
+
+		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		{
+			//if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
-				//render.FillGeometry(ShapeGemotry, HoleBrush);
+				if (IsPositive != isHole)
+				{
+					render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
+				}
+				else
+				{
+					render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
+				}
 			}
 		}
 	}

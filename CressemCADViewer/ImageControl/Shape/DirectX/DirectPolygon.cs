@@ -81,7 +81,7 @@ namespace ImageControl.Shape.DirectX
 					}
 
 					if (startedFigure is true)
-					{						
+					{
 						sink.EndFigure(FigureEnd.Closed);
 					}
 
@@ -101,6 +101,8 @@ namespace ImageControl.Shape.DirectX
 				{
 					ShapeGemotry = null;
 				}
+
+				SetBounds();
 			}
 			catch (System.Exception)
 			{
@@ -109,17 +111,17 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public override RectangleF GetBounds()
+		public void SetBounds()
 		{
 			if (Paths is null)
 			{
-				return RectangleF.Empty;
+				return;
 			}
 
 			List<RectangleF> bounds = new List<RectangleF>();
 			foreach (DirectShape shape in Paths)
 			{
-				var pathBounds = shape.GetBounds();
+				var pathBounds = shape.Bounds;
 				bounds.Add(new RectangleF()
 				{
 					X = pathBounds.Left,
@@ -129,31 +131,37 @@ namespace ImageControl.Shape.DirectX
 				});
 			}
 
-			return bounds.GetBounds();
+			Bounds = bounds.GetBounds();
 		}
 
-		public override void Draw(RenderTarget render)
+		public override void Draw(RenderTarget render, RectangleF roi)
 		{
-			foreach (var path in Paths)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				path.Draw(render);
+				foreach (var path in Paths)
+				{
+					path.Draw(render, roi);
+				}
 			}
 		}
 
-		public override void Fill(RenderTarget render, bool isHole)
+		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
 		{
 			if (ShapeGemotry is null)
 			{
 				return;
 			}
 
-			if (IsFill)
+			//if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.FillGeometry(ShapeGemotry, DefaultBrush);
-			}
-			else
-			{
-				render.FillGeometry(ShapeGemotry, HoleBrush);
+				if (IsFill)
+				{
+					render.FillGeometry(ShapeGemotry, DefaultBrush);
+				}
+				else
+				{
+					render.FillGeometry(ShapeGemotry, HoleBrush);
+				}
 			}
 		}
 	}

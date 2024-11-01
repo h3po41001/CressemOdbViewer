@@ -34,27 +34,29 @@ namespace ImageControl.Shape.DirectX
 		{
 			Rectangle = new RawRectangleF(Left, Top, Right, Bottom);
 			ShapeGemotry = new RectangleGeometry(Factory, Rectangle);
+			Bounds = new RectangleF(Left, Top, Right - Left, Bottom - Top);
 		}
 
-		public override RectangleF GetBounds()
+		public override void Draw(RenderTarget render, RectangleF roi)
 		{
-			return new RectangleF(Left, Top, Right - Left, Bottom - Top);
-		}
-
-		public override void Draw(RenderTarget render)
-		{
-			render.DrawRectangle(Rectangle, ProfileBrush);
-		}
-
-		public override void Fill(RenderTarget render, bool isHole)
-		{
-			if (IsPositive != isHole)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.FillRectangle(Rectangle, DefaultBrush);
+				render.DrawRectangle(Rectangle, ProfileBrush);
 			}
-			else
+		}
+
+		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		{
+			//if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.FillRectangle(Rectangle, HoleBrush);
+				if (IsPositive != isHole)
+				{
+					render.FillRectangle(Rectangle, DefaultBrush);
+				}
+				else
+				{
+					render.FillRectangle(Rectangle, HoleBrush);
+				}
 			}
 		}
 	}

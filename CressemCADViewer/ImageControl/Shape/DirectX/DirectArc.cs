@@ -63,29 +63,30 @@ namespace ImageControl.Shape.DirectX
 				sink.EndFigure(FigureEnd.Open);
 				sink.Close();
 			}
+
+			Bounds = ShapeGemotry.GetBounds().ToRectangleF();
 		}
 
-		public override RectangleF GetBounds()
+		public override void Draw(RenderTarget render, RectangleF roi)
 		{
-			return ShapeGemotry.GetBounds().ToRectangleF();
-		}
-
-		public override void Draw(RenderTarget render)
-		{
-			render.DrawGeometry(ShapeGemotry, ProfileBrush, LineWidth);
-		}
-
-		public override void Fill(RenderTarget render, bool isHole)
-		{
-			if (IsPositive != isHole)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
-				//render.FillGeometry(ShapeGemotry, DefaultBrush);
+				render.DrawGeometry(ShapeGemotry, ProfileBrush, LineWidth);
 			}
-			else
+		}
+
+		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		{
+			//if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
-				//render.FillGeometry(ShapeGemotry, HoleBrush);
+				if (IsPositive != isHole)
+				{
+					render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
+				}
+				else
+				{
+					render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
+				}
 			}
 		}
 	}

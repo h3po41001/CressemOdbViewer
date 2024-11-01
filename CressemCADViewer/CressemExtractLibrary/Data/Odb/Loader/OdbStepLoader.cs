@@ -331,7 +331,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					continue;
 				}
 
-				if (refLayer.Name.ToUpper().Equals("SIG2") is false)
+				if (isL01 is false && refLayer.Name.ToUpper().Equals("SIG2") is false)
 					continue;
 
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,

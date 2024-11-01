@@ -46,6 +46,8 @@ namespace ImageControl.Shape.DirectX
 				{
 					ShapeGemotry = null;
 				}
+
+				SetBounds();
 			}
 			catch (System.Exception)
 			{
@@ -54,11 +56,11 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public override RectangleF GetBounds()
+		public void SetBounds()
 		{
 			if (Polygons is null)
 			{
-				return RectangleF.Empty;
+				return;
 			}
 
 			List<RectangleF> bounds = new List<RectangleF>();
@@ -66,35 +68,41 @@ namespace ImageControl.Shape.DirectX
 			{
 				if (shape is DirectPolygon polygon)
 				{
-					bounds.Add(polygon.GetBounds());
+					bounds.Add(polygon.Bounds);
 				}
 			}
 
-			return bounds.GetBounds();
+			Bounds = bounds.GetBounds();
 		}
 
-		public override void Draw(RenderTarget render)
+		public override void Draw(RenderTarget render, RectangleF roi)
 		{
-			foreach (var polygon in Polygons)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				polygon.Draw(render);
+				foreach (var polygon in Polygons)
+				{
+					polygon.Draw(render, roi);
+				}
 			}
 		}
 
-		public override void Fill(RenderTarget render, bool isHole)
+		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
 		{
 			if (ShapeGemotry is null)
 			{
 				return;
 			}
 
-			if (IsPositive)
+			//if (roi.IntersectsWith(Bounds) is true)
 			{
-				render.FillGeometry(ShapeGemotry, DefaultBrush);
-			}
-			else
-			{
-				render.FillGeometry(ShapeGemotry, HoleBrush);
+				if (IsPositive)
+				{
+					render.FillGeometry(ShapeGemotry, DefaultBrush);
+				}
+				else
+				{
+					render.FillGeometry(ShapeGemotry, HoleBrush);
+				}
 			}
 		}
 	}

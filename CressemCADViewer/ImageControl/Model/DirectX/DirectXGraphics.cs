@@ -24,6 +24,7 @@ namespace ImageControl.Model.DirectX
 	internal class DirectXGraphics : SmartGraphics
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
+		private readonly float DEFAULT_DPI = 96.0f;
 
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
@@ -31,13 +32,27 @@ namespace ImageControl.Model.DirectX
 		private WindowsFormsHost _directXControl;
 
 		private Device _d3dDevice;
+		private SharpDX.Direct2D1.Device1 _d2dDevice;
+		private SharpDX.DXGI.Device _dxgiDevice;
+		private SharpDX.Direct2D1.DeviceContext1 _deviceContext;
+		private SharpDX.Direct2D1.CommandList _commandList;
 		private SwapChain _swapChain;
-		private RenderTarget _renderTarget;
-		private Factory _d2dFactory;
+
+		private SharpDX.Direct2D1.Factory2 _d2dFactory;
 		private Timer _renderTimer;
+
+		private bool _zoomMousePressed = false;
+		private bool _zoomIsReady = false;
+		private PointF _zoomMousePos = new PointF();
+		private float _zoomLineWidth = 1f;
+		private RectangleF _zoomedRoi = new RectangleF();
+		private SolidColorBrush _zoomBrush;
 
 		private Matrix3x2 _scaleMatrix = new Matrix3x2();
 		private Matrix3x2 _translateMatrix = new Matrix3x2();
+		private RectangleF _currentRoi = new RectangleF();
+
+		private SharpDX.Direct2D1.Bitmap1 _bitmap = null;
 
 		public override void Initialize()
 		{
@@ -71,7 +86,7 @@ namespace ImageControl.Model.DirectX
 				{
 					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _renderTarget, Color.White));
+						_d2dFactory, _deviceContext, Color.White));
 
 					var surface = _directProfileShapes.FirstOrDefault();
 					if (surface is null)
@@ -79,7 +94,7 @@ namespace ImageControl.Model.DirectX
 						return false;
 					}
 
-					Roi = surface.GetBounds();
+					Roi = surface.Bounds;
 				}
 
 				// 화면에 맞추기 위함
@@ -124,7 +139,7 @@ namespace ImageControl.Model.DirectX
 
 					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _renderTarget, Color.DarkGreen));
+						_d2dFactory, _deviceContext, Color.DarkGreen));
 				}
 			}
 		}
@@ -132,7 +147,7 @@ namespace ImageControl.Model.DirectX
 		public override void ClearShape()
 		{
 			if (_directShapes is null || _directProfileShapes is null ||
-				_renderTarget is null || _swapChain is null)
+				_deviceContext is null || _swapChain is null)
 			{
 				return;
 			}
@@ -140,32 +155,39 @@ namespace ImageControl.Model.DirectX
 			_directShapes.Clear();
 			_directProfileShapes.Clear();
 
-			_renderTarget.BeginDraw();
-			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
-			_renderTarget.EndDraw();
+			_deviceContext.BeginDraw();
+			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
+			_deviceContext.EndDraw();
 
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
 		public override void OnDraw()
 		{
-			if (_renderTarget is null)
+			if (_deviceContext is null)
 			{
 				return;
 			}
 
-			_renderTarget.BeginDraw();
-			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
+			_deviceContext.BeginDraw();
+			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
 
-			DrawShapes();
+			_deviceContext.DrawImage(_commandList);
 
-			_renderTarget.EndDraw();
+			if (_zoomMousePressed is true)
+			{
+				_deviceContext.DrawRectangle(new RawRectangleF(
+					_zoomMousePos.X, _zoomMousePos.Y, ProductPos.X, ProductPos.Y),
+					_zoomBrush, _zoomLineWidth);
+			}
+
+			_deviceContext.EndDraw();
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
 		private void OnPaint(object sender, Graphics graphics)
 		{
-			OnDraw();
+			//OnDraw();
 		}
 
 		private void OnMouseWheel(object sender, MouseEventArgs e)
@@ -193,8 +215,9 @@ namespace ImageControl.Model.DirectX
 				ScreenZoom = 1000.0f;
 			}
 
-			float offsetX = WindowPos.X - ProductPos.X * ScreenZoom;
-			float offsetY = WindowPos.Y - ProductPos.Y * ScreenZoom;
+			float offsetX = e.X - ProductPos.X * ScreenZoom;
+			float offsetY = e.Y - ProductPos.Y * ScreenZoom;
+
 			OffsetSize = new SizeF(offsetX, offsetY);
 			WindowPos = new PointF(e.X, e.Y);
 
@@ -214,18 +237,27 @@ namespace ImageControl.Model.DirectX
 				return;
 			}
 
-			Utilities.Dispose(ref _renderTarget);
+			Utilities.Dispose(ref _bitmap);
+			Utilities.Dispose(ref _deviceContext);
+			Utilities.Dispose(ref _commandList);
+
 			_swapChain.ResizeBuffers(1, _directXView.ClientSize.Width, _directXView.ClientSize.Height,
 				Format.R8G8B8A8_UNorm, SwapChainFlags.None);
+
+			_deviceContext = new SharpDX.Direct2D1.DeviceContext1(_d2dDevice, DeviceContextOptions.None);
+			_commandList = new SharpDX.Direct2D1.CommandList(_deviceContext);
+			_zoomBrush = new SolidColorBrush(_deviceContext, new RawColor4(1, 1, 1, 1));
 
 			using (var backBuffer = _swapChain.GetBackBuffer<Texture2D>(0))
 			{
 				using (var surface = backBuffer.QueryInterface<Surface>())
 				{
-					RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-						new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied));
+					BitmapProperties1 bitmapProperties = new BitmapProperties1(
+						new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+						DEFAULT_DPI, DEFAULT_DPI, BitmapOptions.Target | BitmapOptions.CannotDraw);
 
-					_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
+					_bitmap = new Bitmap1(_deviceContext, surface, bitmapProperties);
+					_deviceContext.Target = _bitmap;
 					_directXView.Invalidate();
 				}
 			}
@@ -237,7 +269,61 @@ namespace ImageControl.Model.DirectX
 
 		private void OnMouseDown(object sender, MouseEventArgs e)
 		{
-			MousePressed = true;
+			if (e.Button is MouseButtons.Right)
+			{
+				MousePressed = true;
+			}
+			else if (e.Button is MouseButtons.Left)
+			{
+				if (_zoomIsReady is true)
+				{
+					RectangleF roi = new RectangleF()
+					{
+						X = _zoomMousePos.X,
+						Y = _zoomMousePos.Y,
+						Width = ProductPos.X - _zoomMousePos.X,
+						Height = ProductPos.Y - _zoomMousePos.Y,
+					};
+
+					if (roi.Width >= 1 && roi.Height >= 1)
+					{
+						ScreenZoom = _directXView.ClientSize.Width / roi.Width;
+						if (_directXView.ClientSize.Height / roi.Height < ScreenZoom)
+						{
+							ScreenZoom = _directXView.ClientSize.Height / roi.Height;
+						}
+
+						float offsetX = _directXView.ClientSize.Width / 2 - roi.GetCenterF().X * ScreenZoom;
+						float offsetY = _directXView.ClientSize.Height / 2 - roi.GetCenterF().Y * ScreenZoom;
+						OffsetSize = new SizeF(offsetX, offsetY);
+
+						_zoomedRoi = new RectangleF(
+							ProductPos.X - _directXView.ClientSize.Width / 2 / ScreenZoom,
+							ProductPos.Y - _directXView.ClientSize.Height / 2 / ScreenZoom,
+							_directXView.ClientSize.Width / ScreenZoom,
+							_directXView.ClientSize.Height / ScreenZoom);
+
+						UpdateMatrix(true, true);
+					}
+
+					_zoomIsReady = false;
+					_zoomMousePressed = false;
+				}
+				else
+				{
+					_zoomMousePressed = true;
+
+					float productX = (e.X - OffsetSize.Width) / ScreenZoom;
+					float productY = (e.Y - OffsetSize.Height) / ScreenZoom;
+					_zoomMousePos = new PointF(productX, productY);
+
+					_zoomLineWidth = _zoomedRoi.Width / 1000;
+				}
+			}
+			else
+			{
+				return;
+			}
 
 			StartPos = new PointF(OffsetSize.Width, OffsetSize.Height);
 			WindowPos = new PointF(e.X, e.Y);
@@ -246,10 +332,14 @@ namespace ImageControl.Model.DirectX
 		private void OnMouseMove(object sender, MouseEventArgs e)
 		{
 			MousePos = new PointF(
-				(e.X - OffsetSize.Width) / ScreenZoom - Roi.X, 
-				(e.Y - OffsetSize.Height) / ScreenZoom - Roi.Y);
+				(e.X - OffsetSize.Width) / ScreenZoom,
+				(e.Y - OffsetSize.Height) / ScreenZoom);
 
-			if (MousePressed && e.Button is MouseButtons.Left)
+			float productX = (e.X - OffsetSize.Width) / ScreenZoom;
+			float productY = (e.Y - OffsetSize.Height) / ScreenZoom;
+			ProductPos = new PointF(productX, productY);
+
+			if (MousePressed && e.Button is MouseButtons.Right)
 			{
 				float deltaX = e.X - WindowPos.X;
 				float deltaY = e.Y - WindowPos.Y;
@@ -263,15 +353,19 @@ namespace ImageControl.Model.DirectX
 
 		private void OnMouseUp(object sender, MouseEventArgs e)
 		{
-			if (MousePressed && e.Button is MouseButtons.Left)
+			if (MousePressed && e.Button is MouseButtons.Right)
 			{
 				WindowPos = new PointF(e.X, e.Y);
 
 				float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
 				float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
-
 				ProductPos = new PointF(productX, productY);
+
 				UpdateMatrix(false, true);
+			}
+			else if (_zoomMousePressed && e.Button is MouseButtons.Left)
+			{
+				_zoomIsReady = true;
 			}
 
 			MousePressed = false;
@@ -299,6 +393,16 @@ namespace ImageControl.Model.DirectX
 					WindowPos.X - ProductPos.X * ScreenZoom,
 					WindowPos.Y - ProductPos.Y * ScreenZoom);
 
+				_zoomedRoi = new RectangleF(
+					ProductPos.X - _directXView.ClientSize.Width / 2 / ScreenZoom,
+					ProductPos.Y - _directXView.ClientSize.Height / 2 / ScreenZoom,
+					_directXView.ClientSize.Width / ScreenZoom,
+					_directXView.ClientSize.Height / ScreenZoom);
+
+				UpdateMatrix(true, true);
+			}
+			else if (e.KeyCode is Keys.PageUp)
+			{
 				UpdateMatrix(true, true);
 			}
 		}
@@ -333,7 +437,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Draw(_renderTarget);
+				shape.Draw(_deviceContext, _currentRoi);
 			}
 
 			foreach (var shape in _directShapes)
@@ -343,7 +447,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Fill(_renderTarget, false);
+				shape.Fill(_deviceContext, false, _currentRoi);
 			}
 		}
 
@@ -354,7 +458,7 @@ namespace ImageControl.Model.DirectX
 				BufferCount = 1,
 				ModeDescription = new ModeDescription(
 					_directXView.ClientSize.Width, _directXView.ClientSize.Height,
-					new Rational(50, 1), Format.R8G8B8A8_UNorm),
+					new Rational(15, 1), Format.R8G8B8A8_UNorm),
 				IsWindowed = true,
 				OutputHandle = _directXView.Handle,
 				SampleDescription = new SampleDescription(1, 0),
@@ -370,21 +474,32 @@ namespace ImageControl.Model.DirectX
 				out _swapChain);
 
 			// Direct2D Factory 생성
-			_d2dFactory = new Factory();
+			_d2dFactory = new SharpDX.Direct2D1.Factory2();
+
+			_dxgiDevice = _d3dDevice.QueryInterface<SharpDX.DXGI.Device>();
+			_d2dDevice = new SharpDX.Direct2D1.Device1(_d2dFactory, _dxgiDevice);
+			_deviceContext = new SharpDX.Direct2D1.DeviceContext1(_d2dDevice, DeviceContextOptions.None);
 
 			// 백 버퍼로부터 RenderTarget 생성
 			using (var backBuffer = _swapChain.GetBackBuffer<Texture2D>(0))
 			{
 				using (var surface = backBuffer.QueryInterface<Surface>())
 				{
-					RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-						new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied));
+					BitmapProperties1 bitmapProperties = new BitmapProperties1(
+						new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+						DEFAULT_DPI, DEFAULT_DPI, BitmapOptions.Target | BitmapOptions.CannotDraw);
 
-					_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
+					_bitmap = new Bitmap1(_deviceContext, surface, bitmapProperties);					
+					_deviceContext.Target = _bitmap;
+
+					_directXView.Invalidate();
 				}
 			}
 
-			_renderTimer = new Timer { Interval = 50 }; // 약 30FPS
+			_commandList = new SharpDX.Direct2D1.CommandList(_deviceContext);
+			_zoomBrush = new SolidColorBrush(_deviceContext, new RawColor4(1, 1, 1, 1));
+
+			_renderTimer = new Timer { Interval = 16 }; // 약 10FPS
 			_renderTimer.Tick += RenderTimer_Tick;
 			_renderTimer.Start();
 		}
@@ -418,7 +533,40 @@ namespace ImageControl.Model.DirectX
 				M32 = transformMat.M32
 			};
 
-			_renderTarget.Transform = matrix;
+			_deviceContext.Transform = matrix;
+
+			float width = _directXView.ClientSize.Width / ScreenZoom;
+			float height = _directXView.ClientSize.Height / ScreenZoom;
+
+			var curWindowCenter = new PointF(
+				_directXView.ClientSize.Width / 2,
+				_directXView.ClientSize.Height / 2);
+
+			var curProductCenter = new PointF(
+				(curWindowCenter.X - OffsetSize.Width) / ScreenZoom,
+				(curWindowCenter.Y - OffsetSize.Height) / ScreenZoom);
+
+			_currentRoi.X = curProductCenter.X - width / 2;
+			_currentRoi.Y = curProductCenter.Y - height / 2;
+			_currentRoi.Width = width;
+			_currentRoi.Height = height;
+
+			_currentRoi.Inflate(1, 1);
+
+			Utilities.Dispose(ref _commandList); // 기존 CommandList 해제
+			_commandList = new SharpDX.Direct2D1.CommandList(_deviceContext);
+
+			_deviceContext.Target = _commandList;
+
+			_deviceContext.BeginDraw();
+			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
+
+			DrawShapes();
+
+			_deviceContext.EndDraw();
+			_commandList.Close();
+
+			_deviceContext.Target = _bitmap;
 		}
 
 		private void RenderTimer_Tick(object sender, EventArgs e)
