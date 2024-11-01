@@ -196,7 +196,8 @@ namespace ImageControl.Model.DirectX
 			_deviceContext.BeginDraw();
 			
 			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
-			_deviceContext.DrawBitmap(_drawingLayer, new RawRectangleF(Roi.Left, Roi.Top, Roi.Right, Roi.Bottom), 1, BitmapInterpolationMode.Linear);
+			_deviceContext.DrawBitmap(_drawingLayer, new RawRectangleF(Roi.Left, Roi.Top, Roi.Right, Roi.Bottom), 1, 
+				BitmapInterpolationMode.NearestNeighbor);
 			DrawShapes();
 			_deviceContext.EndDraw();
 
