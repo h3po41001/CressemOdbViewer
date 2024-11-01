@@ -12,8 +12,6 @@ using ImageControl.Shape.DirectX.Interface;
 using ImageControl.Shape.Interface;
 using SharpDX;
 using SharpDX.Direct2D1;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using Device = SharpDX.Direct3D11.Device;
@@ -32,7 +30,15 @@ namespace ImageControl.Model.DirectX
 
 		private Device _d3dDevice;
 		private SwapChain _swapChain;
-		private RenderTarget _renderTarget;
+		//private RenderTarget _renderTarget;
+		SharpDX.DXGI.Device _dxgiDevice;
+		SharpDX.Direct2D1.Device1 _d2dDevice;
+		private DeviceContext _deviceContext;
+
+		private LayerParameters _layerOption;
+		private Bitmap1 _drawingLayer;
+		private Bitmap1 _shapeLayer;
+		private Bitmap1 _renderBitmap;
 
 		private SharpDX.Direct2D1.Factory2 _d2dFactory;
 		private Timer _renderTimer;
@@ -44,6 +50,7 @@ namespace ImageControl.Model.DirectX
 		private RectangleF _zoomedRoi = new RectangleF();
 		private SolidColorBrush _zoomBrush;
 
+		private bool _isUpdate = false;
 		private RawMatrix3x2 _transformMatrix = new RawMatrix3x2();
 		private RectangleF _currentRoi = new RectangleF();
 
@@ -79,7 +86,7 @@ namespace ImageControl.Model.DirectX
 				{
 					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _renderTarget, Color.White));
+						_d2dFactory, _deviceContext, Color.White));
 
 					var surface = _directProfileShapes.FirstOrDefault();
 					if (surface is null)
@@ -132,7 +139,7 @@ namespace ImageControl.Model.DirectX
 
 					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _renderTarget, Color.DarkGreen));
+						_d2dFactory, _deviceContext, Color.DarkGreen));
 				}
 			}
 		}
@@ -140,7 +147,7 @@ namespace ImageControl.Model.DirectX
 		public override void ClearShape()
 		{
 			if (_directShapes is null || _directProfileShapes is null ||
-				_renderTarget is null || _swapChain is null)
+				_deviceContext is null || _swapChain is null)
 			{
 				return;
 			}
@@ -148,33 +155,51 @@ namespace ImageControl.Model.DirectX
 			_directShapes.Clear();
 			_directProfileShapes.Clear();
 
-			_renderTarget.BeginDraw();
-			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
-			_renderTarget.EndDraw();
+			//_renderTarget.BeginDraw();
+			//_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
+			//_renderTarget.EndDraw();
 
-			_swapChain.Present(1, PresentFlags.None);
+			//_swapChain.Present(1, PresentFlags.None);
 		}
 
 		public override void OnDraw()
 		{
-			if (_renderTarget is null)
+			if (_deviceContext is null)
 			{
 				return;
 			}
 
-			_renderTarget.BeginDraw();
-			_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
-
-			DrawShapes();
-
 			if (_zoomMousePressed is true)
 			{
-				_renderTarget.DrawRectangle(new RawRectangleF(
+				_drawingLayer.Tag = null;
+				_deviceContext.Target = _drawingLayer;
+
+				_deviceContext.BeginDraw();
+				_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
+
+				_deviceContext.DrawRectangle(new RawRectangleF(
 					_zoomMousePos.X, _zoomMousePos.Y, ProductPos.X, ProductPos.Y),
 					_zoomBrush, _zoomLineWidth);
+
+				_deviceContext.EndDraw();
+				_drawingLayer.Tag = "Done";
+
+				_deviceContext.Target = _renderBitmap;
 			}
 
-			_renderTarget.EndDraw();
+			if (_isUpdate is true)
+			{
+				ShapeRenderStart();
+				_isUpdate = false;
+			}
+
+			_deviceContext.BeginDraw();
+			
+			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
+			_deviceContext.DrawBitmap(_drawingLayer, new RawRectangleF(Roi.Left, Roi.Top, Roi.Right, Roi.Bottom), 1, BitmapInterpolationMode.Linear);
+			DrawShapes();
+			_deviceContext.EndDraw();
+
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
@@ -190,35 +215,35 @@ namespace ImageControl.Model.DirectX
 				return;
 			}
 
-			//if (e.Delta > 0)
-			//{
-			//	ScreenZoom *= 1.1F;
-			//}
-			//else
-			//{
-			//	ScreenZoom *= 0.9F;
-			//}
+			if (e.Delta > 0)
+			{
+				ScreenZoom *= 1.1F;
+			}
+			else
+			{
+				ScreenZoom *= 0.9F;
+			}
 
-			//if (ScreenZoom <= 0.05f)
-			//{
-			//	ScreenZoom = 0.05f;
-			//}
-			//else if (ScreenZoom >= 1000.0f)
-			//{
-			//	ScreenZoom = 1000.0f;
-			//}
+			if (ScreenZoom <= 0.05f)
+			{
+				ScreenZoom = 0.05f;
+			}
+			else if (ScreenZoom >= 1000.0f)
+			{
+				ScreenZoom = 1000.0f;
+			}
 
-			//float offsetX = e.X - ProductPos.X * ScreenZoom;
-			//float offsetY = e.Y - ProductPos.Y * ScreenZoom;
+			float offsetX = e.X - ProductPos.X * ScreenZoom;
+			float offsetY = e.Y - ProductPos.Y * ScreenZoom;
 
-			//OffsetSize = new SizeF(offsetX, offsetY);
-			//WindowPos = new PointF(e.X, e.Y);
+			OffsetSize = new SizeF(offsetX, offsetY);
+			WindowPos = new PointF(e.X, e.Y);
 
-			//float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
-			//float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
-			//ProductPos = new PointF(productX, productY);
+			float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
+			float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
+			ProductPos = new PointF(productX, productY);
 
-			//UpdateMatrix(true, true);
+			UpdateMatrix(true, true);
 
 			MouseMoveEvent(this, null);
 		}
@@ -230,23 +255,30 @@ namespace ImageControl.Model.DirectX
 				return;
 			}
 
-			Utilities.Dispose(ref _renderTarget);
+			Utilities.Dispose(ref _zoomBrush);
+			Utilities.Dispose(ref _drawingLayer);
+			Utilities.Dispose(ref _shapeLayer);
+			Utilities.Dispose(ref _renderBitmap);
+			Utilities.Dispose(ref _deviceContext);
 
 			_swapChain.ResizeBuffers(1, _directXView.ClientSize.Width, _directXView.ClientSize.Height,
 				Format.R8G8B8A8_UNorm, SwapChainFlags.None);
 
-			using (var backBuffer = _swapChain.GetBackBuffer<Texture2D>(0))
-			{
-				using (var surface = backBuffer.QueryInterface<Surface>())
-				{
-					RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-						new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied));
+			// 백 버퍼로부터 RenderTarget 생성
+			//using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
+			//{
+			//	using (var surface = backBuffer.QueryInterface<Surface>())
+			//	{
+			//		RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
+			//			new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied));
 
-					_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
-				}
-			}
+			//		_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
+			//	}
+			//}
 
-			_zoomBrush = new SolidColorBrush(_renderTarget, new RawColor4(1, 1, 1, 1));
+			InitRender();
+
+			_zoomBrush = new SolidColorBrush(_deviceContext, new RawColor4(1, 1, 1, 1));
 			_directXView.Invalidate();
 		}
 
@@ -411,7 +443,7 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsMouseUp -= OnMouseUp;
 			_directXView.GraphicsPrevKeyDown -= OnPrevkeyDown;
 
-			Utilities.Dispose(ref _renderTarget);
+			Utilities.Dispose(ref _deviceContext);
 			Utilities.Dispose(ref _zoomBrush);
 			Utilities.Dispose(ref _d3dDevice);
 			Utilities.Dispose(ref _swapChain);
@@ -430,7 +462,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Draw(_renderTarget, _currentRoi);
+				shape.Draw(_deviceContext, _currentRoi);
 			}
 
 			foreach (var shape in _directShapes)
@@ -440,7 +472,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Fill(_renderTarget, false, _currentRoi);
+				shape.Fill(_deviceContext, false, _currentRoi);
 			}
 		}
 
@@ -450,8 +482,9 @@ namespace ImageControl.Model.DirectX
 			{
 				BufferCount = 1,
 				ModeDescription = new ModeDescription(
-					_directXView.ClientSize.Width, _directXView.ClientSize.Height,
-					new Rational(15, 1), Format.R8G8B8A8_UNorm),
+					_directXView.ClientSize.Width,
+					_directXView.ClientSize.Height,
+					new Rational(16, 1), Format.R8G8B8A8_UNorm),
 				IsWindowed = true,
 				OutputHandle = _directXView.Handle,
 				SampleDescription = new SampleDescription(1, 0),
@@ -460,33 +493,100 @@ namespace ImageControl.Model.DirectX
 			};
 
 			// Direct3D11 장치 및 SwapChain 생성
-			Device.CreateWithSwapChain(DriverType.Hardware,
-				DeviceCreationFlags.BgraSupport,
+			Device.CreateWithSwapChain(SharpDX.Direct3D.DriverType.Hardware,
+				SharpDX.Direct3D11.DeviceCreationFlags.BgraSupport,
 				swapChainDesc,
 				out _d3dDevice,
 				out _swapChain);
 
 			// Direct2D Factory 생성
-			_d2dFactory = new SharpDX.Direct2D1.Factory2();
+			_d2dFactory = new SharpDX.Direct2D1.Factory2(FactoryType.SingleThreaded, DebugLevel.None);
+			_dxgiDevice = _d3dDevice.QueryInterface<SharpDX.DXGI.Device>();
+			_d2dDevice = new SharpDX.Direct2D1.Device1(_d2dFactory, _dxgiDevice);
 
 			// 백 버퍼로부터 RenderTarget 생성
-			using (var backBuffer = _swapChain.GetBackBuffer<Texture2D>(0))
-			{
-				using (var surface = backBuffer.QueryInterface<Surface>())
-				{
-					RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-						new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied));
+			//using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
+			//{
+			//	using (var surface = backBuffer.QueryInterface<Surface>())
+			//	{
+			//		RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
+			//			new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied));
 
-					_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
-					_directXView.Invalidate();
-				}
-			}
+			//		_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
+			//	}
+			//}
 
-			_zoomBrush = new SolidColorBrush(_renderTarget, new RawColor4(1, 1, 1, 1));
+			InitRender();
 
 			_renderTimer = new Timer { Interval = 16 }; // 약 10FPS
 			_renderTimer.Tick += RenderTimer_Tick;
 			_renderTimer.Start();
+		}
+
+		private void InitRender()
+		{
+			_deviceContext = new DeviceContext1(_d2dDevice, DeviceContextOptions.None);
+
+			using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
+			{
+				using (var surface = backBuffer.QueryInterface<Surface>())
+				{
+					BitmapProperties1 bitmapProperties = new BitmapProperties1(new PixelFormat(
+						Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+						DEFAULT_DPI, DEFAULT_DPI, BitmapOptions.Target | BitmapOptions.CannotDraw);
+
+					// RenderTarget 설정
+					_renderBitmap = new Bitmap1(_deviceContext, surface, bitmapProperties);
+					_deviceContext.Target = _renderBitmap;
+				}
+			}
+
+			BitmapProperties1 prop = new BitmapProperties1(new PixelFormat(
+				Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+				DEFAULT_DPI, DEFAULT_DPI, BitmapOptions.Target);
+
+			_drawingLayer = new Bitmap1(_deviceContext,
+				new Size2(_directXView.ClientSize.Width, _directXView.ClientSize.Height), prop);
+
+			_shapeLayer = new Bitmap1(_deviceContext,
+				new Size2(_directXView.ClientSize.Width, _directXView.ClientSize.Height), prop);
+
+			_directXView.Invalidate();
+			_zoomBrush = new SolidColorBrush(_deviceContext, new RawColor4(1, 1, 1, 1));
+
+			_layerOption = new LayerParameters()
+			{
+				ContentBounds = new RawRectangleF(Roi.Left, Roi.Top, Roi.Right, Roi.Bottom),
+				GeometricMask = null,
+				MaskAntialiasMode = AntialiasMode.PerPrimitive,
+				MaskTransform = _transformMatrix,//new RawMatrix3x2(1, 0, 0, 1, 0, 0),
+				Opacity = 1,
+				OpacityBrush = null,
+				LayerOptions = LayerOptions.None,
+			};
+		}
+
+		private void ShapeRenderStart()
+		{
+			_shapeLayer.Tag = null;
+
+			_deviceContext.Target = _shapeLayer;			
+			//_deviceContext.Transform = _transformMatrix;
+
+			_deviceContext.BeginDraw();
+			//_deviceContext.PushLayer(ref _layerOption, null);
+
+			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
+			//_deviceContext.FillRectangle(
+			//	new RawRectangleF(0, 0, _directXView.ClientSize.Width, _directXView.ClientSize.Height), _zoomBrush);
+
+			DrawShapes();
+
+			//_deviceContext.PopLayer();
+			_deviceContext.EndDraw();
+			_shapeLayer.Tag = "Done";
+
+			_deviceContext.Target = _renderBitmap;
 		}
 
 		private void UpdateMatrix(bool isScalUpdate, bool isTranslateUpdate)
@@ -529,7 +629,13 @@ namespace ImageControl.Model.DirectX
 
 			_currentRoi.Inflate(1, 1);
 
-			_renderTarget.Transform = _transformMatrix;
+			_deviceContext.Target = _renderBitmap;
+			_deviceContext.Transform = _transformMatrix;// new RawMatrix3x2(1, 0, 0, 1, 0, 0);
+
+			_drawingLayer.Tag = null;
+			_shapeLayer.Tag = null;
+
+			_isUpdate = true;
 		}
 
 		private void RenderTimer_Tick(object sender, EventArgs e)
