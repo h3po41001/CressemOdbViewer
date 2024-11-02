@@ -47,15 +47,19 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
 		{
-			//if (roi.IntersectsWith(Bounds) is true)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				if (IsPositive != isHole)
+				if (Bounds.Width >= roi.Width * 0.001 &&
+					Bounds.Height >= roi.Height * 0.001)
 				{
-					render.FillRectangle(Rectangle, DefaultBrush);
-				}
-				else
-				{
-					render.FillRectangle(Rectangle, HoleBrush);
+					if (IsPositive != isHole)
+					{
+						render.FillRectangle(Rectangle, DefaultBrush);
+					}
+					else
+					{
+						render.FillRectangle(Rectangle, HoleBrush);
+					}
 				}
 			}
 		}

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using ImageControl.Shape.DirectX.Interface;
 using SharpDX.Direct2D1;
 

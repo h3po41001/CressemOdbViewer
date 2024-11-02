@@ -152,15 +152,19 @@ namespace ImageControl.Shape.DirectX
 				return;
 			}
 
-			//if (roi.IntersectsWith(Bounds) is true)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				if (IsFill)
+				if (Bounds.Width >= roi.Width * 0.001 &&
+					Bounds.Height >= roi.Height * 0.001)
 				{
-					render.FillGeometry(ShapeGemotry, DefaultBrush);
-				}
-				else
-				{
-					render.FillGeometry(ShapeGemotry, HoleBrush);
+					if (IsFill)
+					{
+						render.FillGeometry(ShapeGemotry, DefaultBrush);
+					}
+					else
+					{
+						render.FillGeometry(ShapeGemotry, HoleBrush);
+					}
 				}
 			}
 		}

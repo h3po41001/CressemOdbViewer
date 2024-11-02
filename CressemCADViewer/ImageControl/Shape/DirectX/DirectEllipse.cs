@@ -31,7 +31,7 @@ namespace ImageControl.Shape.DirectX
 		{
 			Ellipse = new Ellipse(CenterPt, RadiusX, RadiusY);
 			ShapeGemotry = new EllipseGeometry(Factory, Ellipse);
-			Bounds = new RectangleF(CenterPt.X - RadiusX, 
+			Bounds = new RectangleF(CenterPt.X - RadiusX,
 				CenterPt.Y - RadiusY, RadiusX * 2, RadiusY * 2);
 		}
 
@@ -45,15 +45,19 @@ namespace ImageControl.Shape.DirectX
 
 		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
 		{
-			//if (roi.IntersectsWith(Bounds) is true)
+			if (roi.IntersectsWith(Bounds) is true)
 			{
-				if (IsPositive != isHole)
+				if (Bounds.Width >= roi.Width * 0.001 && 
+					Bounds.Height >= roi.Height * 0.001)
 				{
-					render.FillEllipse(Ellipse, DefaultBrush);
-				}
-				else
-				{
-					render.FillEllipse(Ellipse, HoleBrush);
+					if (IsPositive != isHole)
+					{
+						render.FillEllipse(Ellipse, DefaultBrush);
+					}
+					else
+					{
+						render.FillEllipse(Ellipse, HoleBrush);
+					}
 				}
 			}
 		}

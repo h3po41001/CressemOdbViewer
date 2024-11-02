@@ -28,24 +28,32 @@ namespace ImageControl.Model.DirectX
 		private DirectXWinformView _directXView = new DirectXWinformView();
 		private WindowsFormsHost _directXControl;
 
+		// 3d
 		private Device _d3dDevice;
-		private SwapChain _swapChain;
-		//private RenderTarget _renderTarget;
-		SharpDX.DXGI.Device _dxgiDevice;
-		SharpDX.Direct2D1.Device1 _d2dDevice;
-		private DeviceContext _deviceContext;
+		private SwapChain1 _swapChain;
 
-		private LayerParameters _layerOption;
-		private Bitmap1 _drawingLayer;
-		private Bitmap1 _shapeLayer;
-		private Bitmap1 _renderBitmap;
+		// main
+		private DeviceContext _deviceContext;
+		private Bitmap1 _mainBitmap;
+
+		// overlay
+		private SharpDX.Direct3D11.Texture2D _overlayTexture;
+		private Bitmap1 _overlayBitmap;
+
+		// shape
+		private SharpDX.Direct3D11.Texture2D _shapeTexture;
+		private Bitmap1 _shapeBitmap;
+
+		// 2d
+		private SharpDX.DXGI.Device _dxgiDevice;
+		private SharpDX.Direct2D1.Device1 _d2dDevice;
 
 		private SharpDX.Direct2D1.Factory2 _d2dFactory;
 		private Timer _renderTimer;
 
 		private bool _zoomMousePressed = false;
 		private bool _zoomIsReady = false;
-		private PointF _zoomMousePos = new PointF();
+		private PointF _zoomStartPos = new PointF();
 		private float _zoomLineWidth = 1f;
 		private RectangleF _zoomedRoi = new RectangleF();
 		private SolidColorBrush _zoomBrush;
@@ -53,6 +61,7 @@ namespace ImageControl.Model.DirectX
 		private bool _isUpdate = false;
 		private RawMatrix3x2 _transformMatrix = new RawMatrix3x2();
 		private RectangleF _currentRoi = new RectangleF();
+		private PointF _mousePos = new PointF();
 
 		public override void Initialize()
 		{
@@ -64,9 +73,7 @@ namespace ImageControl.Model.DirectX
 			RenderStart();
 
 			_directXView.GraphicsPaint += OnPaint;
-			_directXView.GraphicsMouseWheel += OnMouseWheel;
 			_directXView.GraphicsResize += OnResize;
-			_directXView.GraphicsMouseDoubleClick += OnMouseDoubleClick;
 			_directXView.GraphicsMouseDown += OnMouseDown;
 			_directXView.GraphicsMouseMove += OnMouseMove;
 			_directXView.GraphicsMouseUp += OnMouseUp;
@@ -82,6 +89,7 @@ namespace ImageControl.Model.DirectX
 
 			if (profileShapes is IDirectList directList)
 			{
+				List<RectangleF> rois = new List<RectangleF>();
 				foreach (var shape in directList.Shapes)
 				{
 					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
@@ -94,8 +102,12 @@ namespace ImageControl.Model.DirectX
 						return false;
 					}
 
-					Roi = surface.Bounds;
+					rois.Add(surface.Bounds);
 				}
+
+				Roi = rois.GetBounds();
+
+				OnResize(null, null);
 
 				// 화면에 맞추기 위함
 				ScreenZoom = _directXView.ClientSize.Width / Roi.Width;
@@ -114,6 +126,12 @@ namespace ImageControl.Model.DirectX
 				OffsetSize = new SizeF(
 					WindowPos.X - ProductPos.X * ScreenZoom,
 					WindowPos.Y - ProductPos.Y * ScreenZoom);
+
+				_zoomedRoi = new RectangleF(
+					ProductPos.X - _directXView.ClientSize.Width / 2 / ScreenZoom,
+					ProductPos.Y - _directXView.ClientSize.Height / 2 / ScreenZoom,
+					_directXView.ClientSize.Width / ScreenZoom,
+					_directXView.ClientSize.Height / ScreenZoom);
 
 				UpdateMatrix(true, true);
 			}
@@ -169,84 +187,29 @@ namespace ImageControl.Model.DirectX
 				return;
 			}
 
-			if (_zoomMousePressed is true)
-			{
-				_drawingLayer.Tag = null;
-				_deviceContext.Target = _drawingLayer;
-
-				_deviceContext.BeginDraw();
-				_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
-
-				_deviceContext.DrawRectangle(new RawRectangleF(
-					_zoomMousePos.X, _zoomMousePos.Y, ProductPos.X, ProductPos.Y),
-					_zoomBrush, _zoomLineWidth);
-
-				_deviceContext.EndDraw();
-				_drawingLayer.Tag = "Done";
-
-				_deviceContext.Target = _renderBitmap;
-			}
-
 			if (_isUpdate is true)
 			{
 				ShapeRenderStart();
 				_isUpdate = false;
 			}
 
+			_mainBitmap.CopyFromBitmap(_shapeBitmap);
 			_deviceContext.BeginDraw();
-			
-			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
-			_deviceContext.DrawBitmap(_drawingLayer, new RawRectangleF(Roi.Left, Roi.Top, Roi.Right, Roi.Bottom), 1, 
-				BitmapInterpolationMode.NearestNeighbor);
-			DrawShapes();
-			_deviceContext.EndDraw();
 
+			if (_zoomMousePressed is true)
+			{
+				_deviceContext.DrawRectangle(new RawRectangleF(
+					_zoomStartPos.X, _zoomStartPos.Y, ProductPos.X, ProductPos.Y),
+					_zoomBrush, _zoomLineWidth);
+			}
+
+			_deviceContext.EndDraw();
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
 		private void OnPaint(object sender, Graphics graphics)
 		{
 			//OnDraw();
-		}
-
-		private void OnMouseWheel(object sender, MouseEventArgs e)
-		{
-			if (MousePressed is true)
-			{
-				return;
-			}
-
-			if (e.Delta > 0)
-			{
-				ScreenZoom *= 1.1F;
-			}
-			else
-			{
-				ScreenZoom *= 0.9F;
-			}
-
-			if (ScreenZoom <= 0.05f)
-			{
-				ScreenZoom = 0.05f;
-			}
-			else if (ScreenZoom >= 1000.0f)
-			{
-				ScreenZoom = 1000.0f;
-			}
-
-			float offsetX = e.X - ProductPos.X * ScreenZoom;
-			float offsetY = e.Y - ProductPos.Y * ScreenZoom;
-
-			OffsetSize = new SizeF(offsetX, offsetY);
-			WindowPos = new PointF(e.X, e.Y);
-
-			float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
-			float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
-			ProductPos = new PointF(productX, productY);
-
-			UpdateMatrix(true, true);
-
-			MouseMoveEvent(this, null);
 		}
 
 		private void OnResize(object sender, EventArgs e)
@@ -257,34 +220,20 @@ namespace ImageControl.Model.DirectX
 			}
 
 			Utilities.Dispose(ref _zoomBrush);
-			Utilities.Dispose(ref _drawingLayer);
-			Utilities.Dispose(ref _shapeLayer);
-			Utilities.Dispose(ref _renderBitmap);
+			Utilities.Dispose(ref _overlayTexture);
+			Utilities.Dispose(ref _shapeTexture);
+			Utilities.Dispose(ref _overlayBitmap);
+			Utilities.Dispose(ref _shapeBitmap);
+			Utilities.Dispose(ref _mainBitmap);
 			Utilities.Dispose(ref _deviceContext);
 
 			_swapChain.ResizeBuffers(1, _directXView.ClientSize.Width, _directXView.ClientSize.Height,
 				Format.R8G8B8A8_UNorm, SwapChainFlags.None);
 
-			// 백 버퍼로부터 RenderTarget 생성
-			//using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
-			//{
-			//	using (var surface = backBuffer.QueryInterface<Surface>())
-			//	{
-			//		RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-			//			new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied));
-
-			//		_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
-			//	}
-			//}
-
 			InitRender();
 
 			_zoomBrush = new SolidColorBrush(_deviceContext, new RawColor4(1, 1, 1, 1));
 			_directXView.Invalidate();
-		}
-
-		private void OnMouseDoubleClick(object sender, MouseEventArgs e)
-		{
 		}
 
 		private void OnMouseDown(object sender, MouseEventArgs e)
@@ -299,10 +248,10 @@ namespace ImageControl.Model.DirectX
 				{
 					RectangleF roi = new RectangleF()
 					{
-						X = _zoomMousePos.X,
-						Y = _zoomMousePos.Y,
-						Width = ProductPos.X - _zoomMousePos.X,
-						Height = ProductPos.Y - _zoomMousePos.Y,
+						X = _zoomStartPos.X,
+						Y = _zoomStartPos.Y,
+						Width = ProductPos.X - _zoomStartPos.X,
+						Height = ProductPos.Y - _zoomStartPos.Y,
 					};
 
 					if (roi.Width >= 1 && roi.Height >= 1)
@@ -335,7 +284,7 @@ namespace ImageControl.Model.DirectX
 
 					float productX = (e.X - OffsetSize.Width) / ScreenZoom;
 					float productY = (e.Y - OffsetSize.Height) / ScreenZoom;
-					_zoomMousePos = new PointF(productX, productY);
+					_zoomStartPos = new PointF(productX, productY);
 
 					_zoomLineWidth = _zoomedRoi.Width / 1000;
 				}
@@ -351,13 +300,13 @@ namespace ImageControl.Model.DirectX
 
 		private void OnMouseMove(object sender, MouseEventArgs e)
 		{
-			MousePos = new PointF(
-				(e.X - OffsetSize.Width) / ScreenZoom,
-				(e.Y - OffsetSize.Height) / ScreenZoom);
+			_mousePos = new PointF(e.X, e.Y);
 
 			float productX = (e.X - OffsetSize.Width) / ScreenZoom;
 			float productY = (e.Y - OffsetSize.Height) / ScreenZoom;
+
 			ProductPos = new PointF(productX, productY);
+			MousePos = new PointF(productX, productY);
 
 			if (MousePressed && e.Button is MouseButtons.Right)
 			{
@@ -423,7 +372,11 @@ namespace ImageControl.Model.DirectX
 			}
 			else if (e.KeyCode is Keys.PageUp)
 			{
-				UpdateMatrix(true, true);
+				ZoomInOut(false);
+			}
+			else if (e.KeyCode is Keys.PageDown)
+			{
+				ZoomInOut(true);
 			}
 		}
 
@@ -436,19 +389,19 @@ namespace ImageControl.Model.DirectX
 			}
 
 			_directXView.GraphicsPaint -= OnPaint;
-			_directXView.GraphicsMouseWheel -= OnMouseWheel;
 			_directXView.GraphicsResize -= OnResize;
-			_directXView.GraphicsMouseDoubleClick -= OnMouseDoubleClick;
 			_directXView.GraphicsMouseDown -= OnMouseDown;
 			_directXView.GraphicsMouseMove -= OnMouseMove;
 			_directXView.GraphicsMouseUp -= OnMouseUp;
 			_directXView.GraphicsPrevKeyDown -= OnPrevkeyDown;
 
-			Utilities.Dispose(ref _deviceContext);
 			Utilities.Dispose(ref _zoomBrush);
-			Utilities.Dispose(ref _d3dDevice);
-			Utilities.Dispose(ref _swapChain);
-			Utilities.Dispose(ref _d2dFactory);
+			Utilities.Dispose(ref _overlayTexture);
+			Utilities.Dispose(ref _shapeTexture);
+			Utilities.Dispose(ref _overlayBitmap);
+			Utilities.Dispose(ref _shapeBitmap);
+			Utilities.Dispose(ref _mainBitmap);
+			Utilities.Dispose(ref _deviceContext);
 
 			_directXView.Dispose();
 			_directXView = new DirectXWinformView();
@@ -485,12 +438,12 @@ namespace ImageControl.Model.DirectX
 				ModeDescription = new ModeDescription(
 					_directXView.ClientSize.Width,
 					_directXView.ClientSize.Height,
-					new Rational(16, 1), Format.R8G8B8A8_UNorm),
+					new Rational(60, 1), Format.R8G8B8A8_UNorm),
 				IsWindowed = true,
 				OutputHandle = _directXView.Handle,
 				SampleDescription = new SampleDescription(1, 0),
-				SwapEffect = SwapEffect.Discard,
-				Usage = Usage.RenderTargetOutput
+				SwapEffect = SwapEffect.Sequential,
+				Usage = Usage.RenderTargetOutput,
 			};
 
 			// Direct3D11 장치 및 SwapChain 생성
@@ -498,24 +451,14 @@ namespace ImageControl.Model.DirectX
 				SharpDX.Direct3D11.DeviceCreationFlags.BgraSupport,
 				swapChainDesc,
 				out _d3dDevice,
-				out _swapChain);
+				out SwapChain swap);
+
+			_swapChain = swap.QueryInterface<SwapChain1>();
 
 			// Direct2D Factory 생성
 			_d2dFactory = new SharpDX.Direct2D1.Factory2(FactoryType.SingleThreaded, DebugLevel.None);
 			_dxgiDevice = _d3dDevice.QueryInterface<SharpDX.DXGI.Device>();
 			_d2dDevice = new SharpDX.Direct2D1.Device1(_d2dFactory, _dxgiDevice);
-
-			// 백 버퍼로부터 RenderTarget 생성
-			//using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
-			//{
-			//	using (var surface = backBuffer.QueryInterface<Surface>())
-			//	{
-			//		RenderTargetProperties renderTargetProperties = new RenderTargetProperties(
-			//			new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied));
-
-			//		_renderTarget = new RenderTarget(_d2dFactory, surface, renderTargetProperties);
-			//	}
-			//}
 
 			InitRender();
 
@@ -526,68 +469,82 @@ namespace ImageControl.Model.DirectX
 
 		private void InitRender()
 		{
-			_deviceContext = new DeviceContext1(_d2dDevice, DeviceContextOptions.None);
+			_deviceContext = new DeviceContext(_d2dDevice, DeviceContextOptions.EnableMultithreadedOptimizations);
 
 			using (var backBuffer = _swapChain.GetBackBuffer<SharpDX.Direct3D11.Texture2D>(0))
 			{
 				using (var surface = backBuffer.QueryInterface<Surface>())
 				{
-					BitmapProperties1 bitmapProperties = new BitmapProperties1(new PixelFormat(
-						Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
-						DEFAULT_DPI, DEFAULT_DPI, BitmapOptions.Target | BitmapOptions.CannotDraw);
+					BitmapProperties1 prop = new BitmapProperties1()
+					{
+						PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+						DpiX = DEFAULT_DPI,
+						DpiY = DEFAULT_DPI,
+						BitmapOptions = BitmapOptions.CannotDraw | BitmapOptions.Target,
+					};
 
-					// RenderTarget 설정
-					_renderBitmap = new Bitmap1(_deviceContext, surface, bitmapProperties);
-					_deviceContext.Target = _renderBitmap;
+					_mainBitmap = new Bitmap1(_deviceContext, surface, prop);
+					_deviceContext.Target = _mainBitmap;
 				}
 			}
 
-			BitmapProperties1 prop = new BitmapProperties1(new PixelFormat(
-				Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
-				DEFAULT_DPI, DEFAULT_DPI, BitmapOptions.Target);
+			var overlayRenderTargetDesc = new SharpDX.Direct3D11.Texture2DDescription()
+			{
+				Format = Format.R8G8B8A8_UNorm,
+				ArraySize = 1,
+				MipLevels = 1,
+				Width = _directXView.ClientSize.Width,
+				Height = _directXView.ClientSize.Height,
+				SampleDescription = new SampleDescription(1, 0),
+				Usage = SharpDX.Direct3D11.ResourceUsage.Default,
+				BindFlags = SharpDX.Direct3D11.BindFlags.RenderTarget,
+				CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags.None,
+				OptionFlags = SharpDX.Direct3D11.ResourceOptionFlags.None,
+			};
 
-			_drawingLayer = new Bitmap1(_deviceContext,
-				new Size2(_directXView.ClientSize.Width, _directXView.ClientSize.Height), prop);
+			_overlayTexture = new SharpDX.Direct3D11.Texture2D(_d3dDevice, overlayRenderTargetDesc);
+			InitTexture(_overlayTexture, out _overlayBitmap	);
 
-			_shapeLayer = new Bitmap1(_deviceContext,
-				new Size2(_directXView.ClientSize.Width, _directXView.ClientSize.Height), prop);
+			_shapeTexture = new SharpDX.Direct3D11.Texture2D(_d3dDevice, overlayRenderTargetDesc);
+			InitTexture(_shapeTexture, out _shapeBitmap);
 
 			_directXView.Invalidate();
 			_zoomBrush = new SolidColorBrush(_deviceContext, new RawColor4(1, 1, 1, 1));
+		}
 
-			_layerOption = new LayerParameters()
+		private void InitTexture(SharpDX.Direct3D11.Texture2D texture, out Bitmap1 bitmap)
+		{
+			bitmap = null;
+
+			using (var surface = texture.QueryInterface<Surface>())
 			{
-				ContentBounds = new RawRectangleF(Roi.Left, Roi.Top, Roi.Right, Roi.Bottom),
-				GeometricMask = null,
-				MaskAntialiasMode = AntialiasMode.PerPrimitive,
-				MaskTransform = _transformMatrix,//new RawMatrix3x2(1, 0, 0, 1, 0, 0),
-				Opacity = 1,
-				OpacityBrush = null,
-				LayerOptions = LayerOptions.None,
-			};
+				if (surface != null)
+				{
+					BitmapProperties1 prop = new BitmapProperties1()
+					{
+						PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+						DpiX = DEFAULT_DPI,
+						DpiY = DEFAULT_DPI,
+						BitmapOptions = BitmapOptions.CannotDraw | BitmapOptions.Target,
+					};
+
+					bitmap = new Bitmap1(_deviceContext, surface, prop);
+				}
+			}
 		}
 
 		private void ShapeRenderStart()
 		{
-			_shapeLayer.Tag = null;
+			_deviceContext.Target = _shapeBitmap;
+			{
+				_deviceContext.BeginDraw();
+				_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
 
-			_deviceContext.Target = _shapeLayer;			
-			//_deviceContext.Transform = _transformMatrix;
+				DrawShapes();
 
-			_deviceContext.BeginDraw();
-			//_deviceContext.PushLayer(ref _layerOption, null);
-
-			_deviceContext.Clear(new RawColor4(0, 0, 0, 1));
-			//_deviceContext.FillRectangle(
-			//	new RawRectangleF(0, 0, _directXView.ClientSize.Width, _directXView.ClientSize.Height), _zoomBrush);
-
-			DrawShapes();
-
-			//_deviceContext.PopLayer();
-			_deviceContext.EndDraw();
-			_shapeLayer.Tag = "Done";
-
-			_deviceContext.Target = _renderBitmap;
+				_deviceContext.EndDraw();
+			}
+			_deviceContext.Target = _mainBitmap;
 		}
 
 		private void UpdateMatrix(bool isScalUpdate, bool isTranslateUpdate)
@@ -630,13 +587,48 @@ namespace ImageControl.Model.DirectX
 
 			_currentRoi.Inflate(1, 1);
 
-			_deviceContext.Target = _renderBitmap;
-			_deviceContext.Transform = _transformMatrix;// new RawMatrix3x2(1, 0, 0, 1, 0, 0);
-
-			_drawingLayer.Tag = null;
-			_shapeLayer.Tag = null;
-
+			_deviceContext.Transform = _transformMatrix;
 			_isUpdate = true;
+		}
+
+		private void ZoomInOut(bool isOut)
+		{
+			if (MousePressed is true)
+			{
+				return;
+			}
+
+			if (isOut is true)
+			{
+				ScreenZoom /= 1.5F;
+				if (ScreenZoom <= 0.1f)
+				{
+					ScreenZoom = 0.1f;
+				}
+			}
+			else
+			{
+				// 1.5배 확대(줌인ScreenZoom *= 1.5F;
+				ScreenZoom *= 1.5F;
+				if (ScreenZoom >= 1000.0f)
+				{
+					ScreenZoom = 1000.0f;
+				}
+			}
+
+			float offsetX = _mousePos.X - ProductPos.X * ScreenZoom;
+			float offsetY = _mousePos.Y - ProductPos.Y * ScreenZoom;
+
+			OffsetSize = new SizeF(offsetX, offsetY);
+			WindowPos = new PointF(_mousePos.X, _mousePos.Y);
+
+			float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
+			float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
+			ProductPos = new PointF(productX, productY);
+
+			UpdateMatrix(true, true);
+
+			MouseMoveEvent(this, null);
 		}
 
 		private void RenderTimer_Tick(object sender, EventArgs e)
