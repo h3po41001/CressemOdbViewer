@@ -35,20 +35,18 @@ namespace ImageControl.Shape.DirectX
 				CenterPt.Y - RadiusY, RadiusX * 2, RadiusY * 2);
 		}
 
-		public override void Draw(RenderTarget render, RectangleF roi)
+		public override void Draw(RenderTarget render)
 		{
-			if (roi.IntersectsWith(Bounds) is true)
-			{
-				render.DrawEllipse(Ellipse, ProfileBrush);
-			}
+			render.DrawEllipse(Ellipse, ProfileBrush);
 		}
 
-		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		public override void Fill(RenderTarget render, bool isHole,
+			RectangleF roi, float skipRatio)
 		{
 			if (roi.IntersectsWith(Bounds) is true)
 			{
-				if (Bounds.Width >= roi.Width * 0.001 && 
-					Bounds.Height >= roi.Height * 0.001)
+				if (Bounds.Width >= roi.Width * skipRatio &&
+					Bounds.Height >= roi.Height * skipRatio)
 				{
 					if (IsPositive != isHole)
 					{

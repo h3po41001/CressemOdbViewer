@@ -22,6 +22,7 @@ namespace ImageControl.Model.DirectX
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
 		private readonly float DEFAULT_DPI = 96.0f;
+		private readonly float SKIP_RATIO = 0.001f;
 
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
@@ -35,10 +36,6 @@ namespace ImageControl.Model.DirectX
 		// main
 		private DeviceContext _deviceContext;
 		private Bitmap1 _mainBitmap;
-
-		// overlay
-		private SharpDX.Direct3D11.Texture2D _overlayTexture;
-		private Bitmap1 _overlayBitmap;
 
 		// shape
 		private SharpDX.Direct3D11.Texture2D _shapeTexture;
@@ -72,7 +69,6 @@ namespace ImageControl.Model.DirectX
 
 			RenderStart();
 
-			_directXView.GraphicsPaint += OnPaint;
 			_directXView.GraphicsResize += OnResize;
 			_directXView.GraphicsMouseDown += OnMouseDown;
 			_directXView.GraphicsMouseMove += OnMouseMove;
@@ -109,30 +105,7 @@ namespace ImageControl.Model.DirectX
 
 				OnResize(null, null);
 
-				// 화면에 맞추기 위함
-				ScreenZoom = _directXView.ClientSize.Width / Roi.Width;
-				if (_directXView.ClientSize.Height / Roi.Height < ScreenZoom)
-				{
-					ScreenZoom = _directXView.ClientSize.Height / Roi.Height;
-				}
-
-				// 줌이 적용되어있는 화면이라고 생각
-				WindowPos = new PointF(
-					_directXView.ClientSize.Width / 2,
-					_directXView.ClientSize.Height / 2);
-
-				// 중앙에 위치하기 위함
-				ProductPos = Roi.GetCenterF();
-				OffsetSize = new SizeF(
-					WindowPos.X - ProductPos.X * ScreenZoom,
-					WindowPos.Y - ProductPos.Y * ScreenZoom);
-
-				_zoomedRoi = new RectangleF(
-					ProductPos.X - _directXView.ClientSize.Width / 2 / ScreenZoom,
-					ProductPos.Y - _directXView.ClientSize.Height / 2 / ScreenZoom,
-					_directXView.ClientSize.Width / ScreenZoom,
-					_directXView.ClientSize.Height / ScreenZoom);
-
+				AlignToScreenCenter();
 				UpdateMatrix(true, true);
 			}
 
@@ -172,12 +145,6 @@ namespace ImageControl.Model.DirectX
 
 			_directShapes.Clear();
 			_directProfileShapes.Clear();
-
-			//_renderTarget.BeginDraw();
-			//_renderTarget.Clear(new RawColor4(0, 0, 0, 1));
-			//_renderTarget.EndDraw();
-
-			//_swapChain.Present(1, PresentFlags.None);
 		}
 
 		public override void OnDraw()
@@ -207,11 +174,6 @@ namespace ImageControl.Model.DirectX
 			_swapChain.Present(1, PresentFlags.None);
 		}
 
-		private void OnPaint(object sender, Graphics graphics)
-		{
-			//OnDraw();
-		}
-
 		private void OnResize(object sender, EventArgs e)
 		{
 			if (_swapChain is null)
@@ -220,9 +182,7 @@ namespace ImageControl.Model.DirectX
 			}
 
 			Utilities.Dispose(ref _zoomBrush);
-			Utilities.Dispose(ref _overlayTexture);
 			Utilities.Dispose(ref _shapeTexture);
-			Utilities.Dispose(ref _overlayBitmap);
 			Utilities.Dispose(ref _shapeBitmap);
 			Utilities.Dispose(ref _mainBitmap);
 			Utilities.Dispose(ref _deviceContext);
@@ -238,11 +198,12 @@ namespace ImageControl.Model.DirectX
 
 		private void OnMouseDown(object sender, MouseEventArgs e)
 		{
-			if (e.Button is MouseButtons.Right)
-			{
-				MousePressed = true;
-			}
-			else if (e.Button is MouseButtons.Left)
+			//if (e.Button is MouseButtons.Right)
+			//{
+			//	MousePressed = true;
+			//}
+			//else
+			if (e.Button is MouseButtons.Left)
 			{
 				if (_zoomIsReady is true)
 				{
@@ -308,31 +269,32 @@ namespace ImageControl.Model.DirectX
 			ProductPos = new PointF(productX, productY);
 			MousePos = new PointF(productX, productY);
 
-			if (MousePressed && e.Button is MouseButtons.Right)
-			{
-				float deltaX = e.X - WindowPos.X;
-				float deltaY = e.Y - WindowPos.Y;
+			//if (MousePressed && e.Button is MouseButtons.Right)
+			//{
+			//	float deltaX = e.X - WindowPos.X;
+			//	float deltaY = e.Y - WindowPos.Y;
 
-				OffsetSize = new SizeF(StartPos.X + deltaX, StartPos.Y + deltaY);
-				UpdateMatrix(false, true);
-			}
+			//	OffsetSize = new SizeF(StartPos.X + deltaX, StartPos.Y + deltaY);
+			//	UpdateMatrix(false, true);
+			//}
 
 			MouseMoveEvent(this, null);
 		}
 
 		private void OnMouseUp(object sender, MouseEventArgs e)
 		{
-			if (MousePressed && e.Button is MouseButtons.Right)
-			{
-				WindowPos = new PointF(e.X, e.Y);
+			//if (MousePressed && e.Button is MouseButtons.Right)
+			//{
+			//	WindowPos = new PointF(e.X, e.Y);
 
-				float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
-				float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
-				ProductPos = new PointF(productX, productY);
+			//	float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
+			//	float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
+			//	ProductPos = new PointF(productX, productY);
 
-				UpdateMatrix(false, true);
-			}
-			else if (_zoomMousePressed && e.Button is MouseButtons.Left)
+			//	UpdateMatrix(false, true);
+			//}
+			//else
+			if (_zoomMousePressed && e.Button is MouseButtons.Left)
 			{
 				_zoomIsReady = true;
 			}
@@ -344,30 +306,7 @@ namespace ImageControl.Model.DirectX
 		{
 			if (e.KeyCode is Keys.Home)
 			{
-				// 화면에 맞추기 위함
-				ScreenZoom = _directXView.ClientSize.Width / Roi.Width;
-				if (_directXView.ClientSize.Height / Roi.Height < ScreenZoom)
-				{
-					ScreenZoom = _directXView.ClientSize.Height / Roi.Height;
-				}
-
-				// 줌이 적용되어있는 화면이라고 생각
-				WindowPos = new PointF(
-					_directXView.ClientSize.Width / 2,
-					_directXView.ClientSize.Height / 2);
-
-				// 중앙에 위치하기 위함
-				ProductPos = Roi.GetCenterF();
-				OffsetSize = new SizeF(
-					WindowPos.X - ProductPos.X * ScreenZoom,
-					WindowPos.Y - ProductPos.Y * ScreenZoom);
-
-				_zoomedRoi = new RectangleF(
-					ProductPos.X - _directXView.ClientSize.Width / 2 / ScreenZoom,
-					ProductPos.Y - _directXView.ClientSize.Height / 2 / ScreenZoom,
-					_directXView.ClientSize.Width / ScreenZoom,
-					_directXView.ClientSize.Height / ScreenZoom);
-
+				AlignToScreenCenter();
 				UpdateMatrix(true, true);
 			}
 			else if (e.KeyCode is Keys.PageUp)
@@ -388,7 +327,6 @@ namespace ImageControl.Model.DirectX
 				_renderTimer.Dispose();
 			}
 
-			_directXView.GraphicsPaint -= OnPaint;
 			_directXView.GraphicsResize -= OnResize;
 			_directXView.GraphicsMouseDown -= OnMouseDown;
 			_directXView.GraphicsMouseMove -= OnMouseMove;
@@ -396,9 +334,7 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsPrevKeyDown -= OnPrevkeyDown;
 
 			Utilities.Dispose(ref _zoomBrush);
-			Utilities.Dispose(ref _overlayTexture);
 			Utilities.Dispose(ref _shapeTexture);
-			Utilities.Dispose(ref _overlayBitmap);
 			Utilities.Dispose(ref _shapeBitmap);
 			Utilities.Dispose(ref _mainBitmap);
 			Utilities.Dispose(ref _deviceContext);
@@ -416,7 +352,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Draw(_deviceContext, _currentRoi);
+				shape.Draw(_deviceContext);
 			}
 
 			foreach (var shape in _directShapes)
@@ -426,7 +362,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Fill(_deviceContext, false, _currentRoi);
+				shape.Fill(_deviceContext, false, _currentRoi, SKIP_RATIO);
 			}
 		}
 
@@ -501,9 +437,6 @@ namespace ImageControl.Model.DirectX
 				CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags.None,
 				OptionFlags = SharpDX.Direct3D11.ResourceOptionFlags.None,
 			};
-
-			_overlayTexture = new SharpDX.Direct3D11.Texture2D(_d3dDevice, overlayRenderTargetDesc);
-			InitTexture(_overlayTexture, out _overlayBitmap	);
 
 			_shapeTexture = new SharpDX.Direct3D11.Texture2D(_d3dDevice, overlayRenderTargetDesc);
 			InitTexture(_shapeTexture, out _shapeBitmap);
@@ -589,6 +522,33 @@ namespace ImageControl.Model.DirectX
 
 			_deviceContext.Transform = _transformMatrix;
 			_isUpdate = true;
+		}
+
+		private void AlignToScreenCenter()
+		{
+			// 화면에 맞추기 위함
+			ScreenZoom = _directXView.ClientSize.Width / Roi.Width;
+			if (_directXView.ClientSize.Height / Roi.Height < ScreenZoom)
+			{
+				ScreenZoom = _directXView.ClientSize.Height / Roi.Height;
+			}
+
+			// 줌이 적용되어있는 화면이라고 생각
+			WindowPos = new PointF(
+				_directXView.ClientSize.Width / 2,
+				_directXView.ClientSize.Height / 2);
+
+			// 중앙에 위치하기 위함
+			ProductPos = Roi.GetCenterF();
+			OffsetSize = new SizeF(
+				WindowPos.X - ProductPos.X * ScreenZoom,
+				WindowPos.Y - ProductPos.Y * ScreenZoom);
+
+			_zoomedRoi = new RectangleF(
+				ProductPos.X - _directXView.ClientSize.Width / 2 / ScreenZoom,
+				ProductPos.Y - _directXView.ClientSize.Height / 2 / ScreenZoom,
+				_directXView.ClientSize.Width / ScreenZoom,
+				_directXView.ClientSize.Height / ScreenZoom);
 		}
 
 		private void ZoomInOut(bool isOut)

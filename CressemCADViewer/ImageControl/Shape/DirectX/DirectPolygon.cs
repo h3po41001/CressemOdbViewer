@@ -134,18 +134,16 @@ namespace ImageControl.Shape.DirectX
 			Bounds = bounds.GetBounds();
 		}
 
-		public override void Draw(RenderTarget render, RectangleF roi)
+		public override void Draw(RenderTarget render)
 		{
-			if (roi.IntersectsWith(Bounds) is true)
+			foreach (var path in Paths)
 			{
-				foreach (var path in Paths)
-				{
-					path.Draw(render, roi);
-				}
+				path.Draw(render);
 			}
 		}
 
-		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		public override void Fill(RenderTarget render, bool isHole,
+			RectangleF roi, float skipRatio)
 		{
 			if (ShapeGemotry is null)
 			{
@@ -154,8 +152,8 @@ namespace ImageControl.Shape.DirectX
 
 			if (roi.IntersectsWith(Bounds) is true)
 			{
-				if (Bounds.Width >= roi.Width * 0.001 &&
-					Bounds.Height >= roi.Height * 0.001)
+				if (Bounds.Width >= roi.Width * skipRatio &&
+					Bounds.Height >= roi.Height * skipRatio)
 				{
 					if (IsFill)
 					{

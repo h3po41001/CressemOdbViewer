@@ -41,20 +41,18 @@ namespace ImageControl.Shape.DirectX
 				EndPt.X - StartPt.X, EndPt.Y - StartPt.Y);
 		}
 
-		public override void Draw(RenderTarget render, RectangleF roi)
+		public override void Draw(RenderTarget render)
 		{
-			if (roi.IntersectsWith(Bounds) is true)
-			{
-				render.DrawLine(StartPt, EndPt, ProfileBrush, LineWidth);
-			}
+			render.DrawLine(StartPt, EndPt, ProfileBrush, LineWidth);
 		}
 
-		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		public override void Fill(RenderTarget render, bool isHole,
+			RectangleF roi, float skipRatio)
 		{
 			if (roi.IntersectsWith(Bounds) is true)
 			{
-				if (Bounds.Width >= roi.Width * 0.001 &&
-					Bounds.Height >= roi.Height * 0.001)
+				if (Bounds.Width >= roi.Width * skipRatio &&
+					Bounds.Height >= roi.Height * skipRatio)
 				{
 					if (IsPositive != isHole)
 					{

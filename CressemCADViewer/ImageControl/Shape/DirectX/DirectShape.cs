@@ -43,8 +43,8 @@ namespace ImageControl.Shape.DirectX
 
 		public abstract void SetShape();
 
-		public abstract void Draw(RenderTarget render, RectangleF roi);
+		public abstract void Draw(RenderTarget render);
 
-		public abstract void Fill(RenderTarget render, bool isHole, RectangleF roi);
+		public abstract void Fill(RenderTarget render, bool isHole, RectangleF roi, float skipRatio);
 	}
 }
