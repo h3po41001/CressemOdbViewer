@@ -113,11 +113,6 @@ namespace CressemCADViewer.ViewModel
 			GraphicsView.ClearShape();
 			GraphicsView.LoadProfile(proflieShapes);
 
-			if (features.Any(x => x.FeatureSymbol is ISymbolUser) is true)
-			{
-
-			}
-
 			foreach (var feature in features)
 			{
 				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, feature);

@@ -4,6 +4,7 @@ using CressemDataToGraphics.Model.Graphics.DirectX;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
 using ImageControl.Shape.DirectX.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Factory
 {
@@ -11,7 +12,7 @@ namespace CressemDataToGraphics.Factory
 	{
 		public DirectXFactory() { }
 
-		public IDirectList CreateFeatureToShape(bool useMM,
+		public override IGraphicsList CreateFeatureToShape(bool useMM,
 			float pixelResolution,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)

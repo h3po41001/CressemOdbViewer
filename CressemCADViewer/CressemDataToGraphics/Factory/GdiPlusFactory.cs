@@ -3,6 +3,7 @@ using CressemDataToGraphics.Model.Graphics.Shape;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
 using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Factory
 {
@@ -12,7 +13,7 @@ namespace CressemDataToGraphics.Factory
 		{
 		}
 
-		public IGdiList CreateFeatureToShape(bool useMM,
+		public override IGraphicsList CreateFeatureToShape(bool useMM,
 			float pixelResolution,
 			double xDatum, double yDatum, double cx, double cy,
 			int orient, bool isMirrorXAxis, IFeatureBase feature)

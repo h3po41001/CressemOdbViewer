@@ -57,10 +57,10 @@ namespace CressemDataToGraphics.Factory
 				return null;
 			}
 
-			//return _graphicsFactory.CreateFeatureToShape(useMM,
-			//	pixelResolution,
-			//	xDatum, yDatum, cx, cy,
-			//	orient, isMirrorXAxis, feature);
+			return _graphicsFactory.CreateFeatureToShape(useMM,
+				pixelResolution,
+				xDatum, yDatum, cx, cy,
+				orient, isMirrorXAxis, feature);
 		}
 
 		//public IGdiList DataToGdiPlus(bool useMM, float pixelResolution,
