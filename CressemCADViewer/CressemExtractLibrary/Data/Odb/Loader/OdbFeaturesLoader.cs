@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Xml.Schema;
 using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Symbol;
@@ -167,16 +165,10 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							}
 
 							features.AddFeature(surface);
-							//surfaceList.Add(surface);
 						}
 					}
 				}
 			}
-
-			//if (surfaceList.Any() is true)
-			//{
-			//	features.FeatureList.Add(new OdbFeatureSurfaces(surfaceList));
-			//}
 
 			return features.FeatureList.Any();
 		}

@@ -40,6 +40,7 @@
     <Compile Include="Factory\DataToGraphicsFactory.cs" />
     <Compile Include="Factory\GdiPlusFactory.cs" />
     <Compile Include="Factory\DirectXFactory.cs" />
+    <Compile Include="Factory\GraphicsFactory.cs" />
     <Compile Include="Factory\ShapeFactory.cs" />
     <Compile Include="Model\Cad\ShapeArc.cs" />
     <Compile Include="Model\Cad\ShapeBase.cs" />

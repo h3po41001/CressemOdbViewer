@@ -6,7 +6,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Factory
 {
-	internal class GdiPlusFactory
+	internal class GdiPlusFactory : GraphicsFactory
 	{
 		public GdiPlusFactory()
 		{

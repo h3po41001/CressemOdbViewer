@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CressemDataToGraphics.Model.Graphics.DirectX;
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
@@ -8,7 +7,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Factory
 {
-	internal class DirectXFactory
+	internal class DirectXFactory : GraphicsFactory
 	{
 		public DirectXFactory() { }
 

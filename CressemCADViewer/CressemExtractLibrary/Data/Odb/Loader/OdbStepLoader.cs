@@ -35,7 +35,6 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 
 			bool isUnit = odbData.OdbMatrixInfo.Steps.Any(x => x.Name.ToUpper().Equals("UNIT"));
 
-			//foreach (var step in odbData.OdbMatrixInfo.Steps)
 			Parallel.ForEach(odbData.OdbMatrixInfo.Steps, step =>
 			{
 				string stepFolder = Path.Combine(dirPath, StepFolderName, step.Name);
@@ -52,26 +51,22 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					out OdbStepHeader stepHeader) is false)
 				{
 					return;
-					//continue;
 				}
 
 				if (LoadOdbStepProfile(stepProfilePath, odbData,
 					out OdbStepProfile stepProfile) is false)
 				{
 					return;
-					//continue;
 				}
 
 				if (LoadOdbStepLayer(stepLayerPath, odbData,
 					out List<OdbLayer> stepLayer) is false)
 				{
 					return;
-					//continue;
 				}
 
 				stepQueue.Enqueue(new OdbStep(step, stepHeader, stepProfile, stepLayer));
 			});
-			//}
 
 			odbSteps = new List<OdbStep>(stepQueue);
 
@@ -309,7 +304,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 		private bool LoadOdbStepLayer(string path, OdbData odbData,
 			out List<OdbLayer> stepLayer)
 		{
-			stepLayer = new List<OdbLayer>();
+			stepLayer = null;
 
 			if (Directory.Exists(path) is false)
 			{
@@ -317,32 +312,31 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 
 			bool isL01 = odbData.OdbMatrixInfo.Layers.Any(x => x.Name.ToUpper().Equals("L01"));
+			ConcurrentQueue<OdbLayer> odbLayersQueue = new ConcurrentQueue<OdbLayer>();
 
-			foreach (var refLayer in odbData.OdbMatrixInfo.Layers)
+			Parallel.ForEach(odbData.OdbMatrixInfo.Layers, refLayer =>
 			{
 				string layerFilePath = Path.Combine(path, refLayer.Name, FeaturesFileName);
 				if (File.Exists(layerFilePath) is false)
 				{
-					continue;
+					return;
 				}
 
 				if (isL01 is true && refLayer.Name.ToUpper().Equals("L01") is false)
 				{
-					continue;
+					return;
 				}
-
-				if (isL01 is false && refLayer.Name.ToUpper().Equals("SIG2") is false)
-					continue;
 
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
 					odbData.OdbUserSymbols, out OdbFeatures features) is false)
 				{
-					continue;
+					return;
 				}
 
-				stepLayer.Add(new OdbLayer(refLayer, features));
-			}
+				odbLayersQueue.Enqueue(new OdbLayer(refLayer, features));
+			});
 
+			stepLayer = new List<OdbLayer>(odbLayersQueue);
 			return stepLayer.Any();
 		}
 	}
