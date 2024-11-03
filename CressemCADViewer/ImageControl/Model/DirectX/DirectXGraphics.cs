@@ -21,7 +21,7 @@ namespace ImageControl.Model.DirectX
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
 		private readonly float DEFAULT_DPI = 96.0f;
-		private readonly float SKIP_RATIO = 0f;
+		private readonly float SKIP_RATIO = 1000f;
 
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
@@ -89,7 +89,7 @@ namespace ImageControl.Model.DirectX
 				{
 					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _deviceContext, Color.White));
+						_d2dFactory, _deviceContext, Color.White, SKIP_RATIO));
 
 					var surface = _directProfileShapes.FirstOrDefault();
 					if (surface is null)
@@ -127,7 +127,7 @@ namespace ImageControl.Model.DirectX
 
 				_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 					shapes.IsPositive, (dynamic)shape,
-					_d2dFactory, _deviceContext, Color.DarkGreen));
+					_d2dFactory, _deviceContext, Color.DarkGreen, SKIP_RATIO));
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
-				shape.Fill(_deviceContext, false, _currentRoi, SKIP_RATIO);
+				shape.Fill(_deviceContext, false, _currentRoi);
 			}
 		}
 

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
@@ -10,13 +11,14 @@ namespace ImageControl.Shape.DirectX
 
 		public DirectEllipse(bool isPositive,
 			float cx, float cy, float radiusX, float radiusY,
-			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
+			Factory factory, RenderTarget render, Color color,
+			float skipRatio) : base(isPositive, factory, render, color)
 		{
 			RadiusX = radiusX;
 			RadiusY = radiusY;
 			CenterPt = new RawVector2(cx, cy);
 
-			SetShape();
+			SetShape(skipRatio);
 		}
 
 		public RawVector2 CenterPt { get; private set; }
@@ -27,12 +29,15 @@ namespace ImageControl.Shape.DirectX
 
 		public Ellipse Ellipse { get; private set; }
 
-		public override void SetShape()
+		public override void SetShape(float skipRatio)
 		{
 			Ellipse = new Ellipse(CenterPt, RadiusX, RadiusY);
 			ShapeGemotry = new EllipseGeometry(Factory, Ellipse);
 			Bounds = new RectangleF(CenterPt.X - RadiusX,
 				CenterPt.Y - RadiusY, RadiusX * 2, RadiusY * 2);
+			SkipSize = new SizeF(
+				Math.Abs(Bounds.Width * skipRatio),
+				Math.Abs(Bounds.Height * skipRatio));
 		}
 
 		public override void Draw(RenderTarget render)
@@ -40,13 +45,14 @@ namespace ImageControl.Shape.DirectX
 			render.DrawEllipse(Ellipse, ProfileBrush);
 		}
 
-		public override void Fill(RenderTarget render, bool isHole,
-			RectangleF roi, float skipRatio)
+		public override void Fill(RenderTarget render,
+			bool isHole, RectangleF roi)
 		{
-			if (roi.IntersectsWith(Bounds) is true)
+			// 확대한 shape 크기가 roi 보다 커야됨. (작지 않아서 그려도 되는것)
+			if (SkipSize.Width >= roi.Width &&
+				SkipSize.Height >= roi.Height)
 			{
-				if (Bounds.Width >= roi.Width * skipRatio &&
-					Bounds.Height >= roi.Height * skipRatio)
+				if (roi.IntersectsWith(Bounds) is true)
 				{
 					if (IsPositive != isHole)
 					{
@@ -54,7 +60,7 @@ namespace ImageControl.Shape.DirectX
 					}
 					else
 					{
-						render.FillEllipse(Ellipse, HoleBrush);
+						render.FillEllipse(Ellipse, DefaultBrush);
 					}
 				}
 			}

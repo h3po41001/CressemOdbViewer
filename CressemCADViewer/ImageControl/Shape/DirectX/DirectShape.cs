@@ -37,14 +37,16 @@ namespace ImageControl.Shape.DirectX
 
 		public RectangleF Bounds { get; protected set; }
 
+		public SizeF SkipSize { get; protected set; }
+
 		protected Factory Factory { get; private set; }
 
 		protected RenderTarget Render { get; private set; }
 
-		public abstract void SetShape();
+		public abstract void SetShape(float skipRatio);
 
 		public abstract void Draw(RenderTarget render);
 
-		public abstract void Fill(RenderTarget render, bool isHole, RectangleF roi, float skipRatio);
+		public abstract void Fill(RenderTarget render, bool isHole, RectangleF roi);
 	}
 }

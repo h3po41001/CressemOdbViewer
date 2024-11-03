@@ -77,12 +77,14 @@ namespace CressemDataToGraphics.Factory
 				width, height);
 		}
 
-		public override IGraphicsShape CreateSurface(bool isPositive, IEnumerable<IGraphicsShape> shapes)
+		public override IGraphicsShape CreateSurface(bool isPositive, 
+			IEnumerable<IGraphicsShape> shapes)
 		{
 			return new ShapeDirectSurface(isPositive, shapes);
 		}
 
-		public override IGraphicsShape CreatePolygon(bool isFill, IEnumerable<IGraphicsShape> shapes)
+		public override IGraphicsShape CreatePolygon(bool isFill, 
+			IEnumerable<IGraphicsShape> shapes)
 		{
 			return new ShapeDirectPolygon(isFill, shapes);
 		}

@@ -32,7 +32,8 @@ namespace CressemDataToGraphics.Factory
 			int orient, bool isMirrorXAxis,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons);
 
-		public abstract IGraphicsShape CreateSurface(bool isPositive, IEnumerable<IGraphicsShape> shapes);
+		public abstract IGraphicsShape CreateSurface(bool isPositive, 
+			IEnumerable<IGraphicsShape> shapes);
 
 		public abstract IGraphicsShape CreateEllipse(bool useMM,
 			float pixelResolution, bool isMM,

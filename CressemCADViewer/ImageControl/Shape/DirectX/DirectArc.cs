@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using ImageControl.Extension;
 using SharpDX;
 using SharpDX.Direct2D1;
@@ -15,7 +16,8 @@ namespace ImageControl.Shape.DirectX
 			float width, float height, float rotaion,
 			bool isLargeArc, bool isClockwise,
 			float lineWidth,
-			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
+			Factory factory, RenderTarget render, Color color, 
+			float skipRatio) : base(isPositive, factory, render, color)
 		{
 			StartPt = new RawVector2(sx, sy);
 			EndPt = new RawVector2(ex, ey);
@@ -25,7 +27,7 @@ namespace ImageControl.Shape.DirectX
 			SweepDir = isClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise;
 			LineWidth = lineWidth;
 
-			SetShape();
+			SetShape(skipRatio);
 		}
 
 		public RawVector2 StartPt { get; private set; }
@@ -44,7 +46,7 @@ namespace ImageControl.Shape.DirectX
 
 		public ArcSegment Arc { get; private set; }
 
-		public override void SetShape()
+		public override void SetShape(float skipRatio)
 		{
 			Arc = new ArcSegment()
 			{
@@ -65,6 +67,9 @@ namespace ImageControl.Shape.DirectX
 			}
 
 			Bounds = ShapeGemotry.GetBounds().ToRectangleF();
+			SkipSize = new SizeF(
+				Math.Abs(Bounds.Width * skipRatio),
+				Math.Abs(Bounds.Height * skipRatio));
 		}
 
 		public override void Draw(RenderTarget render)
@@ -72,13 +77,14 @@ namespace ImageControl.Shape.DirectX
 			render.DrawGeometry(ShapeGemotry, ProfileBrush, LineWidth);
 		}
 
-		public override void Fill(RenderTarget render, bool isHole,
-			RectangleF roi, float skipRatio)
+		public override void Fill(RenderTarget render,
+			bool isHole, RectangleF roi)
 		{
-			if (roi.IntersectsWith(Bounds) is true)
+			// 확대한 shape 크기가 roi 보다 커야됨. (작지 않아서 그려도 되는것)
+			if (SkipSize.Width >= roi.Width &&
+				SkipSize.Height >= roi.Height)
 			{
-				if (Bounds.Width >= roi.Width * skipRatio &&
-					Bounds.Height >= roi.Height * skipRatio)
+				if (roi.IntersectsWith(Bounds) is true)
 				{
 					if (IsPositive != isHole)
 					{
