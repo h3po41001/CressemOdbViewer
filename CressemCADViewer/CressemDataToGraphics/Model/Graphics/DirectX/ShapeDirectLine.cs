@@ -3,7 +3,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectLine : ShapeDirectBase, IDirectLine
+	internal class ShapeDirectLine : ShapeGraphicsBase, IDirectLine
 	{
 		private ShapeDirectLine() { }
 

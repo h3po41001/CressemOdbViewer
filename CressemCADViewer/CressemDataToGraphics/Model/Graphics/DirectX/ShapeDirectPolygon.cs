@@ -4,10 +4,11 @@ using System.Linq;
 using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.DirectX.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectPolygon : ShapeDirectBase, IDirectPolygon
+	internal class ShapeDirectPolygon : ShapeGraphicsBase, IDirectPolygon
 	{
 
 		private ShapeDirectPolygon() : base()
@@ -15,10 +16,10 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		}
 
 		public ShapeDirectPolygon(bool isFill,
-			IEnumerable<ShapeDirectBase> shapes) : base()
+			IEnumerable<IGraphicsShape> shapes) : base()
 		{
 			IsFill = isFill;
-			Shapes = new List<ShapeDirectBase>(shapes);
+			Shapes = new List<IGraphicsShape>(shapes);
 		}
 
 		public ShapeDirectPolygon(bool isFill,
@@ -30,7 +31,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<IDirectShape> Shapes { get; private set; }
+		public IEnumerable<IGraphicsShape> Shapes { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 
@@ -40,7 +41,7 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			int orient, bool isMirrorXAxis,
 			bool isPositive, IFeaturePolygon polygon)
 		{
-			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+			List<ShapeGraphicsBase> shapes = new List<ShapeGraphicsBase>();
 
 			bool isIsland = polygon.PolygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;

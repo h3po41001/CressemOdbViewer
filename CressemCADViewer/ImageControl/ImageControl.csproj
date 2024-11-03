@@ -74,10 +74,8 @@
     <Compile Include="Shape\DirectX\Interface\IDirectArc.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectEllipse.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectLine.cs" />
-    <Compile Include="Shape\DirectX\Interface\IDirectList.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectPolygon.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectRectangle.cs" />
-    <Compile Include="Shape\DirectX\Interface\IDirectShape.cs" />
     <Compile Include="Shape\DirectX\Interface\IDirectSurface.cs" />
     <Compile Include="Shape\Gdi\GdiArc.cs" />
     <Compile Include="Model\Gdi\GdiGraphics.cs" />
@@ -103,10 +101,8 @@
     </Compile>
     <Compile Include="Shape\Gdi\GdiSurface.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiArc.cs" />
-    <Compile Include="Shape\Gdi\Interface\IGdiShape.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiEllipse.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiLine.cs" />
-    <Compile Include="Shape\Gdi\Interface\IGdiList.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiPolygon.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiRectangle.cs" />
     <Compile Include="Shape\Gdi\Interface\IGdiSurface.cs" />

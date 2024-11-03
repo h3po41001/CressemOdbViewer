@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiSurface : ShapeGdiBase, IGdiSurface
+	internal class ShapeGdiSurface : ShapeGraphicsBase, IGdiSurface
 	{
 		private ShapeGdiSurface() : base()
 		{
 		}
 
 		public ShapeGdiSurface(bool isPositive,
-			IEnumerable<ShapeGdiPolygon> polygons) : base()
+			IEnumerable<IGraphicsShape> polygons) : base()
 		{
 			IsPositive = isPositive;
 			Polygons = polygons;
@@ -19,7 +20,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsPositive { get; private set; }
 
-		public IEnumerable<IGdiPolygon> Polygons { get; private set; }
+		public IEnumerable<IGraphicsShape> Polygons { get; private set; }
 
 		public static ShapeGdiSurface Create(bool useMM,
 			float pixelResolution, bool isMM,

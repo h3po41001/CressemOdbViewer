@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Shape.DirectX.Interface
 {
-	public interface IDirectSurface : IDirectShape
+	public interface IDirectSurface : IGraphicsShape
 	{
 		bool IsPositive { get; }
 
-		IEnumerable<IDirectPolygon> Polygons { get; }
+		IEnumerable<IGraphicsShape> Polygons { get; }
 	}
 }

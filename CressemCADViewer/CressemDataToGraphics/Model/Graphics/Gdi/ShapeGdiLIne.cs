@@ -1,13 +1,9 @@
-﻿using System.Drawing;
-using CressemDataToGraphics.Converter;
-using CressemDataToGraphics.Factory;
-using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Extension;
+﻿using CressemDataToGraphics.Factory;
 using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiLine : ShapeGdiBase, IGdiLine
+	internal class ShapeGdiLine : ShapeGraphicsBase, IGdiLine
 	{
 		private ShapeGdiLine() { }
 

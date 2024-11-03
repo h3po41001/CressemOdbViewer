@@ -3,7 +3,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiRectangle : ShapeGdiBase, IGdiRectangle
+	internal class ShapeGdiRectangle : ShapeGraphicsBase, IGdiRectangle
 	{
 		private ShapeGdiRectangle() : base()
 		{

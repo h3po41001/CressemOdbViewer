@@ -3,7 +3,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectRectangle : ShapeDirectBase, IDirectRectangle
+	internal class ShapeDirectRectangle : ShapeGraphicsBase, IDirectRectangle
 	{
 		private ShapeDirectRectangle() : base()
 		{

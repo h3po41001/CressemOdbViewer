@@ -6,7 +6,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiEllipse : ShapeGdiBase, IGdiEllipse
+	internal class ShapeGdiEllipse : ShapeGraphicsBase, IGdiEllipse
 	{
 		private ShapeGdiEllipse() : base()
 		{

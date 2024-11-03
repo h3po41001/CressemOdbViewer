@@ -3,7 +3,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectEllipse : ShapeDirectBase, IDirectEllipse
+	internal class ShapeDirectEllipse : ShapeGraphicsBase, IDirectEllipse
 	{
 		private ShapeDirectEllipse() : base() { }
 

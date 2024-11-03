@@ -3,7 +3,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiArc : ShapeGdiBase, IGdiArc
+	internal class ShapeGdiArc : ShapeGraphicsBase, IGdiArc
 	{
 		private ShapeGdiArc() { }
 

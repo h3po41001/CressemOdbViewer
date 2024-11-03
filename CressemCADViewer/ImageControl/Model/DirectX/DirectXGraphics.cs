@@ -8,7 +8,6 @@ using System.Windows.Forms.Integration;
 using ImageControl.Extension;
 using ImageControl.Gdi.View;
 using ImageControl.Shape.DirectX;
-using ImageControl.Shape.DirectX.Interface;
 using ImageControl.Shape.Interface;
 using SharpDX;
 using SharpDX.Direct2D1;
@@ -22,7 +21,7 @@ namespace ImageControl.Model.DirectX
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
 		private readonly float DEFAULT_DPI = 96.0f;
-		private readonly float SKIP_RATIO = 0.001f;
+		private readonly float SKIP_RATIO = 0f;
 
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
@@ -83,7 +82,7 @@ namespace ImageControl.Model.DirectX
 				return false;
 			}
 
-			if (profileShapes is IDirectList directList)
+			if (profileShapes is IGraphicsList directList)
 			{
 				List<RectangleF> rois = new List<RectangleF>();
 				foreach (var shape in directList.Shapes)
@@ -119,19 +118,16 @@ namespace ImageControl.Model.DirectX
 				return;
 			}
 
-			if (shapes is IDirectList directList)
+			foreach (var shape in shapes.Shapes)
 			{
-				foreach (var shape in directList.Shapes)
+				if (shape is null)
 				{
-					if (shape is null)
-					{
-						continue;
-					}
-
-					_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
-						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _deviceContext, Color.DarkGreen));
+					continue;
 				}
+
+				_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
+					shapes.IsPositive, (dynamic)shape,
+					_d2dFactory, _deviceContext, Color.DarkGreen));
 			}
 		}
 

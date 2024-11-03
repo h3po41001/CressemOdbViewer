@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using CressemDataToGraphics.Converter;
 using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.Gdi.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiPolygon : ShapeGdiBase, IGdiPolygon
+	internal class ShapeGdiPolygon : ShapeGraphicsBase, IGdiPolygon
 	{
 		private ShapeGdiPolygon() : base()
 		{
 		}
 
 		public ShapeGdiPolygon(bool isFill,
-			IEnumerable<ShapeGdiBase> shapes) : base()
+			IEnumerable<IGraphicsShape> shapes) : base()
 		{
 			IsFill = isFill;
 			Shapes = shapes;
@@ -29,7 +29,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<IGdiShape> Shapes { get; private set; }
+		public IEnumerable<IGraphicsShape> Shapes { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 
@@ -39,7 +39,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			int orient, bool isMirrorXAxis,
 			bool isPositive, IFeaturePolygon polygon)
 		{
-			List<ShapeGdiBase> shapes = new List<ShapeGdiBase>();
+			List<IGraphicsShape> shapes = new List<IGraphicsShape>();
 
 			bool isIsland = polygon.PolygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;

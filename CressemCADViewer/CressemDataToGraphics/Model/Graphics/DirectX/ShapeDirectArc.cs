@@ -1,11 +1,10 @@
-﻿using System;
-using CressemDataToGraphics.Converter;
+﻿using CressemDataToGraphics.Converter;
 using CressemDataToGraphics.Factory;
 using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectArc : ShapeDirectBase, IDirectArc
+	internal class ShapeDirectArc : ShapeGraphicsBase, IDirectArc
 	{
 		private ShapeDirectArc() : base() { }
 

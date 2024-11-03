@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using ImageControl.Shape.DirectX.Interface;
+using ImageControl.Shape.Interface;
 using SharpDX.Direct2D1;
 
 namespace ImageControl.Shape.DirectX
@@ -23,7 +24,7 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public DirectShape CreateDirectShape(bool isPositive, IDirectShape shape,
+		public DirectShape CreateDirectShape(bool isPositive, IGraphicsShape shape,
 			Factory factory, RenderTarget render, Color color)
 		{
 			if (shape is null)

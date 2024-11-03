@@ -1,6 +1,8 @@
-﻿namespace ImageControl.Shape.DirectX.Interface
+﻿using ImageControl.Shape.Interface;
+
+namespace ImageControl.Shape.DirectX.Interface
 {
-	public interface IDirectArc : IDirectShape
+	public interface IDirectArc : IGraphicsShape
 	{
 		float Sx { get; }
 

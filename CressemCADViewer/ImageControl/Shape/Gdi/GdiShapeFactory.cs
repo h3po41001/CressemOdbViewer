@@ -105,7 +105,7 @@ namespace ImageControl.Shape.Gdi
 			List<GdiShapePolygon> shapes = new List<GdiShapePolygon>();
 			foreach (var polygon in surface.Polygons)
 			{
-				shapes.Add((dynamic)CreateGdiShape(isPositive, polygon));
+				shapes.Add((dynamic)CreateGdiShape(isPositive, (dynamic)polygon));
 			}
 
 			return new GdiSurface(surface.IsPositive, shapes);
