@@ -24,8 +24,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiSurface Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY, 
+			double datumX, double datumY, 
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, 
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
@@ -41,8 +40,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			{
 				polygons.Add(ShapeGdiPolygon.Create(useMM,
 					pixelResolution, isMM,
-					globalDatumX, globalDatumY,
-					localDatumX, localDatumY, 
+					datumX, datumY, 
 					cx, cy,
 					orient, isFlipHorizontal, isPositive, polygon));
 			}

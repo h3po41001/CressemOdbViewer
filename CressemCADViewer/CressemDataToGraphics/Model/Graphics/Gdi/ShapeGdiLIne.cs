@@ -30,16 +30,14 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiLine Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double width)
 		{
 			var shapeLine = ShapeFactory.Instance.CreateLine(useMM, 
 				pixelResolution, isMM,
-				globalDatumX, globalDatumY,
-				localDatumX, localDatumY, cx, cy, 
+				datumX, datumY, cx, cy, 
 				orient, isFlipHorizontal, sx, sy, ex, ey, width);
 
 			return new ShapeGdiLine(shapeLine.Sx, -shapeLine.Sy,

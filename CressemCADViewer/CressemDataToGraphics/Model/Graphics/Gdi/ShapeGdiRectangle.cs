@@ -28,16 +28,14 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiRectangle Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
 			var shapeRectangle = ShapeFactory.Instance.CreateRectangle(useMM, 
 				pixelResolution, isMM,
-				globalDatumX, globalDatumY, 
-				localDatumX, localDatumY, 
+				datumX, datumY, 
 				cx, cy, orient, isFlipHorizontal, width, height);
 
 			// Grapchis는 y좌표가 반대이므로 -1곱한다

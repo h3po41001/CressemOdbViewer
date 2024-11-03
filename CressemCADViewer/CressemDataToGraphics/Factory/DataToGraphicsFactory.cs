@@ -44,8 +44,7 @@ namespace CressemDataToGraphics.Factory
 
 		public IGraphicsList DataToGraphics(bool useMM, 
 			float pixelResolution,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureBase feature)
 		{
@@ -56,8 +55,7 @@ namespace CressemDataToGraphics.Factory
 
 			return _graphicsFactory.CreateFeatureToShape(useMM,
 				pixelResolution,
-				globalDatumX, globalDatumY,
-				localDatumX, localDatumY, cx, cy,
+				datumX, datumY, cx, cy,
 				orient, isFlipHorizontal, feature);
 		}
 	}

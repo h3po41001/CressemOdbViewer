@@ -13,8 +13,7 @@ namespace CressemDataToGraphics.Factory
 
 		public override IGraphicsShape CreateArc(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy,
@@ -24,8 +23,7 @@ namespace CressemDataToGraphics.Factory
 		{
 			return ShapeGdiArc.Create(useMM,
 				pixelResolution, isMM,
-				globalDatumX, globalDatumY,
-				localDatumX, localDatumY, cx, cy,
+				datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy,
 				isClockWise, width);
@@ -33,8 +31,7 @@ namespace CressemDataToGraphics.Factory
 
 		public override IGraphicsShape CreateLine(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy,
@@ -42,8 +39,7 @@ namespace CressemDataToGraphics.Factory
 		{
 			return ShapeGdiLine.Create(useMM,
 				pixelResolution, isMM,
-				globalDatumX, globalDatumY,
-				localDatumX, localDatumY,
+				datumX, datumY,
 				cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, width);
@@ -51,16 +47,14 @@ namespace CressemDataToGraphics.Factory
 
 		public override IGraphicsShape CreateSurface(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY, 
+			double datumX, double datumY, 
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
 		{
 			return ShapeGdiSurface.Create(useMM,
 				pixelResolution, isMM,
-				globalDatumX, globalDatumY,
-				localDatumX, localDatumY,
+				datumX, datumY,
 				cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, featurePolygons);
@@ -74,8 +68,7 @@ namespace CressemDataToGraphics.Factory
 
 		public override IGraphicsShape CreateEllipse(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY, 
+			double datumX, double datumY, 
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
@@ -85,8 +78,7 @@ namespace CressemDataToGraphics.Factory
 
 		public override IGraphicsShape CreateRectangle(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY, 
+			double datumX, double datumY, 
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)

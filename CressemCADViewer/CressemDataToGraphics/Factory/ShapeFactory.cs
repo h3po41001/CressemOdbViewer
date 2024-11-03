@@ -28,17 +28,14 @@ namespace CressemDataToGraphics.Factory
 
 		public ShapeArc CreateArc(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY, 
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey,
 			double arcCx, double arcCy, double width)
 		{
-			float fGlobalDatumX = (float)globalDatumX;
-			float fGlobalDatumY = (float)globalDatumY;
-			float fLocalDatumX = (float)localDatumX;
-			float fLocalDatumY = (float)localDatumY;
+			float fDatumX = (float)datumX;
+			float fDatumY = (float)datumY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			float fsx = (float)sx;
@@ -53,10 +50,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is false)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertInchToMM();
-					fGlobalDatumY = (float)globalDatumY.ConvertInchToMM();
-					fLocalDatumX = (float)localDatumX.ConvertInchToMM();
-					fLocalDatumY = (float)localDatumY.ConvertInchToMM();
+					fDatumX = (float)datumX.ConvertInchToMM();
+					fDatumY = (float)datumY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fsx = (float)sx.ConvertInchToMM();
@@ -72,10 +67,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is true)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertMMToInch();
-					fGlobalDatumY = (float)globalDatumY.ConvertMMToInch();
-					fLocalDatumX = (float)localDatumX.ConvertMMToInch();
-					fLocalDatumY = (float)localDatumY.ConvertMMToInch();
+					fDatumX = (float)datumX.ConvertMMToInch();
+					fDatumY = (float)datumY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fsx = (float)sx.ConvertMMToInch();
@@ -89,16 +82,16 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF start = new PointF(fsx, fsy);
-			start = start.Offset(fLocalDatumX, fLocalDatumY);
+			start = start.Offset(fDatumX, fDatumY);
 
 			PointF end = new PointF(fex, fey);
-			end = end.Offset(fLocalDatumX, fLocalDatumY);
+			end = end.Offset(fDatumX, fDatumY);
 
 			PointF center = new PointF(fAcx, fAcy);
-			center = center.Offset(fLocalDatumX, fLocalDatumY);
+			center = center.Offset(fDatumX, fDatumY);
 
 			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fLocalDatumX, fLocalDatumY);
+			datum = datum.Offset(fDatumX, fDatumY);
 
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 			start = start.Rotate(datum, -orient, isFlipHorizontal);
@@ -118,16 +111,13 @@ namespace CressemDataToGraphics.Factory
 
 		public ShapeEllipse CreateEllipse(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			float fGlobalDatumX = (float)globalDatumX;
-			float fGlobalDatumY = (float)globalDatumY;
-			float fLocalDatumX = (float)localDatumX;
-			float fLocalDatumY = (float)localDatumY;
+			float fDatumX = (float)datumX;
+			float fDatumY = (float)datumY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			float fWidth = (float)width;
@@ -137,10 +127,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is false)
 				{
-					fGlobalDatumX = (float)fGlobalDatumX.ConvertInchToMM();
-					fGlobalDatumY = (float)fGlobalDatumY.ConvertInchToMM();
-					fLocalDatumX = (float)fLocalDatumX.ConvertInchToMM();
-					fLocalDatumY = (float)fLocalDatumY.ConvertInchToMM();
+					fDatumX = (float)fDatumX.ConvertInchToMM();
+					fDatumY = (float)fDatumY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fWidth = (float)width.ConvertInchToUM();
@@ -151,10 +139,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is true)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertMMToInch();
-					fGlobalDatumY = (float)globalDatumY.ConvertMMToInch();
-					fLocalDatumX = (float)localDatumX.ConvertMMToInch();
-					fLocalDatumY = (float)localDatumY.ConvertMMToInch();
+					fDatumX = (float)datumX.ConvertMMToInch();
+					fDatumY = (float)datumY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fWidth = (float)width.ConvertUMToInch();
@@ -163,13 +149,13 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
-			lt = lt.Offset(fLocalDatumX, fLocalDatumY);
+			lt = lt.Offset(fDatumX, fDatumY);
 
 			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
-			rb = rb.Offset(fLocalDatumX, fLocalDatumY);
+			rb = rb.Offset(fDatumX, fDatumY);
 
 			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fLocalDatumX, fLocalDatumY);
+			datum = datum.Offset(fDatumX, fDatumY);
 
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 			lt = lt.Rotate(datum, -orient, isFlipHorizontal);
@@ -204,16 +190,13 @@ namespace CressemDataToGraphics.Factory
 
 		public ShapeLine CreateLine(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double width)
 		{
-			float fGlobalDatumX = (float)globalDatumX;
-			float fGlobalDatumY = (float)globalDatumY;
-			float fLocalDatumX = (float)localDatumX;
-			float fLocalDatumY = (float)localDatumY;
+			float fDatumX = (float)datumX;
+			float fDatumY = (float)datumY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			float fsx = (float)sx;
@@ -226,10 +209,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is false)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertInchToMM();
-					fGlobalDatumY = (float)globalDatumY.ConvertInchToMM();
-					fLocalDatumX = (float)localDatumX.ConvertInchToMM();
-					fLocalDatumY = (float)localDatumY.ConvertInchToMM();
+					fDatumX = (float)datumX.ConvertInchToMM();
+					fDatumY = (float)datumY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fsx = (float)sx.ConvertInchToMM();
@@ -243,10 +224,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is true)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertMMToInch();
-					fGlobalDatumX = (float)globalDatumX.ConvertMMToInch();
-					fLocalDatumX = (float)localDatumX.ConvertMMToInch();
-					fLocalDatumY = (float)localDatumY.ConvertMMToInch();
+					fDatumX = (float)datumX.ConvertMMToInch();
+					fDatumY = (float)datumY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fsx = (float)sx.ConvertMMToInch();
@@ -258,13 +237,13 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF start = new PointF(fsx, fsy);
-			start = start.Offset(fLocalDatumX, fLocalDatumY);
+			start = start.Offset(fDatumX, fDatumY);
 
 			PointF end = new PointF(fex, fey);
-			end = end.Offset(fLocalDatumX, fLocalDatumY);
+			end = end.Offset(fDatumX, fDatumY);
 
 			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fLocalDatumX, fLocalDatumY);
+			datum = datum.Offset(fDatumX, fDatumY);
 
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 			start = start.Rotate(datum, -orient, isFlipHorizontal);
@@ -276,16 +255,13 @@ namespace CressemDataToGraphics.Factory
 
 		public ShapeRectangle CreateRectangle(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			float fGlobalDatumX = (float)globalDatumX;
-			float fGlobalDatumY = (float)globalDatumY;
-			float fLocalDatumX = (float)localDatumX;
-			float fLocalDatumY = (float)localDatumY;
+			float fDatumX = (float)datumX;
+			float fDatumY = (float)datumY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			float fWidth = (float)width;
@@ -295,10 +271,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is false)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertInchToMM();
-					fGlobalDatumY = (float)globalDatumY.ConvertInchToMM();
-					fLocalDatumX = (float)localDatumX.ConvertInchToMM();
-					fLocalDatumY = (float)localDatumY.ConvertInchToMM();
+					fDatumX = (float)datumX.ConvertInchToMM();
+					fDatumY = (float)datumY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fWidth = (float)width.ConvertInchToUM();
@@ -309,8 +283,6 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is true)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertMMToInch();
-					fGlobalDatumY = (float)globalDatumY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fWidth = (float)width.ConvertUMToInch();
@@ -319,13 +291,13 @@ namespace CressemDataToGraphics.Factory
 			}
 
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
-			lt = lt.Offset(fLocalDatumX, fLocalDatumY);
+			lt = lt.Offset(fDatumX, fDatumY);
 
 			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
-			rb = rb.Offset(fLocalDatumX, fLocalDatumY);
+			rb = rb.Offset(fDatumX, fDatumY);
 
 			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fLocalDatumX, fLocalDatumY);
+			datum = datum.Offset(fDatumX, fDatumY);
 
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 			lt = lt.Rotate(datum, -orient, isFlipHorizontal);
@@ -359,17 +331,14 @@ namespace CressemDataToGraphics.Factory
 
 		public ShapePolygon CreatePolygon(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
-			float fGlobalDatumX = (float)globalDatumX;
-			float fGlobalDatumY = (float)globalDatumY;
-			float fLocalDatumX = (float)localDatumX;
-			float fLocalDatumY = (float)localDatumY;
+			float fDatumX = (float)datumX;
+			float fDatumY = (float)datumY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			List<PointF> fPoints = new List<PointF>();
@@ -378,10 +347,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is false)
 				{
-					fGlobalDatumX = (float)globalDatumX.ConvertInchToMM();
-					fGlobalDatumY = (float)globalDatumY.ConvertInchToMM();
-					fLocalDatumX = (float)localDatumX.ConvertInchToMM();
-					fLocalDatumY = (float)localDatumY.ConvertInchToMM();
+					fDatumX = (float)datumX.ConvertInchToMM();
+					fDatumY = (float)datumY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fPoints = new List<PointF>(points.ConvertInchToMM());
@@ -391,10 +358,8 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (isMM is true)
 				{
-					fGlobalDatumX = (float)fGlobalDatumX.ConvertMMToInch();
-					fGlobalDatumY = (float)fGlobalDatumY.ConvertMMToInch();
-					fLocalDatumX = (float)fLocalDatumX.ConvertMMToInch();
-					fLocalDatumY = (float)fLocalDatumY.ConvertMMToInch();
+					fDatumX = (float)fDatumX.ConvertMMToInch();
+					fDatumY = (float)fDatumY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fPoints = new List<PointF>(points.ConvertMMToInch());
@@ -404,17 +369,16 @@ namespace CressemDataToGraphics.Factory
 			List<PointF> calcPoints = new List<PointF>();
 
 			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fLocalDatumX, fLocalDatumY);
+			datum = datum.Offset(fDatumX, fDatumY);
 
 			foreach (var point in fPoints)
 			{
-				var calcPoint = point.Offset(fLocalDatumX, fLocalDatumY);
+				var calcPoint = point.Offset(fDatumX, fDatumY);
 
 				// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 				calcPoint = calcPoint.Rotate(datum, -orient, isFlipHorizontal);
 				calcPoints.Add(calcPoint);
 			}
-
 
 			bool isIsland = polygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;

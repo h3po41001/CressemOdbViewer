@@ -35,8 +35,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiPolygon Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY, 
+			double datumX, double datumY, 
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IFeaturePolygon polygon)
@@ -52,8 +51,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiArc.Create(useMM,
 						pixelResolution, isMM,
-						globalDatumX, globalDatumY,
-						localDatumX + cx, localDatumY + cy,
+						datumX + cx, datumY + cy,
 						polygon.X, polygon.Y,
 						orient, isFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
@@ -63,8 +61,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiLine.Create(useMM,
 						pixelResolution, isMM,
-						globalDatumX, globalDatumY,
-						localDatumX + cx, localDatumY + cy, 
+						datumX + cx, datumY + cy, 
 						polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
@@ -73,8 +70,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(Create(useMM,
 						pixelResolution, isMM,
-						globalDatumX, globalDatumY,
-						localDatumX + cx, localDatumY + cy, 
+						datumX + cx, datumY + cy, 
 						polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsFlipHorizontal,
 						isPositive, subPolygon));
@@ -83,8 +79,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiSurface.Create(useMM, 
 						pixelResolution, isMM,
-						globalDatumX, globalDatumY,
-						localDatumX + cx, localDatumY + cy, 
+						datumX + cx, datumY + cy, 
 						polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsFlipHorizontal, isPositive, 
 						surface.Polygons));
@@ -96,8 +91,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiPolygon Create(bool useMM, 
 			float pixelResolution, bool isMM,
-			double globalDatumX, double globalDatumY,
-			double localDatumX, double localDatumY,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, 
 			bool isPositive, string polygonType,
@@ -105,8 +99,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM, 
 				pixelResolution, isMM,
-				globalDatumX, globalDatumY, 
-				localDatumX, localDatumY, cx, cy,
+				datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, polygonType, points);
 

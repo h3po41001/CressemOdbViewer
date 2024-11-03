@@ -151,14 +151,14 @@ namespace CressemCADViewer.ViewModel
 				out double _, out double _);
 
 			DataToGraphics dataToGraphics = new DataToGraphics(1f, GraphicsType);
-			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, 0, orient, isFlipHorizontal, profile);
+			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, orient, isFlipHorizontal, profile);
 
 			GraphicsView.ClearShape();
 			GraphicsView.LoadProfile(proflieShapes);
 
 			foreach (var feature in features)
 			{
-				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, 0, orient, isFlipHorizontal, feature);
+				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, orient, isFlipHorizontal, feature);
 				if (shape is null)
 				{
 					continue;
