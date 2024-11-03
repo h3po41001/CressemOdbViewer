@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Input;
-using CressemCADViewer.Model;
-using CressemFramework.Command;
+﻿using CressemCADViewer.Model;
 using CressemFramework.Observer;
 
 namespace CressemCADViewer.ViewModel.Control
@@ -90,6 +86,7 @@ namespace CressemCADViewer.ViewModel.Control
 			}
 		}
 
+		// 상하
 		public bool IsFlipVertical
 		{
 			get => _isFlipVertical;
@@ -100,6 +97,7 @@ namespace CressemCADViewer.ViewModel.Control
 			}
 		}
 
+		// 좌우
 		public bool IsFlipHorizontal
 		{
 			get => _isFlipHorizontal;
@@ -107,6 +105,43 @@ namespace CressemCADViewer.ViewModel.Control
 			{
 				_isFlipHorizontal = value;
 				OnPropertyChanged();
+			}
+		}
+
+		public void GetOrientFlip(out int orient, out bool isFlipHorizontal)
+		{
+			orient = 0;
+			isFlipHorizontal = false;
+
+			if (IsRotateCW0 is true || IsRotateCW180 is true)
+			{
+				orient = IsRotateCW0 is true ? 0 : 180;
+
+				if (IsFlipHorizontal is true)
+				{
+					isFlipHorizontal = true;
+				}
+				
+				if (IsFlipVertical is true)
+				{
+					isFlipHorizontal = !isFlipHorizontal;
+					orient = IsRotateCW0 is true ? 180 : 0;
+				}
+			}
+			else if (IsRotateCW90 is true || IsRotateCW270 is true)
+			{
+				orient = IsRotateCW90 is true ? 90 : 270;
+
+				if (IsFlipHorizontal is true)
+				{
+					isFlipHorizontal = true;
+				}
+
+				if (IsFlipVertical is true)
+				{
+					isFlipHorizontal = !isFlipHorizontal;
+					orient = IsRotateCW90 is true ? 270 : 90;
+				}
 			}
 		}
 	}

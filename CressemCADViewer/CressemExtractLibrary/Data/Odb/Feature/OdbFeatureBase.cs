@@ -44,7 +44,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 
 		public int Orient { get => (OrientDef % 4) * 90; }
 
-		public bool IsMirrorXAxis { get => OrientDef >= 4; }
+		public bool IsFlipHorizontal { get => OrientDef >= 4; }
 
 		public int SymbolNum { get; private set; }
 

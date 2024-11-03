@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
@@ -130,7 +131,17 @@ namespace CressemCADViewer.ViewModel
 
 		private void LoadCamImage()
 		{
+			if (PropertyView.SelectedStepName is null)
+			{
+				return;
+			}
 
+			if (PropertyView.SelectedLayerName is null)
+			{
+				return;
+			}
+
+			TransformMenuView.GetOrientFlip(out int orient, out bool isFlipHorizontal);
 
 			bool useMM = true;
 
@@ -140,14 +151,14 @@ namespace CressemCADViewer.ViewModel
 				out double _, out double _);
 
 			DataToGraphics dataToGraphics = new DataToGraphics(1f, GraphicsType);
-			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, profile);
+			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, 0, orient, isFlipHorizontal, profile);
 
 			GraphicsView.ClearShape();
 			GraphicsView.LoadProfile(proflieShapes);
 
 			foreach (var feature in features)
 			{
-				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, feature);
+				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, 0, orient, isFlipHorizontal, feature);
 				if (shape is null)
 				{
 					continue;

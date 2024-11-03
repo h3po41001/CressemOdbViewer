@@ -6,7 +6,7 @@
 			double x, double y,
 			double dx, double dy,
 			int nx, int ny, double angle,
-			bool isFlip, bool isMirrored)
+			bool isFlip, bool isFlipHorizontal)
 		{
 			Name = name;
 			X = x;
@@ -17,7 +17,7 @@
 			NY = ny;
 			Angle = angle;
 			IsFliped = isFlip;
-			IsMirrored = isMirrored;
+			IsFlipHorizontal = isFlipHorizontal;
 		}
 
 		public string Name { get; private set; }
@@ -38,6 +38,6 @@
 
 		public bool IsFliped { get; private set; }
 
-		public bool IsMirrored { get; private set; }
+		public bool IsFlipHorizontal { get; private set; }
 	}
 }

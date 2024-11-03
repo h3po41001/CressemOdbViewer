@@ -31,14 +31,17 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiEllipse Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double globalDatumX, double globalDatumY,
+			double localDatumX, double localDatumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
 			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM, 
 				pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, 
-				orient, isMirrorXAxis, 
+				globalDatumX, globalDatumY,
+				localDatumX, localDatumY, cx, cy, 
+				orient, isFlipHorizontal, 
 				width, height);
 
 			// Graphics는 y좌표가 반대이므로 -1곱한다

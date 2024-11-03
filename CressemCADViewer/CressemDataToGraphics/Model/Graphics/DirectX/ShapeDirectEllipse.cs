@@ -26,12 +26,17 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public static ShapeDirectEllipse Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double globalDatumX, double globalDatumY,
+			double localDatumX, double localDatumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, orient, isMirrorXAxis, width, height);
+			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM,
+				pixelResolution, isMM,
+				globalDatumX, globalDatumY,
+				localDatumX, localDatumY, cx, cy, 
+				orient, isFlipHorizontal, width, height);
 
 			// Graphics는 y좌표가 반대이므로 -1곱한다
 			return new ShapeDirectEllipse(shapeEllipse.ShapeCx, -shapeEllipse.ShapeCy,

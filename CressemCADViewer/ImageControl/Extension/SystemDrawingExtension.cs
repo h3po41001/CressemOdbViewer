@@ -42,7 +42,7 @@ namespace ImageControl.Extension
 			return new PointF(point.X + dx, point.Y + dy);
 		}
 
-		public static PointF Rotate(this PointF point, PointF center, int angle, bool isMirrorXAxis)
+		public static PointF Rotate(this PointF point, PointF center, int angle, bool isFlipHorizontal)
 		{
 			float radian = angle * (float)(Math.PI / 180);
 			float cosTheta = (float)Math.Cos(radian);
@@ -54,7 +54,7 @@ namespace ImageControl.Extension
 			float rotatedX = dx * cosTheta - dy * sinTheta;
 			float rotatedY = dx * sinTheta + dy * cosTheta;
 
-			if (isMirrorXAxis)
+			if (isFlipHorizontal)
 			{
 				rotatedX = -rotatedX;
 			}

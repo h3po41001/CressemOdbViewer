@@ -42,9 +42,12 @@ namespace CressemDataToGraphics.Factory
 			}
 		}
 
-		public IGraphicsList DataToGraphics(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, IFeatureBase feature)
+		public IGraphicsList DataToGraphics(bool useMM, 
+			float pixelResolution,
+			double globalDatumX, double globalDatumY,
+			double localDatumX, double localDatumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
@@ -53,8 +56,9 @@ namespace CressemDataToGraphics.Factory
 
 			return _graphicsFactory.CreateFeatureToShape(useMM,
 				pixelResolution,
-				xDatum, yDatum, cx, cy,
-				orient, isMirrorXAxis, feature);
+				globalDatumX, globalDatumY,
+				localDatumX, localDatumY, cx, cy,
+				orient, isFlipHorizontal, feature);
 		}
 	}
 }

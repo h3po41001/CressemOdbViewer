@@ -35,8 +35,10 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiPolygon Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double globalDatumX, double globalDatumY,
+			double localDatumX, double localDatumY, 
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			bool isPositive, IFeaturePolygon polygon)
 		{
 			List<IGraphicsShape> shapes = new List<IGraphicsShape>();
@@ -50,8 +52,10 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiArc.Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						orient, isMirrorXAxis,
+						globalDatumX, globalDatumY,
+						localDatumX + cx, localDatumY + cy,
+						polygon.X, polygon.Y,
+						orient, isFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
 						arc.IsClockWise, 0));
 				}
@@ -59,24 +63,30 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiLine.Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis,
+						globalDatumX, globalDatumY,
+						localDatumX + cx, localDatumY + cy, 
+						polygon.X, polygon.Y,
+						polygon.Orient, polygon.IsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
 				{
 					shapes.Add(Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis,
+						globalDatumX, globalDatumY,
+						localDatumX + cx, localDatumY + cy, 
+						polygon.X, polygon.Y,
+						polygon.Orient, polygon.IsFlipHorizontal,
 						isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
 				{
 					shapes.Add(ShapeGdiSurface.Create(useMM, 
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						polygon.Orient, polygon.IsMirrorXAxis, isPositive, 
+						globalDatumX, globalDatumY,
+						localDatumX + cx, localDatumY + cy, 
+						polygon.X, polygon.Y,
+						polygon.Orient, polygon.IsFlipHorizontal, isPositive, 
 						surface.Polygons));
 				}
 			}
@@ -86,15 +96,18 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiPolygon Create(bool useMM, 
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, 
+			double globalDatumX, double globalDatumY,
+			double localDatumX, double localDatumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal, 
 			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
 			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM, 
 				pixelResolution, isMM,
-				xDatum, yDatum, cx, cy,
-				orient, isMirrorXAxis,
+				globalDatumX, globalDatumY, 
+				localDatumX, localDatumY, cx, cy,
+				orient, isFlipHorizontal,
 				isPositive, polygonType, points);
 
 			return new ShapeGdiPolygon(shapePolygon.IsFill, shapePolygon.Points);

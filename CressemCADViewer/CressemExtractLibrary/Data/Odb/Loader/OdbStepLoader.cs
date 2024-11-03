@@ -111,7 +111,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						int ny = 0;
 						double angle = 0.0;
 						bool isFliped = false;
-						bool isMirrored = false;
+						bool isFlipHorizontal = false;
 
 						string[] splited;
 
@@ -183,12 +183,12 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							}
 							else if (splited[0].Equals("MIRROR"))
 							{
-								isMirrored = splited[1].Equals("YES");
+								isFlipHorizontal = splited[1].Equals("YES");
 							}
 						}
 
 						repeats.Add(new OdbStepRepeat(name, x, y,
-							dx, dy, nx, ny, angle, isFliped, isMirrored));
+							dx, dy, nx, ny, angle, isFliped, isFlipHorizontal));
 					}
 					else
 					{
