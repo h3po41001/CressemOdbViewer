@@ -3,7 +3,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectLine : ShapeDirectBase, IDirectLine
+	internal class ShapeDirectLine : ShapeGraphicsBase, IDirectLine
 	{
 		private ShapeDirectLine() { }
 
@@ -31,14 +31,15 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public static ShapeDirectLine Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double width)
 		{
 			var shapeLine = ShapeFactory.Instance.CreateLine(useMM, 
 				pixelResolution, isMM, 
-				xDatum, yDatum, cx, cy,
-				orient, isMirrorXAxis, 
+				datumX, datumY, cx, cy,
+				orient, isFlipHorizontal, 
 				sx, sy, ex, ey, width);
 
 			return new ShapeDirectLine(shapeLine.Sx, -shapeLine.Sy,

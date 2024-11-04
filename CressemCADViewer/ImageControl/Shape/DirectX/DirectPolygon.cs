@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ImageControl.Extension;
@@ -12,18 +13,19 @@ namespace ImageControl.Shape.DirectX
 
 		public DirectPolygon(bool isPositive,
 			bool isFill, IEnumerable<DirectShape> paths,
-			Factory factory, RenderTarget render, Color color) : base(isPositive, factory, render, color)
+			Factory factory, RenderTarget render, Color color,
+			float skipRatio) : base(isPositive, factory, render, color)
 		{
 			IsFill = isPositive ? isFill : !isFill;
 			Paths = new List<DirectShape>(paths);
-			SetShape();
+			SetShape(skipRatio);
 		}
 
 		public bool IsFill { get; private set; }
 
 		public IEnumerable<DirectShape> Paths { get; private set; }
 
-		public override void SetShape()
+		public override void SetShape(float skipRatio)
 		{
 			try
 			{
@@ -102,7 +104,7 @@ namespace ImageControl.Shape.DirectX
 					ShapeGemotry = null;
 				}
 
-				SetBounds();
+				SetBounds(skipRatio);
 			}
 			catch (System.Exception)
 			{
@@ -111,7 +113,7 @@ namespace ImageControl.Shape.DirectX
 			}
 		}
 
-		public void SetBounds()
+		public void SetBounds(float skipRatio)
 		{
 			if (Paths is null)
 			{
@@ -132,35 +134,41 @@ namespace ImageControl.Shape.DirectX
 			}
 
 			Bounds = bounds.GetBounds();
+			SkipSize = new SizeF(
+				Math.Abs(Bounds.Width * skipRatio),
+				Math.Abs(Bounds.Height * skipRatio));
 		}
 
-		public override void Draw(RenderTarget render, RectangleF roi)
+		public override void Draw(RenderTarget render)
 		{
-			if (roi.IntersectsWith(Bounds) is true)
+			foreach (var path in Paths)
 			{
-				foreach (var path in Paths)
-				{
-					path.Draw(render, roi);
-				}
+				path.Draw(render);
 			}
 		}
 
-		public override void Fill(RenderTarget render, bool isHole, RectangleF roi)
+		public override void Fill(RenderTarget render,
+			bool isHole, RectangleF roi)
 		{
 			if (ShapeGemotry is null)
 			{
 				return;
 			}
 
-			//if (roi.IntersectsWith(Bounds) is true)
+			// 확대한 shape 크기가 roi 보다 커야됨. (작지 않아서 그려도 되는것)
+			if (SkipSize.Width >= roi.Width &&
+				SkipSize.Height >= roi.Height)
 			{
-				if (IsFill)
+				if (roi.IntersectsWith(Bounds) is true)
 				{
-					render.FillGeometry(ShapeGemotry, DefaultBrush);
-				}
-				else
-				{
-					render.FillGeometry(ShapeGemotry, HoleBrush);
+					if (IsFill)
+					{
+						render.FillGeometry(ShapeGemotry, DefaultBrush);
+					}
+					else
+					{
+						render.FillGeometry(ShapeGemotry, HoleBrush);
+					}
 				}
 			}
 		}

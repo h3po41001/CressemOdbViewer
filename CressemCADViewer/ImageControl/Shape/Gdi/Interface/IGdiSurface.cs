@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using ImageControl.Shape.Interface;
 
 namespace ImageControl.Shape.Gdi.Interface
 {
-	public interface IGdiSurface : IGdiShape
+	public interface IGdiSurface : IGraphicsShape
 	{
 		bool IsPositive { get; }
 
-		IEnumerable<IGdiPolygon> Polygons { get; }
+		IEnumerable<IGraphicsShape> Polygons { get; }
 	}
 }

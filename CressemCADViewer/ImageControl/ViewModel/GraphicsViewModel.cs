@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.DirectX;
 using ImageControl.Model.Gdi;
-using ImageControl.Shape.Gdi.Interface;
 using ImageControl.Shape.Interface;
 using ImageControl.View.DirectX;
 using ImageControl.View.Gdi;

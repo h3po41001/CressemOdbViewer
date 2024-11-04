@@ -3,7 +3,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectEllipse : ShapeDirectBase, IDirectEllipse
+	internal class ShapeDirectEllipse : ShapeGraphicsBase, IDirectEllipse
 	{
 		private ShapeDirectEllipse() : base() { }
 
@@ -26,12 +26,15 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public static ShapeDirectEllipse Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, orient, isMirrorXAxis, width, height);
+			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM,
+				pixelResolution, isMM,
+				datumX, datumY, cx, cy, 
+				orient, isFlipHorizontal, width, height);
 
 			// Graphics는 y좌표가 반대이므로 -1곱한다
 			return new ShapeDirectEllipse(shapeEllipse.ShapeCx, -shapeEllipse.ShapeCy,

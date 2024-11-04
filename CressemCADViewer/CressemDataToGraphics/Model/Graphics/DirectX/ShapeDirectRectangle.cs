@@ -3,7 +3,7 @@ using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectRectangle : ShapeDirectBase, IDirectRectangle
+	internal class ShapeDirectRectangle : ShapeGraphicsBase, IDirectRectangle
 	{
 		private ShapeDirectRectangle() : base()
 		{
@@ -28,12 +28,15 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public static ShapeDirectRectangle Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			var rect = ShapeFactory.Instance.CreateRectangle(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, orient, isMirrorXAxis, width, height);
+			var rect = ShapeFactory.Instance.CreateRectangle(useMM, 
+				pixelResolution, isMM,
+				datumX, datumY, cx, cy, 
+				orient, isFlipHorizontal, width, height);
 
 			return new ShapeDirectRectangle(rect.Sx, -rect.Sy,
 				rect.Sx + rect.Width, -rect.Sy + rect.Height);

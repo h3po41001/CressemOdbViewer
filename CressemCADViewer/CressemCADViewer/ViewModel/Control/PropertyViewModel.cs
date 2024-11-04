@@ -19,7 +19,6 @@ namespace CressemCADViewer.ViewModel.Control
 		private string _odbLoadPath = string.Empty;
 		private string[] _stepNames = null;
 		private string[] _layerNames = null;
-		private GraphicsType _graphicsType = GraphicsType.None;
 
 		public PropertyViewModel(Window parentWindow)
 		{

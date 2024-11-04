@@ -1,11 +1,10 @@
-﻿using System;
-using CressemDataToGraphics.Converter;
+﻿using CressemDataToGraphics.Converter;
 using CressemDataToGraphics.Factory;
 using ImageControl.Shape.DirectX.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectArc : ShapeDirectBase, IDirectArc
+	internal class ShapeDirectArc : ShapeGraphicsBase, IDirectArc
 	{
 		private ShapeDirectArc() : base() { }
 
@@ -49,13 +48,16 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public static ShapeDirectArc Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double arcCx, double arcCy,
 			bool isClockwise, double width)
 		{
-			var shapeArc = ShapeFactory.Instance.CreateArc(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
+			var shapeArc = ShapeFactory.Instance.CreateArc(useMM,
+				pixelResolution, isMM,
+				datumX, datumY, cx, cy, 
+				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy, width);
 
 			double startAngle = DataConverter.ConvertNormalizeAngle(shapeArc.StartAngle);

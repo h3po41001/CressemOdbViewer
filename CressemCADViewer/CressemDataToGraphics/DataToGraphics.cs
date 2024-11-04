@@ -14,34 +14,25 @@ namespace CressemDataToGraphics
 			GraphicsType graphics)
 		{
 			PixelResolution = pixelResolution;
-			GraphicsType = graphics;
+			DataToGraphicsFactory.Instance.Initialize(graphics);
 		}
 
 		public float PixelResolution { get; private set; }
 
-		public GraphicsType GraphicsType { get; private set; }
-
 		public IGraphicsList GetShapes(bool useMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, IFeatureBase feature)
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
 				return null;
 			}
 
-			if (GraphicsType is GraphicsType.GdiPlus)
-			{
-				return DataToGraphicsFactory.Instance.DataToGdiPlus(useMM,
-					PixelResolution, xDatum, yDatum, cx, cy, orient, isMirrorXAxis, feature);
-			}
-			else if (GraphicsType is GraphicsType.DirectX)
-			{
-				return DataToGraphicsFactory.Instance.DataToDirectX(useMM,
-					PixelResolution, xDatum, yDatum, cx, cy, orient, isMirrorXAxis, feature);
-			}
-
-			return null;
+			return DataToGraphicsFactory.Instance.DataToGraphics(useMM,
+				PixelResolution,
+				datumX, datumY, cx, cy,
+				orient, isFlipHorizontal, feature);
 		}
 	}
 }

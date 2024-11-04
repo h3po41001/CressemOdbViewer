@@ -1,6 +1,8 @@
-﻿namespace ImageControl.Shape.Gdi.Interface
+﻿using ImageControl.Shape.Interface;
+
+namespace ImageControl.Shape.Gdi.Interface
 {
-	internal interface IGdiText : IGdiShape
+	internal interface IGdiText : IGraphicsShape
 	{
 	}
 }

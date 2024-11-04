@@ -4,10 +4,11 @@ using System.Linq;
 using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
 using ImageControl.Shape.DirectX.Interface;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.DirectX
 {
-	internal class ShapeDirectPolygon : ShapeDirectBase, IDirectPolygon
+	internal class ShapeDirectPolygon : ShapeGraphicsBase, IDirectPolygon
 	{
 
 		private ShapeDirectPolygon() : base()
@@ -15,10 +16,10 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		}
 
 		public ShapeDirectPolygon(bool isFill,
-			IEnumerable<ShapeDirectBase> shapes) : base()
+			IEnumerable<IGraphicsShape> shapes) : base()
 		{
 			IsFill = isFill;
-			Shapes = new List<ShapeDirectBase>(shapes);
+			Shapes = new List<IGraphicsShape>(shapes);
 		}
 
 		public ShapeDirectPolygon(bool isFill,
@@ -30,23 +31,24 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public bool IsFill { get; private set; }
 
-		public IEnumerable<IDirectShape> Shapes { get; private set; }
+		public IEnumerable<IGraphicsShape> Shapes { get; private set; }
 
 		public IEnumerable<PointF> Points { get; private set; }
 
 		public static ShapeDirectPolygon Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			bool isPositive, IFeaturePolygon polygon)
 		{
-			List<ShapeDirectBase> shapes = new List<ShapeDirectBase>();
+			List<ShapeGraphicsBase> shapes = new List<ShapeGraphicsBase>();
 
 			bool isIsland = polygon.PolygonType.Equals("I") is true;
 			bool isFill = isPositive is true ? isIsland : !isIsland;
 
 			int localOrient = (orient + polygon.Orient) % 360;
-			bool localIsMirrorXAxis = isMirrorXAxis ^ polygon.IsMirrorXAxis;
+			bool localIsFlipHorizontal = isFlipHorizontal ^ polygon.IsFlipHorizontal;
 
 			foreach (var feature in polygon.Features)
 			{
@@ -54,8 +56,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				{
 					shapes.Add(ShapeDirectArc.Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						localOrient, localIsMirrorXAxis,
+						datumX + cx, datumY + cy, 
+						polygon.X, polygon.Y,
+						localOrient, localIsFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
 						arc.IsClockWise, 0));
 				}
@@ -63,24 +66,27 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				{
 					shapes.Add(ShapeDirectLine.Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						localOrient, localIsMirrorXAxis,
+						datumX + cx, datumY + cy, 
+						polygon.X, polygon.Y,
+						localOrient, localIsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
 				{
 					shapes.Add(Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						localOrient, localIsMirrorXAxis,
+						datumX + cx, datumY + cy, 
+						polygon.X, polygon.Y,
+						localOrient, localIsFlipHorizontal,
 						isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
 				{
 					shapes.Add(ShapeDirectSurface.Create(useMM,
 						pixelResolution, isMM,
-						xDatum + cx, yDatum + cy, polygon.X, polygon.Y,
-						localOrient, localIsMirrorXAxis,
+						datumX + cx, datumY + cy, 
+						polygon.X, polygon.Y,
+						localOrient, localIsFlipHorizontal,
 						isPositive, surface.Polygons));
 				}
 			}
@@ -90,13 +96,16 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public static ShapeDirectPolygon Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
 			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM,
-				pixelResolution, isMM, xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
+				pixelResolution, isMM, 
+				datumX, datumY, cx, cy, 
+				orient, isFlipHorizontal,
 				isPositive, polygonType, points);
 
 			return new ShapeDirectPolygon(shapePolygon.IsFill, shapePolygon.Points);

@@ -3,7 +3,7 @@ using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
 {
-	internal class ShapeGdiArc : ShapeGdiBase, IGdiArc
+	internal class ShapeGdiArc : ShapeGraphicsBase, IGdiArc
 	{
 		private ShapeGdiArc() { }
 
@@ -37,13 +37,16 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public static ShapeGdiArc Create(bool useMM,
 			float pixelResolution, bool isMM,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double arcCx, double arcCy,
 			bool isClockWise, double width)
 		{
-			var shapeArc = ShapeFactory.Instance.CreateArc(useMM, pixelResolution, isMM,
-				xDatum, yDatum, cx, cy, orient, isMirrorXAxis,
+			var shapeArc = ShapeFactory.Instance.CreateArc(useMM, 
+				pixelResolution, isMM,
+				datumX, datumY, cx, cy, 
+				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy, width);
 
 			double sweepAngle = (shapeArc.EndAngle - shapeArc.StartAngle);

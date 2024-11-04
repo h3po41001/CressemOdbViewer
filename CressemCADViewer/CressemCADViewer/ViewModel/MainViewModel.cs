@@ -8,7 +8,6 @@ using CressemCADViewer.ViewModel.Control;
 using CressemDataToGraphics;
 using CressemExtractLibrary;
 using CressemExtractLibrary.Data;
-using CressemExtractLibrary.Data.Interface.Symbol;
 using CressemLogger;
 using CressemLogger.ViewModel;
 using ImageControl.Model;
@@ -28,6 +27,7 @@ namespace CressemCADViewer.ViewModel
 
 			GraphicsView = new GraphicsViewModel(graphics);
 			PropertyView = new PropertyViewModel(parent);
+			TransformMenuView = new TransformMenuViewModel();
 			AlarmView = new AlarmViewModel();
 			LogoView = new LogoViewModel();
 			Processor = new Processor();
@@ -45,6 +45,8 @@ namespace CressemCADViewer.ViewModel
 		public PropertyViewModel PropertyView { get; private set; }
 
 		public LogControlViewModel LogView { get; private set; }
+
+		public TransformMenuViewModel TransformMenuView { get; private set; }
 
 		public AlarmViewModel AlarmView { get; private set; }
 
@@ -95,39 +97,7 @@ namespace CressemCADViewer.ViewModel
 
 		private void PropertyView_LoadCamImageEvent(object sender, RoutedEventArgs e)
 		{
-			// 임시
-			// inch 표시와 mm표시 구분해야함
-			// 아래는 전체에 어떻게 표시할지
-			// 데이터 상에는 자기 자신의 값 형태 있음
-			
-			bool useMM = true;
-
-			var profile = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
-			var features = ExtractLibrary.Instance.GetFeatures(
-				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
-				out double _, out double _);
-
-			DataToGraphics dataToGraphics = new DataToGraphics(1f, GraphicsType);
-			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, profile);
-
-			GraphicsView.ClearShape();
-			GraphicsView.LoadProfile(proflieShapes);
-
-			if (features.Any(x => x.FeatureSymbol is ISymbolUser) is true)
-			{
-
-			}
-
-			foreach (var feature in features)
-			{
-				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, 0, false, feature);
-				if (shape is null)
-				{
-					continue;
-				}
-
-				GraphicsView.AddShapes(shape);
-			}
+			LoadCamImage();
 		}
 
 		private void LogoView_LogoDoubleClickedEvent(object sender, EventArgs e)
@@ -156,6 +126,45 @@ namespace CressemCADViewer.ViewModel
 			else
 			{
 				AlarmView.SetState(ProcessState.Error, Color.Red);
+			}
+		}
+
+		private void LoadCamImage()
+		{
+			if (PropertyView.SelectedStepName is null)
+			{
+				return;
+			}
+
+			if (PropertyView.SelectedLayerName is null)
+			{
+				return;
+			}
+
+			TransformMenuView.GetOrientFlip(out int orient, out bool isFlipHorizontal);
+
+			bool useMM = true;
+
+			var profile = ExtractLibrary.Instance.GetStepRoi(PropertyView.SelectedStepName);
+			var features = ExtractLibrary.Instance.GetFeatures(
+				PropertyView.SelectedStepName, PropertyView.SelectedLayerName,
+				out double _, out double _);
+
+			DataToGraphics dataToGraphics = new DataToGraphics(1f, GraphicsType);
+			var proflieShapes = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, orient, isFlipHorizontal, profile);
+
+			GraphicsView.ClearShape();
+			GraphicsView.LoadProfile(proflieShapes);
+
+			foreach (var feature in features)
+			{
+				var shape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, orient, isFlipHorizontal, feature);
+				if (shape is null)
+				{
+					continue;
+				}
+
+				GraphicsView.AddShapes(shape);
 			}
 		}
 	}

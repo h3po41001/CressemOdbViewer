@@ -1,21 +1,16 @@
-﻿using System;
-using CressemExtractLibrary.Data.Interface.Features;
-using ImageControl.Shape.DirectX.Interface;
-using ImageControl.Shape.Gdi.Interface;
+﻿using CressemExtractLibrary.Data.Interface.Features;
+using ImageControl.Model;
+using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Factory
 {
 	internal class DataToGraphicsFactory
 	{
 		private static DataToGraphicsFactory _instance;
-
-		private readonly GdiPlusFactory _gdiPlusFactory;
-		private readonly DirectXFactory _directXFactory;
+		private GraphicsFactory _graphicsFactory = null;
 
 		private DataToGraphicsFactory()
 		{
-			_gdiPlusFactory = new GdiPlusFactory();
-			_directXFactory = new DirectXFactory();
 		}
 
 		public static DataToGraphicsFactory Instance
@@ -31,34 +26,37 @@ namespace CressemDataToGraphics.Factory
 			}
 		}
 
-		public IGdiList DataToGdiPlus(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, IFeatureBase feature)
+		public void Initialize(GraphicsType graphicsType)
 		{
-			if (feature is null)
+			if (graphicsType is GraphicsType.GdiPlus)
 			{
-				return null;
+				_graphicsFactory = new GdiPlusFactory();
 			}
-
-			return _gdiPlusFactory.CreateFeatureToShape(useMM,
-				pixelResolution,
-				xDatum, yDatum, cx, cy,
-				orient, isMirrorXAxis, feature);
+			else if (graphicsType is GraphicsType.DirectX)
+			{
+				_graphicsFactory = new DirectXFactory();
+			}
+			else
+			{
+				return;
+			}
 		}
 
-		public IDirectList DataToDirectX(bool useMM, float pixelResolution,
-			double xDatum, double yDatum, double cx, double cy,
-			int orient, bool isMirrorXAxis, IFeatureBase feature)
+		public IGraphicsList DataToGraphics(bool useMM, 
+			float pixelResolution,
+			double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal, IFeatureBase feature)
 		{
 			if (feature is null)
 			{
 				return null;
 			}
 
-			return _directXFactory.CreateFeatureToShape(useMM,
+			return _graphicsFactory.CreateFeatureToShape(useMM,
 				pixelResolution,
-				xDatum, yDatum, cx, cy,
-				orient, isMirrorXAxis, feature);
+				datumX, datumY, cx, cy,
+				orient, isFlipHorizontal, feature);
 		}
 	}
 }

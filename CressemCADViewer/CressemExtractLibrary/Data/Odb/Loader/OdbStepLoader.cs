@@ -104,7 +104,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						int ny = 0;
 						double angle = 0.0;
 						bool isFliped = false;
-						bool isMirrored = false;
+						bool isFlipHorizontal = false;
 
 						string[] splited;
 
@@ -176,12 +176,12 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							}
 							else if (splited[0].Equals("MIRROR"))
 							{
-								isMirrored = splited[1].Equals("YES");
+								isFlipHorizontal = splited[1].Equals("YES");
 							}
 						}
 
 						repeats.Add(new OdbStepRepeat(name, x, y,
-							dx, dy, nx, ny, angle, isFliped, isMirrored));
+							dx, dy, nx, ny, angle, isFliped, isFlipHorizontal));
 					}
 					else
 					{
@@ -297,7 +297,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 		private bool LoadOdbStepLayer(string path, OdbData odbData,
 			out List<OdbLayer> stepLayer)
 		{
-			stepLayer = new List<OdbLayer>();
+			stepLayer = null;
 
 			if (Directory.Exists(path) is false)
 			{
@@ -305,32 +305,31 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 
 			bool isL01 = odbData.OdbMatrixInfo.Layers.Any(x => x.Name.ToUpper().Equals("L01"));
+			ConcurrentQueue<OdbLayer> odbLayersQueue = new ConcurrentQueue<OdbLayer>();
 
-			foreach (var refLayer in odbData.OdbMatrixInfo.Layers)
+			Parallel.ForEach(odbData.OdbMatrixInfo.Layers, refLayer =>
 			{
 				string layerFilePath = Path.Combine(path, refLayer.Name, FeaturesFileName);
 				if (File.Exists(layerFilePath) is false)
 				{
-					continue;
+					return;
 				}
 
 				if (isL01 is true && refLayer.Name.ToUpper().Equals("L01") is false)
 				{
-					continue;
+					return;
 				}
-
-				if (isL01 is false && refLayer.Name.ToUpper().Equals("SIG2") is false)
-					continue;
 
 				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
 					odbData.OdbUserSymbols, out OdbFeatures features) is false)
 				{
-					continue;
+					return;
 				}
 
-				stepLayer.Add(new OdbLayer(refLayer, features));
-			}
+				odbLayersQueue.Enqueue(new OdbLayer(refLayer, features));
+			});
 
+			stepLayer = new List<OdbLayer>(odbLayersQueue);
 			return stepLayer.Any();
 		}
 	}

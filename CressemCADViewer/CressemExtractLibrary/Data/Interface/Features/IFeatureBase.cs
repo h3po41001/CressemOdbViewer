@@ -16,7 +16,7 @@ namespace CressemExtractLibrary.Data.Interface.Features
 
 		int Orient { get; }
 
-		bool IsMirrorXAxis { get; }
+		bool IsFlipHorizontal { get; }
 
 		ISymbolBase FeatureSymbol { get; }
 	}
