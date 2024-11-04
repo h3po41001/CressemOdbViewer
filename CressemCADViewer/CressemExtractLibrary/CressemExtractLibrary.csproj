@@ -63,6 +63,8 @@
     <Compile Include="Data\Interface\Features\IFeaturePolygon.cs" />
     <Compile Include="Data\Interface\Features\IFeatureSurface.cs" />
     <Compile Include="Data\Interface\Features\IFeatureText.cs" />
+    <Compile Include="Data\Interface\Step\IRepeatInfo.cs" />
+    <Compile Include="Data\Interface\Step\IStepHeader.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolBase.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolButterfly.cs" />
     <Compile Include="Data\Interface\Symbol\ISymbolChamferedRectangle.cs" />

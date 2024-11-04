@@ -236,18 +236,18 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
+			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
+			PointF anchor = new PointF(fcx, fcy);
+			//anchor = anchor.Offset(fDatumX, fDatumY);
+
 			PointF start = new PointF(fsx, fsy);
 			start = start.Offset(fDatumX, fDatumY);
 
-			PointF end = new PointF(fex, fey);
+			PointF end = new PointF(fex, fey);			
 			end = end.Offset(fDatumX, fDatumY);
 
-			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fDatumX, fDatumY);
-
-			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
-			start = start.Rotate(datum, -orient, isFlipHorizontal);
-			end = end.Rotate(datum, -orient, isFlipHorizontal);
+			start = start.Rotate(anchor, -orient, isFlipHorizontal);
+			end = end.Rotate(anchor, -orient, isFlipHorizontal);
 
 			return new ShapeLine(pixelResolution, fcx, fcy,
 				start.X, start.Y, end.X, end.Y, fWidth);

@@ -1,7 +1,6 @@
-﻿using System.Drawing;
-using CressemExtractLibrary.Data;
+﻿using CressemExtractLibrary.Data;
 using CressemExtractLibrary.Data.Interface.Features;
-using CressemExtractLibrary.Data.Odb.Feature;
+using CressemExtractLibrary.Data.Interface.Step;
 using CressemExtractLibrary.Extract;
 using CressemExtractLibrary.Extract.Gerber;
 using CressemExtractLibrary.Extract.Odb;
@@ -77,22 +76,28 @@ namespace CressemExtractLibrary
 			return _extractor.ExtractData.GetLayerNames(stepName);
 		}
 
-		public IFeatureBase GetStepRoi(string stepName)
+		public IStepHeader GetStepHeader(string stepName)
 		{
 			if (_extractor is null)
 			{
 				return null;
 			}
 
-			return _extractor.ExtractData.GetStepRoi(stepName);
+			return _extractor.ExtractData.GetStepHeader(stepName);
 		}
 
-		public IFeatureBase[] GetFeatures(string stepName, string layerName,
-			out double xDatum, out double yDatum)
+		public IFeatureBase GetStepProfile(string stepName)
 		{
-			xDatum = 0;
-			yDatum = 0;
+			if (_extractor is null)
+			{
+				return null;
+			}
 
+			return _extractor.ExtractData.GetStepProfile(stepName);
+		}
+
+		public IFeatureBase[] GetFeatures(string stepName, string layerName)
+		{
 			if (_extractor is null)
 			{
 				return null;
@@ -103,8 +108,7 @@ namespace CressemExtractLibrary
 				return null;
 			}
 
-			return _extractor.ExtractData.GetFeatures(stepName, layerName, 
-				out xDatum, out yDatum);
+			return _extractor.ExtractData.GetFeatures(stepName, layerName);
 		}
 	}
 }

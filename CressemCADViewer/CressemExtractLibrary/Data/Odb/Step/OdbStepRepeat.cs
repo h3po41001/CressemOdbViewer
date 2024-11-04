@@ -1,42 +1,41 @@
-﻿namespace CressemExtractLibrary.Data.Odb.Step
+﻿using CressemExtractLibrary.Data.Interface.Step;
+
+namespace CressemExtractLibrary.Data.Odb.Step
 {
-	internal class OdbStepRepeat
+	internal class OdbStepRepeat : IRepeatInfo
 	{
 		public OdbStepRepeat(string name,
 			double x, double y,
 			double dx, double dy,
 			int nx, int ny, double angle,
-			bool isFlip, bool isFlipHorizontal)
+			bool isFlipHorizontal)
 		{
 			Name = name;
-			X = x;
-			Y = y;
-			DX = dx;
-			DY = dy;
-			NX = nx;
-			NY = ny;
+			Sx = x;
+			Sy = y;
+			Dx = dx;
+			Dy = dy;
+			Nx = nx;
+			Ny = ny;
 			Angle = angle;
-			IsFliped = isFlip;
 			IsFlipHorizontal = isFlipHorizontal;
 		}
 
 		public string Name { get; private set; }
 
-		public double X { get; private set; }
+		public double Sx { get; private set; }
 
-		public double Y { get; private set; }
+		public double Sy { get; private set; }
 
-		public double DX { get; private set; }
+		public double Dx { get; private set; }
 
-		public double DY { get; private set; }
+		public double Dy { get; private set; }
 
-		public int NX { get; private set; }
+		public int Nx { get; private set; }
 
-		public int NY { get; private set; }
+		public int Ny { get; private set; }
 
 		public double Angle { get; private set; }
-
-		public bool IsFliped { get; private set; }
 
 		public bool IsFlipHorizontal { get; private set; }
 	}

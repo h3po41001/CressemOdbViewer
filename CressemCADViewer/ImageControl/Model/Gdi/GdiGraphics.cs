@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using ImageControl.Extension;
 using ImageControl.Gdi.View;
 using ImageControl.Model.Shape.Gdi;
 using ImageControl.Shape.Gdi;
@@ -45,29 +46,37 @@ namespace ImageControl.Model.Gdi
 			_gdiView.GraphicsPrevKeyDown += GdiPrevkeyDown;
 		}
 
-		public override bool LoadProfile(IGraphicsList list)
+		public override bool LoadProfiles(IEnumerable<IGraphicsList> list)
 		{
 			if (list is null)
 			{
 				return false;
 			}
 
-			foreach (var shape in list.Shapes)
+			List<RectangleF> rois = new List<RectangleF>();
+			foreach (var profile in list)
 			{
-				if (shape is null)
+				foreach (var shape in profile.Shapes)
 				{
-					continue;
-				}
+					if (shape is null)
+					{
+						continue;
+					}
 
-				_gdiProfileShapes.Add(GdiShapeFactory.Instance.CreateGdiShape(list.IsPositive, (dynamic)shape));
+					GdiSurface surface = GdiShapeFactory.Instance.CreateGdiShape(profile.IsPositive, (dynamic)shape);
+					if (surface is null)
+					{
+						continue;
+					}
+
+					_gdiProfileShapes.Add(surface);
+					rois.Add(surface.GetBounds());
+				}
 			}
 
-			var roiShape = list.Shapes.FirstOrDefault();
-			if (roiShape is IGdiSurface roiSurface)
+			if (rois.Any() is true)
 			{
-				GdiSurface surface = GdiShapeFactory.Instance.CreateGdiShape(list.IsPositive, (dynamic)roiSurface);
-
-				Roi = surface.GetBounds();
+				Roi = rois.GetBounds();
 				_image = new Bitmap((int)(Roi.Width + 0.5f), (int)(Roi.Height + 0.5f));
 
 				// 화면에 맞추기 위함

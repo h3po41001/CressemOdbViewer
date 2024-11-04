@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Step;
 using CressemExtractLibrary.Data.Odb.Feature;
 using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Layer;
@@ -54,7 +54,20 @@ namespace CressemExtractLibrary.Data.Odb
 			return null;
 		}
 
-		public override IFeatureBase GetStepRoi(string stepName)
+		public override IStepHeader GetStepHeader(string stepName)
+		{
+			foreach (OdbStep step in OdbSteps)
+			{
+				if (step.MatrixStep.Name.Equals(stepName) is true)
+				{
+					return step.StepHdr;
+				}
+			}
+
+			return null;
+		}
+
+		public override IFeatureBase GetStepProfile(string stepName)
 		{
 			foreach (OdbStep step in OdbSteps)
 			{
@@ -73,12 +86,8 @@ namespace CressemExtractLibrary.Data.Odb
 			return null;
 		}
 
-		public override IFeatureBase[] GetFeatures(string stepName, string layerName,
-			out double xDatum, out double yDatum)
+		public override IFeatureBase[] GetFeatures(string stepName, string layerName)
 		{
-			xDatum = 0.0;
-			yDatum = 0.0;
-
 			foreach (OdbStep step in OdbSteps)
 			{
 				if (step.MatrixStep.Name.Equals(stepName) is true)
@@ -87,9 +96,6 @@ namespace CressemExtractLibrary.Data.Odb
 					{
 						if (layer.MatrixLayer.Name.Equals(layerName) is true)
 						{
-							xDatum = step.StepHdr.XDatum;
-							yDatum = step.StepHdr.YDatum;
-
 							return layer.Features.FeatureList.ToArray();
 						}
 					}

@@ -1,6 +1,5 @@
-﻿using System.Drawing;
-using CressemExtractLibrary.Data.Interface.Features;
-using CressemExtractLibrary.Data.Odb.Feature;
+﻿using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Step;
 
 namespace CressemExtractLibrary.Data.Gerber
 {
@@ -22,13 +21,17 @@ namespace CressemExtractLibrary.Data.Gerber
 			throw new System.NotImplementedException();
 		}
 
-		public override IFeatureBase GetStepRoi(string stepName)
+		public override IStepHeader GetStepHeader(string stepName)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public override IFeatureBase[] GetFeatures(string stepName, string layerName,
-			out double xDatum, out double y)
+		public override IFeatureBase GetStepProfile(string stepName)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override IFeatureBase[] GetFeatures(string stepName, string layerName)
 		{
 			throw new System.NotImplementedException();
 		}

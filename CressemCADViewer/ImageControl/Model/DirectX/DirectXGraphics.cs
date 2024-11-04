@@ -75,40 +75,45 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsPrevKeyDown += OnPrevkeyDown;
 		}
 
-		public override bool LoadProfile(IGraphicsList profileShapes)
+		public override bool LoadProfiles(IEnumerable<IGraphicsList> profileShapes)
 		{
 			if (profileShapes is null)
 			{
 				return false;
 			}
 
-			if (profileShapes is IGraphicsList directList)
+			List<RectangleF> rois = new List<RectangleF>();
+			foreach (var profileShape in profileShapes)
 			{
-				List<RectangleF> rois = new List<RectangleF>();
-				foreach (var shape in directList.Shapes)
+				foreach (var shape in profileShape.Shapes)
 				{
-					_directProfileShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
-						directList.IsPositive, (dynamic)shape,
-						_d2dFactory, _deviceContext, Color.White, SKIP_RATIO));
+					DirectSurface surface = DirectShapeFactory.Instance.CreateDirectShape(
+						profileShape.IsPositive, (dynamic)shape,
+						_d2dFactory, _deviceContext, Color.White, SKIP_RATIO);
 
-					var surface = _directProfileShapes.FirstOrDefault();
 					if (surface is null)
 					{
-						return false;
+						continue;
 					}
 
+					_directProfileShapes.Add(surface);
 					rois.Add(surface.Bounds);
 				}
+			}
 
+			if (rois.Any() is true)
+			{
 				Roi = rois.GetBounds();
 
 				OnResize(null, null);
 
 				AlignToScreenCenter();
 				UpdateMatrix(true, true);
+
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 
 		public override void AddShapes(IGraphicsList shapes)

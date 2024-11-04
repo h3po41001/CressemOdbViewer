@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
+using CressemExtractLibrary.Data.Interface.Step;
 
 namespace CressemExtractLibrary.Data.Odb.Step
 {
-	internal class OdbStepHeader
+	internal class OdbStepHeader : IStepHeader
 	{
+		private List<OdbStepRepeat> _stepRepeats;
+
 		private OdbStepHeader()
 		{
 		}
@@ -20,7 +23,7 @@ namespace CressemExtractLibrary.Data.Odb.Step
 			YDatum = yDatum;
 			XOrigin = xOrigin;
 			YOrigin = yOrigin;
-			StepRepeats = stepRepeats;
+			_stepRepeats = new List<OdbStepRepeat>(stepRepeats);
 			TopActive = topActive;
 			BottomActive = bottomActive;
 			RightActive = rightActive;
@@ -37,7 +40,7 @@ namespace CressemExtractLibrary.Data.Odb.Step
 
 		public double YOrigin { get; private set; }
 
-		public List<OdbStepRepeat> StepRepeats { get; private set; }
+		public IEnumerable<IRepeatInfo> StepRepeats { get => _stepRepeats.Cast<IRepeatInfo>(); }
 
 		public double TopActive { get; private set; }
 

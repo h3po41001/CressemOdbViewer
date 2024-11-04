@@ -37,7 +37,7 @@ namespace ImageControl.Model
 
 		public abstract void Initialize();
 		
-		public abstract bool LoadProfile(IGraphicsList profileShape);
+		public abstract bool LoadProfiles(IEnumerable<IGraphicsList> profileShape);
 
 		public abstract void AddShapes(IGraphicsList shape);
 

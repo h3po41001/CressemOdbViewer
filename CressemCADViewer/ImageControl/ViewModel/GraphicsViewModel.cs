@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using CressemFramework.Observer;
 using ImageControl.Model;
 using ImageControl.Model.DirectX;
@@ -52,9 +53,9 @@ namespace ImageControl.ViewModel
 			}
 		}
 
-		public bool LoadProfile(IGraphicsList profileShape)
+		public bool LoadProfiles(IEnumerable<IGraphicsList> profileShapes)
 		{
-			return _graphics.LoadProfile(profileShape);
+			return _graphics.LoadProfiles(profileShapes);
 		}
 
 		public void AddShapes(IGraphicsList shapes)

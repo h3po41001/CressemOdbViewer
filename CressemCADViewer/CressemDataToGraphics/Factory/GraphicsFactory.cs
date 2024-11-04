@@ -165,7 +165,8 @@ namespace CressemDataToGraphics.Factory
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureBarcode barcode)
 		{
-			throw new System.NotImplementedException("바코드 아직 미구현");
+			//throw new System.NotImplementedException("바코드 아직 미구현");
+			return null;
 		}
 
 		private IGraphicsList MakeFeatureShape(bool useMM,
@@ -213,7 +214,8 @@ namespace CressemDataToGraphics.Factory
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureText text)
 		{
-			throw new System.NotImplementedException("텍스트 아직 미구현");
+			//throw new System.NotImplementedException("텍스트 아직 미구현");
+			return null;
 		}
 
 		private IGraphicsList MakeFeatureShape(bool useMM,
@@ -379,7 +381,8 @@ namespace CressemDataToGraphics.Factory
 			//	//	sX, sY, eX, eY, cx, cy, 
 			//}
 
-			throw new System.NotImplementedException("RoundThermalRounded 아직 미구현");
+			//throw new System.NotImplementedException("RoundThermalRounded 아직 미구현");
+			return null;
 		}
 
 		private IEnumerable<IGraphicsShape> MakeUser(bool useMM,

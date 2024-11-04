@@ -56,8 +56,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				{
 					shapes.Add(ShapeDirectArc.Create(useMM,
 						pixelResolution, isMM,
-						datumX + cx, datumY + cy, 
-						polygon.X, polygon.Y,
+						datumX, datumY, 
+						polygon.X + cx, polygon.Y + cy,
 						localOrient, localIsFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
 						arc.IsClockWise, 0));
@@ -66,8 +66,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				{
 					shapes.Add(ShapeDirectLine.Create(useMM,
 						pixelResolution, isMM,
-						datumX + cx, datumY + cy, 
-						polygon.X, polygon.Y,
+						datumX + polygon.X, datumY + polygon.Y,
+						cx, cy,
 						localOrient, localIsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
 				}

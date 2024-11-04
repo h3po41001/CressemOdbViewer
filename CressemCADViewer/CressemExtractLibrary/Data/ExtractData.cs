@@ -1,4 +1,5 @@
 ﻿using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Step;
 
 namespace CressemExtractLibrary.Data
 {
@@ -20,9 +21,10 @@ namespace CressemExtractLibrary.Data
 
 		public abstract string[] GetLayerNames(string stepName);
 
-		public abstract IFeatureBase GetStepRoi(string stepName);
+		public abstract IStepHeader GetStepHeader(string stepName);
 
-		public abstract IFeatureBase[] GetFeatures(string stepName, string layerName,
-			out double xDatum, out double yDatum);
+		public abstract IFeatureBase GetStepProfile(string stepName);
+
+		public abstract IFeatureBase[] GetFeatures(string stepName, string layerName);
 	}
 }
