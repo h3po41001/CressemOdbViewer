@@ -33,9 +33,6 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			odbSteps = null;
 			ConcurrentQueue<OdbStep> stepQueue = new ConcurrentQueue<OdbStep>();
 
-			bool isUnit = odbData.OdbMatrixInfo.Steps.Any(x => x.Name.ToUpper().Equals("UNIT"));
-
-			//foreach (var step in odbData.OdbMatrixInfo.Steps)
 			Parallel.ForEach(odbData.OdbMatrixInfo.Steps, step =>
 			{
 				string stepFolder = Path.Combine(dirPath, StepFolderName, step.Name);
@@ -43,35 +40,26 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				string stepProfilePath = Path.Combine(stepFolder, ProfileFileName);
 				string stepLayerPath = Path.Combine(stepFolder, LayersFolderName);
 
-				if (isUnit is true && step.Name.ToUpper().Equals("UNIT") is false)
-				{
-					return;
-				}
-
 				if (LoadOdbStepHeader(stepHeaderPath,
 					out OdbStepHeader stepHeader) is false)
 				{
 					return;
-					//continue;
 				}
 
 				if (LoadOdbStepProfile(stepProfilePath, odbData,
 					out OdbStepProfile stepProfile) is false)
 				{
 					return;
-					//continue;
 				}
 
 				if (LoadOdbStepLayer(stepLayerPath, odbData,
 					out List<OdbLayer> stepLayer) is false)
 				{
 					return;
-					//continue;
 				}
 
 				stepQueue.Enqueue(new OdbStep(step, stepHeader, stepProfile, stepLayer));
 			});
-			//}
 
 			odbSteps = new List<OdbStep>(stepQueue);
 
