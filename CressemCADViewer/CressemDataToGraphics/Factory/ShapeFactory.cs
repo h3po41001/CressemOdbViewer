@@ -125,12 +125,15 @@ namespace CressemDataToGraphics.Factory
 		public ShapeEllipse CreateEllipse(bool useMM, float pixelResolution,
 			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
 			double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
 			float fDatumX = (float)datumX;
 			float fDatumY = (float)datumY;
+			float fAnchorX = (float)anchorX;
+			float fAnchorY = (float)anchorY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			float fWidth = (float)width;
@@ -142,6 +145,8 @@ namespace CressemDataToGraphics.Factory
 				{
 					fDatumX = (float)datumX.ConvertInchToMM();
 					fDatumY = (float)datumY.ConvertInchToMM();
+					fAnchorX = (float)anchorX.ConvertInchToMM();
+					fAnchorY = (float)anchorY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fWidth = (float)width.ConvertInchToUM();
@@ -154,6 +159,8 @@ namespace CressemDataToGraphics.Factory
 				{
 					fDatumX = (float)datumX.ConvertMMToInch();
 					fDatumY = (float)datumY.ConvertMMToInch();
+					fAnchorX = (float)anchorX.ConvertMMToInch();
+					fAnchorY = (float)anchorY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fWidth = (float)width.ConvertUMToInch();
@@ -161,7 +168,7 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
-			PointF anchor = new PointF(fcx, fcy);
+			PointF anchor = new PointF(fAnchorX, fAnchorY);
 
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
 			lt = lt.Offset(fDatumX, fDatumY);
@@ -293,14 +300,17 @@ namespace CressemDataToGraphics.Factory
 		}
 
 		public ShapeRectangle CreateRectangle(bool useMM, float pixelResolution,
-			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
-			double datumX, double datumY,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
 			float fDatumX = (float)datumX;
 			float fDatumY = (float)datumY;
+			float fAnchorX = (float)anchorX;
+			float fAnchorY = (float)anchorY;
 			float fcx = (float)cx;
 			float fcy = (float)cy;
 			float fWidth = (float)width;
@@ -312,6 +322,8 @@ namespace CressemDataToGraphics.Factory
 				{
 					fDatumX = (float)datumX.ConvertInchToMM();
 					fDatumY = (float)datumY.ConvertInchToMM();
+					fAnchorX = (float)anchorX.ConvertInchToMM();
+					fAnchorY = (float)anchorY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
 					fWidth = (float)width.ConvertInchToUM();
@@ -324,6 +336,8 @@ namespace CressemDataToGraphics.Factory
 				{
 					fDatumX = (float)datumX.ConvertMMToInch();
 					fDatumY = (float)datumY.ConvertMMToInch();
+					fAnchorX = (float)anchorX.ConvertMMToInch();
+					fAnchorY = (float)anchorY.ConvertMMToInch();
 					fcx = (float)cx.ConvertMMToInch();
 					fcy = (float)cy.ConvertMMToInch();
 					fWidth = (float)width.ConvertUMToInch();
@@ -331,7 +345,7 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
-			PointF anchor = new PointF(fcx, fcy);
+			PointF anchor = new PointF(fAnchorX, fAnchorY);
 
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
 			lt = lt.Offset(fDatumX, fDatumY);

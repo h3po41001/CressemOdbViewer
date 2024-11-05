@@ -27,15 +27,18 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		public float Bottom { get; private set; }
 
 		public static ShapeDirectRectangle Create(bool useMM, float pixelResolution,
-			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
-			double datumX, double datumY,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
 			var rect = ShapeFactory.Instance.CreateRectangle(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
-				isMM, datumX, datumY, cx, cy,
+				isMM, datumX, datumY,
+				anchorX, anchorY,
+				cx, cy,
 				orient, isFlipHorizontal, width, height);
 
 			return new ShapeDirectRectangle(rect.Sx, -rect.Sy,

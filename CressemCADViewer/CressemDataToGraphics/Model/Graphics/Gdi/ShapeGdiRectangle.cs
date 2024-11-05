@@ -29,6 +29,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		public static ShapeGdiRectangle Create(bool useMM, float pixelResolution,
 			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
 			double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
@@ -36,6 +37,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			var shapeRectangle = ShapeFactory.Instance.CreateRectangle(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
 				isMM, datumX, datumY,
+				anchorX, anchorY,
 				cx, cy,
 				orient, isFlipHorizontal, width, height);
 

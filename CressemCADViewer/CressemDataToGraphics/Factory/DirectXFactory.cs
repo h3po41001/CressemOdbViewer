@@ -67,6 +67,7 @@ namespace CressemDataToGraphics.Factory
 		public override IGraphicsShape CreateEllipse(bool useMM, float pixelResolution,
 			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
 			double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
@@ -74,6 +75,7 @@ namespace CressemDataToGraphics.Factory
 			return ShapeDirectEllipse.Create(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
 				isMM, datumX, datumY,
+				anchorX, anchorY,
 				cx, cy,
 				orient, isFlipHorizontal,
 				width, height);
@@ -82,6 +84,7 @@ namespace CressemDataToGraphics.Factory
 		public override IGraphicsShape CreateRectangle(bool useMM, float pixelResolution,
 			int globalOrient, bool isGlobalFlipHorizontal,
 			bool isMM, double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
@@ -89,6 +92,7 @@ namespace CressemDataToGraphics.Factory
 			return ShapeDirectRectangle.Create(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
 				isMM, datumX, datumY,
+				anchorX, anchorY,
 				cx, cy,
 				orient, isFlipHorizontal,
 				width, height);
