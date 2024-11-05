@@ -28,16 +28,16 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float LineWidth { get; private set; }
 
-		public static ShapeGdiLine Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeGdiLine Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double width)
 		{
-			var shapeLine = ShapeFactory.Instance.CreateLine(useMM, 
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy, 
+			var shapeLine = ShapeFactory.Instance.CreateLine(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal, sx, sy, ex, ey, width);
 
 			return new ShapeGdiLine(shapeLine.Sx, -shapeLine.Sy,

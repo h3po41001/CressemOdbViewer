@@ -155,7 +155,8 @@ namespace CressemCADViewer.ViewModel
 
 			var stepHeader = ExtractLibrary.Instance.GetStepHeader(PropertyView.SelectedStepName);
 
-			var profileShapes = LoadProfile(useMM, 0, 0, orient, isFlipHorizontal, stepHeader, ref dataToGraphics);
+			var profileShapes = LoadProfile(useMM, orient, isFlipHorizontal, 
+				0, 0, 0, false, stepHeader, ref dataToGraphics);
 
 			List<IGraphicsList> profileShapeList = new List<IGraphicsList>(profileShapes);
 			if (profileShapes.Any() is false)
@@ -165,7 +166,8 @@ namespace CressemCADViewer.ViewModel
 			}
 
 			var curFeature = ExtractLibrary.Instance.GetStepProfile(PropertyView.SelectedStepName);
-			var curProfileShape = dataToGraphics.GetShapes(useMM, 0, 0, 0, 0, orient, isFlipHorizontal, curFeature);
+			var curProfileShape = dataToGraphics.GetShapes(useMM, orient, isFlipHorizontal,
+				0, 0, 0, 0, 0, false, curFeature);
 
 			profileShapeList.Add(curProfileShape);
 			GraphicsView.LoadProfiles(profileShapeList);
@@ -200,6 +202,7 @@ namespace CressemCADViewer.ViewModel
 		}
 
 		private IEnumerable<IGraphicsList> LoadProfile(bool useMM,
+			int globalOrient, bool isGlobalFlipHorizontal,
 			double datumX, double datumY, int orient, bool isFlipHorizontal,
 			IStepHeader stepHeader, ref DataToGraphics dataToGraphics)
 		{
@@ -212,46 +215,43 @@ namespace CressemCADViewer.ViewModel
 
 				PointF stepStart = new PointF((float)(step.Sx), (float)(step.Sy));
 				stepStart = stepStart.Rotate(
-					new PointF((float)(0), (float)(0)), -orient, isFlipHorizontal);
+					new PointF(0, 0), -orient, isFlipHorizontal);
 
 				int childOrient = (int)((step.Angle) % 360);
+				PointF childDatum = new PointF(
+							(float)childHeader.XDatum, (float)childHeader.YDatum);
+				childDatum = childDatum.Rotate(new PointF(0, 0), -orient, isFlipHorizontal);
 
 				for (int idxX = 0; idxX < step.Nx; idxX++)
 				{
 					for (int idxY = 0; idxY < step.Ny; idxY++)
 					{
-						int x = idxX;
-						int y = idxY;
-						double childXDatum = childHeader.XDatum;
-						double childYDatum = childHeader.YDatum;
+						System.Drawing.Point idx =
+							new System.Drawing.Point(idxX, idxY);
+						idx = idx.Rotate(new System.Drawing.Point(0, 0), -orient, isFlipHorizontal);
 
-						if (orient == 90)
-						{
-							x = idxY;
-							y = -idxX;
-							childXDatum = childHeader.YDatum;
-							childYDatum = -childHeader.XDatum;
-						}
-
-						double sx = datumX + stepStart.X + step.Dx * x;
-						double sy = datumY + stepStart.Y + step.Dy * y;
+						double sx = datumX + stepStart.X + step.Dx * idx.X;
+						double sy = datumY + stepStart.Y + step.Dy * idx.Y;
 
 						PointF anchor = new PointF((float)sx, (float)sy);
 						anchor = anchor.Rotate(new PointF(
 							(float)sx, (float)sy), -(int)step.Angle, isFlipHorizontal);
 
-						sx -= childXDatum;
-						sy -= childYDatum;
+						sx -= childDatum.X;
+						sy -= childDatum.Y;
 
-						var shape = dataToGraphics.GetShapes(useMM, sx, sy,
-							anchor.X, anchor.Y,
+						var shape = dataToGraphics.GetShapes(useMM,
+							globalOrient, isGlobalFlipHorizontal,
+							sx, sy, anchor.X, anchor.Y,
 							childOrient, isFlipHorizontal, feature);
 						profileShapes.Add(shape);
 
 						if (childHeader.StepRepeats.Any() is true)
 						{
-							var childShapes = LoadProfile(useMM, sx, sy,
-								childOrient, isFlipHorizontal, childHeader, ref dataToGraphics);
+							var childShapes = LoadProfile(useMM,
+								globalOrient, isGlobalFlipHorizontal,
+								sx, sy, childOrient,
+								isFlipHorizontal, childHeader, ref dataToGraphics);
 							profileShapes.AddRange(childShapes);
 						}
 					}

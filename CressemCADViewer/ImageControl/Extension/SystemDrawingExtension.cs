@@ -44,22 +44,42 @@ namespace ImageControl.Extension
 
 		public static PointF Rotate(this PointF point, PointF center, int angle, bool isFlipHorizontal)
 		{
-			float radian = angle * (float)(Math.PI / 180);
-			float cosTheta = (float)Math.Cos(radian);
-			float sinTheta = (float)Math.Sin(radian);
+			double radian = angle * (Math.PI / 180);
+			double cosTheta = Math.Cos(radian);
+			double sinTheta = Math.Sin(radian);
 
-			float dx = point.X - center.X;
-			float dy = point.Y - center.Y;
+			double dx = point.X - center.X;
+			double dy = point.Y - center.Y;
 
-			float rotatedX = dx * cosTheta - dy * sinTheta;
-			float rotatedY = dx * sinTheta + dy * cosTheta;
+			double rotatedX = dx * cosTheta - dy * sinTheta;
+			double rotatedY = dx * sinTheta + dy * cosTheta;
 
 			if (isFlipHorizontal)
 			{
 				rotatedX = -rotatedX;
 			}
 
-			return new PointF(rotatedX + center.X, rotatedY + center.Y);
+			return new PointF((float)(rotatedX + center.X), (float)(rotatedY + center.Y));
+		}
+
+		public static Point Rotate(this Point point, Point center, int angle, bool isFlipHorizontal)
+		{
+			double radian = angle * (Math.PI / 180);
+			double cosTheta = Math.Cos(radian);
+			double sinTheta = Math.Sin(radian);
+
+			double dx = point.X - center.X;
+			double dy = point.Y - center.Y;
+
+			double rotatedX = dx * cosTheta - dy * sinTheta;
+			double rotatedY = dx * sinTheta + dy * cosTheta;
+
+			if (isFlipHorizontal)
+			{
+				rotatedX = -rotatedX;
+			}
+
+			return new Point((int)Math.Round(rotatedX + center.X), (int)Math.Round(rotatedY + center.Y));
 		}
 	}
 }

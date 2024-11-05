@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using CressemDataToGraphics.Converter;
-using CressemDataToGraphics.Factory;
-using ImageControl.Extension;
+﻿using CressemDataToGraphics.Factory;
 using ImageControl.Shape.Gdi.Interface;
 
 namespace CressemDataToGraphics.Model.Graphics.Shape
@@ -29,17 +26,17 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float Height { get; set; }
 
-		public static ShapeGdiEllipse Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeGdiEllipse Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM, 
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy, 
-				orient, isFlipHorizontal, 
+			var shapeEllipse = ShapeFactory.Instance.CreateEllipse(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
+				orient, isFlipHorizontal,
 				width, height);
 
 			// Graphics는 y좌표가 반대이므로 -1곱한다

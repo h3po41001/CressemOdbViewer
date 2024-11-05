@@ -7,96 +7,91 @@ namespace CressemDataToGraphics.Factory
 {
 	internal class DirectXFactory : GraphicsFactory
 	{
-		public DirectXFactory() 
+		public DirectXFactory()
 		{
 		}
 
-		public override IGraphicsShape CreateArc(bool useMM,
-			float pixelResolution, bool isMM, 
-			double datumX, double datumY,
-			double cx, double cy, 
-			int orient, bool isFlipHorizontal, 
-			double sx, double sy, 
-			double ex, double ey, 
-			double arcCx, double arcCy, 
+		public override IGraphicsShape CreateArc(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
+			double sx, double sy,
+			double ex, double ey,
+			double arcCx, double arcCy,
 			bool isClockWise, double width)
 		{
-			return ShapeDirectArc.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy, 
+			return ShapeDirectArc.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy, isClockWise, width);
 		}
 
-		public override IGraphicsShape CreateLine(bool useMM, 
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
-			double cx, double cy, 
-			int orient, bool isFlipHorizontal, 
-			double sx, double sy, 
+		public override IGraphicsShape CreateLine(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
+			double sx, double sy,
 			double ex, double ey, double width)
 		{
-			return ShapeDirectLine.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy,
+			return ShapeDirectLine.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, width);
 		}
 
-		public override IGraphicsShape CreateSurface(bool useMM, 
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public override IGraphicsShape CreateSurface(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
-			int orient, bool isFlipHorizontal, 
+			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
 		{
-			return ShapeDirectSurface.Create(useMM,			
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy,
+			return ShapeDirectSurface.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, featurePolygons);
 		}
 
-		public override IGraphicsShape CreateEllipse(bool useMM, 
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
-			double cx, double cy, 
-			int orient, bool isFlipHorizontal, 
+		public override IGraphicsShape CreateEllipse(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			return ShapeDirectEllipse.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy, 
+			return ShapeDirectEllipse.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				width, height);
 		}
 
-		public override IGraphicsShape CreateRectangle(bool useMM, 
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
-			double cx, double cy, 
-			int orient, bool isFlipHorizontal, 
+		public override IGraphicsShape CreateRectangle(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
 			double width, double height)
 		{
-			return ShapeDirectRectangle.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy,
+			return ShapeDirectRectangle.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				width, height);
 		}
 
-		public override IGraphicsShape CreateSurface(bool isPositive, 
+		public override IGraphicsShape CreateSurface(bool isPositive,
 			IEnumerable<IGraphicsShape> shapes)
 		{
 			return new ShapeDirectSurface(isPositive, shapes);
 		}
 
-		public override IGraphicsShape CreatePolygon(bool isFill, 
+		public override IGraphicsShape CreatePolygon(bool isFill,
 			IEnumerable<IGraphicsShape> shapes)
 		{
 			return new ShapeDirectPolygon(isFill, shapes);

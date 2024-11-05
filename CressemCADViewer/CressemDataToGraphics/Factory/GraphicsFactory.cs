@@ -10,9 +10,9 @@ namespace CressemDataToGraphics.Factory
 	{
 		protected GraphicsFactory() { }
 
-		public abstract IGraphicsShape CreateArc(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public abstract IGraphicsShape CreateArc(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy,
@@ -20,17 +20,17 @@ namespace CressemDataToGraphics.Factory
 			double arcCx, double arcCy,
 			bool isClockWise, double width);
 
-		public abstract IGraphicsShape CreateLine(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public abstract IGraphicsShape CreateLine(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy,
 			double ex, double ey, double width);
 
-		public abstract IGraphicsShape CreateSurface(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public abstract IGraphicsShape CreateSurface(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons);
@@ -38,15 +38,15 @@ namespace CressemDataToGraphics.Factory
 		public abstract IGraphicsShape CreateSurface(bool isPositive,
 			IEnumerable<IGraphicsShape> shapes);
 
-		public abstract IGraphicsShape CreateEllipse(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public abstract IGraphicsShape CreateEllipse(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height);
 
-		public abstract IGraphicsShape CreateRectangle(bool useMM,
-			float pixelResolution, bool isMM,
+		public abstract IGraphicsShape CreateRectangle(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
@@ -55,8 +55,8 @@ namespace CressemDataToGraphics.Factory
 		public abstract IGraphicsShape CreatePolygon(bool isFill,
 			IEnumerable<IGraphicsShape> shapes);
 
-		public IGraphicsList CreateFeatureToShape(bool useMM,
-			float pixelResolution,
+		public IGraphicsList CreateFeatureToShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureBase feature)
@@ -66,15 +66,15 @@ namespace CressemDataToGraphics.Factory
 				return null;
 			}
 
-			return MakeFeatureShape(useMM,
-				pixelResolution, feature.IsMM,
-				datumX, datumY, cx, cy,
+			return MakeFeatureShape(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				feature.IsMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal, (dynamic)feature);
 		}
 
-		private IGraphicsList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureArc arc)
 		{
@@ -83,17 +83,15 @@ namespace CressemDataToGraphics.Factory
 			double width = 0;
 			if (arc.FeatureSymbol is ISymbolRound symbolRound)
 			{
-				var startSymbol = MakeSymbolShape(useMM,
-					pixelResolution, arc.IsMM,
-					datumX + cx, datumY + cy,
-					arc.X, arc.Y,
+				var startSymbol = MakeSymbolShape(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					arc.IsMM, datumX + cx, datumY + cy, arc.X, arc.Y,
 					orient, isFlipHorizontal,
 					(dynamic)(arc.FeatureSymbol));
 
-				var endSymbol = MakeSymbolShape(useMM,
-					pixelResolution, arc.IsMM,
-					datumX + cx, datumY + cy, 
-					arc.Ex, arc.Ey,
+				var endSymbol = MakeSymbolShape(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					arc.IsMM, datumX + cx, datumY + cy, arc.Ex, arc.Ey,
 					orient, isFlipHorizontal,
 					(dynamic)(arc.FeatureSymbol));
 
@@ -103,10 +101,9 @@ namespace CressemDataToGraphics.Factory
 				shapes.Add(endSymbol);
 			}
 
-			var arcShape = CreateArc(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy,
+			var arcShape = CreateArc(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
 				arc.IsClockWise, width);
@@ -116,9 +113,9 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeGraphicsList(arc.Polarity.Equals("P"), shapes);
 		}
 
-		private IGraphicsList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureLine line)
 		{
@@ -127,17 +124,15 @@ namespace CressemDataToGraphics.Factory
 			double width = 0;
 			if (line.FeatureSymbol is ISymbolIRegularShape regularShape)
 			{
-				var startSymbol = MakeSymbolShape(useMM,
-					pixelResolution, line.IsMM,
-					datumX + cx, datumY + cy,
-					line.X, line.Y,
+				var startSymbol = MakeSymbolShape(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					line.IsMM, datumX + cx, datumY + cy, line.X, line.Y,
 					orient, isFlipHorizontal,
 					(dynamic)(line.FeatureSymbol));
 
-				var endSymbol = MakeSymbolShape(useMM,
-					pixelResolution, line.IsMM,
-					datumX + cx, datumY + cy, 
-					line.Ex, line.Ey,
+				var endSymbol = MakeSymbolShape(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					line.IsMM, datumX + cx, datumY + cy, line.Ex, line.Ey,
 					orient, isFlipHorizontal,
 					(dynamic)(line.FeatureSymbol));
 
@@ -147,10 +142,9 @@ namespace CressemDataToGraphics.Factory
 				shapes.Add(endSymbol);
 			}
 
-			var lineShape = CreateLine(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, 
-				cx, cy,
+			var lineShape = CreateLine(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				line.X, line.Y, line.Ex, line.Ey, width);
 
@@ -159,9 +153,9 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeGraphicsList(line.Polarity.Equals("P"), shapes);
 		}
 
-		private IGraphicsList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureBarcode barcode)
 		{
@@ -169,9 +163,9 @@ namespace CressemDataToGraphics.Factory
 			return null;
 		}
 
-		private IGraphicsList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeaturePad pad)
 		{
@@ -181,10 +175,9 @@ namespace CressemDataToGraphics.Factory
 			{
 				if (pad.FeatureSymbol is ISymbolUser userSymbol)
 				{
-					var userSymbolFeature = MakeUser(useMM,
-						pixelResolution, isMM,
-						datumX + cx, datumY + cy,
-						pad.X, pad.Y,
+					var userSymbolFeature = MakeUser(useMM, pixelResolution,
+						globalOrient, isGlobalFlipHorizontal,
+						isMM, datumX + cx, datumY + cy, pad.X, pad.Y,
 						(pad.Orient + orient) % 360,
 						isFlipHorizontal != pad.IsFlipHorizontal,
 						userSymbol.FeaturesList);
@@ -193,10 +186,9 @@ namespace CressemDataToGraphics.Factory
 				}
 				else
 				{
-					var symbol = MakeSymbolShape(useMM,
-						pixelResolution, isMM,
-						datumX + cx, datumY + cy,
-						pad.X, pad.Y,
+					var symbol = MakeSymbolShape(useMM, pixelResolution,
+						globalOrient, isGlobalFlipHorizontal,
+						isMM, datumX + cx, datumY + cy, pad.X, pad.Y,
 						(pad.Orient + orient) % 360,
 						isFlipHorizontal != pad.IsFlipHorizontal,
 						pad.FeatureSymbol);
@@ -208,9 +200,9 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeGraphicsList(pad.Polarity.Equals("P"), shapes);
 		}
 
-		private IGraphicsList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureText text)
 		{
@@ -218,9 +210,9 @@ namespace CressemDataToGraphics.Factory
 			return null;
 		}
 
-		private IGraphicsList MakeFeatureShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
+		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureSurface surface)
 		{
@@ -228,9 +220,9 @@ namespace CressemDataToGraphics.Factory
 
 			bool isPositive = surface.Polarity.Equals("P") is true;
 
-			var surfaceShape = CreateSurface(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy,
+			var surfaceShape = CreateSurface(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, surface.Polygons);
 
@@ -239,58 +231,58 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeGraphicsList(surface.Polarity.Equals("P"), shapes);
 		}
 
-		private IGraphicsShape MakeSymbolShape(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsShape MakeSymbolShape(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			ISymbolBase symbol)
 		{
 			if (symbol is ISymbolRound round)
 			{
-				return CreateEllipse(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return CreateEllipse(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					round.Diameter, round.Diameter);
 			}
 			else if (symbol is ISymbolSquare square)
 			{
-				return CreateRectangle(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return CreateRectangle(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					square.Diameter, square.Diameter);
 			}
 			else if (symbol is ISymbolRectangle rectangle)
 			{
-				return CreateRectangle(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return CreateRectangle(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					rectangle.Width, rectangle.Height);
 			}
 			else if (symbol is ISymbolEllipse ellipse)
 			{
-				return CreateEllipse(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return CreateEllipse(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					ellipse.Width, ellipse.Height);
 			}
 			else if (symbol is ISymbolOval oval)
 			{
-				return CreateEllipse(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return CreateEllipse(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					oval.Width, oval.Height);
 			}
 			else if (symbol is ISymbolRoundedRectangle roundedRectangle)
 			{
-				return MakeRoundedRectangle(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return MakeRoundedRectangle(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					roundedRectangle.Width, roundedRectangle.Height,
 					roundedRectangle.CornerRadius,
@@ -298,17 +290,17 @@ namespace CressemDataToGraphics.Factory
 			}
 			else if (symbol is ISymbolRoundDonut roundDonut)
 			{
-				return MakeRoundDonut(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return MakeRoundDonut(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					roundDonut.Diameter, roundDonut.InnerDiameter);
 			}
 			else if (symbol is ISymbolRoundThermalRounded roundThr)
 			{
-				return MakeRoundThermalRounded(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				return MakeRoundThermalRounded(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal,
 					roundThr.Diameter, roundThr.InnerDiameter,
 					roundThr.Angle, roundThr.NumberOfSpoke, roundThr.Gap);
@@ -317,9 +309,9 @@ namespace CressemDataToGraphics.Factory
 			return null;
 		}
 
-		private IGraphicsShape MakeRoundedRectangle(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsShape MakeRoundedRectangle(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height, double radius, bool[] isEditedCorner)
@@ -327,22 +319,22 @@ namespace CressemDataToGraphics.Factory
 			throw new System.NotImplementedException("RoundedRectangle 아직 미구현");
 		}
 
-		private IGraphicsShape MakeRoundDonut(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsShape MakeRoundDonut(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double outerDiameter, double innerDiameter)
 		{
-			var outerCircle = CreateEllipse(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy,
+			var outerCircle = CreateEllipse(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				outerDiameter, outerDiameter);
 
-			var innerCircle = CreateEllipse(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy,
+			var innerCircle = CreateEllipse(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				innerDiameter, innerDiameter);
 
@@ -352,9 +344,9 @@ namespace CressemDataToGraphics.Factory
 			return CreateSurface(true, new IGraphicsShape[] { outer, inner });
 		}
 
-		private IGraphicsShape MakeRoundThermalRounded(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IGraphicsShape MakeRoundThermalRounded(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double outDiameter, double innerDiameter,
@@ -385,9 +377,9 @@ namespace CressemDataToGraphics.Factory
 			return null;
 		}
 
-		private IEnumerable<IGraphicsShape> MakeUser(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		private IEnumerable<IGraphicsShape> MakeUser(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			IEnumerable<IFeatureBase> features)
@@ -395,9 +387,9 @@ namespace CressemDataToGraphics.Factory
 			List<IGraphicsShape> shapeList = new List<IGraphicsShape>();
 			foreach (var feature in features)
 			{
-				IGraphicsList featureShapes = MakeFeatureShape(useMM,
-					pixelResolution, isMM,
-					datumX + cx, datumY + cy, 
+				IGraphicsList featureShapes = MakeFeatureShape(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX + cx, datumY + cy,
 					feature.X, feature.Y,
 					orient, isFlipHorizontal, (dynamic)feature);
 

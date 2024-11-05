@@ -35,9 +35,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public IEnumerable<PointF> Points { get; private set; }
 
-		public static ShapeDirectPolygon Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeDirectPolygon Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IFeaturePolygon polygon)
@@ -55,8 +55,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				if (feature is IFeatureArc arc)
 				{
 					shapes.Add(ShapeDirectArc.Create(useMM,
-						pixelResolution, isMM,
-						datumX, datumY, 
+						pixelResolution, globalOrient, isGlobalFlipHorizontal,
+						isMM, datumX, datumY,
 						polygon.X + cx, polygon.Y + cy,
 						localOrient, localIsFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
@@ -64,27 +64,27 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				}
 				else if (feature is IFeatureLine line)
 				{
-					shapes.Add(ShapeDirectLine.Create(useMM,
-						pixelResolution, isMM,
-						datumX + polygon.X, datumY + polygon.Y,
+					shapes.Add(ShapeDirectLine.Create(useMM, pixelResolution,
+						globalOrient, isGlobalFlipHorizontal,
+						isMM, datumX + polygon.X, datumY + polygon.Y,
 						cx, cy,
 						localOrient, localIsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
 				}
 				else if (feature is IFeaturePolygon subPolygon)
 				{
-					shapes.Add(Create(useMM,
-						pixelResolution, isMM,
-						datumX + cx, datumY + cy, 
+					shapes.Add(Create(useMM, pixelResolution,
+						globalOrient, isGlobalFlipHorizontal,
+						isMM, datumX + cx, datumY + cy,
 						polygon.X, polygon.Y,
 						localOrient, localIsFlipHorizontal,
 						isPositive, subPolygon));
 				}
 				else if (feature is IFeatureSurface surface)
 				{
-					shapes.Add(ShapeDirectSurface.Create(useMM,
-						pixelResolution, isMM,
-						datumX + cx, datumY + cy, 
+					shapes.Add(ShapeDirectSurface.Create(useMM, pixelResolution,
+						globalOrient, isGlobalFlipHorizontal,
+						isMM, datumX + cx, datumY + cy,
 						polygon.X, polygon.Y,
 						localOrient, localIsFlipHorizontal,
 						isPositive, surface.Polygons));
@@ -94,17 +94,17 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 			return new ShapeDirectPolygon(isFill, shapes);
 		}
 
-		public static ShapeDirectPolygon Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeDirectPolygon Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, string polygonType,
 			IEnumerable<PointF> points)
 		{
-			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM,
-				pixelResolution, isMM, 
-				datumX, datumY, cx, cy, 
+			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, polygonType, points);
 

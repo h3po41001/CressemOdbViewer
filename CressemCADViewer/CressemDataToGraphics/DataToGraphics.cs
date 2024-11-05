@@ -19,7 +19,8 @@ namespace CressemDataToGraphics
 
 		public float PixelResolution { get; private set; }
 
-		public IGraphicsList GetShapes(bool useMM,
+		public IGraphicsList GetShapes(bool useMM, 
+			int globalOrient, bool isGlobalFlipHorizontal,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureBase feature)
@@ -30,7 +31,7 @@ namespace CressemDataToGraphics
 			}
 
 			return DataToGraphicsFactory.Instance.DataToGraphics(useMM,
-				PixelResolution,
+				PixelResolution, globalOrient, isGlobalFlipHorizontal,
 				datumX, datumY, cx, cy,
 				orient, isFlipHorizontal, feature);
 		}

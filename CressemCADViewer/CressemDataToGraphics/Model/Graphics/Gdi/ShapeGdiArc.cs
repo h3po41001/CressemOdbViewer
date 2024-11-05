@@ -35,17 +35,17 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public float LineWidth { get; private set; }
 
-		public static ShapeGdiArc Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeGdiArc Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double arcCx, double arcCy,
 			bool isClockWise, double width)
 		{
-			var shapeArc = ShapeFactory.Instance.CreateArc(useMM, 
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy, 
+			var shapeArc = ShapeFactory.Instance.CreateArc(useMM,
+				pixelResolution, globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy, width);
 

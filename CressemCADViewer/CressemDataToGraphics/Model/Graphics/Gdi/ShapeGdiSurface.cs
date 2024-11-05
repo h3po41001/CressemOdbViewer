@@ -22,11 +22,11 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 
 		public IEnumerable<IGraphicsShape> Polygons { get; private set; }
 
-		public static ShapeGdiSurface Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
+		public static ShapeGdiSurface Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
-			int orient, bool isFlipHorizontal, 
+			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
 		{
 			if (featurePolygons is null)
@@ -39,9 +39,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 			foreach (var polygon in featurePolygons)
 			{
 				polygons.Add(ShapeGdiPolygon.Create(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, 
-					cx, cy,
+					pixelResolution, globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal, isPositive, polygon));
 			}
 

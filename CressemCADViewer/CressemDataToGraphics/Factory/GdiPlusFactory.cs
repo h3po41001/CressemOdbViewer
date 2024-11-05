@@ -11,9 +11,9 @@ namespace CressemDataToGraphics.Factory
 		{
 		}
 
-		public override IGraphicsShape CreateArc(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public override IGraphicsShape CreateArc(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy,
@@ -21,41 +21,40 @@ namespace CressemDataToGraphics.Factory
 			double arcCx, double arcCy,
 			bool isClockWise, double width)
 		{
-			return ShapeGdiArc.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY, cx, cy,
+			return ShapeGdiArc.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy,
 				isClockWise, width);
 		}
 
-		public override IGraphicsShape CreateLine(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public override IGraphicsShape CreateLine(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy,
 			double ex, double ey, double width)
 		{
-			return ShapeGdiLine.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY,
+			return ShapeGdiLine.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY,
 				cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, width);
 		}
 
-		public override IGraphicsShape CreateSurface(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
+		public override IGraphicsShape CreateSurface(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
 		{
-			return ShapeGdiSurface.Create(useMM,
-				pixelResolution, isMM,
-				datumX, datumY,
-				cx, cy,
+			return ShapeGdiSurface.Create(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, featurePolygons);
 		}
@@ -66,9 +65,9 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeGdiSurface(isPositive, shapes);
 		}
 
-		public override IGraphicsShape CreateEllipse(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
+		public override IGraphicsShape CreateEllipse(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
@@ -76,9 +75,9 @@ namespace CressemDataToGraphics.Factory
 			throw new System.NotImplementedException();
 		}
 
-		public override IGraphicsShape CreateRectangle(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY, 
+		public override IGraphicsShape CreateRectangle(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)

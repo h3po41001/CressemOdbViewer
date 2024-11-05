@@ -29,17 +29,17 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public float LineWidth { get; private set; }
 
-		public static ShapeDirectLine Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeDirectLine Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double width)
 		{
-			var shapeLine = ShapeFactory.Instance.CreateLine(useMM, 
-				pixelResolution, isMM, 
-				datumX, datumY, cx, cy,
-				orient, isFlipHorizontal, 
+			var shapeLine = ShapeFactory.Instance.CreateLine(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY, cx, cy,
+				orient, isFlipHorizontal,
 				sx, sy, ex, ey, width);
 
 			return new ShapeDirectLine(shapeLine.Sx, -shapeLine.Sy,

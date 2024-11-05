@@ -26,9 +26,9 @@ namespace CressemDataToGraphics.Factory
 			}
 		}
 
-		public ShapeArc CreateArc(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public ShapeArc CreateArc(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey,
@@ -81,6 +81,8 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
+			PointF anchor = new PointF(fcx, fcy);
+
 			PointF start = new PointF(fsx, fsy);
 			start = start.Offset(fDatumX, fDatumY);
 
@@ -90,13 +92,17 @@ namespace CressemDataToGraphics.Factory
 			PointF center = new PointF(fAcx, fAcy);
 			center = center.Offset(fDatumX, fDatumY);
 
-			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fDatumX, fDatumY);
-
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
-			start = start.Rotate(datum, -orient, isFlipHorizontal);
-			end = end.Rotate(datum, -orient, isFlipHorizontal);
-			center = center.Rotate(datum, -orient, isFlipHorizontal);
+			start = start.Rotate(anchor, -orient, isFlipHorizontal);
+			end = end.Rotate(anchor, -orient, isFlipHorizontal);
+			center = center.Rotate(anchor, -orient, isFlipHorizontal);
+
+			// 최종으로 구한 좌표에서 전체 회전을 진행함
+			// 원점에서 회전함
+			PointF zero = new PointF(0, 0);
+			start = start.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
+			end = end.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
+			center = center.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
 
 			double radius = Math.Sqrt(
 				Math.Pow(start.X - center.X, 2) +
@@ -109,8 +115,9 @@ namespace CressemDataToGraphics.Factory
 				fWidth, (float)radius, (float)startAngle, (float)endAngle);
 		}
 
-		public ShapeEllipse CreateEllipse(bool useMM,
-			float pixelResolution, bool isMM,
+		public ShapeEllipse CreateEllipse(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
@@ -148,18 +155,23 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
+			PointF anchor = new PointF(fcx, fcy);
+
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
 			lt = lt.Offset(fDatumX, fDatumY);
 
 			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
 			rb = rb.Offset(fDatumX, fDatumY);
 
-			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fDatumX, fDatumY);
-
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
-			lt = lt.Rotate(datum, -orient, isFlipHorizontal);
-			rb = rb.Rotate(datum, -orient, isFlipHorizontal);
+			lt = lt.Rotate(anchor, -orient, isFlipHorizontal);
+			rb = rb.Rotate(anchor, -orient, isFlipHorizontal);
+
+			// 최종으로 구한 좌표에서 전체 회전을 진행함
+			// 원점에서 회전함
+			PointF zero = new PointF(0, 0);
+			lt = lt.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
+			rb = rb.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
 
 			float left = lt.X;
 			float right = rb.X;
@@ -188,8 +200,9 @@ namespace CressemDataToGraphics.Factory
 				lt.X, lt.Y, fWidth, fHeight);
 		}
 
-		public ShapeLine CreateLine(bool useMM,
-			float pixelResolution, bool isMM,
+		public ShapeLine CreateLine(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
@@ -236,25 +249,31 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
-			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 			PointF anchor = new PointF(fcx, fcy);
-			//anchor = anchor.Offset(fDatumX, fDatumY);
 
 			PointF start = new PointF(fsx, fsy);
 			start = start.Offset(fDatumX, fDatumY);
 
-			PointF end = new PointF(fex, fey);			
+			PointF end = new PointF(fex, fey);
 			end = end.Offset(fDatumX, fDatumY);
 
+			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
 			start = start.Rotate(anchor, -orient, isFlipHorizontal);
 			end = end.Rotate(anchor, -orient, isFlipHorizontal);
+
+			// 최종으로 구한 좌표에서 전체 회전을 진행함
+			// 원점에서 회전함
+			PointF zero = new PointF(0, 0);
+			start = start.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
+			end = end.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
 
 			return new ShapeLine(pixelResolution, fcx, fcy,
 				start.X, start.Y, end.X, end.Y, fWidth);
 		}
 
-		public ShapeRectangle CreateRectangle(bool useMM,
-			float pixelResolution, bool isMM,
+		public ShapeRectangle CreateRectangle(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
@@ -290,18 +309,23 @@ namespace CressemDataToGraphics.Factory
 				}
 			}
 
+			PointF anchor = new PointF(fcx, fcy);
+
 			PointF lt = new PointF(fcx - fWidth / 2, fcy + fHeight / 2);
 			lt = lt.Offset(fDatumX, fDatumY);
 
 			PointF rb = new PointF(fcx + fWidth / 2, fcy - fHeight / 2);
 			rb = rb.Offset(fDatumX, fDatumY);
 
-			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fDatumX, fDatumY);
-
 			// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
-			lt = lt.Rotate(datum, -orient, isFlipHorizontal);
-			rb = rb.Rotate(datum, -orient, isFlipHorizontal);
+			lt = lt.Rotate(anchor, -orient, isFlipHorizontal);
+			rb = rb.Rotate(anchor, -orient, isFlipHorizontal);
+
+			// 최종으로 구한 좌표에서 전체 회전을 진행함
+			// 원점에서 회전함
+			PointF zero = new PointF(0, 0);
+			lt = lt.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
+			rb = rb.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
 
 			float left = lt.X;
 			float right = rb.X;
@@ -329,8 +353,9 @@ namespace CressemDataToGraphics.Factory
 			return new ShapeRectangle(pixelResolution, fcx, fcy, lt.X, lt.Y, fWidth, fHeight);
 		}
 
-		public ShapePolygon CreatePolygon(bool useMM,
-			float pixelResolution, bool isMM,
+		public ShapePolygon CreatePolygon(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM,
 			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
@@ -368,15 +393,19 @@ namespace CressemDataToGraphics.Factory
 
 			List<PointF> calcPoints = new List<PointF>();
 
-			PointF datum = new PointF(fcx, fcy);
-			datum = datum.Offset(fDatumX, fDatumY);
+			PointF anchor = new PointF(fcx, fcy);
+			PointF zero = new PointF(0, 0);
 
 			foreach (var point in fPoints)
 			{
 				var calcPoint = point.Offset(fDatumX, fDatumY);
 
 				// 좌표계가 수학적 좌표계 이기 때문에 -곱해야 함
-				calcPoint = calcPoint.Rotate(datum, -orient, isFlipHorizontal);
+				calcPoint = calcPoint.Rotate(anchor, -orient, isFlipHorizontal);
+
+				// 최종으로 구한 좌표에서 전체 회전을 진행함
+				// 원점에서 회전함
+				calcPoint = calcPoint.Rotate(zero, -globalOrient, isGlobalFlipHorizontal);
 				calcPoints.Add(calcPoint);
 			}
 

@@ -22,9 +22,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 		public IEnumerable<IGraphicsShape> Polygons { get; private set; }
 
-		public static ShapeDirectSurface Create(bool useMM,
-			float pixelResolution, bool isMM,
-			double datumX, double datumY,
+		public static ShapeDirectSurface Create(bool useMM, float pixelResolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)
@@ -38,9 +38,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 
 			foreach (var polygon in featurePolygons)
 			{
-				polygons.Add(ShapeDirectPolygon.Create(useMM,
-					pixelResolution, isMM,
-					datumX, datumY, cx, cy,
+				polygons.Add(ShapeDirectPolygon.Create(useMM, pixelResolution,
+					globalOrient, isGlobalFlipHorizontal,
+					isMM, datumX, datumY, cx, cy,
 					orient, isFlipHorizontal, isPositive, polygon));
 			}
 
