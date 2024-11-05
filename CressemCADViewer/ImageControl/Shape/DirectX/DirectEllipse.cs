@@ -60,7 +60,7 @@ namespace ImageControl.Shape.DirectX
 					}
 					else
 					{
-						render.FillEllipse(Ellipse, DefaultBrush);
+						render.FillEllipse(Ellipse, HoleBrush);
 					}
 				}
 			}

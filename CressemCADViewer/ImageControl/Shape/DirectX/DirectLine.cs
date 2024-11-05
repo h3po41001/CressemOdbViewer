@@ -72,13 +72,9 @@ namespace ImageControl.Shape.DirectX
 					}
 					else
 					{
-						render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
+						render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
 					}
 				}
-			}
-			else
-			{
-
 			}
 		}
 	}

@@ -131,6 +131,11 @@ namespace ImageControl.Model.DirectX
 					continue;
 				}
 
+				if (shapes.IsPositive is false)
+				{
+
+				}
+
 				_directShapes.Add(DirectShapeFactory.Instance.CreateDirectShape(
 					shapes.IsPositive, (dynamic)shape,
 					_d2dFactory, _deviceContext, Color.DarkGreen, SKIP_RATIO));
