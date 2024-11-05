@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using CressemDataToGraphics.Model.Cad;
 using CressemDataToGraphics.Model.Graphics;
 using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Font;
 using CressemExtractLibrary.Data.Interface.Symbol;
 using ImageControl.Shape.Interface;
 
@@ -58,6 +62,16 @@ namespace CressemDataToGraphics.Factory
 
 		public abstract IGraphicsShape CreatePolygon(bool isFill,
 			IEnumerable<IGraphicsShape> shapes);
+
+		public abstract IGraphicsList CreateFont(bool useMM, float pixelesolution,
+			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
+			double datumX, double datumY,
+			double anchorX, double anchorY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
+			string tartget,
+			double xSize, double ySize, double widthFactor, 
+			IFont font);
 
 		public IGraphicsList CreateFeatureToShape(bool useMM, float pixelResolution,
 			int globalOrient, bool isGlobalFlipHorizontal,
@@ -221,8 +235,22 @@ namespace CressemDataToGraphics.Factory
 			double cx, double cy,
 			int orient, bool isFlipHorizontal, IFeatureText text)
 		{
-			//throw new System.NotImplementedException("텍스트 아직 미구현");
-			return null;
+			List<IGraphicsShape> shapes = new List<IGraphicsShape>();
+			bool isPositive = text.Polarity.Equals("P") is true;
+
+			IGraphicsList stringShape = CreateFont(useMM, pixelResolution,
+				globalOrient, isGlobalFlipHorizontal,
+				isMM, datumX, datumY,
+				cx, cy,
+				text.X, text.Y,
+				(orient + text.Orient) % 360, isFlipHorizontal,
+				text.Text,
+				text.SizeX, text.SizeY,
+				text.WidthFactor, text.FeatureFont);
+
+			shapes.AddRange(stringShape.Shapes);
+
+			return new ShapeGraphicsList(isPositive, shapes);
 		}
 
 		private IGraphicsList MakeFeatureShape(bool useMM, float pixelResolution,
@@ -244,7 +272,7 @@ namespace CressemDataToGraphics.Factory
 
 			shapes.Add(surfaceShape);
 
-			return new ShapeGraphicsList(surface.Polarity.Equals("P"), shapes);
+			return new ShapeGraphicsList(isPositive, shapes);
 		}
 
 		private IGraphicsShape MakeSymbolShape(bool useMM, float pixelResolution,

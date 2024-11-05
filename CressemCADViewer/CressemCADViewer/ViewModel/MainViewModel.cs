@@ -193,10 +193,10 @@ namespace CressemCADViewer.ViewModel
 				featureShapeList.Add(curFeatureShapes);
 			}
 
-			var features = LoadFeatures(isRepeatAll, useMM, orient, isFlipHorizontal,
-				0, 0, 0, false, stepHeader, PropertyView.SelectedLayerName, ref dataToGraphics);
+			//var features = LoadFeatures(isRepeatAll, useMM, orient, isFlipHorizontal,
+			//	0, 0, 0, false, stepHeader, PropertyView.SelectedLayerName, ref dataToGraphics);
 
-			featureShapeList.AddRange(features);
+			//featureShapeList.AddRange(features);
 
 			foreach (var feature in featureShapeList)
 			{

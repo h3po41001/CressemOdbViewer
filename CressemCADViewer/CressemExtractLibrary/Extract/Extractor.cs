@@ -1,5 +1,4 @@
 ﻿using CressemExtractLibrary.Data;
-using CressemUtil.Zip;
 
 namespace CressemExtractLibrary.Extract
 {

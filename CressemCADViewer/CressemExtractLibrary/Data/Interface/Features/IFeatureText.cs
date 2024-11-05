@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CressemExtractLibrary.Data.Interface.Font;
 
 namespace CressemExtractLibrary.Data.Interface.Features
 {
@@ -17,5 +13,7 @@ namespace CressemExtractLibrary.Data.Interface.Features
 		double WidthFactor { get; }
 
 		string Text { get; }
+
+		IFont FeatureFont { get; }
 	}
 }

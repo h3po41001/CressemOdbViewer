@@ -24,7 +24,7 @@ namespace CressemDataToGraphics.Converter
 			return (float)Math.Round(inch * MM_TO_INCH, DIGITS);
 		}
 
-		public static double ConvertInchToUM(this double inch)
+		public static double ConvertMilInchToMM(this double inch)
 		{
 			return Math.Round(inch * MM_TO_INCH / 1000, DIGITS);
 		}

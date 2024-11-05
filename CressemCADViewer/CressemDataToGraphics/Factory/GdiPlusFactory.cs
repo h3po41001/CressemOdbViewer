@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CressemDataToGraphics.Model.Graphics.Shape;
 using CressemExtractLibrary.Data.Interface.Features;
+using CressemExtractLibrary.Data.Interface.Font;
 using ImageControl.Shape.Interface;
 
 namespace CressemDataToGraphics.Factory
@@ -93,6 +94,19 @@ namespace CressemDataToGraphics.Factory
 
 		public override IGraphicsShape CreatePolygon(bool isFill,
 			IEnumerable<IGraphicsShape> shapes)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override IGraphicsList CreateFont(bool useMM, float pixelesolution,
+			int globalOrient, bool isGlobalFlipHorizontal,
+			bool isMM, double datumX, double datumY,
+			double anchorX, double anchorY,
+			double cx, double cy,
+			int orient, bool isFlipHorizontal,
+			string tartget,
+			double xSize, double ySize, double widthFactor, 
+			IFont font)
 		{
 			throw new System.NotImplementedException();
 		}

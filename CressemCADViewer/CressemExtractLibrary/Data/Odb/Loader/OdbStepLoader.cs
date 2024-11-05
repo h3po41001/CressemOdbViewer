@@ -278,7 +278,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 				return false;
 			}
 
-			if (OdbFeaturesLoader.Instance.Load(path, odbData.OdbUserSymbols,
+			if (OdbFeaturesLoader.Instance.Load(path, "",
+				odbData.OdbUserSymbols, odbData.OdbFonts,
 				out OdbFeatures features) is false)
 			{
 				return false;
@@ -315,8 +316,9 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 					return;
 				}
 
-				if (OdbFeaturesLoader.Instance.Load(layerFilePath,
-					odbData.OdbUserSymbols, out OdbFeatures features) is false)
+				if (OdbFeaturesLoader.Instance.Load(layerFilePath, refLayer.Name,
+					odbData.OdbUserSymbols, odbData.OdbFonts,
+					out OdbFeatures features) is false)
 				{
 					return;
 				}

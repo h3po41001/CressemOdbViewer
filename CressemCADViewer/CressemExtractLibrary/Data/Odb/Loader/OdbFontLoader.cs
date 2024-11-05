@@ -67,31 +67,36 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							continue;
 						}
 
-						splited = line.Split(' ').Select(
-							data => data.ToUpper()).Where(data => data != "").ToArray();
+						splited = line.Split(' ').Where(data => data != "").ToArray();
 
-						if (splited[0].Equals("XSIZE") is true)
+						if (splited[0].ToUpper().Equals("XSIZE") is true)
 						{
 							if (double.TryParse(splited[1], out xSize) is false)
 							{
 								continue;
 							}
+
+							odbFont.XSize = xSize;
 						}
-						else if (splited[0].Equals("YSIZE") is true)
+						else if (splited[0].ToUpper().Equals("YSIZE") is true)
 						{
 							if (double.TryParse(splited[1], out ySize) is false)
 							{
 								continue;
 							}
+
+							odbFont.YSize = ySize;
 						}
-						else if (splited[0].Equals("OFFSET") is true)
+						else if (splited[0].ToUpper().Equals("OFFSET") is true)
 						{
 							if (double.TryParse(splited[1], out offset) is false)
 							{
 								continue;
 							}
+
+							odbFont.Offset = offset;
 						}
-						else if (splited[0].Equals("CHAR") is true)
+						else if (splited[0].ToUpper().Equals("CHAR") is true)
 						{
 							OdbFontAttr fontAttr = new OdbFontAttr(splited[1], isMM);
 
@@ -106,16 +111,15 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 							while (reader.EndOfStream is false)
 							{
 								line = reader.ReadLine().Trim();
-								splited = line.Split(' ').Select(
-									data => data.ToUpper()).ToArray();
+								splited = line.Split(' ').ToArray();
 								
-								if (splited[0].Equals("ECHAR") is true)
+								if (splited[0].ToUpper().Equals("ECHAR") is true)
 								{
 									odbFont.AddFontAttr(fontAttr);
 									break;
 								}
 
-								if (splited[0].Equals("LINE") is true)
+								if (splited[0].ToUpper().Equals("LINE") is true)
 								{
 									if (double.TryParse(splited[1], out sx) is false)
 									{

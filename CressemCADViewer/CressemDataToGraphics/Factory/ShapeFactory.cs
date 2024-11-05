@@ -65,7 +65,7 @@ namespace CressemDataToGraphics.Factory
 					fey = (float)ey.ConvertInchToMM();
 					fAcx = (float)arcCx.ConvertInchToMM();
 					fAcy = (float)arcCy.ConvertInchToMM();
-					fWidth = (float)width.ConvertInchToUM();
+					fWidth = (float)width.ConvertMilInchToMM();
 				}
 			}
 			else
@@ -149,8 +149,8 @@ namespace CressemDataToGraphics.Factory
 					fAnchorY = (float)anchorY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
-					fWidth = (float)width.ConvertInchToUM();
-					fHeight = (float)height.ConvertInchToUM();
+					fWidth = (float)width.ConvertMilInchToMM();
+					fHeight = (float)height.ConvertMilInchToMM();
 				}
 			}
 			else
@@ -251,7 +251,7 @@ namespace CressemDataToGraphics.Factory
 					fsy = (float)sy.ConvertInchToMM();
 					fex = (float)ex.ConvertInchToMM();
 					fey = (float)ey.ConvertInchToMM();
-					fWidth = (float)width.ConvertInchToUM();
+					fWidth = (float)width.ConvertMilInchToMM();
 				}
 			}
 			else
@@ -326,8 +326,8 @@ namespace CressemDataToGraphics.Factory
 					fAnchorY = (float)anchorY.ConvertInchToMM();
 					fcx = (float)cx.ConvertInchToMM();
 					fcy = (float)cy.ConvertInchToMM();
-					fWidth = (float)width.ConvertInchToUM();
-					fHeight = (float)height.ConvertInchToUM();
+					fWidth = (float)width.ConvertMilInchToMM();
+					fHeight = (float)height.ConvertMilInchToMM();
 				}
 			}
 			else

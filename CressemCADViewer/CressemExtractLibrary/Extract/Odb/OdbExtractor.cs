@@ -105,8 +105,14 @@ namespace CressemExtractLibrary.Extract.Odb
 				var name = (new DirectoryInfo(odbData.SavePath)).Name;
 				var dirPath = Path.Combine(odbData.SavePath, name);
 
+				//0. Infos
+				if (OdbInfos.Instance.Load(dirPath) is false)
+				{
+					return false;
+				}
+
 				//1. Matrix
-				if (OdbMatrixLoader.Instance.Load(dirPath, 
+				if (OdbMatrixLoader.Instance.Load(dirPath,
 					out OdbMatrixInfo matrixInfo) is false)
 				{
 					return false;
@@ -124,7 +130,7 @@ namespace CressemExtractLibrary.Extract.Odb
 				odbData.OdbFonts = new List<OdbFont>(fonts);
 
 				//3. User Symbols				
-				if (OdbSymbolLoader.Instance.LoadUserSymbols(dirPath, 
+				if (OdbSymbolLoader.Instance.LoadUserSymbols(dirPath, fonts,
 					out List<OdbSymbolUser> userSymbols) is false)
 				{
 					return false;

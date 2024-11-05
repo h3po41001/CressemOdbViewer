@@ -52,20 +52,20 @@ namespace ImageControl.Shape.DirectX
 			bool isHole, RectangleF roi)
 		{
 			// 확대한 shape 크기가 roi 보다 커야됨. (작지 않아서 그려도 되는것)
-			if (SkipSize.Width >= roi.Width &&
-				SkipSize.Height >= roi.Height)
+			if (IsPositive != isHole)
 			{
-				if (roi.IntersectsWith(Bounds) is true)
+				if (SkipSize.Width >= roi.Width &&
+					SkipSize.Height >= roi.Height)
 				{
-					if (IsPositive != isHole)
+					if (roi.IntersectsWith(Bounds) is true)
 					{
 						render.FillRectangle(Rectangle, DefaultBrush);
 					}
-					else
-					{
-						render.FillRectangle(Rectangle, HoleBrush);
-					}
 				}
+			}
+			else
+			{
+				render.FillRectangle(Rectangle, HoleBrush);
 			}
 		}
 	}

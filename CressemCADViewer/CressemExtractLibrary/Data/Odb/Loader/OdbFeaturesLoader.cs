@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using CressemExtractLibrary.Data.Odb.Attribute;
 using CressemExtractLibrary.Data.Odb.Feature;
+using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Loader
@@ -26,7 +27,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			}
 		}
 
-		public bool Load(string path, List<OdbSymbolUser> userSymbols,
+		public bool Load(string path, string layerName,
+			List<OdbSymbolUser> userSymbols, List<OdbFont> fonts,
 			out OdbFeatures features)
 		{
 			features = new OdbFeatures();
@@ -137,12 +139,14 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 						// Text
 						else if (firstString.Equals("T") is true)
 						{
-							var odbFeatureText = OdbFeatureText.Create(index, isMM, line);
+							var odbFeatureText = OdbFeatureText.Create(index,
+								isMM, layerName, line);
 							if (odbFeatureText is null)
 							{
 								continue;
 							}
 
+							odbFeatureText.SetFonts(fonts);
 							features.AddFeature(odbFeatureText);
 						}
 						else if (firstString.Equals("B") is true)

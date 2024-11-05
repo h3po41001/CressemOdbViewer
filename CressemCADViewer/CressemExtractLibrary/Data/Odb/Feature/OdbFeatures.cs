@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CressemExtractLibrary.Data.Odb.Attribute;
+using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
@@ -12,6 +13,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			AttrTexts = new List<OdbAttributeTextString>();
 			Symbols = new List<OdbSymbolBase>();
 			FeatureList = new List<OdbFeatureBase>();
+			FontList = new List<OdbFont>();
 		}
 
 		public List<OdbAttributeName> AttrNames { get; private set; }
@@ -21,6 +23,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public List<OdbSymbolBase> Symbols { get; private set; }
 
 		public List<OdbFeatureBase> FeatureList { get; private set; }
+
+		public List<OdbFont> FontList { get; private set; }
 
 		public void AddAttributeText(OdbAttributeTextString attrText)
 		{
@@ -40,7 +44,7 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 		public void AddFeature(OdbFeatureBase feature)
 		{
 			feature.SetSymbol(Symbols);
-			feature.SetAttribute(AttrNames, AttrTexts);
+			feature.SetAttribute(AttrNames, AttrTexts);	
 
 			FeatureList.Add(feature);
 		}

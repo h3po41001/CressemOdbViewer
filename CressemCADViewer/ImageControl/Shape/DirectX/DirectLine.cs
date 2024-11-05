@@ -46,7 +46,7 @@ namespace ImageControl.Shape.DirectX
 				Width = EndPt.X - StartPt.X + LineWidth,
 				Height = EndPt.Y - StartPt.Y + LineWidth,
 			};
-		
+
 			SkipSize = new SizeF(
 				Math.Abs(Bounds.Width * skipRatio),
 				Math.Abs(Bounds.Height * skipRatio));
@@ -61,21 +61,22 @@ namespace ImageControl.Shape.DirectX
 			bool isHole, RectangleF roi)
 		{
 			// 확대한 shape 크기가 roi 보다 커야됨. (작지 않아서 그려도 되는것)
-			if (SkipSize.Width >= roi.Width &&
-				SkipSize.Height >= roi.Height)
+			if (IsPositive != isHole)
 			{
-				if (roi.IntersectsWith(Bounds) is true)
+				if (SkipSize.Width >= roi.Width &&
+					SkipSize.Height >= roi.Height)
 				{
-					if (IsPositive != isHole)
+					if (roi.IntersectsWith(Bounds) is true)
 					{
 						render.DrawLine(StartPt, EndPt, DefaultBrush, LineWidth);
 					}
-					else
-					{
-						render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
-					}
 				}
 			}
+			else
+			{
+				render.DrawLine(StartPt, EndPt, HoleBrush, LineWidth);
+			}
+
 		}
 	}
 }

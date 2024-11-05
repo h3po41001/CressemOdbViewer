@@ -16,7 +16,7 @@ namespace ImageControl.Shape.DirectX
 			float width, float height, float rotaion,
 			bool isLargeArc, bool isClockwise,
 			float lineWidth,
-			Factory factory, RenderTarget render, Color color, 
+			Factory factory, RenderTarget render, Color color,
 			float skipRatio) : base(isPositive, factory, render, color)
 		{
 			StartPt = new RawVector2(sx, sy);
@@ -81,20 +81,20 @@ namespace ImageControl.Shape.DirectX
 			bool isHole, RectangleF roi)
 		{
 			// 확대한 shape 크기가 roi 보다 커야됨. (작지 않아서 그려도 되는것)
-			if (SkipSize.Width >= roi.Width &&
-				SkipSize.Height >= roi.Height)
+			if (IsPositive != isHole)
 			{
-				if (roi.IntersectsWith(Bounds) is true)
+				if (SkipSize.Width >= roi.Width &&
+					SkipSize.Height >= roi.Height)
 				{
-					if (IsPositive != isHole)
+					if (roi.IntersectsWith(Bounds) is true)
 					{
 						render.DrawGeometry(ShapeGemotry, DefaultBrush, LineWidth);
 					}
-					else
-					{
-						render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
-					}
 				}
+			}
+			else
+			{
+				render.DrawGeometry(ShapeGemotry, HoleBrush, LineWidth);
 			}
 		}
 	}

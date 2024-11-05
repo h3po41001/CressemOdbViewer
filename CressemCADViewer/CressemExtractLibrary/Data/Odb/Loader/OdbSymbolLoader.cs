@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CressemExtractLibrary.Data.Odb.Feature;
+using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Loader
@@ -42,6 +43,7 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 		}
 
 		public bool LoadUserSymbols(string dirPath,
+			List<OdbFont> odbFonts,
 			out List<OdbSymbolUser> userSymbols)
 		{
 			userSymbols = null;
@@ -64,8 +66,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 			{
 				string symbolFeaturesPath = Path.Combine(symbolDirPath, FeaturesFileName);
 
-				if (OdbFeaturesLoader.Instance.Load(symbolFeaturesPath,
-					null, out OdbFeatures features) is false)
+				if (OdbFeaturesLoader.Instance.Load(symbolFeaturesPath, "",
+					null, odbFonts, out OdbFeatures features) is false)
 				{
 					return;
 				}

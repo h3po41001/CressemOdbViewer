@@ -2,6 +2,7 @@
 using CressemExtractLibrary.Data.Interface.Features;
 using CressemExtractLibrary.Data.Interface.Symbol;
 using CressemExtractLibrary.Data.Odb.Attribute;
+using CressemExtractLibrary.Data.Odb.Font;
 using CressemExtractLibrary.Data.Odb.Symbol;
 
 namespace CressemExtractLibrary.Data.Odb.Feature
@@ -64,7 +65,8 @@ namespace CressemExtractLibrary.Data.Odb.Feature
 			FeatureSymbol = symbols[SymbolNum];
 		}
 
-		public void SetAttribute(List<OdbAttributeName> attrNames, List<OdbAttributeTextString> attrTexts)
+		public void SetAttribute(List<OdbAttributeName> attrNames, 
+			List<OdbAttributeTextString> attrTexts)
 		{
 			if (AttributeString == string.Empty)
 			{

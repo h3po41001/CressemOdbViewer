@@ -4,6 +4,8 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 {
 	internal abstract class OdbLoader
 	{
+		private readonly string MISC_FOLDER_NAME = "misc";
+		private readonly string INFO_FILE_NAME = "info";
 		private readonly string ODB_SUM_FILE_EXTENSION = ".sum";
 		private readonly string SYMBOLS_FOLDER_NAME = "symbols";
 		private readonly string LAYERS_FOLDER_NAME = "layers";
@@ -18,6 +20,10 @@ namespace CressemExtractLibrary.Data.Odb.Loader
 		protected OdbLoader()
 		{
 		}
+
+		protected string MiscFolderName { get => MISC_FOLDER_NAME; }
+
+		protected string InfoFileName { get => INFO_FILE_NAME; }
 
 		protected string SumFileExt { get => ODB_SUM_FILE_EXTENSION; }
 

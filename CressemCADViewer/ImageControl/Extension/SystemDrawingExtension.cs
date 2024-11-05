@@ -45,8 +45,9 @@ namespace ImageControl.Extension
 		public static PointF Rotate(this PointF point, PointF center, int angle, bool isFlipHorizontal)
 		{
 			double radian = angle * (Math.PI / 180);
-			double cosTheta = Math.Cos(radian);
-			double sinTheta = Math.Sin(radian);
+
+			double cosTheta = Math.Round(Math.Cos(radian), 10);
+			double sinTheta = Math.Round(Math.Sin(radian), 10);
 
 			double dx = point.X - center.X;
 			double dy = point.Y - center.Y;
