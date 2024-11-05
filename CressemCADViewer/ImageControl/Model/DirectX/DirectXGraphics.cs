@@ -21,7 +21,7 @@ namespace ImageControl.Model.DirectX
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
 		private readonly float DEFAULT_DPI = 96.0f;
-		private readonly float SKIP_RATIO = 10000000;
+		private readonly float SKIP_RATIO = 1000;
 
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();
@@ -72,6 +72,7 @@ namespace ImageControl.Model.DirectX
 			_directXView.GraphicsMouseDown += OnMouseDown;
 			_directXView.GraphicsMouseMove += OnMouseMove;
 			_directXView.GraphicsMouseUp += OnMouseUp;
+			_directXView.GraphicsMouseWheel += OnMouseWheel;
 			_directXView.GraphicsPrevKeyDown += OnPrevkeyDown;
 		}
 
@@ -199,11 +200,11 @@ namespace ImageControl.Model.DirectX
 
 		private void OnMouseDown(object sender, MouseEventArgs e)
 		{
-			//if (e.Button is MouseButtons.Right)
-			//{
-			//	MousePressed = true;
-			//}
-			//else
+			if (e.Button is MouseButtons.Right)
+			{
+				MousePressed = true;
+			}
+			else
 			if (e.Button is MouseButtons.Left)
 			{
 				if (_zoomIsReady is true)
@@ -270,37 +271,41 @@ namespace ImageControl.Model.DirectX
 			ProductPos = new PointF(productX, productY);
 			MousePos = new PointF(productX, productY);
 
-			//if (MousePressed && e.Button is MouseButtons.Right)
-			//{
-			//	float deltaX = e.X - WindowPos.X;
-			//	float deltaY = e.Y - WindowPos.Y;
+			if (MousePressed && e.Button is MouseButtons.Right)
+			{
+				float deltaX = e.X - WindowPos.X;
+				float deltaY = e.Y - WindowPos.Y;
 
-			//	OffsetSize = new SizeF(StartPos.X + deltaX, StartPos.Y + deltaY);
-			//	UpdateMatrix(false, true);
-			//}
+				OffsetSize = new SizeF(StartPos.X + deltaX, StartPos.Y + deltaY);
+				UpdateMatrix(false, true);
+			}
 
 			MouseMoveEvent(this, null);
 		}
 
 		private void OnMouseUp(object sender, MouseEventArgs e)
 		{
-			//if (MousePressed && e.Button is MouseButtons.Right)
-			//{
-			//	WindowPos = new PointF(e.X, e.Y);
+			if (MousePressed && e.Button is MouseButtons.Right)
+			{
+				WindowPos = new PointF(e.X, e.Y);
 
-			//	float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
-			//	float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
-			//	ProductPos = new PointF(productX, productY);
+				float productX = (WindowPos.X - OffsetSize.Width) / ScreenZoom;
+				float productY = (WindowPos.Y - OffsetSize.Height) / ScreenZoom;
+				ProductPos = new PointF(productX, productY);
 
-			//	UpdateMatrix(false, true);
-			//}
-			//else
-			if (_zoomMousePressed && e.Button is MouseButtons.Left)
+				UpdateMatrix(false, true);
+			}
+			else if (_zoomMousePressed && e.Button is MouseButtons.Left)
 			{
 				_zoomIsReady = true;
 			}
 
 			MousePressed = false;
+		}
+
+		private void OnMouseWheel(object sender, MouseEventArgs e)
+		{
+			ZoomInOut(e.Delta <= 0);
 		}
 
 		private void OnPrevkeyDown(object sender, PreviewKeyDownEventArgs e)
