@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using CressemDataToGraphics.Factory;
 using CressemExtractLibrary.Data.Interface.Features;
+using ImageControl.Extension;
 using ImageControl.Shape.DirectX.Interface;
 using ImageControl.Shape.Interface;
 
@@ -36,8 +37,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		public IEnumerable<PointF> Points { get; private set; }
 
 		public static ShapeDirectPolygon Create(bool useMM, float pixelResolution,
-			int globalOrient, bool isGlobalFlipHorizontal,
-			bool isMM, double datumX, double datumY,
+			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IFeaturePolygon polygon)
@@ -57,7 +58,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 					shapes.Add(ShapeDirectArc.Create(useMM,
 						pixelResolution, globalOrient, isGlobalFlipHorizontal,
 						isMM, datumX, datumY,
-						polygon.X + cx, polygon.Y + cy,
+						cx, cy,
+						polygon.X, polygon.Y,
 						localOrient, localIsFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
 						arc.IsClockWise, 0));
@@ -66,28 +68,11 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 				{
 					shapes.Add(ShapeDirectLine.Create(useMM, pixelResolution,
 						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + polygon.X, datumY + polygon.Y,
+						isMM, datumX, datumY,
 						cx, cy,
+						polygon.X, polygon.Y,
 						localOrient, localIsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
-				}
-				else if (feature is IFeaturePolygon subPolygon)
-				{
-					shapes.Add(Create(useMM, pixelResolution,
-						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + cx, datumY + cy,
-						polygon.X, polygon.Y,
-						localOrient, localIsFlipHorizontal,
-						isPositive, subPolygon));
-				}
-				else if (feature is IFeatureSurface surface)
-				{
-					shapes.Add(ShapeDirectSurface.Create(useMM, pixelResolution,
-						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + cx, datumY + cy,
-						polygon.X, polygon.Y,
-						localOrient, localIsFlipHorizontal,
-						isPositive, surface.Polygons));
 				}
 			}
 
@@ -104,7 +89,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		{
 			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
-				isMM, datumX, datumY, cx, cy,
+				isMM, datumX, datumY,
+				cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, polygonType, points);
 

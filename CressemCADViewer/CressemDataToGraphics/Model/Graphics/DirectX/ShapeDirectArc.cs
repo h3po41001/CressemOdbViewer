@@ -47,8 +47,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		public float LineWidth { get; private set; }
 
 		public static ShapeDirectArc Create(bool useMM, float pixelResolution,
-			int globalOrient, bool isGlobalFlipHorizontal,
-			bool isMM, double datumX, double datumY,
+			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
+			double datumX, double datumY,
+			double anchorX, double anchorY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double sx, double sy, double ex, double ey, double arcCx, double arcCy,
@@ -56,7 +57,9 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		{
 			var shapeArc = ShapeFactory.Instance.CreateArc(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
-				isMM, datumX, datumY, cx, cy,
+				isMM, datumX, datumY,
+				anchorX, anchorY,
+				cx, cy,
 				orient, isFlipHorizontal,
 				sx, sy, ex, ey, arcCx, arcCy, width);
 

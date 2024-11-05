@@ -23,8 +23,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		public IEnumerable<IGraphicsShape> Polygons { get; private set; }
 
 		public static ShapeDirectSurface Create(bool useMM, float pixelResolution,
-			int globalOrient, bool isGlobalFlipHorizontal,
-			bool isMM, double datumX, double datumY,
+			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			bool isPositive, IEnumerable<IFeaturePolygon> featurePolygons)

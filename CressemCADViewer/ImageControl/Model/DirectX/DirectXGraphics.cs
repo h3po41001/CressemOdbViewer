@@ -21,7 +21,7 @@ namespace ImageControl.Model.DirectX
 	{
 		public override event EventHandler MouseMoveEvent = delegate { };
 		private readonly float DEFAULT_DPI = 96.0f;
-		private readonly float SKIP_RATIO = 1000f;
+		private readonly float SKIP_RATIO = 1000;
 
 		private readonly List<DirectShape> _directProfileShapes = new List<DirectShape>();
 		private readonly List<DirectShape> _directShapes = new List<DirectShape>();

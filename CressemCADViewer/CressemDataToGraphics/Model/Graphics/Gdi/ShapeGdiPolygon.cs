@@ -51,7 +51,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiArc.Create(useMM, pixelResolution,
 						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + cx, datumY + cy,
+						isMM, datumX, datumY,
+						cx, cy,
 						polygon.X, polygon.Y,
 						orient, isFlipHorizontal,
 						arc.X, arc.Y, arc.Ex, arc.Ey, arc.Cx, arc.Cy,
@@ -61,7 +62,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiLine.Create(useMM, pixelResolution,
 						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + cx, datumY + cy,
+						isMM, datumX, datumY,
+						cx, cy,
 						polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsFlipHorizontal,
 						line.X, line.Y, line.Ex, line.Ey, 0));
@@ -70,7 +72,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(Create(useMM, pixelResolution,
 						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + cx, datumY + cy,
+						isMM, datumX, datumY,
 						polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsFlipHorizontal,
 						isPositive, subPolygon));
@@ -79,7 +81,7 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 				{
 					shapes.Add(ShapeGdiSurface.Create(useMM, pixelResolution,
 						globalOrient, isGlobalFlipHorizontal,
-						isMM, datumX + cx, datumY + cy,
+						isMM, datumX, datumY,
 						polygon.X, polygon.Y,
 						polygon.Orient, polygon.IsFlipHorizontal, isPositive,
 						surface.Polygons));
@@ -99,7 +101,8 @@ namespace CressemDataToGraphics.Model.Graphics.Shape
 		{
 			var shapePolygon = ShapeFactory.Instance.CreatePolygon(useMM, pixelResolution,
 				globalOrient, isGlobalFlipHorizontal,
-				isMM, datumX, datumY, cx, cy,
+				isMM, datumX, datumY,
+				cx, cy,
 				orient, isFlipHorizontal,
 				isPositive, polygonType, points);
 

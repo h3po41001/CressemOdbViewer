@@ -1,5 +1,4 @@
-﻿using CressemCADViewer.Model;
-using CressemFramework.Observer;
+﻿using CressemFramework.Observer;
 
 namespace CressemCADViewer.ViewModel.Control
 {
@@ -11,6 +10,7 @@ namespace CressemCADViewer.ViewModel.Control
 		private bool _isRotateCW270;
 		private bool _isFlipVertical;
 		private bool _isFlipHorizontal;
+		private bool _isRepeatAll;
 
 		public TransformMenuViewModel()
 		{
@@ -20,6 +20,7 @@ namespace CressemCADViewer.ViewModel.Control
 			_isRotateCW270 = false;
 			_isFlipVertical = false;
 			_isFlipHorizontal = false;
+			_isRepeatAll = false;
 		}
 
 		public bool IsRotateCW0
@@ -108,10 +109,21 @@ namespace CressemCADViewer.ViewModel.Control
 			}
 		}
 
-		public void GetOrientFlip(out int orient, out bool isFlipHorizontal)
+		public bool IsRepeatAll
+		{
+			get => _isRepeatAll;
+			set
+			{
+				_isRepeatAll = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public void GetOrientFlip(out int orient, out bool isFlipHorizontal, out bool isRepeatAll)
 		{
 			orient = 0;
 			isFlipHorizontal = false;
+			isRepeatAll = IsRepeatAll;
 
 			if (IsRotateCW0 is true || IsRotateCW180 is true)
 			{
@@ -121,7 +133,7 @@ namespace CressemCADViewer.ViewModel.Control
 				{
 					isFlipHorizontal = true;
 				}
-				
+
 				if (IsFlipVertical is true)
 				{
 					isFlipHorizontal = !isFlipHorizontal;

@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using CressemCADViewer.Model;
 using CressemCADViewer.ViewModel.Control;
 using CressemDataToGraphics;
@@ -147,7 +146,7 @@ namespace CressemCADViewer.ViewModel
 				return;
 			}
 
-			TransformMenuView.GetOrientFlip(out int orient, out bool isFlipHorizontal);
+			TransformMenuView.GetOrientFlip(out int orient, out bool isFlipHorizontal, out bool isRepeatAll);
 
 			bool useMM = true;
 			GraphicsView.ClearShape();
@@ -155,23 +154,62 @@ namespace CressemCADViewer.ViewModel
 
 			var stepHeader = ExtractLibrary.Instance.GetStepHeader(PropertyView.SelectedStepName);
 
-			var profileShapes = LoadProfile(useMM, orient, isFlipHorizontal, 
-				0, 0, 0, false, stepHeader, ref dataToGraphics);
-
-			List<IGraphicsList> profileShapeList = new List<IGraphicsList>(profileShapes);
-			if (profileShapes.Any() is false)
+			var curProfileFeature = ExtractLibrary.Instance.GetStepProfile(PropertyView.SelectedStepName);
+			if (curProfileFeature is null)
 			{
 				MessageBox.Show("Profile is not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
-			var curFeature = ExtractLibrary.Instance.GetStepProfile(PropertyView.SelectedStepName);
+			List<IGraphicsList> profileShapeList = new List<IGraphicsList>();
 			var curProfileShape = dataToGraphics.GetShapes(useMM, orient, isFlipHorizontal,
-				0, 0, 0, 0, 0, false, curFeature);
+				0, 0, 0, 0, 0, false, curProfileFeature);
+
+			profileShapeList.Add(curProfileShape);
+
+			var profileShapes = LoadFeatures(true, useMM, orient, isFlipHorizontal,
+				0, 0, 0, false, stepHeader, "", ref dataToGraphics);
+			profileShapeList.AddRange(profileShapes);
 
 			profileShapeList.Add(curProfileShape);
 			GraphicsView.LoadProfiles(profileShapeList);
 
+			var curFeatures = ExtractLibrary.Instance.GetFeatures(
+				PropertyView.SelectedStepName, PropertyView.SelectedLayerName);
+
+			if (curFeatures is null)
+			{
+				MessageBox.Show("Feature is not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			List<IGraphicsList> featureShapeList = new List<IGraphicsList>();
+
+			foreach (var curFeature in curFeatures)
+			{
+				var curFeatureShapes = dataToGraphics.GetShapes(useMM, orient, isFlipHorizontal,
+					0, 0, 0, 0, 0, false, curFeature);
+
+				featureShapeList.Add(curFeatureShapes);
+			}
+
+			var features = LoadFeatures(isRepeatAll, useMM, orient, isFlipHorizontal,
+				0, 0, 0, false, stepHeader, PropertyView.SelectedLayerName, ref dataToGraphics);
+
+			featureShapeList.AddRange(features);
+
+			foreach (var feature in featureShapeList)
+			{
+				if (feature is null)
+				{
+					continue;
+				}
+
+				GraphicsView.AddShapes(feature);
+			}
+
+			//var features = LoadFeatures(useMM, orient, isFlipHorizontal,
+			//	0, 0, 0, false, stepHeader, ref dataToGraphics);
 			//		foreach (var featrue in profile.)
 
 
@@ -201,26 +239,96 @@ namespace CressemCADViewer.ViewModel
 			//}
 		}
 
-		private IEnumerable<IGraphicsList> LoadProfile(bool useMM,
-			int globalOrient, bool isGlobalFlipHorizontal,
+		//private IEnumerable<IGraphicsList> LoadProfile(bool useMM,
+		//	int globalOrient, bool isGlobalFlipHorizontal,
+		//	double datumX, double datumY, int orient, bool isFlipHorizontal,
+		//	IStepHeader stepHeader, ref DataToGraphics dataToGraphics)
+		//{
+		//	List<IGraphicsList> profileShapes = new List<IGraphicsList>();
+
+		//	foreach (var step in stepHeader.StepRepeats)
+		//	{
+		//		var feature = ExtractLibrary.Instance.GetStepProfile(step.Name);
+		//		var childHeader = ExtractLibrary.Instance.GetStepHeader(step.Name);
+
+		//		PointF stepStart = new PointF((float)(step.Sx), (float)(step.Sy));
+		//		stepStart = stepStart.Rotate(
+		//			new PointF(0, 0), -orient, isFlipHorizontal);
+
+		//		int childOrient = (int)((step.Angle) % 360);
+		//		PointF childDatum = new PointF(
+		//					(float)childHeader.XDatum, (float)childHeader.YDatum);
+		//		childDatum = childDatum.Rotate(new PointF(0, 0), -orient, isFlipHorizontal);
+
+		//		bool childIsFlipHorizontal = isFlipHorizontal ^ step.IsFlipHorizontal;
+
+		//		for (int idxX = 0; idxX < step.Nx; idxX++)
+		//		{
+		//			for (int idxY = 0; idxY < step.Ny; idxY++)
+		//			{
+		//				System.Drawing.Point idx =
+		//					new System.Drawing.Point(idxX, idxY);
+		//				idx = idx.Rotate(new System.Drawing.Point(0, 0), -orient, isFlipHorizontal);
+
+		//				double sx = datumX + stepStart.X + step.Dx * idx.X;
+		//				double sy = datumY + stepStart.Y + step.Dy * idx.Y;
+
+		//				PointF anchor = new PointF((float)sx, (float)sy);
+		//				anchor = anchor.Rotate(new PointF(
+		//					(float)sx, (float)sy), -(int)step.Angle, isFlipHorizontal);
+
+		//				sx -= childDatum.X;
+		//				sy -= childDatum.Y;
+
+		//				var shape = dataToGraphics.GetShapes(useMM,
+		//					globalOrient, isGlobalFlipHorizontal,
+		//					sx, sy, anchor.X, anchor.Y,
+		//					childOrient, isFlipHorizontal, feature);
+		//				profileShapes.Add(shape);
+
+		//				if (childHeader.StepRepeats.Any() is true)
+		//				{
+		//					var childShapes = LoadProfile(useMM,
+		//						globalOrient, isGlobalFlipHorizontal,
+		//						sx, sy, childOrient,
+		//						isFlipHorizontal, childHeader, ref dataToGraphics);
+		//					profileShapes.AddRange(childShapes);
+		//				}
+		//			}
+		//		}
+		//	}
+
+		//	return profileShapes;
+		//}
+
+		private IEnumerable<IGraphicsList> LoadFeatures(bool isRepeatAll,
+			bool useMM, int globalOrient, bool isGlobalFlipHorizontal,
 			double datumX, double datumY, int orient, bool isFlipHorizontal,
-			IStepHeader stepHeader, ref DataToGraphics dataToGraphics)
+			IStepHeader stepHeader, string layerName,
+			ref DataToGraphics dataToGraphics)
 		{
-			List<IGraphicsList> profileShapes = new List<IGraphicsList>();
+			List<IGraphicsList> shapes = new List<IGraphicsList>();
 
 			foreach (var step in stepHeader.StepRepeats)
 			{
-				var feature = ExtractLibrary.Instance.GetStepProfile(step.Name);
+				IFeatureBase[] features = null;
+				if (layerName == string.Empty)
+				{
+					features = new IFeatureBase[] { ExtractLibrary.Instance.GetStepProfile(step.Name) };
+				}
+				else
+				{
+					features = ExtractLibrary.Instance.GetFeatures(step.Name, layerName);
+				}
+
 				var childHeader = ExtractLibrary.Instance.GetStepHeader(step.Name);
 
 				PointF stepStart = new PointF((float)(step.Sx), (float)(step.Sy));
 				stepStart = stepStart.Rotate(
 					new PointF(0, 0), -orient, isFlipHorizontal);
 
-				int childOrient = (int)((step.Angle) % 360);
-				PointF childDatum = new PointF(
-							(float)childHeader.XDatum, (float)childHeader.YDatum);
-				childDatum = childDatum.Rotate(new PointF(0, 0), -orient, isFlipHorizontal);
+				int childOrient = (int)((orient + step.Angle) % 360);
+				bool childIsFlipHorizontal = isFlipHorizontal ^ step.IsFlipHorizontal;
 
 				for (int idxX = 0; idxX < step.Nx; idxX++)
 				{
@@ -237,28 +345,41 @@ namespace CressemCADViewer.ViewModel
 						anchor = anchor.Rotate(new PointF(
 							(float)sx, (float)sy), -(int)step.Angle, isFlipHorizontal);
 
-						sx -= childDatum.X;
-						sy -= childDatum.Y;
+						sx -= childHeader.XDatum;
+						sy -= childHeader.YDatum;
 
-						var shape = dataToGraphics.GetShapes(useMM,
-							globalOrient, isGlobalFlipHorizontal,
-							sx, sy, anchor.X, anchor.Y,
-							childOrient, isFlipHorizontal, feature);
-						profileShapes.Add(shape);
+						foreach (var feature in features)
+						{
+							var shape = dataToGraphics.GetShapes(useMM,
+								globalOrient, isGlobalFlipHorizontal,
+								sx, sy, anchor.X, anchor.Y,
+								childOrient, isFlipHorizontal, feature);
+							shapes.Add(shape);
+						}
 
 						if (childHeader.StepRepeats.Any() is true)
 						{
-							var childShapes = LoadProfile(useMM,
-								globalOrient, isGlobalFlipHorizontal,
-								sx, sy, childOrient,
-								isFlipHorizontal, childHeader, ref dataToGraphics);
-							profileShapes.AddRange(childShapes);
+							var childShapes = LoadFeatures(isRepeatAll,
+								useMM, globalOrient, isGlobalFlipHorizontal,
+								sx, sy, (int)(step.Angle % 360),
+								isFlipHorizontal, childHeader, layerName, ref dataToGraphics);
+							shapes.AddRange(childShapes);
 						}
+
+						if (isRepeatAll is false)
+						{
+							break;
+						}
+					}
+
+					if (isRepeatAll is false)
+					{
+						break;
 					}
 				}
 			}
 
-			return profileShapes;
+			return shapes;
 		}
 	}
 }

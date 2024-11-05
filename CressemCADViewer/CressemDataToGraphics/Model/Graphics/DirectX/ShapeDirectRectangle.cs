@@ -27,8 +27,8 @@ namespace CressemDataToGraphics.Model.Graphics.DirectX
 		public float Bottom { get; private set; }
 
 		public static ShapeDirectRectangle Create(bool useMM, float pixelResolution,
-			int globalOrient, bool isGlobalFlipHorizontal,
-			bool isMM, double datumX, double datumY,
+			int globalOrient, bool isGlobalFlipHorizontal, bool isMM,
+			double datumX, double datumY,
 			double cx, double cy,
 			int orient, bool isFlipHorizontal,
 			double width, double height)
